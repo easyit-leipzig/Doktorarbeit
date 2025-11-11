@@ -1,0 +1,22 @@
+FRZK Toy-Model Appendix 3.B - Parameter & Output Log
+
+Parameters (json):
+{
+  "params": {
+    "seed": 42,
+    "N": 20,
+    "T": 300,
+    "K": 3,
+    "scale": 1.5,
+    "noise_std": 0.3
+  }
+}
+
+Generated files:
+- script: /mnt/data/frzk_toymodel/frzk_toymodel_appendix3B.py
+- positions_png: /mnt/data/frzk_toymodel/positions_vs_embedding.png
+- distances_png: /mnt/data/frzk_toymodel/true_vs_reconstructed_distances.png
+- params_csv: /mnt/data/frzk_toymodel/params_log.csv
+- metrics_csv: /mnt/data/frzk_toymodel/metrics.csv
+
+Notes: Run the script frzk_toymodel_appendix3B.py to reproduce.

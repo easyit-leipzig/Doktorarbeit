@@ -1,0 +1,39 @@
+
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <!-- Hintergrund -->
+  <rect width="100%" height="100%" fill="#f0f0f0" />
+
+  <!-- Titel -->
+  <text x="300" y="40" font-size="20" font-weight="bold" text-anchor="middle" fill="#333">
+    Grafische Darstellung des Leermengenaxioms
+  </text>
+  <text x="300" y="65" font-size="14" text-anchor="middle" fill="#666">
+    Illustration zur Erklärung der mathematischen Grundlage des Konzepts
+  </text>
+
+  <!-- Leermengenaxiom Erklärung -->
+  <text x="300" y="120" font-size="16" text-anchor="middle" fill="#555">
+    Für alle x gilt: x ist kein Element der leeren Menge.
+  </text>
+
+  <!-- Leermenge Symbol -->
+  <g transform="translate(250, 150)">
+    <circle cx="50" cy="50" r="40" fill="#fff" stroke="#007bff" stroke-width="2" />
+    <line x1="10" y1="10" x2="90" y2="90" stroke="#dc3545" stroke-width="4" />
+    <text x="50" y="220" font-size="14" text-anchor="middle" fill="#555">
+      ∅ (Leere Menge)
+    </text>
+  </g>
+
+  <!-- ZF-System Hinweis -->
+  <text x="300" y="300" font-size="14" text-anchor="middle" fill="#777">
+    Im Zermelo-Fraenkel-System (ZF) ist die Existenz der leeren Menge ein Axiom.
+  </text>
+
+  <!-- Zusätzliche visuelle Elemente -->
+  <line x1="50" y1="330" x2="550" y2="330" stroke="#ccc" stroke-width="1" />
+  <text x="300" y="360" font-size="12" text-anchor="middle" fill="#888">
+    Die Basis für den Aufbau weiterer Mengen.
+  </text>
+</svg>
+

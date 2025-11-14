@@ -1,0 +1,1115 @@
+Ich benötige für die am ende folgenden daten (vollständige datensätze) eine python aufbereitung für "columns" wo sinnvoll mit 0 und 1 in:
+
+# Spalten für Bewertungen/Kriterien
+columns = [
+    "fach", "datum", "lehrkraft", "thema", "absprachen", "mitarbeit", "fleissig", "selbstaendig", "vorbereitet", "konzentriert", "lernfortschritt", "beherrscht_thema", "transferdenken", "basiswissen", "freitext"
+]
+
+und am ende eine schülerzusammenfassung in:
+
+columns = [
+    "name", "klasse", "probeschueler", "erhaelt_keine_noten", "versetzungsgefaehrdet", "teilnahmenachweis_erforderlich", "protokoll", "extras", "vertraulich"
+]
+
+für die Daten:
+
+<-- seite 1 --> 
+Leidereiter, Mia 3 GR Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	23.05.25 Gellert, Manuela
+Mia kommt in den Sommerferien nicht
+
+stars
+star	19.09.24 Städter, Kathleen
+Bitte Teilnahmenachweis unterschreiben lassen
+
+stars
+person group
+MAT
+
+27.05.25 Kirsche, Emely - geändert: 27.05.25
+Grundrechenarten: Halbschriftliches Dividieren
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+benötigt Aufforderung
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+23.05.25 Städter, Kathleen - geändert: 27.05.25
+weitere Themen: Steigerung von Adjektiven
+Chips container. Use arrow keys to select chips.
+beteiligt sich / gute Mitarbeit
+Absprachen einhaltend
+fleißig / bemüht
+arbeitet selbstständig
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+25.05.25 Hartmann, Tiia - geändert: 25.05.25
+am 23.05. Erledigung Hausaufgaben, zeigt großes Interesse, braucht jedoch viele Aufforderungen zur Mitarbeit
+
+remove_circle_outline
+person group
+23.05.25 Gellert, Manuela - geändert: 23.05.25
+Mia kommt in den Sommerferien nicht
+
+remove_circle_outline
+person group
+MAT
+
+20.05.25 Kirsche, Emely - geändert: 20.05.25
+Grundrechenarten: Schriftliches Addieren und Subtrahieren
+Chips container. Use arrow keys to select chips.
+beteiligt sich / gute Mitarbeit
+unkonzentriert
+benötigt Aufforderung
+Basiswissen vorhanden
+remove_circle_outline
+person group
+20.05.25 Kbiri, Judith - geändert: 20.05.25
+15:30 keiner für EG tel. erreichbar
+
+remove_circle_outline
+person group
+MAT
+
+16.05.25 Hartmann, Tiia - geändert: 16.05.25
+Rechengesetze und Regeln: Umgang mit der Uhr
+sehr interessiert jedoch leicht ablenkbar, mehr eigeninitiative erforderlich
+
+Chips container. Use arrow keys to select chips.
+fleißig / bemüht
+benötigt Aufforderung
+unkonzentriert
+Basiswissen vorhanden
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+13.05.25 Gellert, Manuela - geändert: 13.05.25
+Hallo Herr Lauch,
+leider sind Sie weiterhin telefonisch nicht erreichbar.
+Uns steht nun doch eine neue Lehrerin freitags zur Verfügung.
+Somit bleibt der Kurs freitags um 15:35 Uhr bestehen.
+Herzliche Grüße
+Schülerhilfe GmbH & Co. KG
+Manuela Gellert
+Schülerhilfeleitung
+
+remove_circle_outline
+person group
+12.05.25 Gellert, Manuela - geändert: 12.05.25
+Hallo Herr Lauch,
+leider sind Sie telefonisch nicht erreichbar.
+Für den Freitagskurs haben wir momentan keinen Lehrer mehr zur Verfügung.
+Wir möchten Mia gern eine andere Kurszeit anbieten:
+montags 14:00 Uhr oder 15:35 Uhr
+dienstags 15:35 Uhr
+donnerstags 14:00 Uhr oder 15:35 Uhr
+Bitte kontaktieren Sie uns schnellstmöglich, um eine neue Kurszeit einzuplanen.
+Vielen Dank.
+Herzliche Grüße
+Schülerhilfe GmbH & Co. KG
+Manuela Gellert
+Schülerhilfeleitung
+
+remove_circle_outline
+person group
+DEU
+
+30.04.25 Tahir, Honya - geändert: 30.04.25
+Lesen: Textverständnis, Leseübungen
+Mia hat das Lesen und Textverständnis geübt. Sie hat die Aufgaben teils selbstständig gelöst. Sie hat gut und konzentriert mitgearbeitet. Sie musste nicht aufgefordert werden, die Aufgaben zu lösen.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Basiswissen vorhanden
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+12.02.25	DEU	Sie bemüht sich deutlich, muss aber eigenständiger werden und Initiative zeigen.	3	Scheibe, S.	remove_circle_outline
+<---->
+<-- seite 2 -->
+Leidereiter, Mia 3 GR Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	23.05.25 Gellert, Manuela
+Mia kommt in den Sommerferien nicht
+
+stars
+star	19.09.24 Städter, Kathleen
+Bitte Teilnahmenachweis unterschreiben lassen
+
+stars
+person group
+MAT
+
+10.04.25 Heitmann, Nele - geändert: 10.04.25
+Grundrechenarten: Multiplikation und Einmaleins
+Mia hatte leider keine Materialien mit und das Thema Schriftliche Multiplikation komplett abgelehnt. Eine Aufgabe zum kleinen Einmaleins wurde nur nach mehrmaligem Auffordern bearbeitet und Mia und Kiara lenken sich extremst gegenseitig ab.
+
+Chips container. Use arrow keys to select chips.
+desinteressiert / gleichgültig
+störend / blockierend / resignierend
+Absprachen nicht einhaltend
+benötigt Aufforderung
+unkonzentriert
+Materialien fehlen
+Basiswissen vorhanden
+Unverständnis
+remove_circle_outline
+person group
+08.04.25 Kbiri, Judith - geändert: 08.04.25
+tel.Vater: Mia kann am Donnerstag 10.04. für den Freitag 11.04.
+
+remove_circle_outline
+person group
+MAT
+
+04.04.25 Trigkidis, Dimitrios - geändert: 04.04.25
+Grundrechenarten: Multiplikation
+Mia hat einen Test über Leiter- Nichtleiter berichtigt und dann Multiplikationen geübt.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+unkonzentriert
+arbeitet selbstständig
+Basiswissen vorhanden
+remove_circle_outline
+person group
+DEU
+
+02.04.25 Tahir, Honya - geändert: 02.04.25
+Schreiben: Doppellaute (ai, ei, äu, eu)
+Mia hat die Aufgaben gut gelöst. Manchmal hat sie Hilfe benötigt, jedoch ist Basiswissen vorhanden.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+DEU
+
+26.03.25 Tahir, Honya - geändert: 26.03.25
+Lesen: Leseverständnis
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Basiswissen vorhanden
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+12.03.25 Städter, Kathleen - geändert: 12.03.25
+Nachtrag zum 7.2. Herr Thiele:
+Sehr geehrte Frau Städter,
+
+Sie hat gut mitgearbeitet, ist aber sehr langsam. Das würde ich in die Bemerkungen übernehmen.
+
+Das Sozial- und Lernverhalten war einwandfrei. Leider ist da noch kein Lernfortschritt erreicht worden, hier ist auch leider nur Basiswissen vorhanden.
+
+Mit freundlichen Grüßen
+
+Olaf Thiele
+
+remove_circle_outline
+person group
+12.03.25 Kbiri, Judith - geändert: 12.03.25
+te. mit Vater: über Ausfall informiert
+
+remove_circle_outline
+person group
+DEU
+
+05.03.25 Riedel, Christin - geändert: 05.03.25 Riedel, Christin
+Lesen: Leseverständnis
+Chips container. Use arrow keys to select chips.
+beteiligt sich / gute Mitarbeit
+störend / blockierend / resignierend
+benötigt Aufforderung
+unkonzentriert
+Materialien fehlen
+Unverständnis
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+28.02.25 Reindel, Abby - geändert: 28.02.25
+Grundrechenarten: schriftliche Addition
+Wir haben das neue Thema schriftliche Addition geübt. Sie beherrscht das Thema gut und arbeitete konzentriert.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+beherrscht Thema
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+MAT
+
+14.02.25 Wolter, Kathrin - geändert: 24.02.25
+Grundrechenarten: Einmaleins
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+arbeitet selbstständig
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+12.02.25	DEU	Sie bemüht sich deutlich, muss aber eigenständiger werden und Initiative zeigen.	3	Scheibe, S.	remove_circle_outline
+<---->
+<-- seite 3 -->
+Leidereiter, Mia 3 GR Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	23.05.25 Gellert, Manuela
+Mia kommt in den Sommerferien nicht
+
+stars
+star	19.09.24 Städter, Kathleen
+Bitte Teilnahmenachweis unterschreiben lassen
+
+stars
+person group
+DEU
+
+19.02.25 Riedel, Christin - geändert: 19.02.25 Riedel, Christin
+Lesen: Märchen
+Leseübung
+
+Chips container. Use arrow keys to select chips.
+störend / blockierend / resignierend
+desinteressiert / gleichgültig
+Absprachen nicht einhaltend
+benötigt Aufforderung
+unkonzentriert
+Materialien fehlen
+fähig zu Transferdenken
+Basiswissen vorhanden
+remove_circle_outline
+person group
+12.02.25 Kbiri, Judith - geändert: 12.02.25 Kbiri, Judith
+Hallo Herr Lauch ,
+gerne möchte ich mit Ihnen einen Termin für ein Elterngespräch vereinbaren.
+Wie passt es Ihnen zeitlich am Mittwoch, den 19.02.2025, um 14.00 Uhr?
+Gerne können wir dieses auch telefonisch durchführen.
+Auf Ihre Rückmeldung freue ich mich.
+Herzliche Grüße
+Schülerhilfe GmbH & Co. KG
+Judith Kbiri
+Mittwoch den 19.2. um 14 Uhr nehmen wir . Komme da vorbei
+Gesendet mit der WEB.DE Mail App
+
+remove_circle_outline
+person group
+DEU
+
+12.02.25 Scheibe, Sophia - geändert: 12.02.25
+Wortarten: Wortarten unterscheiden
+Mia hat ihre Übungen vom letzen Mal weiter bearbeitet. Sie hat manchmal Probleme die Aufgabe richtig zu verstehen.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+07.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 08.02.25
+weitere Themen: Korr. LK
+arbeitet sehr langsam / EME!
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+31.01.25 Kbiri, Judith - geändert: 31.01.25
+Tel. mit Vater, Mia ist krank heute. Leider keine Abmeldung, NHL ist unterwegs!
+
+remove_circle_outline
+person group
+DEU
+
+29.01.25 Scheibe, Sophia - geändert: 29.01.25 Scheibe, Sophia
+Der Satz: Wörtliche Rede
+Mia hat Übungen zur wörtlichen Rede gemacht. Sie kam damit ganz gut zurecht. Zum Ende hin wurde sie etwas unkonzentriert.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+24.01.25 Reindel, Abby - geändert: 24.01.25
+Grundrechenarten: Halbschriftlich rechnen
+Mia hat heute sehr gut mitgemacht und war motiviert zu lernen. Wir haben das halbschriftliche Addieren und Subtrahieren geübt und Fragen geklärt. Am Ende haben wir noch Geometrie angefangen, dort viel es ihr allerdings schwer aufwendigere Figuren mit Diagonalen drin an der Spiegelachse zu spiegeln.
+
+Chips container. Use arrow keys to select chips.
+beteiligt sich / gute Mitarbeit
+Absprachen einhaltend
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+22.01.25 Kbiri, Judith - geändert: 22.01.25
+Sven_lauch@web.de
+?SH 5306 Leipzig-Lausen?
+Es würde auch telefonisch gehen
+
+remove_circle_outline
+person group
+22.01.25 Kbiri, Judith - geändert: 22.01.25
+Hallo Herr Lauch,
+gerne möchte ich mit Ihnen einen Termin für ein Elterngespräch vereinbaren.
+Wie passt es Ihnen zeitlich am Freitag , den 31.01.2025 , um 15.00 Uhr?
+Gerne können wir dieses auch telefonisch durchführen.
+Auf Ihre Rückmeldung freue ich mich.
+Herzliche Grüße
+Schülerhilfe GmbH & Co. KG
+Judith Kbiri
+
+remove_circle_outline
+person group
+DEU
+
+22.01.25 Scheibe, Sophia - geändert: 22.01.25
+Wortarten: Wortarten
+Mia schreibt wohl bald eine Leistungskontrolle in deutsch. Leider konnte sie mir nicht mehr sagen über welches Thema. Sie hatte auch keine Unterrichtsmaterialien mit in denen ich hätte nachschauen können. Wir haben Übungen zu Wortarten gemacht. Sie muss dazu aufgefordert werden, die Aufgabenstellung richtig zu lesen, ansonsten hat sie Probleme mit der Aufgabe.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+konzentriert
+Materialien fehlen
+benötigt Aufforderung
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+12.02.25	DEU	Sie bemüht sich deutlich, muss aber eigenständiger werden und Initiative zeigen.	3	Scheibe, S.	remove_circle_outline
+<---->
+<-- seite 4 -->
+Leidereiter, Mia 3 GR Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	23.05.25 Gellert, Manuela
+Mia kommt in den Sommerferien nicht
+
+stars
+star	19.09.24 Städter, Kathleen
+Bitte Teilnahmenachweis unterschreiben lassen
+
+stars
+person group
+MAT
+
+10.01.25 Reindel, Abby - geändert: 11.01.25
+Rechengesetze und Regeln: Subtraktion
+Mia schriebt nächste Woche einen Mathe-Test. Das direkte Thema konnte sie mir nicht sagen und auch ihre Unterrichtsübungen hatte sie nicht mit. Wir haben deswegen halbschriftliche Subtraktion geübt, weil sie das wohl gerade im Unterricht behandelt haben. Der Ablauf der Strategie "halbschriftlich Rechnen" ist ihr bekannt und wurde verinnerlicht. Subtrahieren mit Zehnerübertrag fällt ihr schwer und funktionierte nur mit meiner Hilfe. Mia lässt sich leicht ablenken und hat ein großes Mitteilungsbedürfnis, weswegen nicht viele Aufgaben geschafft werden, dennoch beim gemeinsamen Arbeiten aufmerksam mitmacht.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+benötigt Aufforderung
+unkonzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+DEU
+
+08.01.25 Scheibe, Sophia - geändert: 08.01.25
+Wortbildung: neue Wörter bilden
+Mia schreibt bald eine Arbeit über Wortbausteine (nach eigener Aussage), weshalb wir Übungen zur Wortbildung gemacht haben. Sie kam damit relativ gut zurecht und hat die meiste Zeit selbstständig gearbeitet.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+benötigt Aufforderung
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+18.12.24 Kbiri, Judith - geändert: 18.12.24
+RR Mutter, wurden angerufen, dass Kurs am 20.12. verschoben wird, wollten Mia daher auch heute zu Hause lassen.
+
+remove_circle_outline
+person group
+18.12.24 Kbiri, Judith - geändert: 18.12.24
+RR beim Vater 14:30 Uhr: War scih nicht im klaren, dass heute Mittwoch ist. Will Mia von der Schule schnell abholen und Mia noch bringen
+
+remove_circle_outline
+person group
+DEU
+
+18.12.24 Scheibe, Sophia - geändert: 18.12.24
+fehlt unentschuldigt
+
+remove_circle_outline
+person group
+16.12.24 Kbiri, Judith - geändert: 16.12.24
+Tel. mit Vati, Mia hat am 20.12. Schulveranstaltung, wäre also am Freitag sowieso nicht gekommen.
+
+remove_circle_outline
+person group
+MAT
+
+13.12.24 Thiele, Dipl.-Ing. Olaf - geändert: 13.12.24
+fehlt unentschuldigt
+
+remove_circle_outline
+person group
+11.12.24 Kbiri, Judith - geändert: 11.12.24
+Mia fehlt, RR bei Vater: hat Schulveranstaltung, wurde vergessen zu melden.
+
+remove_circle_outline
+person group
+DEU
+
+11.12.24 Scheibe, Sophia - geändert: 11.12.24
+fehlt unentschuldigt
+
+remove_circle_outline
+person group
+DEU
+
+06.12.24 Reindel, Abby - geändert: 06.12.24
+weitere Themen: Rechtschreibung
+Mia lässt sich sehr leicht ablenken. Ist sie in ihrer Arbeitsphase drin arbeitet die gewissenhaft. Sie hat heute die Rechtschreibung von den Auslauten b/p geübt und anschließend mit Merkwörtern gefestigt
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Basiswissen vorhanden
+Unverständnis
+Lernfortschritt erzielt
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+12.02.25	DEU	Sie bemüht sich deutlich, muss aber eigenständiger werden und Initiative zeigen.	3	Scheibe, S.	remove_circle_outline
+<---->
+<-- seite 5 -->
+Leidereiter, Mia 3 GR Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	23.05.25 Gellert, Manuela
+Mia kommt in den Sommerferien nicht
+
+stars
+star	19.09.24 Städter, Kathleen
+Bitte Teilnahmenachweis unterschreiben lassen
+
+stars
+person group
+MAT
+
+04.12.24 Scheibe, Sophia - geändert: 04.12.24
+Zahlen darstellen: Zahlenstrahl, Nachbarzahlen
+Mia ist eine aufgeschlossene, nette Schülerin. Sie hat ihre Aufgaben selbstständig und größtenteils konzentriert bearbeitet. Bei Fragen kommt sie auf mich zu. Sie hat heute eine 1 in Mathe bekommen.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+19.09.24 Städter, Kathleen - geändert: 19.09.24
+Bitte Teilnahmenachweis unterschreiben lassen
+
+remove_circle_outline
+person group	16.09.24 15:37 Doku Anfragebuch
+Schwierigkeiten: Lesen; Subtraktion; Multiplikation; Addition; Zahlenraum bis 100; Achtung! Einverständnis Datenschutz muss noch abgefragt werden Hat gefragt nach: BuT Fach: DEU; Leistungskurs: Nein Fach: MAT; Leistungskurs: Nein leyla.kueplue 17.9.BGA: Vater erreicht; Wegbeschreibung gegeben; termin final bestätigt // KS 19.9. BT mit Vater; Mia lebt bei ihm- kein Kontakt zur Mutter!; Mia lernt aktuell ihre große Schwester (13J.) kennen, was mit Sicherheit einiges mit ihr macht; Vater beantragt eine Bewilligung- ich habe explizit auf Gruppenunterricht verwiesen - Deutsch: Diktat 5- Rechtschreibung muss geübt werden, sie liest nicht gerne, habe ihr gesagt, dass sie dem Papa laut vorlesen soll 2.Test 6: Satzzeichen, Text überarbeiten, Fehler selber aus dem Text erkennen - Mathe: generell Wiederholung Klasse 2; aktuell hat sie Malfolgen, kann nur die 2er und 5 er Kurse: Dienstag 14Uhr bei Frau Scheibe und Mittwoch 15:35Uhr bei Sam // KS	
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+12.02.25	DEU	Sie bemüht sich deutlich, muss aber eigenständiger werden und Initiative zeigen.	3	Scheibe, S.	remove_circle_outline

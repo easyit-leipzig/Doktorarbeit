@@ -1,0 +1,174 @@
+<div class="md-dialog-content layout-column" layout="column">
+    <div layout="row" layout-wrap="" class="layout-wrap layout-row">
+        <chapter-selector flex="30" flex-sm="50" flex-xs="100" subject="$ctrl.subject" chapter="$ctrl.note.chapter" empty="$ctrl.chapterSelectorIsEmpty" ng-hide="$ctrl.chapterSelectorIsEmpty" class="flex-xs-100 flex-sm-50 flex-30" aria-hidden="false"><div>
+<md-autocomplete flex="" required="" md-no-cache="true" md-selected-item="$ctrl.chapter" md-search-text="searchText" md-items="item in $ctrl.getChapters(searchText)" md-item-text="item" md-floating-label="Oberthema aus Liste wählen" tabindex="-1" class="flex">        <md-autocomplete-wrap ng-class="{ 'md-whiteframe-z1': !floatingLabel,                         'md-menu-showing': !$mdAutocompleteCtrl.hidden,                         'md-show-clear-button': !!clearButton }">                      <!----><md-input-container ng-if="floatingLabel" class="" style="">              <label for="{{ inputId || 'fl-input-' + $mdAutocompleteCtrl.id }}" class="md-required">Oberthema aus Liste wählen</label>              <input type="search" id="fl-input-194" name="" autocomplete="off" ng-required="$mdAutocompleteCtrl.isRequired" ng-readonly="$mdAutocompleteCtrl.isReadonly" ng-disabled="$mdAutocompleteCtrl.isDisabled" ng-model="$mdAutocompleteCtrl.scope.searchText" ng-model-options="{ allowInvalid: true }" ng-keydown="$mdAutocompleteCtrl.keydown($event)" ng-blur="$mdAutocompleteCtrl.blur($event)" ng-focus="$mdAutocompleteCtrl.focus($event)" aria-owns="ul-194" aria-label="Oberthema aus Liste wählen" aria-autocomplete="list" role="combobox" aria-haspopup="true" aria-activedescendant="" aria-expanded="false" class="ng-pristine ng-untouched md-input ng-empty ng-invalid ng-invalid-required ng-valid-minlength ng-valid-maxlength" required="required" aria-invalid="true"><div class="md-errors-spacer"></div>              <!----><div md-autocomplete-parent-scope="" md-autocomplete-replace=""></div>            </md-input-container><!---->          <!---->          <!---->                  </md-autocomplete-wrap></md-autocomplete>
+</div></chapter-selector>
+        <md-input-container flex="30" flex-sm="50" flex-xs="100" ng-class="{'md-input-invalid': vm.validation_messages.description }" class="flex-xs-100 flex-sm-50 flex-30">
+        <label for="input_189">Behandelte Themen</label>
+        <input ng-model="$ctrl.note.section" md-maxlength="120" ng-disabled="$ctrl.note.absent=='1'" class="ng-pristine ng-untouched ng-valid md-input ng-empty" id="input_189" aria-invalid="false" style="" ng-trim="false"><div class="md-errors-spacer"><div class="md-char-counter">0 / 120</div></div>
+        </md-input-container>          
+        <md-input-container flex="20" flex-offset="5" flex-sm="50" flex-xs="100" flex-offset-sm="0" flex-offset-md="0" flex-offset-xs="0" class="flex-xs-100 flex-sm-50 flex-offset-xs-0 flex-offset-sm-0 flex-offset-md-0 flex-offset-5 flex-20">                 
+            <md-checkbox ng-model="$ctrl.note.absent" aria-label="absent" ng-true-value="'1'" ng-false-value="'0'" tabindex="0" type="checkbox" role="checkbox" class="ng-pristine ng-untouched ng-valid ng-empty" aria-checked="false" aria-invalid="false" style=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+                fehlt unentschuldigt
+            </span></div></md-checkbox>
+        </md-input-container>
+        <md-input-container flex="15" flex-offset="0" flex-sm="50" flex-xs="100" flex-offset-sm="0" flex-offset-md="0" flex-offset-xs="0" class="flex-xs-100 flex-sm-50 flex-offset-xs-0 flex-offset-sm-0 flex-offset-md-0 flex-offset-0 flex-15">                 
+            <md-checkbox ng-model="$ctrl.note.late" aria-label="late" ng-true-value="'unpünktlich'" ng-false-value="null" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" class="ng-pristine ng-untouched ng-valid ng-empty" aria-disabled="false" aria-checked="false" aria-invalid="false" style=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+                unpünktlich
+            </span></div></md-checkbox>
+        </md-input-container>        
+    </div>
+    <div layout="row" layout-sm="column" class="layout-sm-column layout-row">
+        <span class="md-caption">Sozialverhalten<sup> *</sup></span>
+    </div>   
+    <div layout="row" flex="" layout-wrap="" class="layout-wrap layout-row flex">
+        <!--
+        <div flex="20" flex-xs="100" flex-sm="50" flex-md="33" ng-repeat="item in $ctrl.socialSelection">
+        <md-checkbox ng-checked="$ctrl.exists(item, $ctrl.note.social)" ng-click="$ctrl.toggle(item, $ctrl.note.social)"  ng-disabled="$ctrl.note.absent=='1'">
+            {{item}}
+        </md-checkbox>
+        </div>
+        -->
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('Absprachen einhaltend', $ctrl.note.social)" ng-click="$ctrl.toggle('Absprachen einhaltend', $ctrl.note.social)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="Absprachen einhaltend" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            Absprachen einhaltend
+            </span></div></md-checkbox>            
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('Absprachen nicht einhaltend', $ctrl.note.social)" ng-click="$ctrl.toggle('Absprachen nicht einhaltend', $ctrl.note.social)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="Absprachen nicht einhaltend" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            Absprachen nicht einhaltend
+            </span></div></md-checkbox>            
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('beteiligt sich / gute Mitarbeit', $ctrl.note.social)" ng-click="$ctrl.toggle('beteiligt sich / gute Mitarbeit', $ctrl.note.social)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="beteiligt sich / gute Mitarbeit" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            beteiligt sich / gute Mitarbeit
+            </span></div></md-checkbox>            
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('störend / blockierend / resignierend', $ctrl.note.social)" ng-click="$ctrl.toggle('störend / blockierend / resignierend', $ctrl.note.social)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="störend / blockierend / resignierend" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            störend / blockierend / resignierend
+            </span></div></md-checkbox>            
+        </div>                            
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('fleißig / bemüht', $ctrl.note.social)" ng-click="$ctrl.toggle('fleißig / bemüht', $ctrl.note.social)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="fleißig / bemüht" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            fleißig / bemüht
+            </span></div></md-checkbox>            
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('desinteressiert / gleichgültig', $ctrl.note.social)" ng-click="$ctrl.toggle('desinteressiert / gleichgültig', $ctrl.note.social)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="desinteressiert / gleichgültig" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            desinteressiert / gleichgültig
+            </span></div></md-checkbox>            
+        </div>        
+    </div>
+    <div layout="row" layout-xs="column" ng-show="$ctrl.more" class="layout-xs-column layout-row ng-hide" aria-hidden="true" style="">
+        <md-input-container flex="" class="flex">
+        <label for="input_190">Ergänzung Sozialverhalten</label>
+        <input ng-model="$ctrl.note.social_note" rows="1" ng-disabled="$ctrl.note.absent=='1'" md-maxlength="32" maxlength="32" class="ng-pristine ng-untouched ng-valid md-input ng-empty ng-valid-maxlength" id="input_190" aria-invalid="false" ng-trim="false" style=""><div class="md-errors-spacer"><div class="md-char-counter">0 / 32</div></div>     
+        </md-input-container> 
+    </div><!-- row -->          
+    <div layout="row" class="layout-row">
+        <span class="md-caption">Lernverhalten<sup> *</sup></span>
+    </div>    
+    <div layout="row" layout-wrap="" flex="" class="layout-wrap layout-row flex">
+        <!--
+        <div flex="20" flex-xs="100" flex-sm="50" flex-md="33" ng-repeat="item in $ctrl.behaviourSelection">
+            <md-checkbox ng-checked="$ctrl.exists(item, $ctrl.note.behaviour)" ng-click="$ctrl.toggle(item, $ctrl.note.behaviour)"  ng-disabled="$ctrl.note.absent=='1'">
+            {{item}}
+            </md-checkbox>
+        </div>
+        -->
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('arbeitet selbstständig', $ctrl.note.behaviour)" ng-click="$ctrl.toggle('arbeitet selbstständig', $ctrl.note.behaviour)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="arbeitet selbstständig" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            arbeitet selbstständig
+            </span></div></md-checkbox>
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('benötigt Aufforderung', $ctrl.note.behaviour)" ng-click="$ctrl.toggle('benötigt Aufforderung', $ctrl.note.behaviour)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="benötigt Aufforderung" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            benötigt Aufforderung
+            </span></div></md-checkbox>
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('konzentriert', $ctrl.note.behaviour)" ng-click="$ctrl.toggle('konzentriert', $ctrl.note.behaviour)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="konzentriert" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            konzentriert
+            </span></div></md-checkbox>
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('unkonzentriert', $ctrl.note.behaviour)" ng-click="$ctrl.toggle('unkonzentriert', $ctrl.note.behaviour)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="unkonzentriert" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            unkonzentriert
+            </span></div></md-checkbox>
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('vorbereitet', $ctrl.note.behaviour)" ng-click="$ctrl.toggle('vorbereitet', $ctrl.note.behaviour)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="vorbereitet" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            vorbereitet
+            </span></div></md-checkbox>
+        </div>
+        <div flex="50" flex-xs="100" flex-sm="50" flex-md="50" class="flex-xs-100 flex-sm-50 flex-md-50 flex-50">
+            <md-checkbox ng-checked="$ctrl.exists('Materialien fehlen', $ctrl.note.behaviour)" ng-click="$ctrl.toggle('Materialien fehlen', $ctrl.note.behaviour)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="Materialien fehlen" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            Materialien fehlen
+            </span></div></md-checkbox>
+        </div>                                                 
+    </div>
+    <div layout="row" ng-show="$ctrl.more" class="layout-row ng-hide" aria-hidden="true" style="">
+        <md-input-container flex="" class="flex">
+        <label for="input_191">Ergänzung Lernverhalten</label>
+        <input ng-model="$ctrl.note.behaviour_note" rows="1" ng-disabled="$ctrl.note.absent=='1'" md-maxlength="32" maxlength="32" class="ng-pristine ng-untouched ng-valid md-input ng-empty ng-valid-maxlength" id="input_191" aria-invalid="false" ng-trim="false" style=""><div class="md-errors-spacer"><div class="md-char-counter">0 / 32</div></div>  
+        </md-input-container> 
+    </div><!-- row -->             
+    <div layout="row" layout-xs="column" class="layout-xs-column layout-row">
+        <span class="md-caption">Wissensstand<sup> *</sup></span>
+    </div>
+    <div layout="row" layout-wrap="" flex="" class="layout-wrap layout-row flex">
+        <!--
+        <div flex="20" flex-xs="100" flex-sm="50" flex-md="33" ng-repeat="item in $ctrl.skillSelection">
+        <md-checkbox ng-checked="$ctrl.exists(item, $ctrl.note.skill)" ng-click="$ctrl.toggle(item, $ctrl.note.skill)" ng-disabled="$ctrl.note.absent=='1'">
+            {{item}}
+        </md-checkbox>
+        </div>
+        -->
+        <div flex="100" flex-xs="100" flex-sm="100" flex-md="100" class="flex-xs-100 flex-sm-100 flex-md-100 flex-100">
+            <md-checkbox ng-checked="$ctrl.exists('Lernfortschritt erzielt', $ctrl.note.skill)" ng-click="$ctrl.toggle('Lernfortschritt erzielt', $ctrl.note.skill)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="Lernfortschritt erzielt" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            Lernfortschritt erzielt
+            </span></div></md-checkbox>
+        </div>        
+        <div flex="25" flex-xs="100" flex-sm="50" flex-md="25" class="flex-xs-100 flex-sm-50 flex-md-25 flex-25">
+            <md-checkbox ng-checked="$ctrl.exists('Unverständnis', $ctrl.note.skill)" ng-click="$ctrl.toggle('Unverständnis', $ctrl.note.skill)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="Unverständnis" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            Unverständnis
+            </span></div></md-checkbox>
+        </div>
+        <div flex="25" flex-xs="100" flex-sm="50" flex-md="25" class="flex-xs-100 flex-sm-50 flex-md-25 flex-25">
+            <md-checkbox ng-checked="$ctrl.exists('Basiswissen vorhanden', $ctrl.note.skill)" ng-click="$ctrl.toggle('Basiswissen vorhanden', $ctrl.note.skill)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="Basiswissen vorhanden" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            Basiswissen vorhanden
+            </span></div></md-checkbox>
+        </div>
+        <div flex="25" flex-xs="100" flex-sm="50" flex-md="25" class="flex-xs-100 flex-sm-50 flex-md-25 flex-25">
+            <md-checkbox ng-checked="$ctrl.exists('beherrscht Thema', $ctrl.note.skill)" ng-click="$ctrl.toggle('beherrscht Thema', $ctrl.note.skill)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="beherrscht Thema" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            beherrscht Thema
+            </span></div></md-checkbox>
+        </div>
+        <div flex="25" flex-xs="100" flex-sm="50" flex-md="25" class="flex-xs-100 flex-sm-50 flex-md-25 flex-25">
+            <md-checkbox ng-checked="$ctrl.exists('fähig zu Transferdenken', $ctrl.note.skill)" ng-click="$ctrl.toggle('fähig zu Transferdenken', $ctrl.note.skill)" ng-disabled="$ctrl.note.absent=='1'" tabindex="0" type="checkbox" role="checkbox" aria-label="fähig zu Transferdenken" aria-disabled="false" aria-checked="false" class=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            fähig zu Transferdenken
+            </span></div></md-checkbox>
+        </div>                                      
+    </div>                     
+    <div layout="row" ng-show="$ctrl.more" class="layout-row ng-hide" aria-hidden="true">
+        <md-input-container flex="" class="flex">
+        <label for="input_192">Ergänzung Wissensstand</label>
+        <input ng-model="$ctrl.note.skill_note" rows="1" ng-disabled="$ctrl.note.absent=='1'" md-maxlength="32" maxlength="32" class="ng-pristine ng-untouched ng-valid md-input ng-empty ng-valid-maxlength" id="input_192" aria-invalid="false" ng-trim="false" style=""><div class="md-errors-spacer"><div class="md-char-counter">0 / 32</div></div>          
+        </md-input-container> 
+    </div><!-- row --> 
+    <div layout="row" class="layout-row">
+        <md-input-container flex="" ng-class="{'md-input-invalid': vm.validation_messages.note }" class="flex">
+        <label for="input_193">Fazit (z.B. Hinweis auf benutzte Bücher/Lehrmaterialien, persönliche Anmerkungen etc.)</label>
+        <div class="md-resize-wrapper"><textarea ng-model="$ctrl.note.summary" rows="1" ng-disabled="$ctrl.note.absent=='1'" class="ng-pristine ng-untouched ng-valid md-input ng-empty" id="input_193" aria-invalid="false" style="height: 30px;"></textarea><div class="md-resize-handle" style="touch-action: pan-x;"></div></div><div class="md-errors-spacer"></div>          
+        <span ng-show="vm.validation_messages.note.isEmpty" class="help-block ng-hide" aria-hidden="true" style="">Dieses Feld darf nicht leer sein.</span>
+        </md-input-container> 
+    </div><!-- row -->
+    <div layout="row" class="layout-row">
+        <p class="md-caption">
+        <sup> *</sup> Wählen Sie mindestens das Oberthema (MAT) sowie jeweils mindestens eine Option aus 
+        den Bereichen Sozialverhalten, Lernverhalten und Wissensstand, um den Eintrag speichern zu können.
+        Tragen Sie einen Stern (*) in das Feld Oberthema ein, um eine Liste aller Themen zu erhalten. 
+        </p>
+    </div>
+</div>

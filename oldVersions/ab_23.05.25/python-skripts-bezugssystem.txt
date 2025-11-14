@@ -1,0 +1,122 @@
+# Beispiel 2: Robotik – Energieabhängige Bewegung eines Gelenkarms
+
+# Parameter
+E = np.linspace(0.1, 10, 500)  # Energie von 0.1 bis 10 Joule
+x0, y0, z0 = 0.0, 0.0, 0.0     # Startposition
+alpha, beta, gamma, delta = 1.5, 0.8, 1.0, 0.3  # Modellparameter
+
+# Funktionen
+x = x0 + alpha * np.log(1 + E)
+y = y0 + beta * np.sqrt(E)
+z = z0 - gamma * np.exp(-delta * E)
+
+# Plot
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot(x, y, z, label='Gelenkarm-Bahn (energieabhängig)', color='orange')
+ax.set_xlabel('x [m]')
+ax.set_ylabel('y [m]')
+ax.set_zlabel('z [m]')
+ax.set_title('Robotik: Gelenkarm-Bewegung abhängig von Energie E')
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Beispiel 1: Elektron im Magnetfeld – wegabhängige Bahn
+
+# Parameter
+R = 1.0            # Radius in m
+phi0 = 0.0         # Startphase in rad
+s = np.linspace(0, 2 * np.pi * R, 500)  # Weg s von 0 bis Umfang
+
+# Funktionen
+x = R * np.cos(s / R + phi0)
+y = R * np.sin(s / R + phi0)
+z = np.zeros_like(s)
+
+# Plot
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot(x, y, z, label='Elektron-Bahn (wegabhängig)')
+ax.set_xlabel('x [m]')
+ax.set_ylabel('y [m]')
+ax.set_zlabel('z [m]')
+ax.set_title('Elektron im Magnetfeld (abhängig vom Weg s)')
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Zeitparameter
+t = np.linspace(0, 2 * np.pi, 500)
+
+# "Einfache Bewegung" – klassische Kreisbahn
+x_classic = np.cos(t)
+y_classic = np.sin(t)
+
+# "Funktional konstruierte Bewegung" – Zeit als funktionale Zuweisung, z. B. mit verformender Frequenz
+# Beobachter setzt t' = f(t) = t + 0.3*sin(3t)
+t_prime = t + 0.3 * np.sin(3 * t)
+x_functional = np.cos(t_prime)
+y_functional = np.sin(t_prime)
+
+# Plot beider Bewegungen
+fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+axs[0].plot(x_classic, y_classic, label='klassisch (t)', color='blue')
+axs[0].set_title('Ohne Bezugssystem: klassische Kreisbahn')
+axs[0].set_aspect('equal')
+axs[0].set_xlabel('x')
+axs[0].set_ylabel('y')
+
+axs[1].plot(x_functional, y_functional, label='funktional (t\')', color='red')
+axs[1].set_title('Mit Bezugssystem: funktional verzerrt')
+axs[1].set_aspect('equal')
+axs[1].set_xlabel('x')
+axs[1].set_ylabel('y')
+
+plt.tight_layout()
+plt.show()
+
+# Erneute Ausführung nach Code-Reset
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Parameter: abstrakte Koordinaten u, v im Bereich [0, 2π]
+u = np.linspace(0, 2 * np.pi, 100)
+v = np.linspace(0, 2 * np.pi, 100)
+u, v = np.meshgrid(u, v)
+
+# Funktionale Zuordnungen im "Raum"
+x = np.sin(u)
+y = np.cos(v)
+z = np.sin(u + v)
+
+# Vierte Funktion: "Beugsfunktion" B(x, y, z) erzeugt eine Raumkrümmung
+# Beispiel: nicht-euklidische Deformation durch sinusförmige Verzerrung
+B = 0.3 * np.sin(2 * np.sqrt(x**2 + y**2 + z**2))
+
+# Visualisiere die deformierte Fläche durch Verschiebung entlang der "Beugung"
+Z_deformed = z + B
+
+# Plot
+fig = plt.figure(figsize=(10, 6))
+ax = fig.add_subplot(111, projection='3d')
+
+# Deformierte Fläche (nicht-euklidisch)
+surf = ax.plot_surface(x, y, Z_deformed, cmap='viridis', edgecolor='none')
+
+ax.set_title("Nicht-euklidisch deformierte Funktion durch vierte Beugsfunktion B(x,y,z)")
+ax.set_xlabel("x = sin(u)")
+ax.set_ylabel("y = cos(v)")
+ax.set_zlabel("z + B(x,y,z)")
+ax.view_init(elev=30, azim=45)
+
+plt.tight_layout()
+plt.show()
+

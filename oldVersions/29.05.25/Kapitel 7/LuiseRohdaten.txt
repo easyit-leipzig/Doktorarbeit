@@ -1,0 +1,1213 @@
+Ich benötige für die am ende folgenden daten (vollständige datensätze) eine python aufbereitung für "columns" wo sinnvoll mit 0 und 1 in:
+
+# Spalten für Bewertungen/Kriterien
+columns = [
+    "Fach", "Datum", "Lehrkraft", "Thema", "Absprachen", "Mitarbeit", "Fleißig", "Selbstständig",
+    "Vorbereitet", "Konzentriert", "Lernfortschritt", "Beherrscht Thema", "Transferdenken", "Basiswissen", "Freitext"
+]
+
+und am ende eine schülerzusammenfassung in:
+
+columns = [
+    "Name", "Klasse", "Probeschüler", "Erhält keine Noten", "Versetzungsgefährdet", "Teilnahmenachweis erforderlich", "Protokoll", "Extras", "Vertraulich"
+]
+
+für die Daten:
+<-- Seite 1-->
+Schaff, Luise 9 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	08.04.25 Kbiri, Judith
+Luise kommt nicht in den Osterferien
+
+stars
+person group
+MAT
+
+23.05.25 Städter, Kathleen - geändert: 27.05.25
+weitere Themen: Geometrie: Vorbereitung LK
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+vorbereitet
+konzentriert
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+PHY
+
+19.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 20.05.25
+weitere Themen: VorbLK
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+PHY
+
+12.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 13.05.25
+weitere Themen: VorbLK
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+02.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 03.05.25
+Geometrie: SdP rechnen
+sachaufgaben hintendr
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+PHY
+
+14.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 15.04.25
+weitere Themen: Brückenaufgabe
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+11.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 12.04.25
+Dreieck: SdP
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+08.04.25 Kbiri, Judith - geändert: 08.04.25
+Luise kommt nicht in den Osterferien
+
+remove_circle_outline
+person group
+PHY
+
+07.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 08.04.25
+weitere Themen: SdP Vorb LK
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+04.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 05.04.25
+Analytische Geometrie: SdP komplexe Aufg.
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+PHY
+
+31.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 31.03.25
+weitere Themen: SdP
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+<---->
+<-- Seite 2 -->
+Schaff, Luise 9 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	08.04.25 Kbiri, Judith
+Luise kommt nicht in den Osterferien
+
+stars
+person group
+MAT
+
+28.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 29.03.25
+weitere Themen: SdP
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+14.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 14.03.25
+Exponentialgleichung/-funktion: ungerade/gerade Normalfomrm
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+PHY
+
+03.03.25 Wolter, Kathrin - geändert: 13.03.25
+weitere Themen: Magnetismus komplexe Aufg
+Fehlerkorrektur / Überschlag / Zehnerpotenzen / Lorentzkraft
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+arbeitet selbstständig
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+07.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 07.03.25
+weitere Themen: ZusFass x^n / EinheitenR / 10erP Rech
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+PHY
+
+24.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 24.02.25
+Elektrische Energie: Grdl. Elektrik
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+PHY
+
+17.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 18.02.25
+weitere Themen: Grdl. Stromkreis / Widerstandsberechnung
+weitermachen auf AB
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+14.02.25 Gellert, Manuela - geändert: 14.02.25
+Telefonat mit der Mutti. Luise nimmt an beiden Montagen in den Winterferien an den Kursen teil.
+
+remove_circle_outline
+person group
+MAT
+
+12.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 12.02.25
+Exponentialgleichung/-funktion: x hoch ungerade
+Exp. gerade
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+PHY
+
+10.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 11.02.25
+weitere Themen: Grdl.Elektr. / Induktion
+Grdl.Elektr. unbedingt üben
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+07.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 08.02.25
+weitere Themen: Korr. LK
+schade
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+<---->
+<-- seite 3 -->
+Schaff, Luise 9 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	08.04.25 Kbiri, Judith
+Luise kommt nicht in den Osterferien
+
+stars
+person group
+PHY
+
+03.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 04.02.25
+weitere Themen: Elektrizitätslehre
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+31.01.25 Thiele, Dipl.-Ing. Olaf - geändert: 01.02.25
+weitere Themen: Korrektur LK / Wiederholung Kreisberechnung
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+27.01.25 Gellert, Manuela - geändert: 27.01.25
+Mutti hat auf AB gesprochen und Luise für heute 17:10 Uhr wegen Krankheit entschuldigt.
+
+remove_circle_outline
+person group
+PHY
+
+23.01.25 Trigkidis, Dimitrios - geändert: 23.01.25
+Elektrische Energie: Bauelemente Elektronik
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+20.01.25 Gellert, Manuela - geändert: 20.01.25
+Am 16.01.25 Kursstunde für den 20.01.25 tel. abgesagt und NHT für den 23.01.25 um 17:10 Uhr vereinbart.
+
+remove_circle_outline
+person group
+20.01.25 Kbiri, Judith - geändert: 20.01.25
+hat am Donnerstag schon NH-Stunde für Montag, soll Freitag herausnehmen und NHS buchen,
+
+remove_circle_outline
+person group
+17.01.25 Gellert, Manuela - geändert: 17.01.25
+Die Mathestunde von Sam entfällt heute, da er kurz vor Kursbeginn abgesagt hat. Die Eltern wurden telefonisch informiert. Der Schüler erhält eine Kulanzstunde.
+
+remove_circle_outline
+person group
+PHY
+
+13.01.25 Nößler, Brian - geändert: 13.01.25
+Elektrische Energie: Induktion
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+konzentriert
+arbeitet selbstständig
+vorbereitet
+beherrscht Thema
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+10.01.25 Nößler, Brian - geändert: 10.01.25
+Quadratische Funktion/Gleichung: Funktionsgleichungen herleiten
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Lernfortschritt erzielt
+Basiswissen vorhanden
+beherrscht Thema
+remove_circle_outline
+person group
+PHY
+
+06.01.25 Martin, Alexander - geändert: 06.01.25
+Magnetisches Feld: Wiederholung Magnetismus mit Übungsaufgaben, nächsten Dienstag Klassenarbeit
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+konzentriert
+benötigt Aufforderung
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+<---->
+<-- seite 4 -->
+Schaff, Luise 9 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	08.04.25 Kbiri, Judith
+Luise kommt nicht in den Osterferien
+
+stars
+person group
+PHY
+
+03.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 04.02.25
+weitere Themen: Elektrizitätslehre
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+31.01.25 Thiele, Dipl.-Ing. Olaf - geändert: 01.02.25
+weitere Themen: Korrektur LK / Wiederholung Kreisberechnung
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+27.01.25 Gellert, Manuela - geändert: 27.01.25
+Mutti hat auf AB gesprochen und Luise für heute 17:10 Uhr wegen Krankheit entschuldigt.
+
+remove_circle_outline
+person group
+PHY
+
+23.01.25 Trigkidis, Dimitrios - geändert: 23.01.25
+Elektrische Energie: Bauelemente Elektronik
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+20.01.25 Gellert, Manuela - geändert: 20.01.25
+Am 16.01.25 Kursstunde für den 20.01.25 tel. abgesagt und NHT für den 23.01.25 um 17:10 Uhr vereinbart.
+
+remove_circle_outline
+person group
+20.01.25 Kbiri, Judith - geändert: 20.01.25
+hat am Donnerstag schon NH-Stunde für Montag, soll Freitag herausnehmen und NHS buchen,
+
+remove_circle_outline
+person group
+17.01.25 Gellert, Manuela - geändert: 17.01.25
+Die Mathestunde von Sam entfällt heute, da er kurz vor Kursbeginn abgesagt hat. Die Eltern wurden telefonisch informiert. Der Schüler erhält eine Kulanzstunde.
+
+remove_circle_outline
+person group
+PHY
+
+13.01.25 Nößler, Brian - geändert: 13.01.25
+Elektrische Energie: Induktion
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+konzentriert
+arbeitet selbstständig
+vorbereitet
+beherrscht Thema
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+10.01.25 Nößler, Brian - geändert: 10.01.25
+Quadratische Funktion/Gleichung: Funktionsgleichungen herleiten
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Lernfortschritt erzielt
+Basiswissen vorhanden
+beherrscht Thema
+remove_circle_outline
+person group
+PHY
+
+06.01.25 Martin, Alexander - geändert: 06.01.25
+Magnetisches Feld: Wiederholung Magnetismus mit Übungsaufgaben, nächsten Dienstag Klassenarbeit
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+konzentriert
+benötigt Aufforderung
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+<---->
+<-- seite 5 -->
+Schaff, Luise 9 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star	08.04.25 Kbiri, Judith
+Luise kommt nicht in den Osterferien
+
+stars
+person group
+PHY
+
+03.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 04.02.25
+weitere Themen: Elektrizitätslehre
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+31.01.25 Thiele, Dipl.-Ing. Olaf - geändert: 01.02.25
+weitere Themen: Korrektur LK / Wiederholung Kreisberechnung
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+27.01.25 Gellert, Manuela - geändert: 27.01.25
+Mutti hat auf AB gesprochen und Luise für heute 17:10 Uhr wegen Krankheit entschuldigt.
+
+remove_circle_outline
+person group
+PHY
+
+23.01.25 Trigkidis, Dimitrios - geändert: 23.01.25
+Elektrische Energie: Bauelemente Elektronik
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+20.01.25 Gellert, Manuela - geändert: 20.01.25
+Am 16.01.25 Kursstunde für den 20.01.25 tel. abgesagt und NHT für den 23.01.25 um 17:10 Uhr vereinbart.
+
+remove_circle_outline
+person group
+20.01.25 Kbiri, Judith - geändert: 20.01.25
+hat am Donnerstag schon NH-Stunde für Montag, soll Freitag herausnehmen und NHS buchen,
+
+remove_circle_outline
+person group
+17.01.25 Gellert, Manuela - geändert: 17.01.25
+Die Mathestunde von Sam entfällt heute, da er kurz vor Kursbeginn abgesagt hat. Die Eltern wurden telefonisch informiert. Der Schüler erhält eine Kulanzstunde.
+
+remove_circle_outline
+person group
+PHY
+
+13.01.25 Nößler, Brian - geändert: 13.01.25
+Elektrische Energie: Induktion
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+konzentriert
+arbeitet selbstständig
+vorbereitet
+beherrscht Thema
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+10.01.25 Nößler, Brian - geändert: 10.01.25
+Quadratische Funktion/Gleichung: Funktionsgleichungen herleiten
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Lernfortschritt erzielt
+Basiswissen vorhanden
+beherrscht Thema
+remove_circle_outline
+person group
+PHY
+
+06.01.25 Martin, Alexander - geändert: 06.01.25
+Magnetisches Feld: Wiederholung Magnetismus mit Übungsaufgaben, nächsten Dienstag Klassenarbeit
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+konzentriert
+benötigt Aufforderung
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group	Doku Anfragebuch
+star	Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum	Fach	Fazit	Beurteilung	Signatur	
+<---->

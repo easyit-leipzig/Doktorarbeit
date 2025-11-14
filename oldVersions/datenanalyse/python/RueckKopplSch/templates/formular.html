@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Rückmeldung zur Unterrichtseinheit</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 6px;
+      box-sizing: border-box;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .name-fields {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .name-fields .form-group {
+      flex: 1;
+    }
+    button {
+      margin-top: 30px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rückmeldung durch Schüler:in</h1>
+  <form method="POST">
+    <div class="name-fields">
+      <div class="form-group">
+        <label for="vorname">Vorname</label>
+        <input type="text" name="vorname" required>
+      </div>
+      <div class="form-group">
+        <label for="nachname">Nachname</label>
+        <input type="text" name="nachname" required>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      {% for feld, beschriftung in felder %}
+      <div class="form-group">
+        <label for="{{ feld }}">{{ beschriftung }}</label>
+        <input type="number" name="{{ feld }}" min="1" max="6" required>
+      </div>
+      {% endfor %}
+    </div>
+
+    <button type="submit">Speichern</button>
+  </form>
+</body>
+</html>

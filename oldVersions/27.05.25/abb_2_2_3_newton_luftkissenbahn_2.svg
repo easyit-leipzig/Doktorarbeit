@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+
+<!--
+Erklärung:
+Körper ohne äußere Kraft (blau): Der Körper bewegt sich mit konstanter Geschwindigkeit auf der Luftkissenbahn. Es wirken keine äußeren Kräfte, daher bleibt die Geschwindigkeit konstant.
+
+Körper mit aufgebrachter Kraft (rot): Ein Pfeil zeigt die Richtung der Geschwindigkeit an. Ein zusätzlicher grüner Pfeil stellt die aufgebrachte Kraft dar, die den Körper beschleunigt.
+
+Dieses Diagramm veranschaulicht, wie sich ein Körper unter verschiedenen Bedingungen auf einer Luftkissenbahn verhält.
+-->
+
+  <!-- Hintergrund -->
+  <rect x="0" y="0" width="200" height="200" fill="white" stroke="black" stroke-width="2"/>
+  
+  <!-- Luftkissenbahn -->
+  <rect x="50" y="90" width="100" height="20" fill="lightgray" stroke="black" stroke-width="2"/>
+  
+  <!-- Körper ohne Kraft -->
+  <circle cx="100" cy="100" r="10" fill="blue"/>
+  <text x="95" y="115" font-size="12" fill="black">m</text>
+  
+  <!-- Pfeil für Geschwindigkeit -->
+  <line x1="110" y1="100" x2="130" y2="100" stroke="blue" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Beschriftung -->
+  <text x="70" y="50" font-size="14" fill="black">Körper ohne äußere Kraft</text>
+  
+  <!-- Körper mit aufgebrachter Kraft -->
+  <circle cx="100" cy="150" r="10" fill="red"/>
+  <text x="95" y="165" font-size="12" fill="black">m</text>
+  
+  <!-- Pfeil für Geschwindigkeit -->
+  <line x1="110" y1="150" x2="130" y2="150" stroke="red" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Pfeil für aufgebrachte Kraft -->
+  <line x1="100" y1="140" x2="100" y2="120" stroke="green" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Beschriftung -->
+  <text x="70" y="190" font-size="14" fill="black">Körper mit aufgebrachter Kraft</text>
+  
+  <!-- Pfeilkopf-Definition -->
+  <defs>
+    <marker id="arrowhead" orient="auto" refX="0" refY="3" markerWidth="6" markerHeight="6" viewBox="0 0 10 10">
+      <polygon points="0,0 10,3 0,6"/>
+    </marker>
+  </defs>
+</svg>

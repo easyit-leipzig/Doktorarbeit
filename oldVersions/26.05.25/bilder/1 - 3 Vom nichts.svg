@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="600"
+   height="200"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="1 - 3 Vom nichts.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="3.8843733"
+     inkscape:cx="301.07817"
+     inkscape:cy="71.182655"
+     inkscape:window-width="3440"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="gradient"
+       x1="0%"
+       y1="0%"
+       x2="100%"
+       y2="0%">
+      <stop
+         offset="0%"
+         stop-color="#3498db"
+         stop-opacity="1"
+         id="stop1" />
+      <stop
+         offset="100%"
+         stop-color="#e74c3c"
+         stop-opacity="1"
+         id="stop2" />
+    </linearGradient>
+  </defs>
+  <!-- Wahrnehmungsraum -->
+  <g
+     transform="translate(20, 20)"
+     id="g3">
+    <rect
+       width="200"
+       height="160"
+       fill="url(#gradient)"
+       stroke="black"
+       stroke-width="2"
+       id="rect2" />
+    <text
+       x="100"
+       y="80"
+       font-size="16"
+       text-anchor="middle"
+       fill="white"
+       id="text2">Wahrnehmungsraum</text>
+    <text
+       x="100"
+       y="100"
+       font-size="12"
+       text-anchor="middle"
+       fill="white"
+       id="text3">Viele Details, Struktur</text>
+  </g>
+  <!-- Übergangspfeil -->
+  <path
+     d="m 240,100 h 87.93657"
+     stroke="#000000"
+     stroke-width="2.73252"
+     marker-end="url(#arrowhead)"
+     id="path3" />
+  <defs
+     id="defs3">
+    <marker
+       id="arrowhead"
+       markerWidth="10"
+       markerHeight="7"
+       refX="0"
+       refY="3.5"
+       orient="auto">
+      <polygon
+         points="0 0, 10 3.5, 0 7"
+         fill="black"
+         id="polygon3" />
+    </marker>
+  </defs>
+  <!-- Das Nichts (Leere Menge) -->
+  <g
+     transform="translate(380, 20)"
+     id="g5">
+    <rect
+       width="200"
+       height="160"
+       fill="white"
+       stroke="black"
+       stroke-width="2"
+       id="rect3" />
+    <text
+       x="100"
+       y="80"
+       font-size="16"
+       text-anchor="middle"
+       id="text4">Das Nichts (∅)</text>
+    <text
+       x="100"
+       y="100"
+       font-size="12"
+       text-anchor="middle"
+       id="text5">Leere Menge, Keine Struktur</text>
+  </g>
+</svg>

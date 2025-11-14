@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="400"
+   height="300"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="Konzeptdiagramm.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     id="namedview12"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="3.89"
+     inkscape:cx="199.87147"
+     inkscape:cy="150"
+     inkscape:window-width="3440"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg12" />
+  <text
+     x="8.1233931"
+     y="20.437017"
+     style="font-size:16px;font-family:sans-serif;text-anchor:start"
+     id="text1">MU – Bezugspunktfeld</text>
+  <text
+     x="189.87146"
+     y="18.586119"
+     style="font-size:14px;font-family:sans-serif;text-anchor:start"
+     id="text2">(diskrete Menge funktionaler</text>
+  <text
+     x="8.1233931"
+     y="35.244217"
+     style="font-size:14px;font-family:sans-serif;text-anchor:start"
+     id="text3">Bezugspunkte: U₁, U₂, ..., Uₙ)</text>
+  <rect
+     x="120.25707"
+     y="62.416454"
+     width="160"
+     height="60"
+     rx="5"
+     ry="5"
+     style="fill:none;stroke:#000000;stroke-width:1"
+     id="rect3" />
+  <text
+     x="198.20052"
+     y="86.015427"
+     style="font-size:14px;font-family:sans-serif;text-anchor:middle"
+     id="text4">Beobachter</text>
+  <text
+     x="203.08484"
+     y="106.27251"
+     style="font-size:14px;font-family:sans-serif;text-anchor:middle"
+     id="text5">(im Feld enthalten)</text>
+  <path
+     d="m 200.25707,123.44473 v 20"
+     style="stroke:#000000;stroke-width:1"
+     id="path5" />
+  <path
+     d="m 200.4126,207.69409 v 20"
+     style="stroke:#000000;stroke-width:1"
+     id="path5-8" />
+  <path
+     d="m 204.88432,127.50642 -5,-5"
+     style="stroke:#000000;stroke-width:1"
+     id="path6" />
+  <text
+     x="204.37018"
+     y="169.35733"
+     style="font-size:14px;font-family:sans-serif;text-anchor:middle"
+     id="text7">Rückwirkung struktureller</text>
+  <text
+     x="204.11311"
+     y="189.10025"
+     style="font-size:14px;font-family:sans-serif;text-anchor:middle"
+     id="text8">Zuweisungen auf Handlung</text>
+  <rect
+     x="122.31362"
+     y="227.89203"
+     width="160"
+     height="40"
+     rx="5"
+     ry="5"
+     style="fill:none;stroke:#000000;stroke-width:1"
+     id="rect8" />
+  <text
+     x="200.51414"
+     y="243.66324"
+     style="font-size:14px;font-family:sans-serif;text-anchor:middle"
+     id="text9">Zuweisung:</text>
+  <text
+     x="203.3419"
+     y="261.74808"
+     style="font-size:14px;font-family:sans-serif;text-anchor:middle"
+     id="text10">x(U), h(x,y,z), A(...)</text>
+  <path
+     d="m 286.06684,93.44473 -5,-5"
+     style="stroke:#000000;stroke-width:1"
+     id="path11" />
+  <path
+     d="m 200.46272,122.49357 -5,5"
+     style="stroke:#000000;stroke-width:1"
+     id="path12" />
+  <path
+     d="m 285.98594,82.823987 -5,5"
+     style="stroke:#000000;stroke-width:1"
+     id="path12-4" />
+  <path
+     style="fill:#ffffff;stroke:#000000;stroke-width:0.945035"
+     d="m 333.93339,88.175787 -0.25753,162.208833 v 0 z"
+     id="path13" />
+  <path
+     style="fill:#ffffff;stroke:#000000;stroke-width:1.00157"
+     d="M 333.67609,88.688946 280.20566,88.431877 Z"
+     id="path14" />
+  <path
+     style="fill:#ffffff;stroke:#000000;stroke-width:1.00157"
+     d="m 282.26221,249.87147 50.89974,0.25706 z"
+     id="path15" />
+</svg>

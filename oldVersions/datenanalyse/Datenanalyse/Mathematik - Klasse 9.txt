@@ -1,0 +1,20 @@
+Mathematik - Klasse 9
+
+Als Favorit speichern
+Kreis & Zylinder
+Alle Werte des Kreises berechnen, Kreisausschnitt/Kreisbogen & Kreisring, Sachaufgaben zu Zylinder, Textaufgaben zu Kreisen, Umfang & Flächeninhalt berechnen, Zylindermantel, Zylinderoberfläche, Zylindervolumen
+Parabeln / Quadratfunktionen
+Allgemeine Form in Scheitelpunktform umwandeln, Beliebig Verschieben: f(x) = (x - d)² + e, Horizontal Verschieben: f(x) = (x - d)², Normalparabel: f(x) = x², Sachaufgaben, Scheitelpunktform in Allgemeine Form umwandeln, Scheitelpunktform: f(x) = a(x - d)² + e, Strecken, Stauchen, Spiegeln: f(x) = ax², Vertikal Verschieben: f(x) = x² + c
+Quadratische Gleichungen
+Biquadratische Gleichungen (Substitution, Resubstitution), Diskriminante, Grafisches Lösen, Mitternachtsformel, Quadratische Ungleichungen, Rechnerisches Lösen I: Reinquadratisch, Rechnerisches Lösen II: (x + d)² - Form, Rechnerisches Lösen III: Quadratische Ergänzung, Rechnerisches Lösen IV: P-Q-Formel, Rechnerisches Lösen V: I-IV vermischt, Satz von Vieta, Textaufgaben, Zerlegung in Linearfaktoren, abc-Formel
+Quadratwurzeln
+Näherungsweise Wurzelziehen, Potenzdarstellung von Wurzeln, Quadrieren & Wurzelziehen, Reelle Zahlenbereiche, Wurzelgleichungen
+Satz des Pythagoras
+Anwendung, Grundlagen, Höhen- & Kathetensatz
+Wurzelfunktionen
+Grundlagen
+Zinsen & Zinseszinsen
+Zinseszinsen
+Ähnlichkeit & Strahlensatz
+Maßstab / Längenverhältnisse, Strahlensatz I, Strahlensatz II, Strahlensatz I & II, Zentrische Streckung, Ähnlichkeit, Ähnlichkeit bei Dreiecken
+Digitale Bücher

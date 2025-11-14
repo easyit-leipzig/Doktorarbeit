@@ -1,0 +1,6 @@
+<svg width="200" height="200" viewBox="0 0 200 200" aria-label="Visualisierung Initialpunkt">
+  <!-- Weißer Hintergrund -->
+  <rect width="200" height="200" fill="white" />
+  <!-- Sehr kleiner Punkt in der Mitte -->
+  <circle cx="100" cy="100" r="5" fill="#1a73e8" />
+</svg>

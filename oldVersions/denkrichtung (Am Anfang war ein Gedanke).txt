@@ -1,0 +1,31 @@
+denkrichtung (Am Anfang war ein Gedanke)
+1. was bemerke ich (was sehe ich?)?
+2. abstraktion führte für das sehen zu "ich sehe eine 2d-abbildung auf meiner netzhaut, die durch mein gehirn in eine 3d-darstellung verwandelt wird",
+3. was benötige ich zur abstraktion daraus -> einen beobachtungskegel in meinem bezugsraum und eine abbildungsfläche
+4. deep diving (prozess der verarbeitung der zusammenhänge von 1.-3.)
+5. abstraktion
+6. modellbildung (meines) bezugssystem
+7. Recherche (gibt es das schon -> ähnlich, aber nicht so anwendungsorientiert),
+zur Promotion erscheint glaubhaft und realisierbar
+8. Lesen und verarbeiten -> verfeinerung des modells,
+8. Dissertation ausgearbeitet
+ 9. modellbildung des abbild der empfangenen informationen
+10. Recherche (gibt es das schon -> ähnlich, aber nicht so anwendungsorientiert)
+11. Lesen und verarbeiten -> verfeinerung des modells,
+13. 
+12. Normierungsansatz zur vergleichbarkeit
+10. Recherche (gibt es das schon -> ähnlich, aber nicht so anwendungsorientiert)
+11. Lesen und verarbeiten -> verfeinerung des modells,
+12. Dissertation weiter ausgearbeitet
+13. Verbindung dreier Modelle (Bezugssystem, Signal, Abbildung)
+14. Bildung Gesamtkonzept
+15. Prüfung Anwendbrkeit
+16. Modellbildung einer technischen Anwendung
+17. Recherche (gibt es das schon -> ähnlich, aber nicht so anwendungsorientiert)
+18. Lesen und verarbeiten -> verfeinerung des modells,
+19. Dissertation weiter ausgearbeitet
+20. vollständige rezeption dissertation -> 1. Entwurf
+21. patentfähigkeit geprüft (gibt es ähnlich, aber nicht so -> in bestimmten Anwendungsgebieten besser)
+22. Ausarbeitung Patent
+23. Erweiterung auf 4d-Abbildungen
+24. einreichung patent

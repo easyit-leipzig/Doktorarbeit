@@ -1,0 +1,165 @@
+<div flex="75" flex-xs="100" flex-sm="60" ng-init="currentNavItem='protocol'" class="flex-xs-100 flex-sm-60 flex-75">
+    <div layout="row" layout-padding="" class="layout-padding layout-row">
+      <div>
+        <span class="md-title">Schaff, Luise</span>
+        <span class="md-subhead">9 GYM</span>
+        <span class="warn ng-hide" ng-show="vm.contact.permanent_advice" aria-hidden="true"></span>
+        <span class="warn ng-hide" ng-show="vm.contact.draft==1" aria-hidden="true">Probeschüler</span>
+        <span ng-show="vm.contact.no_marks==1" class="warn ng-hide" aria-hidden="true"><br>erhält keine Noten</span>
+        <span ng-show="vm.contact.promotion_at_risk==1" class="warn ng-hide" aria-hidden="true"><br>versetzungsgefährdet</span>
+        <span ng-show="vm.contact.requires_proof_signed_by_pupil==1" class="warn ng-hide" aria-hidden="true"><br>Unterschrift auf Teilnahmenachweis erforderlich</span>
+        <span ng-show="vm.contact.contact_segmentation=='branding:first'" style="background-color:  #74b843; color: #fff;" aria-hidden="true" class="ng-hide">ErsteNachhilfe</span>     
+      </div>
+      <!---->
+      <!---->
+
+    </div>
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="pupil_navigation"><div class="md-nav-bar"><nav role="navigation"><ul class="_md-nav-bar-list" ng-transclude="" role="listbox" tabindex="0" ng-focus="ctrl.onFocus()" ng-keydown="ctrl.onKeydown($event)" aria-label="pupil_navigation">
+      <li class="md-nav-item" role="option" aria-selected="false" md-nav-click="goto('protocol')" name="protocol" aria-label="Protokoll"><button class="_md-nav-button md-accent md-button md-ink-ripple md-unselected" type="button" ng-transclude="" ng-class="ctrl.getNgClassMap()" ng-blur="ctrl.setFocused(false)" tabindex="-1" ng-click="ctrl.mdNavClick()" style=""><span ng-transclude="" class="_md-nav-button-text"><span>
+        Protokoll
+      </span></span></button></li>
+      <li class="md-nav-item" role="option" aria-selected="false" md-nav-click="goto('marks')" name="marks" aria-label="Noten"><button class="_md-nav-button md-accent md-button md-ink-ripple md-unselected" type="button" ng-transclude="" ng-class="ctrl.getNgClassMap()" ng-blur="ctrl.setFocused(false)" tabindex="-1" ng-click="ctrl.mdNavClick()"><span ng-transclude="" class="_md-nav-button-text"><span>
+        Noten
+      </span></span></button></li> 
+      <li class="md-nav-item" role="option" aria-selected="true" md-nav-click="goto('extras')" name="extras" aria-label="Extras"><button class="_md-nav-button md-accent md-button md-ink-ripple md-active md-primary" type="button" ng-transclude="" ng-class="ctrl.getNgClassMap()" ng-blur="ctrl.setFocused(false)" tabindex="-1" ng-click="ctrl.mdNavClick()" style=""><span ng-transclude="" class="_md-nav-button-text"><span>
+        Extras
+      </span></span><div class="md-ripple-container" style=""></div></button></li>         
+    </ul></nav><md-nav-ink-bar ng-hide="ctrl.mdNoInkBar" aria-hidden="false" class="_md-right" style="left: 206px; width: 88px;"></md-nav-ink-bar></div></md-nav-bar>
+    <div>
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!----><div layout="row" layout-xs="column" layout-sm="column" ng-if="currentNavItem=='extras'" class="layout-xs-column layout-sm-column layout-row" style="">
+        <rating-widget contact-id="vm.pupil_id" flex="50" flex-xs="100" flex-sm="100" class="flex-xs-100 flex-sm-100 flex-50"><md-card class="_md">
+  <md-card-header md-colors="::{backgroundColor: 'default-warn-700'}" style="color: rgb(255, 255, 255); background-color: rgb(230, 74, 25);">
+    <md-card-avatar>
+      <md-icon class="md-avatar-icon material-icons">star</md-icon>
+    </md-card-avatar>      
+    <md-card-header-text class="card-header-max-height">
+      <span class="md-title">Zufriedenheitsbefragung</span>
+      <!----><span class="md-subhead" ng-if="$ctrl.needs_action" style="">Bitte ausfüllen!</span><!---->
+    </md-card-header-text>
+  </md-card-header>
+  <md-card-content style="padding:0px">
+      <table class="table table-striped layout-fill" layout-fill="">
+      <thead>
+          <tr>
+              <th>Datum</th>
+              <th class="text-center">Gesamt</th>
+              <th class="text-center">Empfehlung</th>
+              <th class="text-center">Status</th>
+              <th ng-hide="item.audience=='teacher' &amp;&amp; $ctrl.role_id!=2 &amp;&amp; $ctrl.role_id!=8" aria-hidden="false"></th>
+              <!----><th ng-if="$ctrl.show_external || (item.audience=='pupil' &amp;&amp; $ctrl.role_id>3)" class="" style=""></th><!---->
+          </tr>
+      </thead>      
+      <tbody class="md-body-1">
+        <!----><tr ng-repeat="item in $ctrl.ratingCollection" class="" style="">
+          <td>02.12.24</td>
+          <td class="text-center">2</td>
+          <td class="text-center">1</td>
+          <td class="text-center">
+            <span ng-show="item.completed==1" class="md-caption" aria-hidden="false">beantwortet</span>
+            <span ng-hide="item.completed==1" class="md-caption ng-hide" aria-hidden="true">offen</span>
+          </td>
+          <td ng-click="$event.stopPropagation()" ng-hide="item.audience=='teacher' &amp;&amp; $ctrl.role_id!=2 &amp;&amp; $ctrl.role_id!=8" role="button" tabindex="0" aria-label="jetzt beantworten" aria-hidden="false" class="">
+            <!---->
+            <!---->
+            <!----><!---->
+          </td>
+          <!----><td ng-click="$event.stopPropagation()" ng-if="$ctrl.show_external || (item.audience=='pupil' &amp;&amp; $ctrl.role_id>3)" role="button" tabindex="0">
+            <a ng-click="$ctrl.launchRating(item.rating_id, item.token, $ctrl.subdomain)" aria-label="zur Beantwortung öffnen (Achtung: Sie werden automatisch von ICAS abgemeldet)">
+              <md-icon class="material-icons">launch</md-icon>
+              
+            </a>            
+          </td><!---->
+        </tr><!----><tr ng-repeat="item in $ctrl.ratingCollection" class="">
+          <td>18.05.25</td>
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td class="text-center">
+            <span ng-show="item.completed==1" class="md-caption ng-hide" aria-hidden="true">beantwortet</span>
+            <span ng-hide="item.completed==1" class="md-caption" aria-hidden="false">offen</span>
+          </td>
+          <td ng-click="$event.stopPropagation()" ng-hide="item.audience=='teacher' &amp;&amp; $ctrl.role_id!=2 &amp;&amp; $ctrl.role_id!=8" role="button" tabindex="0" aria-label="jetzt beantworten" aria-hidden="false" class="">
+            <!---->
+            <!---->
+            <!----><!---->
+          </td>
+          <!----><td ng-click="$event.stopPropagation()" ng-if="$ctrl.show_external || (item.audience=='pupil' &amp;&amp; $ctrl.role_id>3)" role="button" tabindex="0">
+            <a ng-click="$ctrl.launchRating(item.rating_id, item.token, $ctrl.subdomain)" aria-label="zur Beantwortung öffnen (Achtung: Sie werden automatisch von ICAS abgemeldet)">
+              <md-icon class="material-icons">launch</md-icon>
+              
+            </a>            
+          </td><!---->
+        </tr><!---->
+      </tbody>
+      </table>
+  </md-card-content>
+</md-card></rating-widget>
+        <examination-collection contact-id="vm.pupil_id" flex="50" flex-xs="100" flex-sm="100" class="flex-xs-100 flex-sm-100 flex-50"><md-card class="_md">
+  <md-card-header class="default-card-header">
+    <md-card-avatar>
+      <md-icon class="md-avatar-icon material-icons">book</md-icon>
+    </md-card-avatar>      
+    <md-card-header-text class="card-header-max-height">
+      <!----><span class="md-title" ng-if="$ctrl.group!='teacher'" style="">Eingangsdiagnostik</span><!---->
+      <!---->
+      <!----><span class="md-subhead" ng-if="$ctrl.group!='teacher'" style="">Eingangscheck</span><!---->
+    </md-card-header-text>
+    <!---->
+    <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.getOlatCollection($event)" aria-label="Eingangscheck abrufen">
+      <md-icon class="material-icons">checklist_rtl</md-icon>
+      <!----><!---->
+      <!---->
+    <div class="md-ripple-container"></div></button>    
+    <!---->
+    <!---->                
+  </md-card-header>
+  <md-card-content class="no-padding">
+    <!----><table class="table table-striped layout-fill" layout-fill="" ng-if="$ctrl.olat == 1" style="">
+      <tbody class="md-body-1">
+        <!----><tr ng-repeat="item in $ctrl.examinationCollection">
+          <td>Eingangscheck: Mathe - Klasse 8 (Niveau 3)</td>
+          <td class="md-caption">
+             
+          </td>
+          <td style="padding:0px;text-align:right">
+            <!---->
+            <!----><span ng-if="item.results_link == null" aria-label="noch nicht abgeschlossen">
+              <md-icon class="material-icons">pending</md-icon>
+              
+            </span><!---->            
+          </td>          
+        </tr><!----><tr ng-repeat="item in $ctrl.examinationCollection">
+          <td>Eingangscheck: Physik - 2. Lernjahr (Niveau 2)</td>
+          <td class="md-caption">
+             
+          </td>
+          <td style="padding:0px;text-align:right">
+            <!---->
+            <!----><span ng-if="item.results_link == null" aria-label="noch nicht abgeschlossen">
+              <md-icon class="material-icons">pending</md-icon>
+              
+            </span><!---->            
+          </td>          
+        </tr><!---->
+      </tbody>
+    </table><!---->    
+    <!---->
+    <!---->      
+  </md-card-content>
+  <!----><md-card-actions layout="row" layout-align="end center" ng-if="$ctrl.olat == 1 &amp;&amp; $ctrl.olat_error === false" class="layout-align-end-center layout-row" style="">
+    <md-icon class="material-icons">help_outline</md-icon>
+    <!----><div class="md-caption layout-padding" ng-if="$ctrl.group!='teacher'">
+      Bei Fragen zum Eingangscheck wenden Sie sich bitte an den Support der
+      Schülerhilfe unter<a href="mailto:lerncheck@schuelerhilfe.de">lerncheck@schuelerhilfe.de</a>
+    </div><!---->
+    <!---->    
+  </md-card-actions><!---->  
+</md-card>
+
+</examination-collection>          
+      </div><!---->  
+    </div>   
+  </div>

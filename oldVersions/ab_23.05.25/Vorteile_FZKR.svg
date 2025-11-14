@@ -1,0 +1,42 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+
+  <!-- Hintergrund -->
+  <rect width="100%" height="100%" fill="#f9f9f9"/>
+
+  <!-- Titel -->
+  <text x="450" y="40" font-size="24" font-weight="bold" text-anchor="middle">
+    Funktionale Bezugssysteme in der Technik
+  </text>
+
+  <!-- Klassisches Modell -->
+  <rect x="80" y="80" width="320" height="320" fill="#ddeaff" stroke="#4477cc" stroke-width="2" rx="10"/>
+  <text x="240" y="110" font-size="18" text-anchor="middle" font-weight="bold">Klassisches Modell</text>
+  <line x1="120" y1="130" x2="120" y2="380" stroke="#4477cc" stroke-dasharray="5,5"/>
+  <text x="140" y="160">Zeit = t (konstant)</text>
+  <text x="140" y="190">Bewegung = Ort(t)</text>
+  <text x="140" y="220">Raum = Container</text>
+  <text x="140" y="250">Sensorfehler = Störung</text>
+  <text x="140" y="280">Modell = vordefiniert</text>
+  <text x="140" y="310">Steuerung = fix</text>
+
+  <!-- Funktionales Modell -->
+  <rect x="500" y="80" width="320" height="320" fill="#e2fce2" stroke="#33aa33" stroke-width="2" rx="10"/>
+  <text x="660" y="110" font-size="18" text-anchor="middle" font-weight="bold">Funktionales Bezugssystem</text>
+  <line x1="540" y1="130" x2="540" y2="380" stroke="#33aa33" stroke-dasharray="5,5"/>
+  <text x="560" y="160">Zeit = f(Energie, Frequenz, …)</text>
+  <text x="560" y="190">Bewegung = Funktion(f(x))</text>
+  <text x="560" y="220">Raum = modellierte Struktur</text>
+  <text x="560" y="250">Sensorfehler = Koordinatenversatz</text>
+  <text x="560" y="280">Modell = adaptiv & reflexiv</text>
+  <text x="560" y="310">Steuerung = dynamisch</text>
+
+  <!-- Verbindung -->
+  <line x1="400" y1="240" x2="500" y2="240" stroke="#999" stroke-dasharray="4,4"/>
+  <text x="450" y="230" font-size="14" text-anchor="middle" fill="#666">Paradigmenwechsel</text>
+
+  <!-- Beispiele unten -->
+  <text x="450" y="440" font-size="14" text-anchor="middle" font-style="italic" fill="#333">
+    Beispiele: Robotiksteuerung – GPS-Modellierung – adaptive CNC – medizinische Sensorik
+  </text>
+
+</svg>

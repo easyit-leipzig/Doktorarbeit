@@ -1,0 +1,36 @@
+// für PB
+a=0 // als schieberegler
+b=0 // als schieberegler
+c=0 // als schieberegler
+// für Z (Richtung)
+r=0 // als schieberegler
+s=0 // als schieberegler
+t=0 // als schieberegler
+//
+P_{b}=$point(a,b,c)
+//
+Z=$point(r,s,t)
+// Richtungsvektor v
+v=Vektor(P_{b},Z)
+// Richtungsachse von v
+Achse: Gerade(M,M+v)
+// Länge für PM (Mittelpunkt Beobachtungsdreieck)
+L=0.866
+// Einheitsvektor auf v
+u=Einheitsvektor(v)
+// M
+M=P_{b}+L u
+// Radius
+R=((1)/(sqrt(3)))
+// h Masstab Beobachtungsdreieck 
+h=1 // als schieberegler
+// Punkt C bilden
+v1_{d}=Einheitsvektor(v ⊗ Vektor($point(0,1,0)))
+v1=Vektor(M,M+h v1_{d})
+C=$point(x(M)+h x(v1_{d}),y(M)+h y(v1_{d}),z(M)+h z(v1_{d}))
+// Punkte A, B
+A=Drehe(C,120°,Achse)
+B=Drehe(C,240°,Achse)
+// Beobachtungsfläche a1, b1, c1 bilden sich automatisch
+Beobachtungsfläche=Vieleck(A,B,C)
+

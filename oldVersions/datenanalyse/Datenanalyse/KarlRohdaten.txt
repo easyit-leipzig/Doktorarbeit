@@ -1,0 +1,1860 @@
+Ich benötige für die am ende folgenden daten (vollständige datensätze) eine python aufbereitung in einem skript für "columns" wo sinnvoll mit 0 und 1 in:
+
+# Spalten für Bewertungen/Kriterien
+columns = [
+    "Fach", "Datum", "Lehrkraft", "Thema", "Absprachen", "Mitarbeit", "Fleißig", "Selbstständig",
+    "Vorbereitet", "Konzentriert", "Lernfortschritt", "Beherrscht Thema", "Transferdenken", "Basiswissen", "Freitext"
+]
+
+und am ende eine schülerzusammenfassung in:
+
+columns = [
+    "Name", "Klasse", "Probeschüler", "Erhält keine Noten", "Versetzungsgefährdet", "Teilnahmenachweis erforderlich", "Protokoll", "Extras", "Vertraulich"
+]
+
+für die Daten:
+<-- Seite 1-->
+König, Karl 6 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star    09.04.25 Kbiri, Judith
+Karl kommt nicht in den Osterferien
+
+stars
+person group
+MAT
+
+28.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 28.05.25
+Geometrie: Prism
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Materialien fehlen
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+23.05.25 Städter, Kathleen - geändert: 27.05.25
+weitere Themen: Geometrie Prismen
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+MAT
+
+22.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 22.05.25
+Geometrie: Prism
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+21.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 21.05.25
+Grundrechenarten: schrftlGRAalle
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+16.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 16.05.25
+Grundrechenarten: schrftlGRA
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+14.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 14.05.25
+Geometrie: Prismen
+weitermachen
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+13.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 13.05.25
+Grundrechenarten: alle
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+09.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 09.05.25
+Geometrie: Vierecke
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+07.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 07.05.25
+Geometrie: VE
+widhl
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+02.05.25 Thiele, Dipl.-Ing. Olaf - geändert: 03.05.25
+Grundrechenarten: schrftlDiv selbst
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group    Doku Anfragebuch
+star    Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+6
+7
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum   Fach    Fazit   Beurteilung Signatur    
+<---->
+<-- seite 2 -->
+König, Karl 6 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star    09.04.25 Kbiri, Judith
+Karl kommt nicht in den Osterferien
+
+stars
+person group
+MAT
+
+30.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 01.05.25
+Grundrechenarten: Urschleim schrftlDiv
+üben
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+23.04.25 Gellert, Manuela - geändert: 23.04.25
+Hallo Frau König,
+gern möchte ich mit Ihnen ein telefonisches Elterngespräch vereinbaren.
+Wie passt es Ihnen zeitlich am Mittwoch, den 30.04.25 um 16:00 Uhr?
+Auf Ihre Rückmeldung freue ich mich.
+Herzliche Grüße
+Schülerhilfe GmbH & Co. KG
+Manuela Gellert
+Schülerhilfeleitung
+
+remove_circle_outline
+person group
+MAT
+
+17.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 18.04.25
+Grundrechenarten: MulDezZ
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+16.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 16.04.25
+Brüche: Kürzen
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+11.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 12.04.25
+Grundrechenarten: schrft Div
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+09.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 10.04.25
+Brüche: Kürzen
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+09.04.25 Kbiri, Judith - geändert: 09.04.25
+Karl kommt nicht in den Osterferien
+
+remove_circle_outline
+person group
+MAT
+
+04.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 05.04.25
+weitere Themen: Dreiecke Vorb. LK
+Textaufgaben
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+02.04.25 Thiele, Dipl.-Ing. Olaf - geändert: 02.04.25
+Brüche: Kürzen
+GLC
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+26.03.25 Tokul, Diyar - geändert: 02.04.25
+weitere Themen: Vorb. LK
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group    Doku Anfragebuch
+star    Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+6
+7
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum   Fach    Fazit   Beurteilung Signatur    
+<---->
+<-- seite 3 -->
+König, Karl 6 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star    09.04.25 Kbiri, Judith
+Karl kommt nicht in den Osterferien
+
+stars
+person group
+01.04.25 Gellert, Manuela - geändert: 01.04.25
+Mutti hat heute angerufen und gebeten, dass EG um 4 Wochen zu verschieben. Sie steht im engen Konatkt mit Herrn Thiele und möchte noch etwas Zeit abwarten, wie die Entwicklung mit Karl fortschreitet und dann ein EG.
+
+remove_circle_outline
+person group
+MAT
+
+28.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 29.03.25
+Geometrie: Dreiecke
+nM Winkel an Geraden
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Materialien fehlen
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+27.03.25 Trigkidis, Dimitrios - geändert: 27.03.25
+Geometrie: Winkel messen und zeichnen
+Karl hat sehr gut mitgemacht. Er hat ein Übungsblatt zu Achsen- Punktspiegelung, und Dreiecksberechnungen bearbeitet.
+
+Chips container. Use arrow keys to select chips.
+fleißig / bemüht
+beteiligt sich / gute Mitarbeit
+Absprachen einhaltend
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+27.03.25 Gellert, Manuela - geändert: 27.03.25
+Hallo Frau König,
+gerne möchte ich mit Ihnen einen Telefontermin für ein Elterngespräch vereinbaren.
+Wie passt es Ihnen zeitlich am Mittwoch, den 02.04.25 um 16:45 Uhr?
+Gerne können wir dieses auch im Standort durchführen.
+Auf Ihre Rückmeldung freue ich mich.
+Herzliche Grüße
+Schülerhilfe GmbH & Co. KG
+Manuela Gellert
+Schülerhilfeleitung
+
+remove_circle_outline
+person group
+MAT
+
+21.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 22.03.25
+weitere Themen: Korrektur LK
+bruchrechnen / kürzen / schriftl Div / dezZ bestimmen
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+19.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 19.03.25
+Geometrie: Winkelbestimmung
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+14.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 14.03.25
+Geometrie: DreiQuRecht
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+12.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 13.03.25
+Dreieck: Konstruktion
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+11.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 12.03.25 Thiele, Dipl.-Ing. Olaf
+Grundrechenarten: Add./Sub schriftl
+Übung schr. Sub.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Unverständnis
+remove_circle_outline
+person group
+MAT
+
+11.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 12.03.25
+Grundrechenarten: Ganzwertaufgabe / Winkel / Strecken
+thema festigen
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group    Doku Anfragebuch
+star    Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+6
+7
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum   Fach    Fazit   Beurteilung Signatur    
+<---->
+<-- seite 4-->
+König, Karl 6 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star    09.04.25 Kbiri, Judith
+Karl kommt nicht in den Osterferien
+
+stars
+person group
+MAT
+
+07.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 07.03.25
+weitere Themen: GanzWAufg
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+06.03.25 Trigkidis, Dimitrios - geändert: 06.03.25
+fehlt unentschuldigt
+
+remove_circle_outline
+person group
+MAT
+
+05.03.25 Thiele, Dipl.-Ing. Olaf - geändert: 06.03.25
+weitere Themen: Vorb LK / Prop / Fkt
+n.M. Textaufgaben
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+14.02.25 Wolter, Kathrin - geändert: 24.02.25
+weitere Themen: Vorbereitung LK
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+arbeitet selbstständig
+Basiswissen vorhanden
+Lernfortschritt erzielt
+remove_circle_outline
+person group
+MAT
+
+12.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 13.02.25
+weitere Themen: Vorb.LK
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+11.02.25 Thiele, Dipl.-Ing. Olaf - geändert: 11.02.25
+weitere Themen: Dreisatz
+sollte nun sitzen; kommt gut voran
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+29.01.25 Thiele, Dipl.-Ing. Olaf - geändert: 30.01.25
+fehlt unentschuldigt
+
+remove_circle_outline
+person group
+MAT
+
+27.01.25 Thiele, Dipl.-Ing. Olaf - geändert: 27.01.25
+Proportionen/Verhältnisse: Arbeitsblatt Proportionalität
+Thema Proportionalität festigen
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+22.01.25 Kbiri, Judith - geändert: 07.03.25 Städter, Kathleen
+am 03.02. Klassenarbeit über Proportionalität/Zuordnung bitte üben
+
+remove_circle_outline
+person group
+20.01.25 Kbiri, Judith - geändert: 20.01.25
+tel. Mutti entschuldigt Karl für 22.+24.01., krank
+
+remove_circle_outline
+person group    Doku Anfragebuch
+star    Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+6
+7
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum   Fach    Fazit   Beurteilung Signatur    
+<---->
+<-- seite 5 -->
+König, Karl 6 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star    09.04.25 Kbiri, Judith
+Karl kommt nicht in den Osterferien
+
+stars
+person group
+17.01.25 Gellert, Manuela - geändert: 17.01.25
+Die Mathestunde von Sam entfällt heute, da er kurz vor Kursbeginn abgesagt hat. Die Eltern wurden telefonisch informiert. Der Schüler erhält eine Kulanzstunde.
+
+remove_circle_outline
+person group
+MAT
+
+15.01.25 Djalilpoor, Sam - geändert: 15.01.25 Djalilpoor, Sam
+Zuordnungen: Gruppenarbeit mit Zoey
+Habe die Schüler Zuordnungen in einer Partnerarbeit machen lassen, damit sie sich gemeinsam unterstützen und ihre Fragen versuchen so gut es geht selbst zu beantworten. Karl arbeitet zudem sehr ordentlich und aufmerksam.
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+14.01.25 Scheibe, Sophia - geändert: 14.01.25
+Zuordnungen: Proportionalität
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+10.01.25 Nößler, Brian - geändert: 10.01.25
+Zuordnungen: Porportionalität
+Ist sehr ruhig, aber gibt sich kontinuierlich Mühe
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+08.01.25 Djalilpoor, Sam - geändert: 08.01.25
+Koordinatensystem:
+Super Mitarbeit und erfüllt seine Aufgaben sauber!
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+vorbereitet
+konzentriert
+Lernfortschritt erzielt
+Basiswissen vorhanden
+beherrscht Thema
+remove_circle_outline
+person group
+08.01.25 Kbiri, Judith - geändert: 08.01.25
+Hallo Frau Kbiri,
+vielen Dank für den Terminvorschlag.Ich kläre das morgen auf meiner Arbeit ab und melde mich dann bei Ihnen.
+Liebe Grüße
+Stefanie König
+
+remove_circle_outline
+person group
+07.01.25 Kbiri, Judith - geändert: 07.01.25
+Hallo Frau König,
+gerne möchte ich mit Ihnen einen Termin für ein Elterngespräch vereinbaren.
+Wie passt es Ihnen zeitlich am Mittwoch , den 22.01.25 , um 15.30 Uhr?
+Gerne können wir dieses auch telefonisch durchführen.
+Auf Ihre Rückmeldung freue ich mich.
+Herzliche Grüße
+Schülerhilfe GmbH & Co. KG
+Judith Kbiri
+
+remove_circle_outline
+person group
+MAT
+
+06.01.25 Nößler, Brian - geändert: 06.01.25
+Zuordnungen: Proportionale Zuordnung
+Hatte noch große Probleme mit dem Konzept der Proportionalität
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+18.12.24 Scheibe, Sophia - geändert: 18.12.24
+Dezimalzahlen: Dezimalzahlen, Brüche
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+Basiswissen vorhanden
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+13.12.24 Thiele, Dipl.-Ing. Olaf - geändert: 13.12.24
+weitere Themen: Hausaufg., Kommaverschiebung
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group    Doku Anfragebuch
+star    Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+6
+7
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum   Fach    Fazit   Beurteilung Signatur    
+<---->
+<-- seite 6 -->
+König, Karl 6 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star    09.04.25 Kbiri, Judith
+Karl kommt nicht in den Osterferien
+
+stars
+person group
+MAT
+
+11.12.24 Thiele, Dipl.-Ing. Olaf - geändert: 11.12.24
+Dezimalzahlen: Einheitenrechnung
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+06.12.24 Thiele, Dipl.-Ing. Olaf - geändert: 06.12.24
+Dezimalzahlen: Einheitenrechn. / Textaufgaben
+10er-Potenzen üben; Einheitenrechnung festigen
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+29.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 29.11.24
+Dezimalzahlen: Kommaverschiebung M/D
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+27.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 27.11.24
+Dezimalzahlen: Multipl./Div.
+Überschlagsrechnung bei Potenzen üben
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+22.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 22.11.24
+Dezimalzahlen: Div./Mul.
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+15.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 15.11.24
+Brüche: Division Dezimalzahlen
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+fähig zu Transferdenken
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+13.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 13.11.24
+Brüche: Textaufgaben
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+08.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 08.11.24
+Brüche: Rechnen, Zahlenstrahl
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+06.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 06.11.24
+Brüche: Brüche erweitern
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+01.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 01.11.24
+Brüche: Grundrechenarten, Sachaufgaben
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group    Doku Anfragebuch
+star    Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+6
+7
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum   Fach    Fazit   Beurteilung Signatur    
+<---->
+<-- seite 7 -->
+König, Karl 6 GYM Probeschüler
+erhält keine Noten
+versetzungsgefährdet
+Unterschrift auf Teilnahmenachweis erforderlich ErsteNachhilfe
+Protokoll
+Noten
+Extras
+vertraulich
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+print
+more_vert add add
+Filter: Typ Filter: Typ
+Standardinformation
+Elterngespräch
+Schülergespräch
+Testauswertung
+Abschlussgespräch (alt)
+Kündigungsgespräch (alt)
+Lehrergespräch (öffentliche Schule)
+Lehrergespräch (Nachhilfelehrer)
+Brief
+E-Mail
+Log-Eintrag
+Info der Zentrale
+Fach Fach
+Deutsch
+Englisch
+Mathematik
+Altgriechisch
+Biologie
+Chemie
+Erdkunde
+Französisch
+Geschichte
+Informatik
+Italienisch
+Latein
+Musik
+Naturwissenschaft
+Niederländisch
+Pädagogik
+Physik
+Politik
+Religion
+Rechnungswesen
+Russisch
+Sachkunde
+Sensation English
+Spanisch
+Wirtschaftslehre BWL VWL
+Sommerferienkurs
+ZZ NUR ZENTRALE Deu Online LPG
+ZZ NUR ZENTRALE Eng Online LPG
+ZZ NUR ZENTRALE Mathe Online LPG
+star    09.04.25 Kbiri, Judith
+Karl kommt nicht in den Osterferien
+
+stars
+person group
+MAT
+
+11.12.24 Thiele, Dipl.-Ing. Olaf - geändert: 11.12.24
+Dezimalzahlen: Einheitenrechnung
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+06.12.24 Thiele, Dipl.-Ing. Olaf - geändert: 06.12.24
+Dezimalzahlen: Einheitenrechn. / Textaufgaben
+10er-Potenzen üben; Einheitenrechnung festigen
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+29.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 29.11.24
+Dezimalzahlen: Kommaverschiebung M/D
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+27.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 27.11.24
+Dezimalzahlen: Multipl./Div.
+Überschlagsrechnung bei Potenzen üben
+
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+22.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 22.11.24
+Dezimalzahlen: Div./Mul.
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+15.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 15.11.24
+Brüche: Division Dezimalzahlen
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+fähig zu Transferdenken
+Basiswissen vorhanden
+remove_circle_outline
+person group
+MAT
+
+13.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 13.11.24
+Brüche: Textaufgaben
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+08.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 08.11.24
+Brüche: Rechnen, Zahlenstrahl
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+beherrscht Thema
+fähig zu Transferdenken
+remove_circle_outline
+person group
+MAT
+
+06.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 06.11.24
+Brüche: Brüche erweitern
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group
+MAT
+
+01.11.24 Thiele, Dipl.-Ing. Olaf - geändert: 01.11.24
+Brüche: Grundrechenarten, Sachaufgaben
+Chips container. Use arrow keys to select chips.
+Absprachen einhaltend
+beteiligt sich / gute Mitarbeit
+fleißig / bemüht
+arbeitet selbstständig
+konzentriert
+vorbereitet
+Lernfortschritt erzielt
+beherrscht Thema
+remove_circle_outline
+person group    Doku Anfragebuch
+star    Doku Bewerberpool
+« «
+1
+2
+3
+4
+5
+6
+7
+» »
+Schwerpunkte
+Details
+add
+Wie sehen Sie Ihren Schüler add
+Datum   Fach    Fazit   Beurteilung Signatur    

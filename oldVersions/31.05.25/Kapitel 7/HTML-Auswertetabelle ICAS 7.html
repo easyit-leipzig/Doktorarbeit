@@ -1,0 +1,995 @@
+<div flex="75" flex-xs="100" flex-sm="60" ng-init="currentNavItem='protocol'" class="flex-xs-100 flex-sm-60 flex-75">
+    <div layout="row" layout-padding="" class="layout-padding layout-row">
+      <div>
+        <span class="md-title">König, Karl</span>
+        <span class="md-subhead">6 GYM</span>
+        <span class="warn ng-hide" ng-show="vm.contact.permanent_advice" aria-hidden="true"></span>
+        <span class="warn ng-hide" ng-show="vm.contact.draft==1" aria-hidden="true">Probeschüler</span>
+        <span ng-show="vm.contact.no_marks==1" class="warn ng-hide" aria-hidden="true"><br>erhält keine Noten</span>
+        <span ng-show="vm.contact.promotion_at_risk==1" class="warn ng-hide" aria-hidden="true"><br>versetzungsgefährdet</span>
+        <span ng-show="vm.contact.requires_proof_signed_by_pupil==1" class="warn ng-hide" aria-hidden="true"><br>Unterschrift auf Teilnahmenachweis erforderlich</span>
+        <span ng-show="vm.contact.contact_segmentation=='branding:first'" style="background-color:  #74b843; color: #fff;" aria-hidden="true" class="ng-hide">ErsteNachhilfe</span>     
+      </div>
+      <!---->
+      <!----><lesson-documentation-button ng-if="(vm.activeCenter.system == 'SH' &amp;&amp; vm.activeCenter.center_id != 654) &amp;&amp; vm.isValidDocumentationDate() &amp;&amp; currentNavItem=='protocol'" pupil-id="vm.pupil_id" course-member-id="vm.course_member_id" subject="vm.subject" today="vm.today" on-add-documentation="vm.refreshNoteCollection()"><button class="md-fab md-fab-top-right md-button md-ink-ripple layout-align-center-center" type="button" ng-transclude="" ng-click="$ctrl.showCreateLessonDocumentationDialog($event)" aria-label="Eintrag hinzufügen" layout-align="center center">
+    
+    <md-icon class="material-icons">add</md-icon>
+<div class="md-ripple-container" style=""></div></button></lesson-documentation-button><!---->
+
+    </div>
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="pupil_navigation"><div class="md-nav-bar"><nav role="navigation"><ul class="_md-nav-bar-list" ng-transclude="" role="listbox" tabindex="0" ng-focus="ctrl.onFocus()" ng-keydown="ctrl.onKeydown($event)" aria-label="pupil_navigation">
+      <li class="md-nav-item" role="option" aria-selected="true" md-nav-click="goto('protocol')" name="protocol" aria-label="Protokoll"><button class="_md-nav-button md-accent md-button md-ink-ripple md-active md-primary" type="button" ng-transclude="" ng-class="ctrl.getNgClassMap()" ng-blur="ctrl.setFocused(false)" tabindex="-1" ng-click="ctrl.mdNavClick()" style=""><span ng-transclude="" class="_md-nav-button-text"><span>
+        Protokoll
+      </span></span></button></li>
+      <li class="md-nav-item" role="option" aria-selected="false" md-nav-click="goto('marks')" name="marks" aria-label="Noten"><button class="_md-nav-button md-accent md-button md-ink-ripple md-unselected" type="button" ng-transclude="" ng-class="ctrl.getNgClassMap()" ng-blur="ctrl.setFocused(false)" tabindex="-1" ng-click="ctrl.mdNavClick()"><span ng-transclude="" class="_md-nav-button-text"><span>
+        Noten
+      </span></span></button></li> 
+      <li class="md-nav-item" role="option" aria-selected="false" md-nav-click="goto('extras')" name="extras" aria-label="Extras"><button class="_md-nav-button md-accent md-button md-ink-ripple md-unselected" type="button" ng-transclude="" ng-class="ctrl.getNgClassMap()" ng-blur="ctrl.setFocused(false)" tabindex="-1" ng-click="ctrl.mdNavClick()"><span ng-transclude="" class="_md-nav-button-text"><span>
+        Extras
+      </span></span></button></li>         
+    </ul></nav><md-nav-ink-bar ng-hide="ctrl.mdNoInkBar" aria-hidden="false" class="" style="left: 12px; width: 90px;"></md-nav-ink-bar></div></md-nav-bar>
+    <div>
+      <!----><note-collection contact-id="vm.pupil_id" ng-if="currentNavItem=='protocol'" view-as-teacher="1" refresh="vm.forceNoteRefresh"><md-card class="_md">
+  <md-card-header layout="column" class="layout-column">
+    <div layout="row" flex="100" class="layout-row flex-100">
+      <div layout="row" flex="80" flex-xs="50" class="layout-row flex-xs-50 flex-80">
+        <md-input-container flex="33" class="flex-33">
+          <md-checkbox ng-model="$ctrl.filter.confidential" aria-label="Filter Confidential" ng-true-value="'1'" ng-false-value="'0'" ng-hide="$ctrl.viewAsTeacher==1" tabindex="0" type="checkbox" role="checkbox" class="ng-pristine ng-untouched ng-valid ng-empty ng-hide" aria-hidden="true" aria-checked="false" aria-invalid="false" style=""><div class="md-container md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""><div class="md-icon"></div></div><div ng-transclude="" class="md-label"><span>
+            vertraulich
+          </span></div></md-checkbox>
+        </md-input-container>  
+        <md-input-container flex="33" hide-xs="" style="background-color: #ffffff" class="hide-xs flex-33">
+          <label for="select_3" class="md-placeholder">Filter: Typ</label>
+          <md-select ng-model="$ctrl.filter.type" ng-change="" md-container-class="redselect" class="ng-pristine ng-untouched ng-valid ng-empty" tabindex="0" aria-disabled="false" role="listbox" aria-expanded="false" aria-multiselectable="false" id="select_3" aria-owns="select_container_4" aria-invalid="false" aria-label="Filter: Typ" style=""><md-select-value class="md-select-value md-select-placeholder" id="select_value_label_0"><span>Filter: Typ</span><span class="md-select-icon" aria-hidden="true"></span></md-select-value><div class="md-select-menu-container redselect" aria-hidden="true" id="select_container_4"><md-select-menu class="_md"><md-content class="_md">
+            <md-option value="null" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_2"><div class="md-text"></div></md-option>
+            <!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="def" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_8" style=""><div class="md-text">Standardinformation</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="EG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_9"><div class="md-text">Elterngespräch</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="SG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_10"><div class="md-text">Schülergespräch</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="TA" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_11"><div class="md-text">Testauswertung</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="ABG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_12"><div class="md-text">Abschlussgespräch (alt)</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="KDG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_13"><div class="md-text">Kündigungsgespräch (alt)</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="LG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_14"><div class="md-text">Lehrergespräch (öffentliche Schule)</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="NLG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_15"><div class="md-text">Lehrergespräch (Nachhilfelehrer)</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="LTR" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_16"><div class="md-text">Brief</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="EML" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_17"><div class="md-text">E-Mail</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="Log" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_18"><div class="md-text">Log-Eintrag</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="Z" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_19"><div class="md-text">Info der Zentrale</div></md-option><!---->
+          </md-content></md-select-menu></div></md-select>
+        </md-input-container>
+        <md-input-container class="md-block hide-xs flex-offset-5 flex-33" flex="33" flex-offset="5" subject="$ctrl.filter.subject_short" hide-xs="" style="background-color: #ffffff">
+  <label class="md-placeholder" for="select_34">Fach</label>
+  <md-select ng-model="subject" ng-required="false" class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-required" tabindex="0" aria-disabled="false" role="listbox" aria-expanded="false" aria-multiselectable="false" id="select_34" aria-owns="select_container_35" aria-required="false" aria-invalid="false" aria-label="Fach" style=""><md-select-value class="md-select-value md-select-placeholder" id="select_value_label_32"><span>Fach</span><span class="md-select-icon" aria-hidden="true"></span></md-select-value><div class="md-select-menu-container" aria-hidden="true" id="select_container_35"><md-select-menu class="_md"><md-content class="_md">
+    <md-option ng-value="null" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_33" aria-checked="false"><div class="md-text"></div></md-option>
+    <!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.prioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_40" aria-checked="true" value="DEU" style=""><div class="md-text">
+    Deutsch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.prioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_41" aria-checked="true" value="ENG"><div class="md-text">
+    Englisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.prioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_42" aria-checked="true" value="MAT"><div class="md-text">
+    Mathematik
+    </div></md-option><!---->
+    <md-divider></md-divider>  
+    <!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_43" aria-checked="true" value="AGR"><div class="md-text">
+    Altgriechisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_44" aria-checked="true" value="BIO"><div class="md-text">
+    Biologie
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_45" aria-checked="true" value="CHE"><div class="md-text">
+    Chemie
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_46" aria-checked="true" value="ERD"><div class="md-text">
+    Erdkunde
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_47" aria-checked="true" value="FRZ"><div class="md-text">
+    Französisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_48" aria-checked="true" value="GES"><div class="md-text">
+    Geschichte
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_49" aria-checked="true" value="INF"><div class="md-text">
+    Informatik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_50" aria-checked="true" value="ITA"><div class="md-text">
+    Italienisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_51" aria-checked="true" value="LAT"><div class="md-text">
+    Latein
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_52" aria-checked="true" value="MUS"><div class="md-text">
+    Musik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_53" aria-checked="true" value="NAW"><div class="md-text">
+    Naturwissenschaft
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_54" aria-checked="true" value="NDL"><div class="md-text">
+    Niederländisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_55" aria-checked="true" value="PAE"><div class="md-text">
+    Pädagogik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_56" aria-checked="true" value="PHY"><div class="md-text">
+    Physik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_57" aria-checked="true" value="POL"><div class="md-text">
+    Politik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_58" aria-checked="true" value="REL"><div class="md-text">
+    Religion
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_59" aria-checked="true" value="REW"><div class="md-text">
+    Rechnungswesen
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_60" aria-checked="true" value="RUS"><div class="md-text">
+    Russisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_61" aria-checked="true" value="SAC"><div class="md-text">
+    Sachkunde
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_62" aria-checked="true" value="SEN"><div class="md-text">
+    Sensation English
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_63" aria-checked="true" value="SPA"><div class="md-text">
+    Spanisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_64" aria-checked="true" value="WIR"><div class="md-text">
+    Wirtschaftslehre BWL VWL
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_65" aria-checked="true" value="WKA"><div class="md-text">
+    Sommerferienkurs
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_66" aria-checked="true" value="ZDL"><div class="md-text">
+    ZZ NUR ZENTRALE Deu Online LPG
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_67" aria-checked="true" value="ZEL"><div class="md-text">
+    ZZ NUR ZENTRALE Eng Online LPG
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_68" aria-checked="true" value="ZML"><div class="md-text">
+    ZZ NUR ZENTRALE Mathe Online LPG
+    </div></md-option><!---->
+  </md-content></md-select-menu></div></md-select>
+</md-input-container>
+      </div>
+      <div layout="row" flex="20" flex-xs="50" layout-align="end start" class="layout-align-end-start layout-row flex-xs-50 flex-20">
+        <note-collection-printer contact-id="$ctrl.contact_id" collection-filter="$ctrl.filter" ng-show="$ctrl.roleId==8 &amp;&amp; $ctrl.activeCenter.hierarchy == 'franchise'" style="margin-top: 12px;" aria-hidden="true" class="ng-hide"><div>
+  <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.print()" aria-label="Protokoll drucken">
+    
+    <md-icon class="material-icons">print</md-icon>
+  </button>
+</div></note-collection-printer>
+        <md-input-container style="margin-top: 12px;">
+        <md-menu ng-hide="$ctrl.viewAsTeacher==1" class="md-menu _md ng-hide" aria-hidden="true" style="">
+          <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" aria-label="open menu" ng-click="$mdMenu.open($event)" aria-haspopup="true" aria-expanded="false" aria-owns="menu_container_5">
+            <md-icon md-menu-origin="" class="material-icons">more_vert</md-icon>
+          </button>
+                    
+        <div class="_md md-open-menu-container md-whiteframe-z2" id="menu_container_5" style="display: none;" aria-hidden="true"><md-menu-content width="4" role="menu">            
+            <md-menu-item>
+              <button class="md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.showCreateConsultationDialog($event,$ctrl.contact_id)" role="menuitem"><span>Elterngespräch dokumentieren</span></button>
+            </md-menu-item>
+            <md-menu-item ng-hide="$ctrl.roleId&lt;=3" aria-hidden="true" class="ng-hide" style="">
+              <button class="md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.showCreateLetterDialog($event,$ctrl.contact_id)" role="menuitem"><span>Brief schreiben</span></button>
+            </md-menu-item>
+          </md-menu-content></div></md-menu>
+      </md-input-container>     
+        <button class="md-fab md-button md-ink-ripple layout-align-center-center ng-hide" type="button" ng-transclude="" aria-label="Eintrag hinzufügen" ng-click="$ctrl.showCreateDialog($event,$ctrl.contact_id)" layout-align="center center" ng-hide="$ctrl.viewAsTeacher==1" aria-hidden="true" style="">
+          
+          <md-icon class="material-icons">add</md-icon>
+        </button>
+        <button class="md-icon-button md-button md-ink-ripple layout-align-center-center" type="button" ng-transclude="" aria-label="Eintrag hinzufügen" ng-click="$ctrl.showCreateDialog($event,$ctrl.contact_id)" layout-align="center center" ng-show="$ctrl.viewAsTeacher==1" aria-hidden="false">
+          
+          <md-icon class="material-icons">add</md-icon>
+        </button>        
+      </div>
+    </div>
+    <div layout="row" flex="100" style="margin-top: -10px;" hide="" show-xs="" class="hide show-xs layout-row flex-100">
+      <md-input-container flex="50" class="flex-50">
+          <label for="select_6" class="md-placeholder">Filter: Typ</label>
+          <md-select ng-model="$ctrl.filter.type" class="ng-pristine ng-untouched ng-valid ng-empty" tabindex="0" aria-disabled="false" role="listbox" aria-expanded="false" aria-multiselectable="false" id="select_6" aria-owns="select_container_7" aria-invalid="false" aria-label="Filter: Typ" style=""><md-select-value class="md-select-value md-select-placeholder" id="select_value_label_1"><span>Filter: Typ</span><span class="md-select-icon" aria-hidden="true"></span></md-select-value><div class="md-select-menu-container" aria-hidden="true" id="select_container_7"><md-select-menu class="_md"><md-content class="_md">
+            <!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="def" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_20" style=""><div class="md-text">Standardinformation</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="EG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_21"><div class="md-text">Elterngespräch</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="SG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_22"><div class="md-text">Schülergespräch</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="TA" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_23"><div class="md-text">Testauswertung</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="ABG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_24"><div class="md-text">Abschlussgespräch (alt)</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="KDG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_25"><div class="md-text">Kündigungsgespräch (alt)</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="LG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_26"><div class="md-text">Lehrergespräch (öffentliche Schule)</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="NLG" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_27"><div class="md-text">Lehrergespräch (Nachhilfelehrer)</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="LTR" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_28"><div class="md-text">Brief</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="EML" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_29"><div class="md-text">E-Mail</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="Log" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_30"><div class="md-text">Log-Eintrag</div></md-option><!----><md-option ng-repeat="i in $ctrl.categoryCollection" value="Z" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_31"><div class="md-text">Info der Zentrale</div></md-option><!---->
+          </md-content></md-select-menu></div></md-select>
+        </md-input-container>
+        <md-input-container class="md-block flex-offset-5 flex-50" flex="50" flex-offset="5" subject="$ctrl.filter.subject_short">
+  <label class="md-placeholder" for="select_38">Fach</label>
+  <md-select ng-model="subject" ng-required="false" class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-required" tabindex="0" aria-disabled="false" role="listbox" aria-expanded="false" aria-multiselectable="false" id="select_38" aria-owns="select_container_39" aria-required="false" aria-invalid="false" aria-label="Fach" style=""><md-select-value class="md-select-value md-select-placeholder" id="select_value_label_36"><span>Fach</span><span class="md-select-icon" aria-hidden="true"></span></md-select-value><div class="md-select-menu-container" aria-hidden="true" id="select_container_39"><md-select-menu class="_md"><md-content class="_md">
+    <md-option ng-value="null" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_37" aria-checked="false"><div class="md-text"></div></md-option>
+    <!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.prioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_69" aria-checked="true" value="DEU" style=""><div class="md-text">
+    Deutsch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.prioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_70" aria-checked="true" value="ENG"><div class="md-text">
+    Englisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.prioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_71" aria-checked="true" value="MAT"><div class="md-text">
+    Mathematik
+    </div></md-option><!---->
+    <md-divider></md-divider>  
+    <!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_72" aria-checked="true" value="AGR"><div class="md-text">
+    Altgriechisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_73" aria-checked="true" value="BIO"><div class="md-text">
+    Biologie
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_74" aria-checked="true" value="CHE"><div class="md-text">
+    Chemie
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_75" aria-checked="true" value="ERD"><div class="md-text">
+    Erdkunde
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_76" aria-checked="true" value="FRZ"><div class="md-text">
+    Französisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_77" aria-checked="true" value="GES"><div class="md-text">
+    Geschichte
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_78" aria-checked="true" value="INF"><div class="md-text">
+    Informatik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_79" aria-checked="true" value="ITA"><div class="md-text">
+    Italienisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_80" aria-checked="true" value="LAT"><div class="md-text">
+    Latein
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_81" aria-checked="true" value="MUS"><div class="md-text">
+    Musik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_82" aria-checked="true" value="NAW"><div class="md-text">
+    Naturwissenschaft
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_83" aria-checked="true" value="NDL"><div class="md-text">
+    Niederländisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_84" aria-checked="true" value="PAE"><div class="md-text">
+    Pädagogik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_85" aria-checked="true" value="PHY"><div class="md-text">
+    Physik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_86" aria-checked="true" value="POL"><div class="md-text">
+    Politik
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_87" aria-checked="true" value="REL"><div class="md-text">
+    Religion
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_88" aria-checked="true" value="REW"><div class="md-text">
+    Rechnungswesen
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_89" aria-checked="true" value="RUS"><div class="md-text">
+    Russisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_90" aria-checked="true" value="SAC"><div class="md-text">
+    Sachkunde
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_91" aria-checked="true" value="SEN"><div class="md-text">
+    Sensation English
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_92" aria-checked="true" value="SPA"><div class="md-text">
+    Spanisch
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_93" aria-checked="true" value="WIR"><div class="md-text">
+    Wirtschaftslehre BWL VWL
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_94" aria-checked="true" value="WKA"><div class="md-text">
+    Sommerferienkurs
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_95" aria-checked="true" value="ZDL"><div class="md-text">
+    ZZ NUR ZENTRALE Deu Online LPG
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_96" aria-checked="true" value="ZEL"><div class="md-text">
+    ZZ NUR ZENTRALE Eng Online LPG
+    </div></md-option><!----><md-option ng-repeat="s in vm.subjectCollection | filter: vm.nonPrioFilter" ng-value="s.short" tabindex="0" class="md-ink-ripple" role="option" aria-selected="false" id="select_option_97" aria-checked="true" value="ZML"><div class="md-text">
+    ZZ NUR ZENTRALE Mathe Online LPG
+    </div></md-option><!---->
+  </md-content></md-select-menu></div></md-select>
+</md-input-container>
+    </div>
+  </md-card-header>
+  <md-card-content layout="column" class="no-padding layout-column">
+      <table class="table table-striped table-hover layout-fill" layout-fill="">
+        <tbody class="md-body-1">
+          <!----><tr ng-repeat="item in $ctrl.stickyCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td>
+              <md-icon class="md-avatar-icon material-icons">star</md-icon>
+              <span></span>
+            </td>
+            <td>
+              <span class="md-caption">09.04.25  Kbiri, Judith</span>
+              <!----><span class="md-body-1" ng-bind-html="item.note | markdown" ng-if="item.type!='LTR' &amp;&amp; item.mime_type!='text/xml'"><p><strong><em>Karl kommt nicht in den Osterferien</em></strong></p>
+</span><!---->
+              <!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!--<md-button class="md-icon-button" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon>remove_circle_outline</md-icon></md-button>-->
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveSticky($event,item.note_id)" aria-label="Klebend-Markierung entfernen">
+                <md-icon class="material-icons">stars</md-icon>
+                
+              </button>
+            </td>            
+          </tr><!---->
+          <!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="" style="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">28.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption ng-hide" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="true">- geändert: 28.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Geometrie<span ng-show="$ctrl.item.section" aria-hidden="false">: Prism</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"></p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-98" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-98-chip-108 _md-chips-wrapper-98-chip-109 _md-chips-wrapper-98-chip-110 _md-chips-wrapper-98-chip-111 _md-chips-wrapper-98-chip-112 _md-chips-wrapper-98-chip-113 _md-chips-wrapper-98-chip-114 _md-chips-wrapper-98-chip-115" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-98-chip-108" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-98-chip-109" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-98-chip-110" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-98-chip-111" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-98-chip-112" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-98-chip-113" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Materialien fehlen</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-98-chip-114" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-98-chip-115" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Basiswissen vorhanden</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">23.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Städter, Kathleen</span></span>
+              <span class="md-caption" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="false">- geändert: 27.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        weitere Themen<span ng-show="$ctrl.item.section" aria-hidden="false">: Geometrie Prismen</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"></p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-99" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="7" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-99-chip-116 _md-chips-wrapper-99-chip-117 _md-chips-wrapper-99-chip-118 _md-chips-wrapper-99-chip-119 _md-chips-wrapper-99-chip-120 _md-chips-wrapper-99-chip-121 _md-chips-wrapper-99-chip-122" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-99-chip-116" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-99-chip-117" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-99-chip-118" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-99-chip-119" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-99-chip-120" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-99-chip-121" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-99-chip-122" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">22.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption ng-hide" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="true">- geändert: 22.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Geometrie<span ng-show="$ctrl.item.section" aria-hidden="false">: Prism</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"></p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-100" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-100-chip-123 _md-chips-wrapper-100-chip-124 _md-chips-wrapper-100-chip-125 _md-chips-wrapper-100-chip-126 _md-chips-wrapper-100-chip-127 _md-chips-wrapper-100-chip-128 _md-chips-wrapper-100-chip-129 _md-chips-wrapper-100-chip-130" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-100-chip-123" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-100-chip-124" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-100-chip-125" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-100-chip-126" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-100-chip-127" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-100-chip-128" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-100-chip-129" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-100-chip-130" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beherrscht Thema</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">21.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption ng-hide" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="true">- geändert: 21.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Grundrechenarten<span ng-show="$ctrl.item.section" aria-hidden="false">: schrftlGRAalle</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"></p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-101" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-101-chip-131 _md-chips-wrapper-101-chip-132 _md-chips-wrapper-101-chip-133 _md-chips-wrapper-101-chip-134 _md-chips-wrapper-101-chip-135 _md-chips-wrapper-101-chip-136 _md-chips-wrapper-101-chip-137 _md-chips-wrapper-101-chip-138" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-101-chip-131" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-101-chip-132" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-101-chip-133" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-101-chip-134" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-101-chip-135" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-101-chip-136" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-101-chip-137" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-101-chip-138" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beherrscht Thema</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">16.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption ng-hide" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="true">- geändert: 16.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Grundrechenarten<span ng-show="$ctrl.item.section" aria-hidden="false">: schrftlGRA</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"></p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-102" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-102-chip-139 _md-chips-wrapper-102-chip-140 _md-chips-wrapper-102-chip-141 _md-chips-wrapper-102-chip-142 _md-chips-wrapper-102-chip-143 _md-chips-wrapper-102-chip-144 _md-chips-wrapper-102-chip-145 _md-chips-wrapper-102-chip-146" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-102-chip-139" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-102-chip-140" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-102-chip-141" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-102-chip-142" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-102-chip-143" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-102-chip-144" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-102-chip-145" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-102-chip-146" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beherrscht Thema</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">14.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption ng-hide" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="true">- geändert: 14.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Geometrie<span ng-show="$ctrl.item.section" aria-hidden="false">: Prismen</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"><p>weitermachen</p>
+</p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-103" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-103-chip-147 _md-chips-wrapper-103-chip-148 _md-chips-wrapper-103-chip-149 _md-chips-wrapper-103-chip-150 _md-chips-wrapper-103-chip-151 _md-chips-wrapper-103-chip-152 _md-chips-wrapper-103-chip-153 _md-chips-wrapper-103-chip-154" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-103-chip-147" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-103-chip-148" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-103-chip-149" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-103-chip-150" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-103-chip-151" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-103-chip-152" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-103-chip-153" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-103-chip-154" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Basiswissen vorhanden</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">13.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption ng-hide" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="true">- geändert: 13.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Grundrechenarten<span ng-show="$ctrl.item.section" aria-hidden="false">: alle</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"></p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-104" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-104-chip-155 _md-chips-wrapper-104-chip-156 _md-chips-wrapper-104-chip-157 _md-chips-wrapper-104-chip-158 _md-chips-wrapper-104-chip-159 _md-chips-wrapper-104-chip-160 _md-chips-wrapper-104-chip-161 _md-chips-wrapper-104-chip-162" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-104-chip-155" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-104-chip-156" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-104-chip-157" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-104-chip-158" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-104-chip-159" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-104-chip-160" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-104-chip-161" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-104-chip-162" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beherrscht Thema</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">09.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption ng-hide" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="true">- geändert: 09.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Geometrie<span ng-show="$ctrl.item.section" aria-hidden="false">: Vierecke</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"></p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-105" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-105-chip-163 _md-chips-wrapper-105-chip-164 _md-chips-wrapper-105-chip-165 _md-chips-wrapper-105-chip-166 _md-chips-wrapper-105-chip-167 _md-chips-wrapper-105-chip-168 _md-chips-wrapper-105-chip-169 _md-chips-wrapper-105-chip-170" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-105-chip-163" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-105-chip-164" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-105-chip-165" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-105-chip-166" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-105-chip-167" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-105-chip-168" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-105-chip-169" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-105-chip-170" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beherrscht Thema</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">07.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption ng-hide" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="true">- geändert: 07.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Geometrie<span ng-show="$ctrl.item.section" aria-hidden="false">: VE</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"><p>widhl</p>
+</p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-106" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-106-chip-171 _md-chips-wrapper-106-chip-172 _md-chips-wrapper-106-chip-173 _md-chips-wrapper-106-chip-174 _md-chips-wrapper-106-chip-175 _md-chips-wrapper-106-chip-176 _md-chips-wrapper-106-chip-177 _md-chips-wrapper-106-chip-178" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-106-chip-171" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-106-chip-172" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-106-chip-173" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-106-chip-174" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-106-chip-175" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-106-chip-176" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-106-chip-177" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-106-chip-178" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Basiswissen vorhanden</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!----><tr ng-repeat="item in $ctrl.noteCollection" ng-click="$ctrl.showUpdateDialog($event,item.note_id)" role="button" tabindex="0" class="">
+            <td style="vertical-align:top;">
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="item.confidential==1" aria-hidden="true">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="item.confidential==1" aria-hidden="false">group</md-icon>
+              <p>MAT</p>
+            </td>
+            <td>
+              <span class="md-caption">02.05.25 <span style="padding-left:4px"></span> <span style="padding-left:4px">Thiele, Dipl.-Ing. Olaf</span></span>
+              <span class="md-caption" ng-show="item.modified_at != null &amp;&amp; item.created_at != item.modified_at &amp;&amp; item.modified_at &gt; '2019-04-01 00:00:00'" aria-hidden="false">- geändert: 03.05.25 </span>
+              <!---->
+              <!---->
+              <!---->          
+              <!----><span ng-if="item.mime_type=='text/xml' &amp;&amp; item.type!='EG'"><protocol-display protocol="item.note"><div>
+    <h3 class="md-subhead">
+        Grundrechenarten<span ng-show="$ctrl.item.section" aria-hidden="false">: schrftlDiv selbst</span>
+    </h3>
+    <p class="md-body-1" ng-bind-html="$ctrl.item.summary | markdown"></p>
+    <!---->
+    <!--
+    {{$ctrl.item.social_note}}
+    <md-chips ng-model="$ctrl.item.social" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="social">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    {{$ctrl.item.behaviour_note}}
+    <md-chips ng-model="$ctrl.item.behaviour" name="social" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="behaviour">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>                
+    </md-chips>  
+    {{$ctrl.item.skill_note}}       
+    <md-chips ng-model="$ctrl.item.skill" name="skill" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="skills">
+        <md-chip-template>
+            <span class="md-caption">{{$chip}}</span>
+        </md-chip-template>        
+    </md-chips>
+    -->
+    <md-chips ng-model="$ctrl.item.chips" name="chips" readonly="true" md-removable="false" md-max-chips="15" placeholder="" input-aria-label="chips" class="ng-pristine ng-untouched ng-valid ng-not-empty" tabindex="-1" aria-invalid="false" style="">      <md-chips-wrap id="_md-chips-wrapper-107" tabindex="0" ng-keydown="$mdChipsCtrl.chipKeydown($event)" ng-class="{ 'md-focused': $mdChipsCtrl.hasFocus(),                       'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly,                      'md-removable': $mdChipsCtrl.isRemovable() }" aria-setsize="8" class="md-chips md-readonly" role="listbox" aria-owns="_md-chips-wrapper-107-chip-179 _md-chips-wrapper-107-chip-180 _md-chips-wrapper-107-chip-181 _md-chips-wrapper-107-chip-182 _md-chips-wrapper-107-chip-183 _md-chips-wrapper-107-chip-184 _md-chips-wrapper-107-chip-185 _md-chips-wrapper-107-chip-186" style="">        <!----><span ng-if="$mdChipsCtrl.readonly" class="md-visually-hidden" style="">          Chips container. Use arrow keys to select chips.        </span><!---->        <!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="0" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly" style="">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-107-chip-179" role="option" aria-selected="false" aria-posinset="0" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Absprachen einhaltend</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="1" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-107-chip-180" role="option" aria-selected="false" aria-posinset="1" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beteiligt sich / gute Mitarbeit</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="2" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-107-chip-181" role="option" aria-selected="false" aria-posinset="2" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">fleißig / bemüht</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="3" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-107-chip-182" role="option" aria-selected="false" aria-posinset="3" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">arbeitet selbstständig</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="4" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-107-chip-183" role="option" aria-selected="false" aria-posinset="4" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">konzentriert</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="5" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-107-chip-184" role="option" aria-selected="false" aria-posinset="5" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">vorbereitet</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="6" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-107-chip-185" role="option" aria-selected="false" aria-posinset="6" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">Lernfortschritt erzielt</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!----><md-chip ng-repeat="$chip in $mdChipsCtrl.items" index="7" ng-class="{'md-focused': $mdChipsCtrl.selectedChip == $index, 'md-readonly': !$mdChipsCtrl.ngModelCtrl || $mdChipsCtrl.readonly}" class="md-readonly">          <div class="md-chip-content" tabindex="-1" id="_md-chips-wrapper-107-chip-186" role="option" aria-selected="false" aria-posinset="7" ng-click="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.focusChip($index)" ng-focus="!$mdChipsCtrl.readonly &amp;&amp; $mdChipsCtrl.selectChip($index)" md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"><md-chip-template>
+            <span class="md-caption">beherrscht Thema</span>
+        </md-chip-template><!----></div>          <!---->        </md-chip><!---->        <!---->      </md-chips-wrap></md-chips>        
+</div></protocol-display></span><!---->
+              <!---->
+            </td>
+            <td class="text-right" style="padding:0px;" ng-click="$event.stopPropagation()" role="button" tabindex="0">
+              <!---->
+              <!---->            
+              <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.confirmRemoveNote($event,item.note_id)"><md-icon class="material-icons">remove_circle_outline</md-icon></button>
+            </td>            
+          </tr><!---->
+          <tr ng-show="$ctrl.enquiryNote" aria-hidden="true" class="ng-hide" style="">
+            <td>
+              <md-icon class="md-avatar-icon material-icons ng-hide" ng-show="$ctrl.enquiryNote.confidential==1" aria-hidden="true" style="">person</md-icon>
+              <md-icon class="md-avatar-icon material-icons" ng-hide="$ctrl.enquiryNote.confidential==1" aria-hidden="false">group</md-icon>            
+            </td>
+            <td>
+              <span class="md-body-2"> Doku Anfragebuch </span>
+              <br>
+              <span class="md-body-1"></span>
+            </td>
+            <td></td>
+          </tr>
+          <tr ng-show="$ctrl.applicationNote" aria-hidden="true" class="ng-hide">
+              <td>
+                <md-icon class="md-avatar-icon material-icons">star</md-icon>
+              </td>
+              <td>
+                <span class="md-body-2"> Doku Bewerberpool </span>
+                <br>
+                <span class="md-body-1"></span>
+              </td>
+              <td></td>
+            </tr>            
+        </tbody>      
+      </table>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="center center" class="layout-align-center-center layout-row">
+    <nav last="$ctrl.lastPage" current="$ctrl.currentPage" flick="$ctrl.pageFlick">
+  <ul class="pagination">
+    <li>
+      <span aria-hidden="true" ng-show="current==1" class="" style="">«</span>
+      <a href="" ng-click="flick(current-1)" aria-label="Previous" ng-hide="current==1" aria-hidden="true" class="ng-hide" style="">
+        <span aria-hidden="true">«</span>
+      </a>
+    </li>
+    <!----><li ng-repeat="i in vm.pageArray(last) track by $index" ng-class="current==$index+1?'active':''" class="active" style="">
+      <a href="" ng-click="flick($index + 1)">1</a>
+    </li><!----><li ng-repeat="i in vm.pageArray(last) track by $index" ng-class="current==$index+1?'active':''" class="" style="">
+      <a href="" ng-click="flick($index + 1)">2</a>
+    </li><!----><li ng-repeat="i in vm.pageArray(last) track by $index" ng-class="current==$index+1?'active':''" class="">
+      <a href="" ng-click="flick($index + 1)">3</a>
+    </li><!----><li ng-repeat="i in vm.pageArray(last) track by $index" ng-class="current==$index+1?'active':''" class="">
+      <a href="" ng-click="flick($index + 1)">4</a>
+    </li><!----><li ng-repeat="i in vm.pageArray(last) track by $index" ng-class="current==$index+1?'active':''" class="">
+      <a href="" ng-click="flick($index + 1)">5</a>
+    </li><!----><li ng-repeat="i in vm.pageArray(last) track by $index" ng-class="current==$index+1?'active':''" class="">
+      <a href="" ng-click="flick($index + 1)">6</a>
+    </li><!----><li ng-repeat="i in vm.pageArray(last) track by $index" ng-class="current==$index+1?'active':''" class="">
+      <a href="" ng-click="flick($index + 1)">7</a>
+    </li><!---->
+    <li>
+      <span aria-hidden="true" ng-show="current==last" class="ng-hide" style="">»</span>
+      <a href="" ng-click="flick(current+1)" aria-label="Next" ng-hide="current==last" aria-hidden="false" class="" style="">
+        <span aria-hidden="true">»</span>
+      </a>
+    </li>
+  </ul>
+</nav>  
+  </md-card-actions>
+</md-card></note-collection><!---->
+      <!----><div layout="row" layout-xs="column" layout-sm="column" ng-if="currentNavItem=='protocol'" class="layout-xs-column layout-sm-column layout-row">
+        <md-card pupil="vm.pupil_id" flex="40" flex-xs="100" flex-sm="100" class="_md flex-xs-100 flex-sm-100 flex-40">
+  <md-card-header>
+    <md-card-header-text layout="column" class="layout-column">
+      <span class="widget-title">Schwerpunkte</span>
+      <div>
+        <md-switch ng-model="vm.groupBySubject" ng-init="vm.groupBySubject=1" aria-label="counter_switch" ng-change="vm.getEmphasisCollection()" ng-true-value="'0'" ng-false-value="'1'" tabindex="0" type="checkbox" role="checkbox" class="ng-pristine ng-untouched ng-valid ng-empty" aria-checked="false" aria-invalid="false" style=""><div class="md-container" style="touch-action: pan-x;"><div class="md-bar"></div><div class="md-thumb-container"><div class="md-thumb md-ink-ripple" md-ink-ripple="" md-ink-ripple-checkbox=""></div></div></div><div ng-transclude="" class="md-label">
+          <span>Details</span>
+        </div></md-switch>
+      </div>      
+    </md-card-header-text>
+    <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="vm.showCreateEmphasisDialog($event)" aria-label="Schwerpunkt hinzufügen">
+      
+      <md-icon class="material-icons">add</md-icon>
+    </button>
+  </md-card-header>
+  <md-card-content style="padding:0px">
+    <!----><table ng-if="vm.groupBySubject==1" class="table table-striped" width="100%" style="">        
+      <tbody>
+        <!---->
+      </tbody>
+    </table><!---->
+    <!---->     
+  </md-card-content>     
+</md-card>
+        <pupil-progress-survey-collection pupil-id="vm.pupil_id" flex="60" flex-xs="100" flex-sm="100" class="flex-xs-100 flex-sm-100 flex-60"><md-card class="_md">
+  <md-card-header>
+    <md-card-header-text>
+      <span class="widget-title">Wie sehen Sie Ihren Schüler</span>
+    </md-card-header-text>
+    <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" ng-click="$ctrl.showCreateDialog()">
+      <md-icon class="material-icons">add</md-icon>
+    </button>
+  </md-card-header>
+  <md-card-content style="padding:0px">
+      <table class="table table-striped table-hover" width="100%">
+      <thead>
+          <tr>
+              <th>Datum</th>
+              <th>Fach</th>
+              <th>Fazit</th>
+              <th>Beurteilung</th>
+              <th>Signatur</th>
+              <th></th>
+          </tr>
+      </thead>      
+      <tbody class="md-body-1">
+        <!---->
+      </tbody>
+      </table>
+  </md-card-content>
+</md-card></pupil-progress-survey-collection>   
+      </div><!---->
+      <!---->
+      <!---->
+      <!---->  
+    </div>   
+  </div>

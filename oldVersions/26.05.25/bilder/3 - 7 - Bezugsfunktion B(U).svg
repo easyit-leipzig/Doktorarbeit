@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 800 200"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="3 - 7 - Bezugsfunktion B(U).svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   width="800"
+   height="200"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.45875"
+     inkscape:cx="336.9323"
+     inkscape:cy="69.58012"
+     inkscape:window-width="3440"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5" />
+  <defs
+     id="defs1">
+    <marker
+       id="arrow"
+       markerWidth="10"
+       markerHeight="7"
+       refX="0"
+       refY="3.5"
+       orient="auto">
+      <polygon
+         points="10,3.5 0,7 0,0 "
+         fill="#000000"
+         id="polygon1" />
+    </marker>
+  </defs>
+  <text
+     x="51.533848"
+     y="60.162811"
+     font-family="Arial"
+     font-size="20px"
+     id="text1">Punkt U</text>
+  <text
+     x="389.11737"
+     y="58.791775"
+     font-family="Arial"
+     font-size="20px"
+     id="text2">Funktionswert b</text>
+  <text
+     x="188.38902"
+     y="146.45244"
+     font-family="Arial"
+     font-size="16px"
+     id="text3">Zeitwert t</text>
+  <text
+     x="142.81558"
+     y="34.447063"
+     font-family="Arial"
+     font-size="16px"
+     id="text3-9-8">Bedeutung für U hier [f(t)=b]</text>
+  <line
+     x1="135.52699"
+     y1="53.710373"
+     x2="355.52701"
+     y2="53.710373"
+     stroke="#000000"
+     stroke-width="2"
+     marker-end="url(#arrow)"
+     id="line3" />
+  <text
+     x="232.26221"
+     y="101.53384"
+     font-family="Arial"
+     font-size="14px"
+     text-anchor="middle"
+     id="text4">Veranschaulicht die Zuweisung von Bedeutung zu einem Punkt</text>
+  <text
+     x="197.30078"
+     y="120.84833"
+     font-family="Arial"
+     font-size="14px"
+     text-anchor="middle"
+     id="text5">z.B. Zeit, Bewegung oder Richtung</text>
+</svg>

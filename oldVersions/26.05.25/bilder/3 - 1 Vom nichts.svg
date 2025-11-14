@@ -1,0 +1,34 @@
+
+<svg width="600" height="200" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#3498db" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#e74c3c" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Wahrnehmungsraum -->
+  <g transform="translate(20, 20)">
+    <rect width="200" height="160" fill="url(#gradient)" stroke="black" stroke-width="2"/>
+    <text x="100" y="80" font-size="16" text-anchor="middle" fill="white">Wahrnehmungsraum</text>
+    <text x="100" y="100" font-size="12" text-anchor="middle" fill="white">Viele Details, Struktur</text>
+  </g>
+
+  <!-- Übergangspfeil -->
+  <path d="M240,100 L360,100" stroke="black" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="black" />
+    </marker>
+  </defs>
+
+  <!-- Das Nichts (Leere Menge) -->
+  <g transform="translate(380, 20)">
+    <rect width="200" height="160" fill="white" stroke="black" stroke-width="2"/>
+    <text x="100" y="80" font-size="16" text-anchor="middle">Das Nichts (∅)</text>
+    <text x="100" y="100" font-size="12" text-anchor="middle">Leere Menge, Keine Struktur</text>
+  </g>
+
+</svg>
+

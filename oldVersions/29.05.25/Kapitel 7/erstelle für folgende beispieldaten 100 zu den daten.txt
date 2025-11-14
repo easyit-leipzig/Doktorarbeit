@@ -1,0 +1,42 @@
+erstelle für folgende beispieldaten 100 zu den datensätzenden passende 40 beispieldatensätze:
+ python datenbewertungen_columns = [
+    "Fach", "Datum", "Lehrkraft", "Thema", "Absprachen", "Mitarbeit", "Fleißig", "Selbstständig",
+    "Vorbereitet", "Konzentriert", "Lernfortschritt", "Beherrscht Thema", "Transferdenken", "Basiswissen", "Freitext"
+]
+bewertungen_data = [
+    {
+        "Fach": "MAT",
+        "Datum": "2025-05-23",
+        "Lehrkraft": "Städter, Kathleen",
+        "Thema": "Geometrie: Vorbereitung LK",
+        "Absprachen": True,
+        "Mitarbeit": True,
+        "Fleißig": True,
+        "Selbstständig": True,
+        "Vorbereitet": True,
+        "Konzentriert": True,
+        "Lernfortschritt": True,
+        "Beherrscht Thema": False,
+        "Transferdenken": False,
+        "Basiswissen": False,
+        "Freitext": ""
+    },
+    {
+        "Fach": "PHY",
+        "Datum": "2025-05-19",
+        "Lehrkraft": "Thiele, Dipl.-Ing. Olaf",
+        "Thema": "VorbLK",
+        "Absprachen": True,
+        "Mitarbeit": True,
+        "Fleißig": True,
+        "Selbstständig": True,
+        "Vorbereitet": True,
+        "Konzentriert": True,
+        "Lernfortschritt": True,
+        "Beherrscht Thema": False,
+        "Transferdenken": False,
+        "Basiswissen": True,
+        "Freitext": ""
+    },
+    # ... weitere Datensätze analog
+]

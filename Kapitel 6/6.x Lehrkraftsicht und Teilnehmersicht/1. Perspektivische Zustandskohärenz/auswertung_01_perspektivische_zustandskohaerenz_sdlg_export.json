@@ -1,0 +1,73 @@
+{
+  "auswertung": "01_perspektivische_zustandskohaerenz_sdlg",
+  "korrektur": "Lehrkraftbasis ist frzk_semantische_dichte_lehrer_gesamt unter Berücksichtigung von analyze_lehrkraftdaten.",
+  "parameter": {
+    "max_day_window": 3,
+    "sdlg_type": 2,
+    "dimensions": [
+      "kognition",
+      "sozial",
+      "affektiv",
+      "motivation",
+      "methodik",
+      "performanz",
+      "regulation"
+    ]
+  },
+  "datasets": {
+    "alle_lehrkraefte": {
+      "name": "alle_lehrkraefte",
+      "source_teacher": "frzk_semantische_dichte_lehrer_gesamt joined analyze_lehrkraftdaten",
+      "sdlg_type": 2,
+      "summary": {
+        "n_matches": 0,
+        "distance_mean": null,
+        "distance_median": null,
+        "distance_min": null,
+        "distance_max": null,
+        "cosine_mean": null,
+        "cosine_median": null,
+        "dominance_match_rate": null,
+        "polarity_match_rate": null,
+        "matches_by_delta_days": {}
+      },
+      "matches": []
+    },
+    "lehrkraft_1": {
+      "name": "lehrkraft_1",
+      "source_teacher": "frzk_semantische_dichte_lehrer_gesamt joined analyze_lehrkraftdaten",
+      "sdlg_type": 2,
+      "summary": {
+        "n_matches": 0,
+        "distance_mean": null,
+        "distance_median": null,
+        "distance_min": null,
+        "distance_max": null,
+        "cosine_mean": null,
+        "cosine_median": null,
+        "dominance_match_rate": null,
+        "polarity_match_rate": null,
+        "matches_by_delta_days": {}
+      },
+      "matches": []
+    },
+    "ohne_lehrkraft_1": {
+      "name": "ohne_lehrkraft_1",
+      "source_teacher": "frzk_semantische_dichte_lehrer_gesamt joined analyze_lehrkraftdaten",
+      "sdlg_type": 2,
+      "summary": {
+        "n_matches": 0,
+        "distance_mean": null,
+        "distance_median": null,
+        "distance_min": null,
+        "distance_max": null,
+        "cosine_mean": null,
+        "cosine_median": null,
+        "dominance_match_rate": null,
+        "polarity_match_rate": null,
+        "matches_by_delta_days": {}
+      },
+      "matches": []
+    }
+  }
+}

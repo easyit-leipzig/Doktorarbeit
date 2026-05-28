@@ -1,0 +1,14 @@
+{
+  "n": 0,
+  "distance_mean": null,
+  "distance_median": null,
+  "distance_min": null,
+  "distance_max": null,
+  "cosine_mean": null,
+  "cosine_median": null,
+  "dominance_match_rate": null,
+  "polarity_match_rate": null,
+  "distance_classes": {},
+  "distance_by_delta": {},
+  "dominance_pairs_top15": []
+}

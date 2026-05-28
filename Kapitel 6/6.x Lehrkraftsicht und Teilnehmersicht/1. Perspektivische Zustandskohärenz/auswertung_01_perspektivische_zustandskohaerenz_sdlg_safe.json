@@ -1,0 +1,101 @@
+{
+  "auswertung": "01_perspektivische_zustandskohaerenz_sdlg_safe",
+  "lehrkraftbasis": "frzk_semantische_dichte_lehrer_gesamt + analyze_lehrkraftdaten",
+  "matching_hart": [
+    "gruppe_id",
+    "teilnehmer_id",
+    "datum ± 3 Tage"
+  ],
+  "matching_nicht_hart": [
+    "ue_id",
+    "dominante_dimension",
+    "polaritaet_gesamt"
+  ],
+  "parameter": {
+    "sdlg_type": 2,
+    "max_day_window": 3,
+    "dimensions": [
+      "kognition",
+      "sozial",
+      "affektiv",
+      "motivation",
+      "methodik",
+      "performanz",
+      "regulation"
+    ]
+  },
+  "datasets": {
+    "alle_lehrkraefte": {
+      "name": "alle_lehrkraefte",
+      "diagnose": {
+        "teacher_rows": 0,
+        "participant_rows": 335,
+        "same_group_candidates": 0,
+        "same_participant_candidates": 0,
+        "inside_time_window": 0,
+        "matches": 0,
+        "ue_equal": 0,
+        "ue_different": 0,
+        "ue_missing": 0
+      },
+      "summary": {
+        "n_matches": 0,
+        "distance_mean": null,
+        "distance_median": null,
+        "cosine_mean": null,
+        "cosine_median": null,
+        "dominance_match_rate": null,
+        "polarity_match_rate": null
+      },
+      "matches": []
+    },
+    "lehrkraft_1": {
+      "name": "lehrkraft_1",
+      "diagnose": {
+        "teacher_rows": 0,
+        "participant_rows": 335,
+        "same_group_candidates": 0,
+        "same_participant_candidates": 0,
+        "inside_time_window": 0,
+        "matches": 0,
+        "ue_equal": 0,
+        "ue_different": 0,
+        "ue_missing": 0
+      },
+      "summary": {
+        "n_matches": 0,
+        "distance_mean": null,
+        "distance_median": null,
+        "cosine_mean": null,
+        "cosine_median": null,
+        "dominance_match_rate": null,
+        "polarity_match_rate": null
+      },
+      "matches": []
+    },
+    "ohne_lehrkraft_1": {
+      "name": "ohne_lehrkraft_1",
+      "diagnose": {
+        "teacher_rows": 0,
+        "participant_rows": 335,
+        "same_group_candidates": 0,
+        "same_participant_candidates": 0,
+        "inside_time_window": 0,
+        "matches": 0,
+        "ue_equal": 0,
+        "ue_different": 0,
+        "ue_missing": 0
+      },
+      "summary": {
+        "n_matches": 0,
+        "distance_mean": null,
+        "distance_median": null,
+        "cosine_mean": null,
+        "cosine_median": null,
+        "dominance_match_rate": null,
+        "polarity_match_rate": null
+      },
+      "matches": []
+    }
+  }
+}

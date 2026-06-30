@@ -1,0 +1,27 @@
+6.x.6 Drift- und Varianzkorrelationen – automatischer Auswertungsbericht
+==============================================================================
+Datensätze: 282
+Teilnehmer: 27 | Gruppen: 10
+
+Zentrale Kennwerte
+Mittlere Lehrkraftvarianz: 0.0157
+Mittlere Teilnehmerdrift: 3.2284
+Mittlere Emotionsambivalenz: 0.0804
+Anteil markierter Übergangsphasen oberes Quartil: 25.18%
+
+Stärkste Korrelationen
+- dominanz_breite → semantische_instabilitaet: Pearson r=0.9222, Spearman ρ=0.9093, n=282
+- semantische_breite → uebergangsindex: Pearson r=0.8022, Spearman ρ=0.6120, n=282
+- lehrkraft_varianz_mean → uebergangsindex: Pearson r=0.7800, Spearman ρ=0.6120, n=282
+- var_methodik → uebergangsindex: Pearson r=0.7582, Spearman ρ=0.5415, n=282
+- var_motivation → uebergangsindex: Pearson r=0.7512, Spearman ρ=0.5711, n=282
+- var_kognition → uebergangsindex: Pearson r=0.7493, Spearman ρ=0.5680, n=282
+- lehrkraft_varianz_max → uebergangsindex: Pearson r=0.7444, Spearman ρ=0.5941, n=282
+- var_performanz → uebergangsindex: Pearson r=0.6887, Spearman ρ=0.3363, n=282
+- var_regulation → uebergangsindex: Pearson r=0.6662, Spearman ρ=0.3872, n=282
+- var_affektiv → uebergangsindex: Pearson r=0.6557, Spearman ρ=0.4411, n=282
+- d_semantisch_std → semantische_instabilitaet: Pearson r=0.5318, Spearman ρ=0.5354, n=282
+- d_semantisch_std → uebergangsindex: Pearson r=0.4045, Spearman ρ=0.5069, n=282
+
+Interpretationsregel
+Positive Korrelationen zwischen Varianzmaßen und Teilnehmerdrift/Emotionsambivalenz sprechen für Destabilisierungs- oder Übergangsprozesse; negative Korrelationen sprechen für Dämpfung bzw. Stabilisierung.

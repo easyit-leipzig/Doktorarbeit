@@ -1,0 +1,101 @@
+[
+    {
+        "id": 1,
+        "gruppe_id": 1,
+        "zeitpunkt": "2026-02-02",
+        "reflexionsgrad": 0.81076344620633,
+        "meta_kohaerenz": 0.92227511038368,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.73642233675477,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.8108; Meta-Kohärenz=0.9223; Stabilität=0.7364; Driftvarianz=0.0843"
+    },
+    {
+        "id": 2,
+        "gruppe_id": 2,
+        "zeitpunkt": "2026-02-02",
+        "reflexionsgrad": 0.87894919182898,
+        "meta_kohaerenz": 0.98033432243001,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.81135910476163,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.8789; Meta-Kohärenz=0.9803; Stabilität=0.8114; Driftvarianz=0.0201"
+    },
+    {
+        "id": 3,
+        "gruppe_id": 3,
+        "zeitpunkt": "2025-11-25",
+        "reflexionsgrad": 0.79121531986873,
+        "meta_kohaerenz": 0.91709424711204,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.70729603503986,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.7912; Meta-Kohärenz=0.9171; Stabilität=0.7073; Driftvarianz=0.0904"
+    },
+    {
+        "id": 4,
+        "gruppe_id": 4,
+        "zeitpunkt": "2026-02-03",
+        "reflexionsgrad": 0.79785476201775,
+        "meta_kohaerenz": 0.90105296530468,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.72905595982645,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.7979; Meta-Kohärenz=0.9011; Stabilität=0.7291; Driftvarianz=0.1098"
+    },
+    {
+        "id": 5,
+        "gruppe_id": 5,
+        "zeitpunkt": "2026-02-04",
+        "reflexionsgrad": 0.79808737775547,
+        "meta_kohaerenz": 0.86610661738772,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.75274121800064,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.7981; Meta-Kohärenz=0.8661; Stabilität=0.7527; Driftvarianz=0.1546"
+    },
+    {
+        "id": 6,
+        "gruppe_id": 6,
+        "zeitpunkt": "2025-12-10",
+        "reflexionsgrad": 0.83660871005991,
+        "meta_kohaerenz": 0.97231607215564,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.74613713532942,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.8366; Meta-Kohärenz=0.9723; Stabilität=0.7461; Driftvarianz=0.0285"
+    },
+    {
+        "id": 7,
+        "gruppe_id": 7,
+        "zeitpunkt": "2025-12-11",
+        "reflexionsgrad": 0.82566046280316,
+        "meta_kohaerenz": 0.95389842209887,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.74016848993935,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.8257; Meta-Kohärenz=0.9539; Stabilität=0.7402; Driftvarianz=0.0483"
+    },
+    {
+        "id": 8,
+        "gruppe_id": 8,
+        "zeitpunkt": "2026-02-05",
+        "reflexionsgrad": 0.85844850589968,
+        "meta_kohaerenz": 0.96861779739788,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.78500231156755,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.8584; Meta-Kohärenz=0.9686; Stabilität=0.7850; Driftvarianz=0.0324"
+    },
+    {
+        "id": 9,
+        "gruppe_id": 9,
+        "zeitpunkt": "2026-01-16",
+        "reflexionsgrad": 0.89014722825293,
+        "meta_kohaerenz": 0.98543729867484,
+        "selbstbezug_index": 0,
+        "stabilitaet": 0.82662051463832,
+        "marker": "hoch",
+        "bemerkung": "Reflexionsgrad=0.8901; Meta-Kohärenz=0.9854; Stabilität=0.8266; Driftvarianz=0.0148"
+    }
+]

@@ -1,0 +1,50 @@
+6.x.3 Dominanzstrukturen – Teilnehmersicht
+================================================
+
+Datengrundlage: 326 Teilnehmerzustände aus frzk_semantische_dichte_teilnehmer_7d.
+Teilnehmer: 28 | Gruppen: 9 | Lehrkraftunterscheidung: nein.
+
+1. Gesamtverteilung der dominanten Dimensionen
+   - kognition: 16 Zustände (4.9 %)
+   - sozial: 39 Zustände (12.0 %)
+   - affektiv: 94 Zustände (28.8 %)
+   - motivation: 54 Zustände (16.6 %)
+   - methodik: 88 Zustände (27.0 %)
+   - performanz: 3 Zustände (0.9 %)
+   - regulation: 32 Zustände (9.8 %)
+   Hauptbefund: Die häufigste Dominanzdimension ist 'affektiv' mit 94 Zuständen.
+
+2. Stärke der Dominanz
+   - Mittlere absolute Dominanz: 0.8897
+   - Streuung der Dominanz: 0.1565
+   - Mittlere Lücke zur zweitstärksten Dimension: 0.4546
+   Interpretation: Eine große Lücke zeigt klar profilierte Zustände; eine kleine Lücke spricht für diffuse oder mehrdimensionale Zustände.
+
+3. Gruppenbezogene Dominanzmuster
+   - Gruppe 1: häufigste Dominanz 'methodik' (7/28; 25.0 %)
+   - Gruppe 2: häufigste Dominanz 'methodik' (18/47; 38.3 %)
+   - Gruppe 3: häufigste Dominanz 'affektiv' (3/7; 42.9 %)
+   - Gruppe 4: häufigste Dominanz 'methodik' (13/46; 28.3 %)
+   - Gruppe 5: häufigste Dominanz 'affektiv' (16/38; 42.1 %)
+   - Gruppe 6: häufigste Dominanz 'methodik' (14/39; 35.9 %)
+   - Gruppe 7: häufigste Dominanz 'affektiv' (12/34; 35.3 %)
+   - Gruppe 8: häufigste Dominanz 'methodik' (17/53; 32.1 %)
+   - Gruppe 9: häufigste Dominanz 'affektiv' (11/34; 32.4 %)
+
+4. Dominanzwechsel
+   - Dominanzwechsel gesamt: 200
+   - Anteil bezogen auf alle Zustände: 61.3 %
+   Interpretation: Häufige Dominanzwechsel deuten auf dynamische, möglicherweise instabile oder suchende Lernzustände hin.
+
+5. Bezug zu den Leitfragen
+   - Kognitive Dominanz: hoher Anteil 'kognition' spricht für erkenntnis- und verstehensorientierte Lernzustände.
+   - Affektive Dominanz: hoher Anteil 'affektiv' verweist auf emotionale Färbung, Irritation oder Zustimmung im Lernprozess.
+   - Motivationale Dominanz: hoher Anteil 'motivation' zeigt Zustände, in denen Antrieb, Interesse oder Widerstand strukturprägend werden.
+   - Regulatorische Dominanz: hoher Anteil 'regulation' zeigt Selbststeuerung, Konzentration, Vorbereitung und Ordnung als tragende Dimensionen.
+
+Erzeugte Grafiken:
+   - 6x3_dominante_dimensionen_anteile.png
+   - 6x3_dominante_dimensionen_haeufigkeit.png
+   - 6x3_dominanzanteile_je_gruppe_heatmap.png
+   - 6x3_dominanzanteile_zeitverlauf.png
+   - 6x3_dominanzstaerke_nach_dimension.png

@@ -1,0 +1,26 @@
+6.x.24 Kontrafaktische Lehrkraftprofilwirkung auf gruppendynamische Stabilität
+==============================================================================
+
+1. Datenbasis
+- Profil Lehrkraft 1: n=374
+- Profil andere Lehrkraft: n=201
+- Gruppenzeitpunkte: n=94
+
+2. Gruppenzusammenfassung
+- Gruppe 5: ΔDistanz=0.0238, D(LK1)=2.2428, D(andere)=2.2667, Dynamik=0.2699, Stabilität=0.9568, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'niedrig': 8, 'mittel': 2, 'hoch': 1}
+- Gruppe 6: ΔDistanz=0.0174, D(LK1)=2.0556, D(andere)=2.0730, Dynamik=0.2928, Stabilität=0.9464, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'niedrig': 7, 'mittel': 3}
+- Gruppe 10: ΔDistanz=0.0045, D(LK1)=1.2283, D(andere)=1.2328, Dynamik=0.0000, Stabilität=0.0000, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'mittel': 1}
+- Gruppe 9: ΔDistanz=0.0005, D(LK1)=2.4872, D(andere)=2.4877, Dynamik=0.1230, Stabilität=0.9681, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'niedrig': 9}
+- Gruppe 8: ΔDistanz=0.0005, D(LK1)=2.3009, D(andere)=2.3014, Dynamik=0.2280, Stabilität=0.9092, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'niedrig': 6, 'mittel': 6}
+- Gruppe 2: ΔDistanz=-0.0110, D(LK1)=2.1675, D(andere)=2.1565, Dynamik=0.1576, Stabilität=0.9157, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'niedrig': 9, 'mittel': 1}
+- Gruppe 7: ΔDistanz=-0.0113, D(LK1)=1.9881, D(andere)=1.9769, Dynamik=0.3618, Stabilität=0.9011, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'niedrig': 8, 'mittel': 3}
+- Gruppe 1: ΔDistanz=-0.0133, D(LK1)=2.1287, D(andere)=2.1154, Dynamik=0.2604, Stabilität=0.9588, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'niedrig': 10, 'mittel': 2}
+- Gruppe 3: ΔDistanz=-0.0202, D(LK1)=1.8504, D(andere)=1.8301, Dynamik=0.3357, Stabilität=0.9468, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'niedrig': 6, 'mittel': 1}
+- Gruppe 4: ΔDistanz=-0.0247, D(LK1)=2.6062, D(andere)=2.5815, Dynamik=0.3270, Stabilität=0.9481, Bindung=profilrobust / geringe Distanzdifferenz, Risiko={'mittel': 6, 'niedrig': 4, 'hoch': 1}
+
+3. Interpretation
+Ein positives ΔDistanz bedeutet, dass die jeweilige Gruppendynamik näher am Profil von Lehrkraft 1 liegt als am kontrafaktischen Profil anderer Lehrkräfte. Dadurch wird keine reale Wirkung anderer Lehrkräfte behauptet, sondern eine Profilanfälligkeit des Gruppensystems modelliert.
+Gruppen mit mindestens einem hohen Risikopunkt: 5, 4.
+
+4. Methodischer Hinweis
+Da frzk_group_emotion keine vollständigen 7D-Gruppenvektoren enthält, wird ein 7D-Proxy aus affektivem Zustand, Kohärenz, Stabilität und Dynamik gebildet. Sobald echte gruppensemantische 7D-Werte vorliegen, sollte der Proxy durch diese Werte ersetzt werden.

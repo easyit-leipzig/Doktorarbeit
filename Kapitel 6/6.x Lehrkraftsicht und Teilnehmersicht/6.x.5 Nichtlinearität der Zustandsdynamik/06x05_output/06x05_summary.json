@@ -1,0 +1,13 @@
+{
+  "anzahl_datensaetze": 282,
+  "mittelwert_nichtlinearitaets_index": 8.423366164249009,
+  "median_nichtlinearitaets_index": 6.267197972607807,
+  "maximum_nichtlinearitaets_index": 41.165772567249945,
+  "mittelwert_emotion_count": 4.836879432624113,
+  "mittelwert_ambivalenz_index": 0.723404255319149,
+  "mittelwert_semantische_breite": 0.27044667005036216,
+  "mittelwert_dominanz_breite": 2.549645390070922,
+  "mittelwert_var_affektiv": 0.012131883913972755,
+  "mittelwert_var_motivation": 0.013669498732431971,
+  "mittelwert_var_regulation": 0.017189033538056335
+}

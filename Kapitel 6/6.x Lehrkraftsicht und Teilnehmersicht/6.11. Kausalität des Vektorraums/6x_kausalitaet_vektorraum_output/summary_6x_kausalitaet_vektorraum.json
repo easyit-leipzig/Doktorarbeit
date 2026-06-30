@@ -1,0 +1,440 @@
+{
+  "input": "6x_kausalitaet_vektorraum_export.json",
+  "scopes": {
+    "alle": {
+      "scope": "alle",
+      "lag_metrics": [
+        {
+          "lag": 0,
+          "n_pairs": 272,
+          "cosine_mean": 0.6498323885443915,
+          "cosine_std": 0.3661678691568527,
+          "distance_mean": 0.8262243635658143,
+          "dominance_accuracy": 0.04044117647058824,
+          "polarity_accuracy": 0.9485294117647058
+        },
+        {
+          "lag": 1,
+          "n_pairs": 245,
+          "cosine_mean": 0.6630959701653213,
+          "cosine_std": 0.35576836787282434,
+          "distance_mean": 0.8196052134618366,
+          "dominance_accuracy": 0.036734693877551024,
+          "polarity_accuracy": 0.9510204081632653
+        },
+        {
+          "lag": 2,
+          "n_pairs": 219,
+          "cosine_mean": 0.6682957562170377,
+          "cosine_std": 0.35794175231641007,
+          "distance_mean": 0.8132570746892739,
+          "dominance_accuracy": 0.0502283105022831,
+          "polarity_accuracy": 0.954337899543379
+        },
+        {
+          "lag": 3,
+          "n_pairs": 195,
+          "cosine_mean": 0.663319041585293,
+          "cosine_std": 0.36756182946467764,
+          "distance_mean": 0.8197176791464537,
+          "dominance_accuracy": 0.05641025641025641,
+          "polarity_accuracy": 0.9538461538461539
+        }
+      ],
+      "permutation": [
+        {
+          "lag": 0,
+          "n_pairs": 272,
+          "n_permutations": 1000,
+          "real_cosine_mean": 0.6498323885443915,
+          "null_cosine_mean": 0.65252592007955,
+          "null_p95": 0.6563924807404542,
+          "null_p99": 0.658487124179115,
+          "z_score": -1.268967849477248,
+          "p_value_right_tail": 0.9270729270729271
+        },
+        {
+          "lag": 1,
+          "n_pairs": 245,
+          "n_permutations": 1000,
+          "real_cosine_mean": 0.6630959701653213,
+          "null_cosine_mean": 0.664356235699699,
+          "null_p95": 0.6683325121608327,
+          "null_p99": 0.6719606223196626,
+          "z_score": -0.5604239229272128,
+          "p_value_right_tail": 0.7002997002997003
+        },
+        {
+          "lag": 2,
+          "n_pairs": 219,
+          "n_permutations": 1000,
+          "real_cosine_mean": 0.6682957562170377,
+          "null_cosine_mean": 0.6700256316284416,
+          "null_p95": 0.6749794953262764,
+          "null_p99": 0.6787253973466837,
+          "z_score": -0.6623125642621028,
+          "p_value_right_tail": 0.7432567432567433
+        },
+        {
+          "lag": 3,
+          "n_pairs": 195,
+          "n_permutations": 1000,
+          "real_cosine_mean": 0.663319041585293,
+          "null_cosine_mean": 0.6641094610604372,
+          "null_p95": 0.6698979765382478,
+          "null_p99": 0.673617407411265,
+          "z_score": -0.26660318722452697,
+          "p_value_right_tail": 0.5464535464535465
+        }
+      ],
+      "prediction": [
+        {
+          "lag": 1,
+          "n": 245,
+          "train_n": 183,
+          "test_n": 62,
+          "target": "mittlere normalisierte Teilnehmerzustandssignatur t+n",
+          "FRZK_model": {
+            "MAE": 0.17086061307705272,
+            "RMSE": 0.21095032430833072,
+            "R2": -0.2654477746442634,
+            "corr_pred_observed": -0.01929375372565451
+          },
+          "ratings_model": {
+            "MAE": 0.2760086639931061,
+            "RMSE": 0.3253923857183091,
+            "R2": -2.0109157525598693,
+            "corr_pred_observed": 0.3465470121982939
+          },
+          "baseline_model": {
+            "MAE": 0.1518634635239606,
+            "RMSE": 0.1903257672938225,
+            "R2": -0.030099106041824752,
+            "corr_pred_observed": null
+          }
+        },
+        {
+          "lag": 2,
+          "n": 219,
+          "train_n": 164,
+          "test_n": 55,
+          "target": "mittlere normalisierte Teilnehmerzustandssignatur t+n",
+          "FRZK_model": {
+            "MAE": 0.18876229197165667,
+            "RMSE": 0.23090848752091958,
+            "R2": -0.5477269996168415,
+            "corr_pred_observed": 0.1434402672322274
+          },
+          "ratings_model": {
+            "MAE": 0.2611912216353645,
+            "RMSE": 0.3269940572763116,
+            "R2": -2.103803978541242,
+            "corr_pred_observed": 0.2742814495936701
+          },
+          "baseline_model": {
+            "MAE": 0.149973075704783,
+            "RMSE": 0.18809215375338245,
+            "R2": -0.026965666061780746,
+            "corr_pred_observed": null
+          }
+        },
+        {
+          "lag": 3,
+          "n": 195,
+          "train_n": 146,
+          "test_n": 49,
+          "target": "mittlere normalisierte Teilnehmerzustandssignatur t+n",
+          "FRZK_model": {
+            "MAE": 0.17773557958540676,
+            "RMSE": 0.2139959709630681,
+            "R2": -0.2633471792829334,
+            "corr_pred_observed": -0.09436363098892385
+          },
+          "ratings_model": {
+            "MAE": 0.2642271410906227,
+            "RMSE": 0.32549587925905366,
+            "R2": -1.9228229669601347,
+            "corr_pred_observed": 0.15878571648618628
+          },
+          "baseline_model": {
+            "MAE": 0.15214864810895004,
+            "RMSE": 0.1923681948099565,
+            "R2": -0.020887910310289026,
+            "corr_pred_observed": null
+          }
+        }
+      ],
+      "report": "6x_kausalitaet_vektorraum_output\\alle\\bericht_6x_kausalitaet_vektorraum.md"
+    },
+    "lehrkraft_1": {
+      "scope": "lehrkraft_1",
+      "lag_metrics": [
+        {
+          "lag": 0,
+          "n_pairs": 272,
+          "cosine_mean": 0.6498323885443915,
+          "cosine_std": 0.3661678691568527,
+          "distance_mean": 0.8262243635658143,
+          "dominance_accuracy": 0.04044117647058824,
+          "polarity_accuracy": 0.9485294117647058
+        },
+        {
+          "lag": 1,
+          "n_pairs": 245,
+          "cosine_mean": 0.6630959701653213,
+          "cosine_std": 0.35576836787282434,
+          "distance_mean": 0.8196052134618366,
+          "dominance_accuracy": 0.036734693877551024,
+          "polarity_accuracy": 0.9510204081632653
+        },
+        {
+          "lag": 2,
+          "n_pairs": 219,
+          "cosine_mean": 0.6682957562170377,
+          "cosine_std": 0.35794175231641007,
+          "distance_mean": 0.8132570746892739,
+          "dominance_accuracy": 0.0502283105022831,
+          "polarity_accuracy": 0.954337899543379
+        },
+        {
+          "lag": 3,
+          "n_pairs": 195,
+          "cosine_mean": 0.663319041585293,
+          "cosine_std": 0.36756182946467764,
+          "distance_mean": 0.8197176791464537,
+          "dominance_accuracy": 0.05641025641025641,
+          "polarity_accuracy": 0.9538461538461539
+        }
+      ],
+      "permutation": [
+        {
+          "lag": 0,
+          "n_pairs": 272,
+          "n_permutations": 1000,
+          "real_cosine_mean": 0.6498323885443915,
+          "null_cosine_mean": 0.65252592007955,
+          "null_p95": 0.6563924807404542,
+          "null_p99": 0.658487124179115,
+          "z_score": -1.268967849477248,
+          "p_value_right_tail": 0.9270729270729271
+        },
+        {
+          "lag": 1,
+          "n_pairs": 245,
+          "n_permutations": 1000,
+          "real_cosine_mean": 0.6630959701653213,
+          "null_cosine_mean": 0.664356235699699,
+          "null_p95": 0.6683325121608327,
+          "null_p99": 0.6719606223196626,
+          "z_score": -0.5604239229272128,
+          "p_value_right_tail": 0.7002997002997003
+        },
+        {
+          "lag": 2,
+          "n_pairs": 219,
+          "n_permutations": 1000,
+          "real_cosine_mean": 0.6682957562170377,
+          "null_cosine_mean": 0.6700256316284416,
+          "null_p95": 0.6749794953262764,
+          "null_p99": 0.6787253973466837,
+          "z_score": -0.6623125642621028,
+          "p_value_right_tail": 0.7432567432567433
+        },
+        {
+          "lag": 3,
+          "n_pairs": 195,
+          "n_permutations": 1000,
+          "real_cosine_mean": 0.663319041585293,
+          "null_cosine_mean": 0.6641094610604372,
+          "null_p95": 0.6698979765382478,
+          "null_p99": 0.673617407411265,
+          "z_score": -0.26660318722452697,
+          "p_value_right_tail": 0.5464535464535465
+        }
+      ],
+      "prediction": [
+        {
+          "lag": 1,
+          "n": 245,
+          "train_n": 183,
+          "test_n": 62,
+          "target": "mittlere normalisierte Teilnehmerzustandssignatur t+n",
+          "FRZK_model": {
+            "MAE": 0.17086061307705272,
+            "RMSE": 0.21095032430833072,
+            "R2": -0.2654477746442634,
+            "corr_pred_observed": -0.01929375372565451
+          },
+          "ratings_model": {
+            "MAE": 0.2760086639931061,
+            "RMSE": 0.3253923857183091,
+            "R2": -2.0109157525598693,
+            "corr_pred_observed": 0.3465470121982939
+          },
+          "baseline_model": {
+            "MAE": 0.1518634635239606,
+            "RMSE": 0.1903257672938225,
+            "R2": -0.030099106041824752,
+            "corr_pred_observed": null
+          }
+        },
+        {
+          "lag": 2,
+          "n": 219,
+          "train_n": 164,
+          "test_n": 55,
+          "target": "mittlere normalisierte Teilnehmerzustandssignatur t+n",
+          "FRZK_model": {
+            "MAE": 0.18876229197165667,
+            "RMSE": 0.23090848752091958,
+            "R2": -0.5477269996168415,
+            "corr_pred_observed": 0.1434402672322274
+          },
+          "ratings_model": {
+            "MAE": 0.2611912216353645,
+            "RMSE": 0.3269940572763116,
+            "R2": -2.103803978541242,
+            "corr_pred_observed": 0.2742814495936701
+          },
+          "baseline_model": {
+            "MAE": 0.149973075704783,
+            "RMSE": 0.18809215375338245,
+            "R2": -0.026965666061780746,
+            "corr_pred_observed": null
+          }
+        },
+        {
+          "lag": 3,
+          "n": 195,
+          "train_n": 146,
+          "test_n": 49,
+          "target": "mittlere normalisierte Teilnehmerzustandssignatur t+n",
+          "FRZK_model": {
+            "MAE": 0.17773557958540676,
+            "RMSE": 0.2139959709630681,
+            "R2": -0.2633471792829334,
+            "corr_pred_observed": -0.09436363098892385
+          },
+          "ratings_model": {
+            "MAE": 0.2642271410906227,
+            "RMSE": 0.32549587925905366,
+            "R2": -1.9228229669601347,
+            "corr_pred_observed": 0.15878571648618628
+          },
+          "baseline_model": {
+            "MAE": 0.15214864810895004,
+            "RMSE": 0.1923681948099565,
+            "R2": -0.020887910310289026,
+            "corr_pred_observed": null
+          }
+        }
+      ],
+      "report": "6x_kausalitaet_vektorraum_output\\lehrkraft_1\\bericht_6x_kausalitaet_vektorraum.md"
+    },
+    "ohne_lehrkraft_1": {
+      "scope": "ohne_lehrkraft_1",
+      "lag_metrics": [
+        {
+          "lag": 0,
+          "n_pairs": 0,
+          "cosine_mean": null,
+          "cosine_std": null,
+          "distance_mean": null,
+          "dominance_accuracy": null,
+          "polarity_accuracy": null
+        },
+        {
+          "lag": 1,
+          "n_pairs": 0,
+          "cosine_mean": null,
+          "cosine_std": null,
+          "distance_mean": null,
+          "dominance_accuracy": null,
+          "polarity_accuracy": null
+        },
+        {
+          "lag": 2,
+          "n_pairs": 0,
+          "cosine_mean": null,
+          "cosine_std": null,
+          "distance_mean": null,
+          "dominance_accuracy": null,
+          "polarity_accuracy": null
+        },
+        {
+          "lag": 3,
+          "n_pairs": 0,
+          "cosine_mean": null,
+          "cosine_std": null,
+          "distance_mean": null,
+          "dominance_accuracy": null,
+          "polarity_accuracy": null
+        }
+      ],
+      "permutation": [
+        {
+          "lag": 0,
+          "n_pairs": 0,
+          "n_permutations": 0,
+          "real_cosine_mean": null,
+          "null_cosine_mean": null,
+          "null_p95": null,
+          "null_p99": null,
+          "z_score": null,
+          "p_value_right_tail": null
+        },
+        {
+          "lag": 1,
+          "n_pairs": 0,
+          "n_permutations": 0,
+          "real_cosine_mean": null,
+          "null_cosine_mean": null,
+          "null_p95": null,
+          "null_p99": null,
+          "z_score": null,
+          "p_value_right_tail": null
+        },
+        {
+          "lag": 2,
+          "n_pairs": 0,
+          "n_permutations": 0,
+          "real_cosine_mean": null,
+          "null_cosine_mean": null,
+          "null_p95": null,
+          "null_p99": null,
+          "z_score": null,
+          "p_value_right_tail": null
+        },
+        {
+          "lag": 3,
+          "n_pairs": 0,
+          "n_permutations": 0,
+          "real_cosine_mean": null,
+          "null_cosine_mean": null,
+          "null_p95": null,
+          "null_p99": null,
+          "z_score": null,
+          "p_value_right_tail": null
+        }
+      ],
+      "prediction": [
+        {
+          "lag": 1,
+          "n": 0,
+          "error": "Zu wenige Datenpunkte für Vorhersagevergleich."
+        },
+        {
+          "lag": 2,
+          "n": 0,
+          "error": "Zu wenige Datenpunkte für Vorhersagevergleich."
+        },
+        {
+          "lag": 3,
+          "n": 0,
+          "error": "Zu wenige Datenpunkte für Vorhersagevergleich."
+        }
+      ],
+      "report": "6x_kausalitaet_vektorraum_output\\ohne_lehrkraft_1\\bericht_6x_kausalitaet_vektorraum.md"
+    }
+  }
+}

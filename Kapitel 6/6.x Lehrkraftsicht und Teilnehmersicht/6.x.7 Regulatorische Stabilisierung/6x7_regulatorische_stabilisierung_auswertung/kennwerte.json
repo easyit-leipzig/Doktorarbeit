@@ -1,0 +1,11 @@
+{
+  "n": 282,
+  "regulation_mean": 0.37129613907824643,
+  "regulation_std": 0.07684896627091967,
+  "corr_regulation_emotion_valenz": 0.008857626177687192,
+  "corr_regulation_drift": -0.3459511349315754,
+  "corr_regulation_coherence": 0.7227252907008817,
+  "corr_regulation_ambivalence": 0.06019456421898649,
+  "corr_regulation_semantische_breite": -0.7321980234893409,
+  "corr_regulation_dichte_std": 0.005851205565060925
+}

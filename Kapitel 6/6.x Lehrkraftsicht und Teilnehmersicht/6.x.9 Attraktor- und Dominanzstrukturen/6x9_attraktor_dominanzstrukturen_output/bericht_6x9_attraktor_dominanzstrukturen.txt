@@ -1,0 +1,37 @@
+6.x.9 Attraktor- und Dominanzstrukturen – Auswertungsbericht
+Datengrundlage: 282 gematchte Zustände ohne Lehrkraftunterscheidung.
+1. Dominanzachsen
+                     anzahl  anteil_prozent
+dominante_dimension                        
+kognition               118           41.84
+performanz               99           35.11
+regulation               41           14.54
+2. Häufigste Attraktorzustände (Dominanz|Polarität)
+       zustand  anzahl  anteil_prozent
+ kognition|p=1     118           41.84
+performanz|p=1      98           34.75
+regulation|p=1      41           14.54
+  methodik|p=1      13            4.61
+motivation|p=1      11            3.90
+3. Rekurrenz der Attraktoren
+dominante_dimension   n  mittlere_kosinus_rekurrenz
+         motivation  11                      0.9970
+          kognition 118                      0.9880
+         regulation  41                      0.9868
+4. Interpretation
+Stabile Attraktoren liegen dort vor, wo Dominanzachsen häufig wiederkehren, innerhalb der 7D-Vektoren eine hohe Kosinus-Rekurrenz zeigen und mit konsistenten Teilnehmerreaktionen verbunden sind. Performanzdominanz wird besonders über Leistungs- und Motivationsproxys gelesen, Regulation über Selbstständigkeit/Absprachen/Vorbereitung, Kognition über epistemische Aktivierung und Affektivität über ambivalente bzw. belastete Reaktionsmuster.
+5. Erzeugte Dateien
+- abb_6x9_01_dominanzhaeufigkeit.png
+- abb_6x9_02_dominanz_gruppen_heatmap.png
+- abb_6x9_03_attraktor_zustaende.png
+- abb_6x9_04_dominanz_uebergangsmatrix.png
+- abb_6x9_05_reaktionen_nach_dominanz.png
+- abb_6x9_06_kosinus_rekurrenz.png
+- abb_6x9_07_pca_attraktorraum.png
+- tab_6x9_01_dominanzhaeufigkeit.csv
+- tab_6x9_02_dominanzverteilung_gruppen.csv
+- tab_6x9_03_attraktor_zustaende.csv
+- tab_6x9_04_teilnehmerreaktionen_nach_dominanz.csv
+- tab_6x9_05_dominanz_uebergangsmatrix.csv
+- tab_6x9_06_kosinus_rekurrenz_attraktoren.csv
+- tab_6x9_07_pca_koordinaten.csv

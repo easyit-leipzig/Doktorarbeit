@@ -1,0 +1,10 @@
+6.x.4 Globale semantische Resonanzkopplung
+
+Datenbasis: match_tn_daten_analyze_lehrkraft
+Resonanzmaß: Kosinusähnlichkeit zwischen Teilnehmer-7D-Projektion und Lehrkraft-7D-Gesamtvektor.
+
+lehrkraft_1: n=282, mittlere Kosinusähnlichkeit=0.9434, Bereich=-0.2682–0.9974, mittlere euklidische Distanz=1.1906
+alle: n=282, mittlere Kosinusähnlichkeit=0.9434, Bereich=-0.2682–0.9974, mittlere euklidische Distanz=1.1906
+
+Interpretation:
+Hohe Kosinusähnlichkeiten zeigen eine starke Richtungsähnlichkeit der semantischen Zustandsräume. Für die Dissertation ist besonders der Vergleich zwischen allen Fällen, lehrkraft_id=1 und allen übrigen Lehrkräften relevant. Bleibt die Resonanz in allen Teilmengen hoch, spricht dies nicht nur für einen Einzelfalleffekt, sondern für eine strukturierte semantische Kopplung zwischen Lehrkraft- und Teilnehmerraum.

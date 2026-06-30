@@ -1,0 +1,4 @@
+﻿lag;n;FRZK_MAE;FRZK_RMSE;FRZK_R2;FRZK_corr;ratings_MAE;ratings_RMSE;ratings_R2;ratings_corr;baseline_MAE;baseline_RMSE;baseline_R2;baseline_corr;error
+1;0;;;;;;;;;;;;;Zu wenige Datenpunkte für Vorhersagevergleich.
+2;0;;;;;;;;;;;;;Zu wenige Datenpunkte für Vorhersagevergleich.
+3;0;;;;;;;;;;;;;Zu wenige Datenpunkte für Vorhersagevergleich.

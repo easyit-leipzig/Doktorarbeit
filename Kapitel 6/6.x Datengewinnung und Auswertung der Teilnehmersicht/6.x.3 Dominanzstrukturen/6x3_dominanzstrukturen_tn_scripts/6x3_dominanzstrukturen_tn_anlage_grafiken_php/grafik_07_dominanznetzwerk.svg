@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
+<rect width="100%" height="100%" fill="white"/>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#555"/></marker></defs>
+<text x="30" y="35" font-size="22" font-family="Arial">Grafik 7: Dominanznetzwerk der Dimensionsübergänge</text>
+<path d="M580.16512173527,720.29066037073 Q632.35728323784,491.62185990655 684.54944474041,262.95305944238" fill="none" stroke="#555" stroke-width="1.8571428571429" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M684.54944474041,262.95305944238 C754.54944474041,192.95305944238 774.54944474041,332.95305944238 684.54944474041,262.95305944238" fill="none" stroke="#555" stroke-width="1.8571428571429" opacity="0.35" marker-end="url(#arrow)"/>
+<path d="M684.54944474041,262.95305944238 Q450,262.95305944238 215.45055525959,262.95305944238" fill="none" stroke="#555" stroke-width="1.8571428571429" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M215.45055525959,262.95305944238 Q397.80783849743,491.62185990655 580.16512173527,720.29066037073" fill="none" stroke="#555" stroke-width="1.6857142857143" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M215.45055525959,262.95305944238 Q450,262.95305944238 684.54944474041,262.95305944238" fill="none" stroke="#555" stroke-width="2.0285714285714" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M742.47837365455,516.75628018689 C812.47837365455,446.75628018689 832.47837365455,586.75628018689 742.47837365455,516.75628018689" fill="none" stroke="#555" stroke-width="6.3142857142857" opacity="0.35" marker-end="url(#arrow)"/>
+<path d="M742.47837365455,516.75628018689 Q531.15662595964,618.52347027881 319.83487826473,720.29066037073" fill="none" stroke="#555" stroke-width="3.7428571428571" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M319.83487826473,720.29066037073 Q450,720.29066037073 580.16512173527,720.29066037073" fill="none" stroke="#555" stroke-width="2.7142857142857" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M580.16512173527,720.29066037073 Q450,720.29066037073 319.83487826473,720.29066037073" fill="none" stroke="#555" stroke-width="2.5428571428571" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M319.83487826473,720.29066037073 Q531.15662595964,618.52347027881 742.47837365455,516.75628018689" fill="none" stroke="#555" stroke-width="4.4285714285714" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M580.16512173527,720.29066037073 C650.16512173527,650.29066037073 670.16512173527,790.29066037073 580.16512173527,720.29066037073" fill="none" stroke="#555" stroke-width="4.2571428571429" opacity="0.35" marker-end="url(#arrow)"/>
+<path d="M319.83487826473,720.29066037073 C389.83487826473,650.29066037073 409.83487826473,790.29066037073 319.83487826473,720.29066037073" fill="none" stroke="#555" stroke-width="7" opacity="0.35" marker-end="url(#arrow)"/>
+<path d="M742.47837365455,516.75628018689 Q713.51390919748,389.85466981464 684.54944474041,262.95305944238" fill="none" stroke="#555" stroke-width="2.7142857142857" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M684.54944474041,262.95305944238 Q502.19216150257,491.62185990655 319.83487826473,720.29066037073" fill="none" stroke="#555" stroke-width="3.5714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M580.16512173527,720.29066037073 Q661.32174769491,618.52347027881 742.47837365455,516.75628018689" fill="none" stroke="#555" stroke-width="3.2285714285714" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M684.54944474041,262.95305944238 Q632.35728323784,491.62185990655 580.16512173527,720.29066037073" fill="none" stroke="#555" stroke-width="1.1714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M319.83487826473,720.29066037073 Q502.19216150257,491.62185990655 684.54944474041,262.95305944238" fill="none" stroke="#555" stroke-width="2.5428571428571" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M742.47837365455,516.75628018689 Q596.23918682727,333.37814009345 450,150" fill="none" stroke="#555" stroke-width="1.8571428571429" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M450,150 Q596.23918682727,333.37814009345 742.47837365455,516.75628018689" fill="none" stroke="#555" stroke-width="1.6857142857143" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M319.83487826473,720.29066037073 Q267.64271676216,491.62185990655 215.45055525959,262.95305944238" fill="none" stroke="#555" stroke-width="1.5142857142857" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M684.54944474041,262.95305944238 Q713.51390919748,389.85466981464 742.47837365455,516.75628018689" fill="none" stroke="#555" stroke-width="2.3714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M450,150 C520,80 540,220 450,150" fill="none" stroke="#555" stroke-width="1.6857142857143" opacity="0.35" marker-end="url(#arrow)"/>
+<path d="M215.45055525959,262.95305944238 C285.45055525959,192.95305944238 305.45055525959,332.95305944238 215.45055525959,262.95305944238" fill="none" stroke="#555" stroke-width="1.6857142857143" opacity="0.35" marker-end="url(#arrow)"/>
+<path d="M215.45055525959,262.95305944238 Q478.96446445707,389.85466981464 742.47837365455,516.75628018689" fill="none" stroke="#555" stroke-width="2.7142857142857" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M742.47837365455,516.75628018689 Q478.96446445707,389.85466981464 215.45055525959,262.95305944238" fill="none" stroke="#555" stroke-width="2.8857142857143" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M319.83487826473,720.29066037073 Q384.91743913237,435.14533018536 450,150" fill="none" stroke="#555" stroke-width="1.6857142857143" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M450,150 Q332.7252776298,206.47652972119 215.45055525959,262.95305944238" fill="none" stroke="#555" stroke-width="1.6857142857143" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M215.45055525959,262.95305944238 Q267.64271676216,491.62185990655 319.83487826473,720.29066037073" fill="none" stroke="#555" stroke-width="1.6857142857143" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M580.16512173527,720.29066037073 Q397.80783849743,491.62185990655 215.45055525959,262.95305944238" fill="none" stroke="#555" stroke-width="1.5142857142857" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M742.47837365455,516.75628018689 Q661.32174769491,618.52347027881 580.16512173527,720.29066037073" fill="none" stroke="#555" stroke-width="2.8857142857143" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M742.47837365455,516.75628018689 Q450,516.75628018689 157.52162634545,516.75628018689" fill="none" stroke="#555" stroke-width="1.1714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M157.52162634545,516.75628018689 Q238.67825230509,618.52347027881 319.83487826473,720.29066037073" fill="none" stroke="#555" stroke-width="1.3428571428571" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M580.16512173527,720.29066037073 Q515.08256086763,435.14533018536 450,150" fill="none" stroke="#555" stroke-width="1.1714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M319.83487826473,720.29066037073 Q238.67825230509,618.52347027881 157.52162634545,516.75628018689" fill="none" stroke="#555" stroke-width="1.1714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M450,150 Q515.08256086763,435.14533018536 580.16512173527,720.29066037073" fill="none" stroke="#555" stroke-width="1.3428571428571" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M580.16512173527,720.29066037073 Q368.84337404036,618.52347027881 157.52162634545,516.75628018689" fill="none" stroke="#555" stroke-width="1.1714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M157.52162634545,516.75628018689 Q303.76081317273,333.37814009345 450,150" fill="none" stroke="#555" stroke-width="1.1714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<path d="M450,150 Q567.2747223702,206.47652972119 684.54944474041,262.95305944238" fill="none" stroke="#555" stroke-width="1.1714285714286" opacity="0.30" marker-end="url(#arrow)"/>
+<circle cx="450" cy="150" r="35.957446808511" fill="#dddddd" stroke="#555"/>
+<text x="450" y="146" font-size="13" font-family="Arial" text-anchor="middle">kognition</text>
+<text x="450" y="164" font-size="12" font-family="Arial" text-anchor="middle">16</text>
+<circle cx="684.54944474041" cy="262.95305944238" r="44.521276595745" fill="#dddddd" stroke="#555"/>
+<text x="684.54944474041" y="258.95305944238" font-size="13" font-family="Arial" text-anchor="middle">sozial</text>
+<text x="684.54944474041" y="276.95305944238" font-size="12" font-family="Arial" text-anchor="middle">39</text>
+<circle cx="742.47837365455" cy="516.75628018689" r="65" fill="#dddddd" stroke="#555"/>
+<text x="742.47837365455" y="512.75628018689" font-size="13" font-family="Arial" text-anchor="middle">affektiv</text>
+<text x="742.47837365455" y="530.75628018689" font-size="12" font-family="Arial" text-anchor="middle">94</text>
+<circle cx="580.16512173527" cy="720.29066037073" r="50.106382978723" fill="#dddddd" stroke="#555"/>
+<text x="580.16512173527" y="716.29066037073" font-size="13" font-family="Arial" text-anchor="middle">motivation</text>
+<text x="580.16512173527" y="734.29066037073" font-size="12" font-family="Arial" text-anchor="middle">54</text>
+<circle cx="319.83487826473" cy="720.29066037073" r="62.765957446809" fill="#dddddd" stroke="#555"/>
+<text x="319.83487826473" y="716.29066037073" font-size="13" font-family="Arial" text-anchor="middle">methodik</text>
+<text x="319.83487826473" y="734.29066037073" font-size="12" font-family="Arial" text-anchor="middle">88</text>
+<circle cx="157.52162634545" cy="516.75628018689" r="31.117021276596" fill="#dddddd" stroke="#555"/>
+<text x="157.52162634545" y="512.75628018689" font-size="13" font-family="Arial" text-anchor="middle">performanz</text>
+<text x="157.52162634545" y="530.75628018689" font-size="12" font-family="Arial" text-anchor="middle">3</text>
+<circle cx="215.45055525959" cy="262.95305944238" r="41.914893617021" fill="#dddddd" stroke="#555"/>
+<text x="215.45055525959" y="258.95305944238" font-size="13" font-family="Arial" text-anchor="middle">regulation</text>
+<text x="215.45055525959" y="276.95305944238" font-size="12" font-family="Arial" text-anchor="middle">32</text>
+
+</svg>

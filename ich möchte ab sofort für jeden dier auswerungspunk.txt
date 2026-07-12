@@ -43,3 +43,16 @@ nimm deine vorgeschlagenen ergänzungen vor (insbesonder literatur mit nummern i
 \begin{pmatrix}a & b \\c & d\end{pmatrix}
 A= \begin{pmatrix} 0&-1\\ 1&0 \end{pmatrix}
 Ax= \begin{pmatrix} 0\\ 1 \end{pmatrix} 
+
+Die Grundlage steht nun fest:
+
+Literatur [1] bis [22] aus 3.1 sind reserviert.
+Neue Literatur beginnt mit [23].
+Gleichungen (3.1) und (3.2) sind vergeben.
+Die nächste Gleichung ist (3.3).
+Nach jedem abgeschlossenen Abschnitt folgen künftig:
+SQL-Insert für neue Quellen,
+SQL-Insert für Quellenverwendungen,
+SQL-Insert für Gleichungen und Symbole,
+SQL-Insert für Definitionen, Sätze, Lemmata, Korollare, Abbildungen und Tabellen,
+Änderungsprotokoll.

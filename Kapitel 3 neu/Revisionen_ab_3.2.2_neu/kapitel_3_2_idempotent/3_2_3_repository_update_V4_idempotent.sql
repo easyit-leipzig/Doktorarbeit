@@ -1,0 +1,904 @@
+USE `frzk_rkb`;
+SET NAMES utf8mb4;
+START TRANSACTION;
+/* Abschnitt 3.2.3 – vollständige Neufassung V2 – korrigiert
+   Voraussetzung: 3_2_1_reset_und_neufassung_V2_korrigiert.sql und
+   3_2_2_neufassung_repository_update_V2_korrigiert.sql wurden ausgeführt.
+   Quellen [29], [30] vorhanden; [60] Dirichlet neu.
+   Gleichungen (3.42)–(3.64). */
+SET @parent_revision_id := (SELECT `revision_id` FROM `repository_revisions` WHERE `revision_code`='RKB-2026-07-14-K3.2.2-NEUFASSUNG-V2' LIMIT 1);
+INSERT INTO `repository_revisions` (`revision_code`,`revision_date`,`scope_type`,`scope_reference`,`version_label`,`summary`,`created_by`,`parent_revision_id`) VALUES ('RKB-2026-07-14-K3.2.3-NEUFASSUNG-V2',NOW(),'section','3.2.3','2.0','Vollständige Neufassung von Abschnitt 3.2.3 mit modernem Funktionsbegriff, Bild und Urbild, Injektivität, Surjektivität, Bijektivität, Umkehrfunktion, Komposition und Identitätsabbildung.','Olaf Thiele / ChatGPT',@parent_revision_id) ON DUPLICATE KEY UPDATE `revision_id`=LAST_INSERT_ID(`revision_id`),`revision_date`=VALUES(`revision_date`),`summary`=VALUES(`summary`),`parent_revision_id`=VALUES(`parent_revision_id`);
+SET @revision_id:=LAST_INSERT_ID();
+SET @revision_id := COALESCE(@revision_id,(SELECT `revision_id` FROM `repository_revisions` WHERE `scope_reference`='3.2.3' ORDER BY `revision_id` DESC LIMIT 1));
+SET @section_id:=(SELECT `section_id` FROM `dissertation_sections` WHERE `section_code`='3.2.3' LIMIT 1);
+UPDATE `dissertation_sections` SET `title`='Funktionen als mathematische Beschreibung gerichteter Transformationen',`status`='review',`is_original_contribution`=0,`notes`='Vollständige Neufassung V2 mit Quellen [29], [30], [60] und Gleichungen (3.42)–(3.64).' WHERE `section_id`=@section_id;
+INSERT INTO `authors` (`family_name`,`given_names`,`normalized_name`,`birth_year`,`death_year`,`notes`) VALUES ('Dirichlet','Peter Gustav Lejeune','Dirichlet, Peter Gustav Lejeune',1805,1859,'Autor der Primärquelle zum modernen Funktionsbegriff.') ON DUPLICATE KEY UPDATE `author_id`=LAST_INSERT_ID(`author_id`),`notes`=VALUES(`notes`);
+SET @author_dirichlet:=LAST_INSERT_ID();
+INSERT INTO `sources` (`citation_number`,`source_key`,`source_type`,`title`,`year_original`,`year_edition`,`journal`,`volume`,`pages`,`language_code`,`priority`,`evidence_type`,`frzk_relevance`,`verification_status`,`first_citation_section_code`,`first_citation_note`,`full_citation_text`,`short_citation_text`,`notes`,`created_revision_id`) VALUES (60,'dirichlet_functions_1837','journal_article','Über die Darstellung ganz willkürlicher Functionen durch Sinus- und Cosinusreihen',1837,1889,'Repertorium der Physik','1','152–174','de',5,'primary',4,'partially_verified','3.2.3','Erstnennung zur historischen Ablösung des Funktionsbegriffs von einer ausschließlich analytischen Darstellung.','Dirichlet, Peter Gustav Lejeune: Über die Darstellung ganz willkürlicher Functionen durch Sinus- und Cosinusreihen. Repertorium der Physik, Bd. 1, 1837, S. 152–174; wiederabgedruckt in: Dirichlet’s Werke, Bd. 1, Berlin: Georg Reimer, 1889, S. 133–160.','Dirichlet [60]','Primärquelle zum modernen abstrakten Funktionsbegriff.',@revision_id) ON DUPLICATE KEY UPDATE `source_id`=LAST_INSERT_ID(`source_id`),`title`=VALUES(`title`),`full_citation_text`=VALUES(`full_citation_text`),`verification_status`=VALUES(`verification_status`),`created_revision_id`=VALUES(`created_revision_id`);
+SET @source_60_id:=LAST_INSERT_ID();
+INSERT IGNORE INTO `source_authors` (`source_id`,`author_id`,`author_order`,`role`) VALUES (@source_60_id,@author_dirichlet,1,'author');
+SET @source_29_id:=(SELECT `source_id` FROM `sources` WHERE `citation_number`=29 LIMIT 1);
+SET @source_30_id:=(SELECT `source_id` FROM `sources` WHERE `citation_number`=30 LIMIT 1);
+DELETE FROM `annotations` WHERE `source_id`=@source_60_id;
+INSERT INTO `annotations` (`source_id`,`contribution`,`significance_for_dissertation`,`citation_reason`,`adopted_claims`,`limitations`,`scientific_discussion`,`annotation_status`,`reviewed_at`) VALUES (@source_60_id,'Historische Primärquelle zur Ablösung des Funktionsbegriffs von einer einheitlichen analytischen Formel.','Begründet den Übergang zum abstrakten Zuordnungsbegriff in Abschnitt 3.2.3.','Belegt die wissenschaftshistorische Erweiterung des Funktionsbegriffs.','Eine Funktion wird durch die eindeutige Zuordnung von Argumenten zu Werten bestimmt.','Historische Darstellung ohne moderne mengentheoretische Formalisierung.','Die formale Präzisierung erfolgt mit Lang [29] und Rudin [30].','reviewed',NOW());
+DELETE FROM `source_usage` WHERE `section_id`=@section_id;
+INSERT INTO `source_usage` (`source_id`,`section_id`,`usage_type`,`claim_summary`,`exact_location`,`is_first_mention`,`citation_checked`,`notes`,`created_revision_id`) VALUES (@source_60_id,@section_id,'first_citation','Historische Entwicklung des modernen Funktionsbegriffs und Ablösung von einer ausschließlich analytischen Darstellung.','Historische Entwicklung in 3.2.3',1,1,'Neufassung 3.2.3 V2.',@revision_id);
+INSERT INTO `source_usage` (`source_id`,`section_id`,`usage_type`,`claim_summary`,`exact_location`,`is_first_mention`,`citation_checked`,`notes`,`created_revision_id`) VALUES (@source_29_id,@section_id,'definition','Formale Definition einer Funktion, Bild, Urbild sowie Existenz- und Eindeutigkeitsbedingungen.','Definitionen in 3.2.3',0,1,'Neufassung 3.2.3 V2.',@revision_id);
+INSERT INTO `source_usage` (`source_id`,`section_id`,`usage_type`,`claim_summary`,`exact_location`,`is_first_mention`,`citation_checked`,`notes`,`created_revision_id`) VALUES (@source_30_id,@section_id,'definition','Injektivität, Surjektivität, Bijektivität, Umkehrfunktion, Komposition und Identitätsabbildung.','Eigenschaften in 3.2.3',0,1,'Neufassung 3.2.3 V2.',@revision_id);
+DELETE es FROM `equation_symbols` es JOIN `equations` e ON e.`equation_id`=es.`equation_id` WHERE e.`section_id`=@section_id;
+DELETE FROM `equations` WHERE `section_id`=@section_id;
+DELETE FROM `definitions` WHERE `section_id`=@section_id;
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.42',@section_id,'Funktion als Abbildung','f:A\\longrightarrow B','f:A\\longrightarrow B','Eine Funktion f bildet die Definitionsmenge A in die Zielmenge B ab.','definition','literature',@source_29_id,NULL,'A und B sind Mengen.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.43',@section_id,'Existenz und Eindeutigkeit','\\forall x\\in A\\;\\exists!\\,y\\in B:\\;f(x)=y','\\forall x\\in A\\;\\exists!\\,y\\in B:\\;f(x)=y','Jedem Element des Definitionsbereichs wird genau ein Element des Zielbereichs zugeordnet.','definition','literature',@source_29_id,NULL,'f ist eine Funktion von A nach B.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.44',@section_id,'Existenzbedingung','\\forall x\\in A\\;\\exists y\\in B:\\;f(x)=y','\\forall x\\in A\\;\\exists y\\in B:\\;f(x)=y','Für jedes Element des Definitionsbereichs existiert mindestens ein Funktionswert.','definition','literature',@source_29_id,NULL,'f ist eine totale Funktion auf A.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.45',@section_id,'Eindeutigkeitsbedingung','\\forall x\\in A\\;\\forall y_1,y_2\\in B:\\;\\left(f(x)=y_1\\land f(x)=y_2\\right)\\Longrightarrow y_1=y_2','\\forall x\\in A\\;\\forall y_1,y_2\\in B:\\;\\left(f(x)=y_1\\land f(x)=y_2\\right)\\Longrightarrow y_1=y_2','Zu einem Ausgangselement können nicht zwei verschiedene Funktionswerte gehören.','definition','literature',@source_29_id,NULL,'x liegt in A; y_1 und y_2 liegen in B.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.46',@section_id,'Funktion als spezielle Relation','f\\subseteq A\\times B','f\\subseteq A\\times B','Eine Funktion ist eine spezielle Relation zwischen A und B.','definition','literature',@source_29_id,NULL,'Zusätzlich gilt die Existenz- und Eindeutigkeitsbedingung.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.47',@section_id,'Funktionswert und Relationspaar','f(x)=y\\Longleftrightarrow(x,y)\\in f','f(x)=y\\Longleftrightarrow(x,y)\\in f','Der Funktionswert y entspricht dem eindeutig zugeordneten Relationspaar.','definition','literature',@source_29_id,NULL,'f ist mengentheoretisch als Relation aufgefasst.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.48',@section_id,'Bild einer Menge','f(A)=\\left\\{f(x)\\mid x\\in A\\right\\}','f(A)=\\left\\{f(x)\\mid x\\in A\\right\\}','Das Bild von A enthält alle tatsächlich auftretenden Funktionswerte.','definition','literature',@source_29_id,NULL,'f ist auf A definiert.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.49',@section_id,'Bildmenge als Teilmenge','f(A)\\subseteq B','f(A)\\subseteq B','Das Bild einer Funktion ist Teilmenge ihrer Zielmenge.','derived','literature',@source_29_id,NULL,'f bildet A nach B ab.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.50',@section_id,'Bild einer Teilmenge','f(M)=\\left\\{f(x)\\mid x\\in M\\right\\}','f(M)=\\left\\{f(x)\\mid x\\in M\\right\\}','Bild einer Teilmenge M des Definitionsbereichs.','definition','literature',@source_29_id,NULL,'M ist Teilmenge von A.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.51',@section_id,'Urbild einer Teilmenge','f^{-1}(N)=\\left\\{x\\in A\\mid f(x)\\in N\\right\\}','f^{-1}(N)=\\left\\{x\\in A\\mid f(x)\\in N\\right\\}','Das Urbild enthält alle Ausgangselemente, deren Bilder in N liegen.','definition','literature',@source_29_id,NULL,'N ist Teilmenge von B; keine inverse Funktion erforderlich.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.52',@section_id,'Injektivität','\\forall x_1,x_2\\in A:\\;f(x_1)=f(x_2)\\Longrightarrow x_1=x_2','\\forall x_1,x_2\\in A:\\;f(x_1)=f(x_2)\\Longrightarrow x_1=x_2','Eine Funktion ist injektiv, wenn gleiche Bilder nur von gleichen Urbildern stammen.','definition','literature',@source_30_id,NULL,'f ist eine Funktion von A nach B.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.53',@section_id,'Äquivalente Injektivitätsbedingung','x_1\\neq x_2\\Longrightarrow f(x_1)\\neq f(x_2)','x_1\\neq x_2\\Longrightarrow f(x_1)\\neq f(x_2)','Verschiedene Ausgangselemente besitzen bei einer injektiven Funktion verschiedene Bilder.','derived','literature',@source_30_id,NULL,'f ist injektiv.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.54',@section_id,'Surjektivität','\\forall y\\in B\\;\\exists x\\in A:\\;f(x)=y','\\forall y\\in B\\;\\exists x\\in A:\\;f(x)=y','Eine Funktion ist surjektiv, wenn jedes Element der Zielmenge erreicht wird.','definition','literature',@source_30_id,NULL,'f ist eine Funktion von A nach B.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.55',@section_id,'Bildmenge einer surjektiven Funktion','f(A)=B','f(A)=B','Bei einer surjektiven Funktion stimmen Bild- und Zielmenge überein.','derived','literature',@source_30_id,NULL,'f ist surjektiv.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.56',@section_id,'Bijektivität','f\\text{ ist bijektiv}\\Longleftrightarrow f\\text{ ist injektiv}\\land f\\text{ ist surjektiv}','f\\text{ ist bijektiv}\\Longleftrightarrow f\\text{ ist injektiv}\\land f\\text{ ist surjektiv}','Bijektivität verbindet Injektivität und Surjektivität.','definition','literature',@source_30_id,NULL,'f ist eine Funktion von A nach B.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.57',@section_id,'Umkehrfunktion','f^{-1}:B\\longrightarrow A','f^{-1}:B\\longrightarrow A','Eine bijektive Funktion besitzt eine Umkehrfunktion von B nach A.','definition','literature',@source_30_id,NULL,'f ist bijektiv.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.58',@section_id,'Linke Umkehrbeziehung','f^{-1}(f(x))=x','f^{-1}(f(x))=x','Die Umkehrfunktion hebt die Wirkung von f auf Elementen aus A auf.','derived','literature',@source_30_id,NULL,'x liegt in A und f ist bijektiv.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.59',@section_id,'Rechte Umkehrbeziehung','f(f^{-1}(y))=y','f(f^{-1}(y))=y','Die Funktion hebt die Wirkung ihrer Umkehrfunktion auf Elementen aus B auf.','derived','literature',@source_30_id,NULL,'y liegt in B und f ist bijektiv.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.60',@section_id,'Komposition von Funktionen','(g\\circ f)(x)=g(f(x))','(g\\circ f)(x)=g(f(x))','Die Komposition wendet zunächst f und anschließend g an.','definition','literature',@source_30_id,NULL,'f:A nach B und g:B nach C.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'g','zweite Funktion','zweite Funktion.','Abbildung',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.61',@section_id,'Assoziativität der Komposition','h\\circ(g\\circ f)=(h\\circ g)\\circ f','h\\circ(g\\circ f)=(h\\circ g)\\circ f','Die Komposition von Funktionen ist assoziativ.','derived','literature',@source_30_id,NULL,'Definitions- und Zielmengen sind kompositionsverträglich.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'g','zweite Funktion','zweite Funktion.','Abbildung',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.62',@section_id,'Identitätsabbildung','\\operatorname{id}_A:A\\longrightarrow A','\\operatorname{id}_A:A\\longrightarrow A','Die Identitätsabbildung ist eine Funktion von A nach A.','definition','literature',@source_30_id,NULL,'A ist eine Menge.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'\\operatorname{id}','Identitätsabbildung','Identitätsabbildung.','Abbildung',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.63',@section_id,'Wirkung der Identitätsabbildung','\\operatorname{id}_A(x)=x','\\operatorname{id}_A(x)=x','Die Identitätsabbildung lässt jedes Element unverändert.','definition','literature',@source_30_id,NULL,'x liegt in A.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'\\operatorname{id}','Identitätsabbildung','Identitätsabbildung.','Abbildung',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equations` (`equation_number`,`section_id`,`title`,`equation_latex`,`word_latex`,`plain_description`,`equation_type`,`provenance`,`source_id`,`derivation`,`assumptions`,`validation_status`,`created_revision_id`) VALUES ('3.64',@section_id,'Identität als neutrales Element','f\\circ\\operatorname{id}_A=f=\\operatorname{id}_B\\circ f','f\\circ\\operatorname{id}_A=f=\\operatorname{id}_B\\circ f','Identitätsabbildungen sind neutrale Elemente der Funktionskomposition.','derived','literature',@source_30_id,NULL,'f bildet A nach B ab.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `equation_id`=LAST_INSERT_ID(`equation_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `equation_latex`=VALUES(`equation_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `plain_description`=VALUES(`plain_description`),
+  `equation_type`=VALUES(`equation_type`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `derivation`=VALUES(`derivation`),
+  `assumptions`=VALUES(`assumptions`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+SET @eq_id:=LAST_INSERT_ID();
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'f','Funktion','Funktion.','Abbildung',1)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'A','Definitionsmenge','Definitionsmenge.','Menge',2)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'B','Zielmenge','Zielmenge.','Menge',3)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `equation_symbols` (`equation_id`,`symbol_latex`,`symbol_name`,`definition_text`,`domain_text`,`symbol_order`) VALUES (@eq_id,'\\operatorname{id}','Identitätsabbildung','Identitätsabbildung.','Abbildung',4)
+ON DUPLICATE KEY UPDATE
+  `symbol_name`=VALUES(`symbol_name`),
+  `definition_text`=VALUES(`definition_text`),
+  `unit_text`=VALUES(`unit_text`),
+  `domain_text`=VALUES(`domain_text`),
+  `symbol_order`=VALUES(`symbol_order`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.1',@section_id,'Funktion','Eine Funktion von A nach B ist eine Relation, die jedem Element von A genau ein Element von B zuordnet.','f:A\\longrightarrow B','f:A\\longrightarrow B','literature',@source_29_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.2',@section_id,'Bildmenge','Die Bildmenge enthält alle Werte, die durch die Funktion tatsächlich erreicht werden.','f(A)=\\{f(x)\\mid x\\in A\\}','f(A)=\\{f(x)\\mid x\\in A\\}','literature',@source_29_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.3',@section_id,'Urbild','Das Urbild einer Teilmenge N enthält alle Elemente des Definitionsbereichs, deren Bilder in N liegen.','f^{-1}(N)=\\{x\\in A\\mid f(x)\\in N\\}','f^{-1}(N)=\\{x\\in A\\mid f(x)\\in N\\}','literature',@source_29_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.4',@section_id,'Injektive Funktion','Eine Funktion ist injektiv, wenn verschiedene Ausgangselemente verschiedene Bilder besitzen.',NULL,NULL,'literature',@source_30_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.5',@section_id,'Surjektive Funktion','Eine Funktion ist surjektiv, wenn jedes Element der Zielmenge erreicht wird.',NULL,NULL,'literature',@source_30_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.6',@section_id,'Bijektive Funktion','Eine Funktion ist bijektiv, wenn sie injektiv und surjektiv ist.',NULL,NULL,'literature',@source_30_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.7',@section_id,'Umkehrfunktion','Die Umkehrfunktion einer bijektiven Funktion ordnet jedem Zielwert sein eindeutiges Urbild zu.','f^{-1}:B\\longrightarrow A','f^{-1}:B\\longrightarrow A','literature',@source_30_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.8',@section_id,'Funktionskomposition','Die Komposition zweier Funktionen wendet die zweite Abbildung auf das Ergebnis der ersten an.','(g\\circ f)(x)=g(f(x))','(g\\circ f)(x)=g(f(x))','literature',@source_30_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+INSERT INTO `definitions` (`definition_number`,`section_id`,`title`,`definition_text`,`formal_latex`,`word_latex`,`provenance`,`source_id`,`assumptions`,`notes`,`validation_status`,`created_revision_id`) VALUES ('Def. 3.2.3.9',@section_id,'Identitätsabbildung','Die Identitätsabbildung auf A ordnet jedem Element sich selbst zu.','\\operatorname{id}_A(x)=x','\\operatorname{id}_A(x)=x','literature',@source_30_id,NULL,'Neufassung 3.2.3 V2.','checked',@revision_id)
+ON DUPLICATE KEY UPDATE
+  `definition_id`=LAST_INSERT_ID(`definition_id`),
+  `section_id`=VALUES(`section_id`),
+  `title`=VALUES(`title`),
+  `definition_text`=VALUES(`definition_text`),
+  `formal_latex`=VALUES(`formal_latex`),
+  `word_latex`=VALUES(`word_latex`),
+  `provenance`=VALUES(`provenance`),
+  `source_id`=VALUES(`source_id`),
+  `assumptions`=VALUES(`assumptions`),
+  `notes`=VALUES(`notes`),
+  `validation_status`=VALUES(`validation_status`),
+  `created_revision_id`=VALUES(`created_revision_id`);
+DELETE FROM `symbols` WHERE `first_section_id`=@section_id AND `scope_type`='section';
+INSERT INTO `symbols` (`symbol_latex`,`symbol_word_latex`,`symbol_name`,`definition_text`,`scope_type`,`first_section_id`,`domain_text`,`codomain_text`,`is_vector`,`is_matrix`,`is_operator`,`notes`,`validation_status`,`created_revision_id`) VALUES ('f','f','Funktion','Eindeutige Abbildung von A nach B.','section',@section_id,'A','B',0,0,0,'Zentrales Symbol des Abschnitts 3.2.3.','checked',@revision_id);
+INSERT INTO `symbols` (`symbol_latex`,`symbol_word_latex`,`symbol_name`,`definition_text`,`scope_type`,`first_section_id`,`domain_text`,`codomain_text`,`is_vector`,`is_matrix`,`is_operator`,`notes`,`validation_status`,`created_revision_id`) VALUES ('f^{-1}','f^{-1}','Umkehrfunktion','Inverse Abbildung einer bijektiven Funktion.','section',@section_id,'B','A',0,0,0,'Zentrales Symbol des Abschnitts 3.2.3.','checked',@revision_id);
+INSERT INTO `symbols` (`symbol_latex`,`symbol_word_latex`,`symbol_name`,`definition_text`,`scope_type`,`first_section_id`,`domain_text`,`codomain_text`,`is_vector`,`is_matrix`,`is_operator`,`notes`,`validation_status`,`created_revision_id`) VALUES ('g\\circ f','g\\circ f','Funktionskomposition','Verkettung zweier kompositionsverträglicher Funktionen.','section',@section_id,'A','C',0,0,0,'Zentrales Symbol des Abschnitts 3.2.3.','checked',@revision_id);
+INSERT INTO `symbols` (`symbol_latex`,`symbol_word_latex`,`symbol_name`,`definition_text`,`scope_type`,`first_section_id`,`domain_text`,`codomain_text`,`is_vector`,`is_matrix`,`is_operator`,`notes`,`validation_status`,`created_revision_id`) VALUES ('\\operatorname{id}_A','\\operatorname{id}_A','Identitätsabbildung','Neutrale Abbildung auf A.','section',@section_id,'A','A',0,0,0,'Zentrales Symbol des Abschnitts 3.2.3.','checked',@revision_id);
+DELETE FROM `section_change_log` WHERE `revision_id`=@revision_id AND `section_id`=@section_id;
+INSERT INTO `section_change_log` (`revision_id`,`section_id`,`change_type`,`object_type`,`object_reference`,`change_summary`,`previous_value`,`new_value`) VALUES (@revision_id,@section_id,'rewritten','section','3.2.3','Abschnitt 3.2.3 wurde vollständig neu gefasst.','Bisheriger oder geplanter Abschnittsstand.','Neufassung mit Funktionen, Abbildungseigenschaften, Komposition und Identität.');
+INSERT INTO `section_change_log` (`revision_id`,`section_id`,`change_type`,`object_type`,`object_reference`,`change_summary`,`previous_value`,`new_value`) VALUES (@revision_id,@section_id,'source_added','sources','[60]','Dirichlet [60] wurde als neue Primärquelle registriert.',NULL,'1 neue Quelle.');
+INSERT INTO `section_change_log` (`revision_id`,`section_id`,`change_type`,`object_type`,`object_reference`,`change_summary`,`previous_value`,`new_value`) VALUES (@revision_id,@section_id,'source_reused','sources','[29], [30]','Die bestehenden Quellen [29] und [30] wurden wiederverwendet.',NULL,'2 Quellenwiederverwendungen.');
+INSERT INTO `section_change_log` (`revision_id`,`section_id`,`change_type`,`object_type`,`object_reference`,`change_summary`,`previous_value`,`new_value`) VALUES (@revision_id,@section_id,'equation_added','equations','(3.42)–(3.64)','23 Gleichungen wurden registriert.',NULL,'23 Gleichungen.');
+INSERT INTO `section_change_log` (`revision_id`,`section_id`,`change_type`,`object_type`,`object_reference`,`change_summary`,`previous_value`,`new_value`) VALUES (@revision_id,@section_id,'definition_added','definitions','Def. 3.2.3.1–3.2.3.9','Neun Definitionen wurden registriert.',NULL,'9 Definitionen.');
+INSERT INTO `section_change_log` (`revision_id`,`section_id`,`change_type`,`object_type`,`object_reference`,`change_summary`,`previous_value`,`new_value`) VALUES (@revision_id,@section_id,'symbol_added','symbols','3.2.3','Zentrale Funktionssymbole wurden registriert.',NULL,'4 Abschnittssymbole.');
+INSERT INTO `section_change_log` (`revision_id`,`section_id`,`change_type`,`object_type`,`object_reference`,`change_summary`,`previous_value`,`new_value`) VALUES (@revision_id,@section_id,'status_changed','section','3.2.3','Der Abschnitt wurde auf review gesetzt.',NULL,'review');
+INSERT INTO `repository_counters` (`counter_key`,`counter_value`) VALUES ('next_citation_number','61'),('next_equation_number','3.65'),('last_edited_section','3.2.3'),('last_repository_revision','RKB-2026-07-14-K3.2.3-NEUFASSUNG-V2') ON DUPLICATE KEY UPDATE `counter_value`=VALUES(`counter_value`),`updated_at`=NOW();
+COMMIT;
+
+/* Kontrollabfragen */
+SELECT `revision_id`,`revision_code`,`parent_revision_id` FROM `repository_revisions` WHERE `revision_code`='RKB-2026-07-14-K3.2.3-NEUFASSUNG-V2';
+SELECT `section_code`,`title`,`status`,`notes` FROM `dissertation_sections` WHERE `section_code`='3.2.3';
+SELECT s.`citation_number`,s.`full_citation_text`,su.`usage_type`,su.`is_first_mention`,su.`citation_checked` FROM `source_usage` su JOIN `sources` s ON s.`source_id`=su.`source_id` WHERE su.`section_id`=@section_id ORDER BY s.`citation_number`;
+SELECT `equation_number`,`title`,`equation_type`,`validation_status` FROM `equations` WHERE `section_id`=@section_id ORDER BY CAST(SUBSTRING_INDEX(`equation_number`,'.',-1) AS UNSIGNED);
+SELECT `definition_number`,`title`,`validation_status` FROM `definitions` WHERE `section_id`=@section_id ORDER BY `definition_id`;
+SELECT `counter_key`,`counter_value` FROM `repository_counters` WHERE `counter_key` IN ('next_citation_number','next_equation_number','last_edited_section','last_repository_revision') ORDER BY `counter_key`;

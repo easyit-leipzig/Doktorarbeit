@@ -1,0 +1,34 @@
+{
+  "master_file": "Kapitel_3_2_MASTER_FINAL.sql",
+  "basis_dump": "frzk_rkb_backup_vor_korrektur_3.2.2.sql",
+  "control_dump": "frzk_rkb_nach_repository_update_3.2.2(2).sql",
+  "master_size_bytes": 600097,
+  "master_sha256": "d2de8d7d34580ddf5eefcf804fb593c8166ebd58ec8c3281f4d8a5f5aef60663",
+  "basis_sha256": "cf6bcf78a48ed7510b29032d6e9ae3b81a95c4bc5e9a80fef821ade9622fbf12",
+  "control_sha256": "433d6cf1d5ce78bc0af43ace3432c40685f76feab2dbbb0488f95588d9098df4",
+  "static_checks": {
+    "source_before_exists": true,
+    "control_after_exists": true,
+    "contains_12_migrations": true,
+    "balanced_transactions": true,
+    "no_author_role_column": true,
+    "no_invalid_complete_status": true,
+    "no_invalid_author_synthesis_provenance": true,
+    "no_invalid_synthesis_usage": true,
+    "no_invalid_validated_change": true,
+    "contains_equation_symbol_upserts": true,
+    "final_counter_82": true,
+    "final_counter_3275": true,
+    "final_section_3212": true,
+    "has_full_audit": true
+  },
+  "runtime_test": "Ein echter MariaDB-Import konnte in dieser Laufzeit nicht ausgeführt werden. Das Masterskript enthält einen ausführbaren SQL-Abschlussaudit.",
+  "expected_end_state": {
+    "next_citation_number": "82",
+    "next_equation_number": "3.275",
+    "last_edited_section": "3.2.12",
+    "last_repository_revision": "RKB-2026-07-15-K3.2.12-NEUFASSUNG-V5"
+  },
+  "equation_symbol_insert_blocks": 214,
+  "equation_symbol_blocks_without_upsert": 0
+}

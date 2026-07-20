@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 20. Jul 2026 um 06:14
+-- Erstellungszeit: 20. Jul 2026 um 05:40
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.0.30
 
@@ -498,9 +498,7 @@ INSERT INTO `dissertation_sections` (`section_id`, `parent_section_id`, `section
 (44, 42, '3.3.9.2', 'Eigenständigkeit der Axiome', 3, 3.3092, 'final', 1, 'Untersuchung der funktionalen Nichtreduzierbarkeit und schwachen Unabhängigkeit der Axiome A1 bis A7.', '2026-07-19 15:36:45', '2026-07-19 15:36:45'),
 (45, 42, '3.3.9.3', 'Innere Konsistenz des Axiomensystems', 3, 3.3093, 'final', 1, 'Untersuchung der gemeinsamen Erfüllbarkeit der Axiome A1 bis A7 durch ein konstruiertes Minimalmodell.', '2026-07-19 17:09:21', '2026-07-19 17:09:21'),
 (46, 42, '3.3.9.4', 'Verhältnis von Axiomen, Definitionen und abgeleiteten Aussagen', 3, 3.3094, 'final', 1, 'Formale Trennung von Grundsetzungen, Begriffsbestimmungen und abgeleiteten Aussagen sowie Einführung eines azyklischen Abhängigkeitsgraphen.', '2026-07-20 03:04:19', '2026-07-20 03:04:19'),
-(47, 42, '3.3.9.5', 'Reichweite und Grenzen der Vollständigkeit', 3, 3.3095, 'final', 1, 'Differenzierung begrifflicher, funktionaler, formallogischer und zielbezogener Vollständigkeit.', '2026-07-20 03:15:14', '2026-07-20 03:15:14'),
-(48, 42, '3.3.9.6', 'Metatheoretischer Abschluss des Axiomensystems', 3, 3.3096, 'final', 1, 'Zusammenführung von Unabhängigkeit, Konsistenz, Hierarchie und zielbezogener Vollständigkeit.', '2026-07-20 03:47:38', '2026-07-20 03:47:38'),
-(49, 26, '3.3.10', 'Zusammenfassung und Übergang zur mathematischen Rekonstruktion', 3, 3.3100, 'final', 1, 'Redaktioneller und formaler Abschluss von Kapitel 3.3 sowie Überleitung zu Kapitel 3.4.', '2026-07-20 04:12:50', '2026-07-20 04:12:50');
+(47, 42, '3.3.9.5', 'Reichweite und Grenzen der Vollständigkeit', 3, 3.3095, 'final', 1, 'Differenzierung begrifflicher, funktionaler, formallogischer und zielbezogener Vollständigkeit.', '2026-07-20 03:15:14', '2026-07-20 03:15:14');
 
 -- --------------------------------------------------------
 
@@ -991,61 +989,7 @@ INSERT INTO `equations` (`equation_id`, `equation_number`, `section_id`, `title`
 (557, '3.585', 47, 'Konsistenzerhaltende Erweiterung', '\\operatorname{Con}\\left(\\mathfrak{L}_F^{(n)}\\right)\\land\\operatorname{Kompat}\\left(\\Delta\\mathfrak{L}_F^{(n)},\\mathfrak{L}_F^{(n)}\\right)\\Rightarrow\\operatorname{Con}\\left(\\mathfrak{L}_F^{(n+1)}\\right)', '\\operatorname{Con}\\left(\\mathfrak{L}_F^{(n)}\\right)\\land\\operatorname{Kompat}\\left(\\Delta\\mathfrak{L}_F^{(n)},\\mathfrak{L}_F^{(n)}\\right)\\Rightarrow\\operatorname{Con}\\left(\\mathfrak{L}_F^{(n+1)}\\right)', 'Eine kompatible Erweiterung soll die Konsistenz des Systems erhalten.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.5.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.4 eingeführten Definitionen und Propositionen.', 'checked', 45),
 (558, '3.586', 47, 'Kompatibilitätsprädikat', '\\operatorname{Kompat}', '\\operatorname{Kompat}', 'Prädikat der logischen und begrifflichen Vereinbarkeit einer Erweiterung.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.5.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.4 eingeführten Definitionen und Propositionen.', 'checked', 45),
 (559, '3.587', 47, 'Zielbezogene Vollständigkeit des FRZK', '\\forall q_i\\in\\mathcal{Q}_F:\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash q_i', '\\forall q_i\\in\\mathcal{Q}_F:\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash q_i', 'Jede Rekonstruktionsaufgabe wird durch eine endliche Teilmenge des formalen Systems bearbeitet.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.5.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.4 eingeführten Definitionen und Propositionen.', 'checked', 45),
-(560, '3.588', 47, 'Endliche Teilmenge', '\\subseteq_{\\mathrm{fin}}', '\\subseteq_{\\mathrm{fin}}', 'Symbol für eine endliche Teilmenge.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.5.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.4 eingeführten Definitionen und Propositionen.', 'checked', 45),
-(561, '3.589', 48, 'Metatheoretische Gesamtstruktur', '\\mathfrak{M}_F=\\left(\\mathcal{A}_F,\\mathcal{D}\\!ef_F,\\mathcal{P}_F,G_{\\mathfrak{L}},\\mathcal{Q}_F\\right)', '\\mathfrak{M}_F=\\left(\\mathcal{A}_F,\\mathcal{D}\\!ef_F,\\mathcal{P}_F,G_{\\mathfrak{L}},\\mathcal{Q}_F\\right)', 'Tupel der metatheoretischen Gesamtstruktur des FRZK.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(562, '3.590', 48, 'Metatheoretische Bedingungen', '\\mathcal{B}_{\\mathfrak{M}}=\\left\\{B_{\\mathrm{unabh}},B_{\\mathrm{kons}},B_{\\mathrm{hier}},B_{\\mathrm{ziel}}\\right\\}', '\\mathcal{B}_{\\mathfrak{M}}=\\left\\{B_{\\mathrm{unabh}},B_{\\mathrm{kons}},B_{\\mathrm{hier}},B_{\\mathrm{ziel}}\\right\\}', 'Menge der vier metatheoretischen Sicherungsbedingungen.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(563, '3.591', 48, 'Unabhängigkeitsbedingung', 'B_{\\mathrm{unabh}}', 'B_{\\mathrm{unabh}}', 'Relative Unabhängigkeit der Axiome.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(564, '3.592', 48, 'Konsistenzbedingung', 'B_{\\mathrm{kons}}', 'B_{\\mathrm{kons}}', 'Relative Konsistenz des Systems.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(565, '3.593', 48, 'Hierarchiebedingung', 'B_{\\mathrm{hier}}', 'B_{\\mathrm{hier}}', 'Hierarchische und azyklische Ordnung der Aussagen.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(566, '3.594', 48, 'Zielbedingung', 'B_{\\mathrm{ziel}}', 'B_{\\mathrm{ziel}}', 'Zielbezogene Vollständigkeit hinsichtlich der Rekonstruktionsaufgaben.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(567, '3.595', 48, 'Hinreichende metatheoretische Bestimmtheit', '\\operatorname{Hinr}\\left(\\mathfrak{M}_F\\right)\\Leftrightarrow B_{\\mathrm{unabh}}\\land B_{\\mathrm{kons}}\\land B_{\\mathrm{hier}}\\land B_{\\mathrm{ziel}}', '\\operatorname{Hinr}\\left(\\mathfrak{M}_F\\right)\\Leftrightarrow B_{\\mathrm{unabh}}\\land B_{\\mathrm{kons}}\\land B_{\\mathrm{hier}}\\land B_{\\mathrm{ziel}}', 'Konjunktion der vier metatheoretischen Bedingungen.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(568, '3.596', 48, 'Prädikat hinreichender Bestimmtheit', '\\operatorname{Hinr}', '\\operatorname{Hinr}', 'Prädikat der hinreichenden metatheoretischen Bestimmtheit.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46);
-INSERT INTO `equations` (`equation_id`, `equation_number`, `section_id`, `title`, `equation_latex`, `word_latex`, `plain_description`, `equation_type`, `provenance`, `source_id`, `derivation`, `assumptions`, `validation_status`, `created_revision_id`) VALUES
-(569, '3.597', 48, 'Relative Axiomenunabhängigkeit', '\\forall A_i\\in\\mathcal{A}_F:\\mathcal{A}_F\\setminus\\left\\{A_i\\right\\}\\nvdash A_i', '\\forall A_i\\in\\mathcal{A}_F:\\mathcal{A}_F\\setminus\\left\\{A_i\\right\\}\\nvdash A_i', 'Kein Axiom ist aus den übrigen Axiomen ableitbar.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(570, '3.598', 48, 'Konsistenzbedingung des Systems', '\\nexists P\\in\\operatorname{Form}\\left(\\mathfrak{L}_F\\right):\\mathfrak{L}_F\\vdash P\\land\\mathfrak{L}_F\\vdash\\neg P', '\\nexists P\\in\\operatorname{Form}\\left(\\mathfrak{L}_F\\right):\\mathfrak{L}_F\\vdash P\\land\\mathfrak{L}_F\\vdash\\neg P', 'Keine Aussage und ihre Negation sind gleichzeitig ableitbar.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(571, '3.599', 48, 'Hierarchische Rückführbarkeit', '\\forall v\\in V_{\\mathfrak{L}}\\setminus\\mathcal{A}_F:\\exists U_v\\subseteq V_{\\mathfrak{L}}:\\forall u\\in U_v:\\rho(u)<\\rho(v)', '\\forall v\\in V_{\\mathfrak{L}}\\setminus\\mathcal{A}_F:\\exists U_v\\subseteq V_{\\mathfrak{L}}:\\forall u\\in U_v:\\rho(u)<\\rho(v)', 'Jede nichtaxiomatische Aussage wird auf logisch vorhergehende Elemente zurückgeführt.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(572, '3.600', 48, 'Zielbezogene Rekonstruktionsbedingung', '\\forall q_i\\in\\mathcal{Q}_F:\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash q_i', '\\forall q_i\\in\\mathcal{Q}_F:\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash q_i', 'Jede zentrale Rekonstruktionsaufgabe ist aus einer endlichen Teilmenge ableitbar.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(573, '3.601', 48, 'Metatheoretischer Prüfoperator', '\\Pi_{\\mathfrak{M}}:\\mathfrak{M}_F\\rightarrow\\left\\{0,1\\right\\}', '\\Pi_{\\mathfrak{M}}:\\mathfrak{M}_F\\rightarrow\\left\\{0,1\\right\\}', 'Binärer Prüfoperator für die metatheoretische Bestimmtheit.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(574, '3.602', 48, 'Positive Prüfentscheidung', '\\Pi_{\\mathfrak{M}}\\left(\\mathfrak{M}_F\\right)=1\\Leftrightarrow\\operatorname{Hinr}\\left(\\mathfrak{M}_F\\right)', '\\Pi_{\\mathfrak{M}}\\left(\\mathfrak{M}_F\\right)=1\\Leftrightarrow\\operatorname{Hinr}\\left(\\mathfrak{M}_F\\right)', 'Der Prüfoperator liefert eins genau bei hinreichender Bestimmtheit.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(575, '3.603', 48, 'Negative Prüfentscheidung', '\\Pi_{\\mathfrak{M}}\\left(\\mathfrak{M}_F\\right)=0', '\\Pi_{\\mathfrak{M}}\\left(\\mathfrak{M}_F\\right)=0', 'Mindestens eine metatheoretische Bedingung ist nicht erfüllt.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(576, '3.604', 48, 'Metatheoretischer Qualitätsvektor', '\\mathbf{m}_F=\\begin{pmatrix}m_{\\mathrm{unabh}}\\\\m_{\\mathrm{kons}}\\\\m_{\\mathrm{hier}}\\\\m_{\\mathrm{ziel}}\\end{pmatrix}', '\\mathbf{m}_F=\\begin{pmatrix}m_{\\mathrm{unabh}}\\\\m_{\\mathrm{kons}}\\\\m_{\\mathrm{hier}}\\\\m_{\\mathrm{ziel}}\\end{pmatrix}', 'Vektor gradueller metatheoretischer Qualitätsbewertungen.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(577, '3.605', 48, 'Wertebereich der Qualitätskomponenten', 'm_j\\in\\left[0,1\\right]', 'm_j\\in\\left[0,1\\right]', 'Normierter Wertebereich der Qualitätskomponenten.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(578, '3.606', 48, 'Metatheoretische Gesamtqualität', 'Q_{\\mathfrak{M}}\\left(\\mathbf{m}_F\\right)=\\sum_{j=1}^{4}w_jm_j', 'Q_{\\mathfrak{M}}\\left(\\mathbf{m}_F\\right)=\\sum_{j=1}^{4}w_jm_j', 'Gewichtete Summe der metatheoretischen Qualitätskomponenten.', 'metric', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(579, '3.607', 48, 'Nichtnegative Gewichtung', 'w_j\\geq0', 'w_j\\geq0', 'Gewichtungen der Qualitätskomponenten sind nichtnegativ.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(580, '3.608', 48, 'Normierung der Gewichtungen', '\\sum_{j=1}^{4}w_j=1', '\\sum_{j=1}^{4}w_j=1', 'Summe der Gewichtungen ist eins.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(581, '3.609', 48, 'Freigabebedingung für Kapitel 3.4', '\\operatorname{Freig}_{3.4}\\Leftrightarrow\\operatorname{Hinr}\\left(\\mathfrak{M}_F\\right)', '\\operatorname{Freig}_{3.4}\\Leftrightarrow\\operatorname{Hinr}\\left(\\mathfrak{M}_F\\right)', 'Formale Freigabe des Axiomensystems bei hinreichender Bestimmtheit.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(582, '3.610', 48, 'Freigabeprädikat', '\\operatorname{Freig}_{3.4}', '\\operatorname{Freig}_{3.4}', 'Prädikat der formalen Freigabe für Kapitel 3.4.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(583, '3.611', 48, 'Ableitungsrichtung zur Rekonstruktion', '\\mathcal{A}_F\\rightarrow\\mathcal{D}\\!ef_F\\rightarrow\\mathcal{P}_F\\rightarrow\\mathcal{R}_F', '\\mathcal{A}_F\\rightarrow\\mathcal{D}\\!ef_F\\rightarrow\\mathcal{P}_F\\rightarrow\\mathcal{R}_F', 'Ableitungskette von Axiomen über Definitionen und Propositionen zur Rekonstruktion.', 'schema', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(584, '3.612', 48, 'Menge mathematischer Rekonstruktionen', '\\mathcal{R}_F', '\\mathcal{R}_F', 'Menge der mathematischen Rekonstruktionen des FRZK.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(585, '3.613', 48, 'Ableitbarkeit einer Rekonstruktion', 'R_i\\in\\mathcal{R}_F\\Rightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\left(\\mathcal{A}_F\\cup\\mathcal{D}\\!ef_F\\cup\\mathcal{P}_F\\right):\\Gamma_i\\vdash R_i', 'R_i\\in\\mathcal{R}_F\\Rightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\left(\\mathcal{A}_F\\cup\\mathcal{D}\\!ef_F\\cup\\mathcal{P}_F\\right):\\Gamma_i\\vdash R_i', 'Jede Rekonstruktion ist aus einer endlichen Teilmenge des formalen Systems ableitbar.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(586, '3.614', 48, 'Trennung formaler und empirischer Gültigkeit', '\\operatorname{Gült}_{\\mathrm{formal}}\\neq\\operatorname{Bew}_{\\mathrm{emp}}', '\\operatorname{Gült}_{\\mathrm{formal}}\\neq\\operatorname{Bew}_{\\mathrm{emp}}', 'Formale Gültigkeit und empirische Bewährung sind verschiedene Ebenen.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(587, '3.615', 48, 'Theoretische Tragfähigkeit', '\\operatorname{Trag}_F=\\operatorname{Gült}_{\\mathrm{formal}}\\land\\operatorname{Bew}_{\\mathrm{emp}}', '\\operatorname{Trag}_F=\\operatorname{Gült}_{\\mathrm{formal}}\\land\\operatorname{Bew}_{\\mathrm{emp}}', 'Theoretische Tragfähigkeit erfordert formale Gültigkeit und empirische Bewährung.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(588, '3.616', 48, 'Tragfähigkeitsprädikat', '\\operatorname{Trag}_F', '\\operatorname{Trag}_F', 'Prädikat der theoretischen Tragfähigkeit des FRZK.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(589, '3.617', 48, 'Metatheoretische Anschlussfähigkeit', 'B_{\\mathrm{unabh}}\\land B_{\\mathrm{kons}}\\land B_{\\mathrm{hier}}\\land B_{\\mathrm{ziel}}\\Rightarrow\\operatorname{Freig}_{3.4}', 'B_{\\mathrm{unabh}}\\land B_{\\mathrm{kons}}\\land B_{\\mathrm{hier}}\\land B_{\\mathrm{ziel}}\\Rightarrow\\operatorname{Freig}_{3.4}', 'Erfüllung der vier Bedingungen führt zur formalen Freigabe.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(590, '3.618', 48, 'Folgerung aus der Freigabe', '\\operatorname{Freig}_{3.4}\\Rightarrow\\forall R_i\\in\\mathcal{R}_F:\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash R_i', '\\operatorname{Freig}_{3.4}\\Rightarrow\\forall R_i\\in\\mathcal{R}_F:\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash R_i', 'Jede zulässige Rekonstruktion ist nach der Freigabe aus einer endlichen Teilmenge ableitbar.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.6.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.5 eingeführten Definitionen und Propositionen.', 'checked', 46),
-(591, '3.619', 49, 'Grundlegende Ableitungsrichtung', 'A_F\\rightarrow D_F\\rightarrow R_F\\rightarrow O_F\\rightarrow K_F\\rightarrow X_F\\rightarrow T_F', 'A_F\\rightarrow D_F\\rightarrow R_F\\rightarrow O_F\\rightarrow K_F\\rightarrow X_F\\rightarrow T_F', 'Logische Ableitungsrichtung von funktionaler Unterscheidbarkeit bis zum Übergang.', 'schema', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(592, '3.620', 49, 'Rückwärts gerichtete Bedingungsstruktur', 'T_F\\Rightarrow X_F\\Rightarrow K_F\\Rightarrow O_F\\Rightarrow R_F\\Rightarrow D_F\\Rightarrow A_F', 'T_F\\Rightarrow X_F\\Rightarrow K_F\\Rightarrow O_F\\Rightarrow R_F\\Rightarrow D_F\\Rightarrow A_F', 'Jede spätere Ebene setzt die logisch vorausgehenden Ebenen voraus.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(593, '3.621', 49, 'Nicht notwendige Vorwärtsimplikation', 'A_F\\nRightarrow D_F\\nRightarrow R_F\\nRightarrow O_F\\nRightarrow K_F\\nRightarrow X_F\\nRightarrow T_F', 'A_F\\nRightarrow D_F\\nRightarrow R_F\\nRightarrow O_F\\nRightarrow K_F\\nRightarrow X_F\\nRightarrow T_F', 'Aus einer früheren Ebene folgt die nächste nicht notwendig.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(594, '3.622', 49, 'Axiomenmenge des FRZK', '\\mathcal{A}_{\\mathrm{FRZK}}=\\left\\{A_1,A_2,A_3,A_4,A_5,A_6,A_7\\right\\}', '\\mathcal{A}_{\\mathrm{FRZK}}=\\left\\{A_1,A_2,A_3,A_4,A_5,A_6,A_7\\right\\}', 'Menge der sieben Grundaxiome des FRZK.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(595, '3.623', 49, 'Axiom A1', 'A_1:\\text{funktionale Unterscheidbarkeit}', 'A_1:\\text{funktionale Unterscheidbarkeit}', 'Kurzbezeichnung des Axioms funktionaler Unterscheidbarkeit.', 'axiom', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(596, '3.624', 49, 'Axiom A2', 'A_2:\\text{funktionale Relationierbarkeit}', 'A_2:\\text{funktionale Relationierbarkeit}', 'Kurzbezeichnung des Axioms funktionaler Relationierbarkeit.', 'axiom', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(597, '3.625', 49, 'Axiom A3', 'A_3:\\text{funktionale Operierbarkeit}', 'A_3:\\text{funktionale Operierbarkeit}', 'Kurzbezeichnung des Axioms funktionaler Operierbarkeit.', 'axiom', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(598, '3.626', 49, 'Axiom A4', 'A_4:\\text{funktionale Komponierbarkeit}', 'A_4:\\text{funktionale Komponierbarkeit}', 'Kurzbezeichnung des Axioms funktionaler Komponierbarkeit.', 'axiom', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(599, '3.627', 49, 'Axiom A5', 'A_5:\\text{funktionale Kohärenzbildung}', 'A_5:\\text{funktionale Kohärenzbildung}', 'Kurzbezeichnung des Axioms funktionaler Kohärenzbildung.', 'axiom', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(600, '3.628', 49, 'Axiom A6', 'A_6:\\text{funktionale Zustandsbildung}', 'A_6:\\text{funktionale Zustandsbildung}', 'Kurzbezeichnung des Axioms funktionaler Zustandsbildung.', 'axiom', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(601, '3.629', 49, 'Axiom A7', 'A_7:\\text{funktionale Übergangsfähigkeit}', 'A_7:\\text{funktionale Übergangsfähigkeit}', 'Kurzbezeichnung des Axioms funktionaler Übergangsfähigkeit.', 'axiom', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(602, '3.630', 49, 'Funktionaler Vektor', '\\mathbf{v}=\\left(\\left\\|\\mathbf{v}\\right\\|,\\widehat{\\mathbf{v}}\\right)', '\\mathbf{v}=\\left(\\left\\|\\mathbf{v}\\right\\|,\\widehat{\\mathbf{v}}\\right)', 'Darstellung eines funktionalen Vektors durch Betrag und Richtungswert.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(603, '3.631', 49, 'Nullbetragszustand', '0\\odot\\mathbf{v}=\\left(0,\\widehat{\\mathbf{v}}\\right)', '0\\odot\\mathbf{v}=\\left(0,\\widehat{\\mathbf{v}}\\right)', 'Nullsetzung des Betrags bei Erhalt des Richtungswerts.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(604, '3.632', 49, 'Vollständig gelöschter funktionaler Nullvektor', '\\mathbf{0}_F=\\left(0,\\varnothing\\right)', '\\mathbf{0}_F=\\left(0,\\varnothing\\right)', 'Vollständige Löschung von Betrag und Richtungsinformation.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(605, '3.633', 49, 'Rekonstruktionsabbildung', '\\mathfrak{R}:\\mathfrak{L}_F\\rightarrow\\mathfrak{S}_F', '\\mathfrak{R}:\\mathfrak{L}_F\\rightarrow\\mathfrak{S}_F', 'Abbildung vom formalen System auf die Menge konstruierbarer mathematischer Strukturen.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(606, '3.634', 49, 'Aufgabenspezifische Rekonstruktion', '\\mathfrak{R}_{q_i}:\\Gamma_i\\mapsto S_i', '\\mathfrak{R}_{q_i}:\\Gamma_i\\mapsto S_i', 'Zuordnung einer endlichen formalen Grundlage zu einer rekonstruierten Struktur.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(607, '3.635', 49, 'Endliche Rekonstruktionsgrundlage', '\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F', '\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F', 'Endliche Teilmenge der benötigten Axiome, Definitionen und Propositionen.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(608, '3.636', 49, 'Rekonstruierte Struktur', 'S_i\\in\\mathfrak{S}_F', 'S_i\\in\\mathfrak{S}_F', 'Zugehörigkeit einer Struktur zur Menge zulässiger mathematischer Rekonstruktionen.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(609, '3.637', 49, 'Gültigkeit einer Rekonstruktion', '\\operatorname{RekGült}\\left(S_i\\right)\\Leftrightarrow B_{\\mathrm{ableit}}\\land B_{\\mathrm{def}}\\land B_{\\mathrm{kons}}', '\\operatorname{RekGült}\\left(S_i\\right)\\Leftrightarrow B_{\\mathrm{ableit}}\\land B_{\\mathrm{def}}\\land B_{\\mathrm{kons}}', 'Eine Rekonstruktion ist gültig bei Ableitbarkeit, eindeutiger Definition und Konsistenz.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(610, '3.638', 49, 'Ableitbarkeit zulässiger Rekonstruktionen', 'S_i\\in\\mathfrak{S}_F\\Rightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash S_i', 'S_i\\in\\mathfrak{S}_F\\Rightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash S_i', 'Jede zulässige Rekonstruktion ist aus einer endlichen Teilmenge des formalen Systems ableitbar.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(611, '3.639', 49, 'Trennung rekonstruktiver und empirischer Gültigkeit', '\\operatorname{RekGült}\\left(S_i\\right)\\nRightarrow\\operatorname{Bew}_{\\mathrm{emp}}\\left(S_i\\right)', '\\operatorname{RekGült}\\left(S_i\\right)\\nRightarrow\\operatorname{Bew}_{\\mathrm{emp}}\\left(S_i\\right)', 'Formale Rekonstruktionsgültigkeit impliziert keine empirische Bewährung.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(612, '3.640', 49, 'Rekonstruktive Anschlussbedingung', 'S_i\\in\\mathfrak{S}_F\\Leftrightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash S_i\\land\\operatorname{DefEin}\\left(S_i\\right)\\land\\operatorname{Kompat}\\left(S_i,\\mathfrak{L}_F\\right)', 'S_i\\in\\mathfrak{S}_F\\Leftrightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash S_i\\land\\operatorname{DefEin}\\left(S_i\\right)\\land\\operatorname{Kompat}\\left(S_i,\\mathfrak{L}_F\\right)', 'Zulässigkeit einer Rekonstruktion erfordert Ableitbarkeit, eindeutige Bestimmung und Kompatibilität.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(613, '3.641', 49, 'Prädikat eindeutiger Definition', '\\operatorname{DefEin}', '\\operatorname{DefEin}', 'Prädikat der eindeutigen definitorischen Bestimmung einer rekonstruierten Struktur.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47);
+(560, '3.588', 47, 'Endliche Teilmenge', '\\subseteq_{\\mathrm{fin}}', '\\subseteq_{\\mathrm{fin}}', 'Symbol für eine endliche Teilmenge.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.9.5.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.4 eingeführten Definitionen und Propositionen.', 'checked', 45);
 
 -- --------------------------------------------------------
 
@@ -1331,27 +1275,7 @@ INSERT INTO `equation_symbols` (`equation_symbol_id`, `equation_id`, `symbol_lat
 (323, 551, '\\mathcal{Q}_F', 'Rekonstruktionsaufgaben', 'Menge der zielbezogenen Rekonstruktionsaufgaben', NULL, NULL, 1),
 (324, 553, '\\Gamma_i', 'Aufgabenvoraussetzungen', 'Endliche Teilmenge der für eine Aufgabe benötigten Systemelemente', NULL, NULL, 1),
 (325, 558, '\\operatorname{Kompat}', 'Kompatibilitätsprädikat', 'Prädikat der Vereinbarkeit einer Systemerweiterung', NULL, NULL, 1),
-(326, 560, '\\subseteq_{\\mathrm{fin}}', 'Endliche Teilmengenrelation', 'Relation der endlichen Teilmengenbildung', NULL, NULL, 1),
-(327, 561, '\\mathfrak{M}_F', 'Metatheoretische Gesamtstruktur', 'Gesamtstruktur aus Axiomen, Definitionen, Propositionen, Abhängigkeitsgraph und Rekonstruktionsaufgaben', NULL, NULL, 1),
-(328, 562, '\\mathcal{B}_{\\mathfrak{M}}', 'Metatheoretische Bedingungen', 'Menge der Bedingungen Unabhängigkeit, Konsistenz, Hierarchie und Zielvollständigkeit', NULL, NULL, 1),
-(329, 568, '\\operatorname{Hinr}', 'Hinreichende Bestimmtheit', 'Prädikat der hinreichenden metatheoretischen Bestimmtheit', NULL, NULL, 1),
-(330, 573, '\\Pi_{\\mathfrak{M}}', 'Metatheoretischer Prüfoperator', 'Prüfoperator für die metatheoretische Bestimmtheit', NULL, NULL, 1),
-(331, 576, '\\mathbf{m}_F', 'Metatheoretischer Qualitätsvektor', 'Vektor gradueller Qualitätsbewertungen', NULL, NULL, 1),
-(332, 578, 'Q_{\\mathfrak{M}}', 'Metatheoretische Qualitätsfunktion', 'Gewichtete Bewertungsfunktion der metatheoretischen Qualität', NULL, NULL, 1),
-(333, 582, '\\operatorname{Freig}_{3.4}', 'Freigabeprädikat', 'Prädikat der formalen Freigabe für Kapitel 3.4', NULL, NULL, 1),
-(334, 584, '\\mathcal{R}_F', 'Rekonstruktionsmenge', 'Menge der mathematischen Rekonstruktionen', NULL, NULL, 1),
-(335, 586, '\\operatorname{Gült}_{\\mathrm{formal}}', 'Formale Gültigkeit', 'Gültigkeit einer Ableitung innerhalb des formalen Systems', NULL, NULL, 1),
-(336, 586, '\\operatorname{Bew}_{\\mathrm{emp}}', 'Empirische Bewährung', 'Bewährung einer rekonstruierten Struktur an Beobachtungsdaten', NULL, NULL, 1),
-(337, 588, '\\operatorname{Trag}_F', 'Theoretische Tragfähigkeit', 'Verbindung formaler Gültigkeit und empirischer Bewährung', NULL, NULL, 1),
-(338, 594, '\\mathcal{A}_{\\mathrm{FRZK}}', 'Axiomenmenge des FRZK', 'Menge der sieben Grundaxiome des FRZK', NULL, NULL, 1),
-(339, 602, '\\mathbf{v}', 'Funktionaler Vektor', 'Funktionaler Vektor mit Betrag und Richtungswert', NULL, NULL, 1),
-(340, 602, '\\widehat{\\mathbf{v}}', 'Richtungswert', 'Erhaltener Richtungswert eines funktionalen Vektors', NULL, NULL, 1),
-(341, 604, '\\mathbf{0}_F', 'Funktionaler Nullvektor', 'Vollständig gelöschter funktionaler Nullvektor', NULL, NULL, 1),
-(342, 605, '\\mathfrak{R}', 'Rekonstruktionsabbildung', 'Abbildung vom formalen System auf mathematische Strukturen', NULL, NULL, 1),
-(343, 605, '\\mathfrak{S}_F', 'Rekonstruktionsraum', 'Menge der mathematisch rekonstruierbaren FRZK-Strukturen', NULL, NULL, 1),
-(344, 609, '\\operatorname{RekGült}', 'Rekonstruktionsgültigkeit', 'Prädikat der Gültigkeit einer mathematischen Rekonstruktion', NULL, NULL, 1),
-(345, 613, '\\operatorname{DefEin}', 'Eindeutige Definition', 'Prädikat der eindeutigen definitorischen Bestimmung', NULL, NULL, 1),
-(346, 612, '\\operatorname{Kompat}', 'Kompatibilität', 'Prädikat der Vereinbarkeit einer Rekonstruktion mit dem formalen System', NULL, NULL, 1);
+(326, 560, '\\subseteq_{\\mathrm{fin}}', 'Endliche Teilmengenrelation', 'Relation der endlichen Teilmengenbildung', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1558,9 +1482,7 @@ INSERT INTO `propositions` (`proposition_id`, `proposition_number`, `section_id`
 (12, '3.3.7', 41, 'Funktionale Dynamik entsteht aus zulässigen Zustandsübergängen', 'Sei Pi_F ein funktionaler Übergangspfad. Sind sämtliche Teilschritte zulässig und bleiben alle Zustände oberhalb der kritischen Kohärenzschwelle, so bildet der Übergangspfad eine tragfähige funktionale Dynamik.', 'Pi_F=left(z_F^{(0)},z_F^{(1)},dots,z_F^{(n)}\right),quad Lambda_Fleft(z_F^{(i)},z_F^{(i+1)}\right)=1,quad C_Fleft(z_F^{(i)}\right)geq C_{mathrm{krit}}', 'Pi_F=left(z_F^{(0)},z_F^{(1)},dots,z_F^{(n)}\right),quad Lambda_Fleft(z_F^{(i)},z_F^{(i+1)}\right)=1,quad C_Fleft(z_F^{(i)}\right)geq C_{mathrm{krit}}', 'Axiom A6 sichert die Existenz konkreter funktionaler Zustände. Axiom A7 bestimmt die Bedingungen ihrer operationsvermittelten Übergänge. Axiom A5 fordert den hinreichenden funktionalen Zusammenhang. Sind alle Einzelübergänge zulässig und bleiben sämtliche Zustände oberhalb der kritischen Kohärenzschwelle, ist der gesamte Übergangspfad funktional tragfähig.', 'A5,A6,A7', 'accepted', 39),
 (13, '3.3.10', 45, 'Relative Konsistenz des FRZK-Axiomensystems', 'Das Axiomensystem des FRZK ist relativ konsistent, sofern ein Modell existiert, das sämtliche Axiome A1 bis A7 erfüllt.', 'existsmathcal{M}_F:mathcal{M}_Fmodelsmathcal{A}_FRightarrowoperatorname{Con}left(mathcal{A}_F\right)', 'existsmathcal{M}_F:mathcal{M}_Fmodelsmathcal{A}_FRightarrowoperatorname{Con}left(mathcal{A}_F\right)', 'Das konstruierte Minimalmodell erfüllt die Bedingungen der Axiome A1 bis A7. Die Konsistenz ist relativ zu den vorausgesetzten mathematischen und logischen Grundlagen.', 'A1,A2,A3,A4,A5,A6,A7', 'accepted', 43),
 (14, '3.3.11', 46, 'Hierarchische Geschlossenheit des formalen Systems', 'Das formale System des FRZK ist hierarchisch geschlossen, wenn jede Definition auf bereits eingeführten Symbolen beruht und jede Proposition ausschließlich aus Axiomen, zulässigen Definitionen und logisch vorhergehenden Propositionen abgeleitet wird.', 'forall D_jinmathcal{D}!ef_F:operatorname{zul}left(D_j\right)quadlandquadforall P_minmathcal{P}_F:operatorname{Begr}left(P_m\right)', 'forall D_jinmathcal{D}!ef_F:operatorname{zul}left(D_j\right)quadlandquadforall P_minmathcal{P}_F:operatorname{Begr}left(P_m\right)', 'Die zulässigen Definitionen und formal begründeten Propositionen bilden einen gerichteten Abhängigkeitsgraphen. Ist dieser Graph azyklisch, kann jedem Element ein Rang zugewiesen werden. Dadurch liegt jede abgeleitete Aussage logisch oberhalb ihrer Voraussetzungen und das System ist hierarchisch geordnet.', 'A1,A2,A3,A4,A5,A6,A7', 'accepted', 44),
-(15, '3.3.12', 47, 'Zielbezogene Vollständigkeit des FRZK', 'Das FRZK ist für die mathematische Rekonstruktion funktionaler Organisationen zielbezogen vollständig, wenn sämtliche in der Aufgabenmenge festgelegten Rekonstruktionsaufgaben durch endliche Teilmengen des formalen Systems bearbeitet werden können.', 'forall q_iinmathcal{Q}_F:existsGamma_isubseteq_{mathrm{fin}}mathfrak{L}_F:Gamma_ivdash q_i', 'forall q_iinmathcal{Q}_F:existsGamma_isubseteq_{mathrm{fin}}mathfrak{L}_F:Gamma_ivdash q_i', 'Die Vollständigkeit wird nicht als universelle formallogische Entscheidbarkeit, sondern relativ zur Menge der in Kapitel 3.4 erforderlichen Rekonstruktionsaufgaben bestimmt. Für jede Aufgabe muss eine endliche Menge zulässiger Axiome, Definitionen und Propositionen existieren, aus der die jeweilige Rekonstruktionsleistung ableitbar ist.', 'A1,A2,A3,A4,A5,A6,A7', 'accepted', 45),
-(16, '3.3.13', 48, 'Metatheoretische Anschlussfähigkeit', 'Erfüllt das FRZK die Bedingungen relativer Unabhängigkeit, relativer Konsistenz, hierarchischer Ordnung und zielbezogener Vollständigkeit, dann ist das Axiomensystem hinreichend bestimmt, um als formale Grundlage der mathematischen Rekonstruktion zu dienen.', 'B_{mathrm{unabh}}land B_{mathrm{kons}}land B_{mathrm{hier}}land B_{mathrm{ziel}}Rightarrowoperatorname{Freig}_{3.4}', 'B_{mathrm{unabh}}land B_{mathrm{kons}}land B_{mathrm{hier}}land B_{mathrm{ziel}}Rightarrowoperatorname{Freig}_{3.4}', 'Die Proposition führt die zuvor einzeln bestimmten metatheoretischen Bedingungen in einer gemeinsamen Freigabebedingung zusammen. Aus der Freigabe folgt die endliche Ableitbarkeit jeder für Kapitel 3.4 zugelassenen Rekonstruktion aus dem formalen System.', 'A1,A2,A3,A4,A5,A6,A7', 'accepted', 46),
-(17, '3.3.14', 49, 'Rekonstruktive Anschlussbedingung', 'Jede mathematische Struktur des FRZK ist nur dann als zulässige Rekonstruktion anzuerkennen, wenn sie aus einer endlichen Teilmenge des axiomatischen und definitorischen Systems ableitbar, eindeutig bestimmt und mit den bereits eingeführten Strukturen vereinbar ist.', 'S_iinmathfrak{S}_FLeftrightarrowexistsGamma_isubseteq_{mathrm{fin}}mathfrak{L}_F:Gamma_ivdash S_ilandoperatorname{DefEin}left(S_i\right)landoperatorname{Kompat}left(S_i,mathfrak{L}_F\right)', 'S_iinmathfrak{S}_FLeftrightarrowexistsGamma_isubseteq_{mathrm{fin}}mathfrak{L}_F:Gamma_ivdash S_ilandoperatorname{DefEin}left(S_i\right)landoperatorname{Kompat}left(S_i,mathfrak{L}_F\right)', 'Die Proposition verbindet die metatheoretische Freigabe aus Proposition 3.3.13 mit den konkreten Zulässigkeitsbedingungen für die mathematischen Konstruktionen des folgenden Kapitels.', 'A1,A2,A3,A4,A5,A6,A7', 'accepted', 47);
+(15, '3.3.12', 47, 'Zielbezogene Vollständigkeit des FRZK', 'Das FRZK ist für die mathematische Rekonstruktion funktionaler Organisationen zielbezogen vollständig, wenn sämtliche in der Aufgabenmenge festgelegten Rekonstruktionsaufgaben durch endliche Teilmengen des formalen Systems bearbeitet werden können.', 'forall q_iinmathcal{Q}_F:existsGamma_isubseteq_{mathrm{fin}}mathfrak{L}_F:Gamma_ivdash q_i', 'forall q_iinmathcal{Q}_F:existsGamma_isubseteq_{mathrm{fin}}mathfrak{L}_F:Gamma_ivdash q_i', 'Die Vollständigkeit wird nicht als universelle formallogische Entscheidbarkeit, sondern relativ zur Menge der in Kapitel 3.4 erforderlichen Rekonstruktionsaufgaben bestimmt. Für jede Aufgabe muss eine endliche Menge zulässiger Axiome, Definitionen und Propositionen existieren, aus der die jeweilige Rekonstruktionsleistung ableitbar ist.', 'A1,A2,A3,A4,A5,A6,A7', 'accepted', 45);
 
 -- --------------------------------------------------------
 
@@ -1619,21 +1541,7 @@ INSERT INTO `proposition_dependencies` (`proposition_dependency_id`, `propositio
 (45, 15, 4, NULL, 'derived_from', 'Proposition 3.3.12 verwendet A4 als Bestandteil des funktionalen Rekonstruktionsrahmens.'),
 (46, 15, 10, NULL, 'derived_from', 'Proposition 3.3.12 verwendet A5 als Bestandteil des funktionalen Rekonstruktionsrahmens.'),
 (47, 15, 11, NULL, 'derived_from', 'Proposition 3.3.12 verwendet A6 als Bestandteil des funktionalen Rekonstruktionsrahmens.'),
-(48, 15, 12, NULL, 'derived_from', 'Proposition 3.3.12 verwendet A7 als Bestandteil des funktionalen Rekonstruktionsrahmens.'),
-(49, 16, 1, NULL, 'derived_from', 'Proposition 3.3.13 verwendet A1 als Bestandteil der metatheoretischen Anschlussfähigkeit.'),
-(50, 16, 2, NULL, 'derived_from', 'Proposition 3.3.13 verwendet A2 als Bestandteil der metatheoretischen Anschlussfähigkeit.'),
-(51, 16, 3, NULL, 'derived_from', 'Proposition 3.3.13 verwendet A3 als Bestandteil der metatheoretischen Anschlussfähigkeit.'),
-(52, 16, 4, NULL, 'derived_from', 'Proposition 3.3.13 verwendet A4 als Bestandteil der metatheoretischen Anschlussfähigkeit.'),
-(53, 16, 10, NULL, 'derived_from', 'Proposition 3.3.13 verwendet A5 als Bestandteil der metatheoretischen Anschlussfähigkeit.'),
-(54, 16, 11, NULL, 'derived_from', 'Proposition 3.3.13 verwendet A6 als Bestandteil der metatheoretischen Anschlussfähigkeit.'),
-(55, 16, 12, NULL, 'derived_from', 'Proposition 3.3.13 verwendet A7 als Bestandteil der metatheoretischen Anschlussfähigkeit.'),
-(56, 17, 1, NULL, 'derived_from', 'Proposition 3.3.14 verwendet A1 als Grundlage der rekonstruktiven Anschlussbedingung.'),
-(57, 17, 2, NULL, 'derived_from', 'Proposition 3.3.14 verwendet A2 als Grundlage der rekonstruktiven Anschlussbedingung.'),
-(58, 17, 3, NULL, 'derived_from', 'Proposition 3.3.14 verwendet A3 als Grundlage der rekonstruktiven Anschlussbedingung.'),
-(59, 17, 4, NULL, 'derived_from', 'Proposition 3.3.14 verwendet A4 als Grundlage der rekonstruktiven Anschlussbedingung.'),
-(60, 17, 10, NULL, 'derived_from', 'Proposition 3.3.14 verwendet A5 als Grundlage der rekonstruktiven Anschlussbedingung.'),
-(61, 17, 11, NULL, 'derived_from', 'Proposition 3.3.14 verwendet A6 als Grundlage der rekonstruktiven Anschlussbedingung.'),
-(62, 17, 12, NULL, 'derived_from', 'Proposition 3.3.14 verwendet A7 als Grundlage der rekonstruktiven Anschlussbedingung.');
+(48, 15, 12, NULL, 'derived_from', 'Proposition 3.3.12 verwendet A7 als Bestandteil des funktionalen Rekonstruktionsrahmens.');
 
 -- --------------------------------------------------------
 
@@ -1715,9 +1623,7 @@ INSERT INTO `repository_revisions` (`revision_id`, `revision_code`, `revision_da
 (42, 'RKB-NEU-K3.3.9.2-V1', '2026-07-19 17:36:45', 'section', '3.3.9.2', '1.0', 'Abschnitt 3.3.9.2: Proposition 3.3.9 und Gleichungen (3.492) bis (3.506).', 'Olaf Thiele / ChatGPT', 40),
 (43, 'RKB-NEU-K3.3.9.3-V1', '2026-07-19 19:09:21', 'section', '3.3.9.3', '1.0', 'Abschnitt 3.3.9.3: innere und relative Konsistenz des FRZK-Axiomensystems; Proposition 3.3.10; Gleichungen (3.507) bis (3.524).', 'Olaf Thiele / ChatGPT', 42),
 (44, 'RKB-NEU-K3.3.9.4-V1', '2026-07-20 05:04:19', 'section', '3.3.9.4', '1.0', 'Abschnitt 3.3.9.4: Verhältnis von Axiomen, Definitionen und Propositionen; Proposition 3.3.11; Gleichungen (3.525) bis (3.557).', 'Olaf Thiele / ChatGPT', 43),
-(45, 'RKB-NEU-K3.3.9.5-V1', '2026-07-20 05:15:14', 'section', '3.3.9.5', '1.0', 'Abschnitt 3.3.9.5: Reichweite und Grenzen der Vollständigkeit; Proposition 3.3.12; Gleichungen (3.558) bis (3.588).', 'Olaf Thiele / ChatGPT', 44),
-(46, 'RKB-NEU-K3.3.9.6-V1', '2026-07-20 05:47:38', 'section', '3.3.9.6', '1.0', 'Abschnitt 3.3.9.6: Metatheoretischer Abschluss des Axiomensystems; Proposition 3.3.13; Gleichungen (3.589) bis (3.618).', 'Olaf Thiele / ChatGPT', 45),
-(47, 'RKB-NEU-K3.3.10-V1', '2026-07-20 06:12:50', 'section', '3.3.10', '1.0', 'Kapitelabschluss 3.3: Zusammenfassung, Rekonstruktionsübergang, Proposition 3.3.14 und Gleichungen (3.619) bis (3.641).', 'Olaf Thiele / ChatGPT', 46);
+(45, 'RKB-NEU-K3.3.9.5-V1', '2026-07-20 05:15:14', 'section', '3.3.9.5', '1.0', 'Abschnitt 3.3.9.5: Reichweite und Grenzen der Vollständigkeit; Proposition 3.3.12; Gleichungen (3.558) bis (3.588).', 'Olaf Thiele / ChatGPT', 44);
 
 -- --------------------------------------------------------
 
@@ -1914,19 +1820,7 @@ INSERT INTO `repository_validation_results` (`validation_result_id`, `revision_i
 (181, 45, 'K3.3.9.5.PROPOSITION', 'passed', '1', '1', 'Prüfung der Proposition 3.3.12.', '2026-07-20 03:15:14'),
 (182, 45, 'K3.3.9.5.EQUATIONS', 'passed', '31', '31', 'Prüfung der Gleichungen (3.558) bis (3.588).', '2026-07-20 03:15:14'),
 (183, 45, 'K3.3.9.5.AXIOM_DEPENDENCIES', 'passed', '7', '7', 'Prüfung der sieben Axiomabhängigkeiten von Proposition 3.3.12.', '2026-07-20 03:15:14'),
-(184, 45, 'K3.3.9.5.SYMBOLS', 'failed', '14', '0', 'Prüfung der vierzehn zentralen Symbolregistrierungen.', '2026-07-20 03:15:14'),
-(185, 46, 'K3.3.9.6.PRECONDITION', 'passed', '1', '1', 'Prüfung der Elternrevision und des übergeordneten Abschnitts.', '2026-07-20 03:47:38'),
-(186, 46, 'K3.3.9.6.SECTION', 'passed', '1', '1', 'Prüfung des Abschnitts 3.3.9.6.', '2026-07-20 03:47:38'),
-(187, 46, 'K3.3.9.6.PROPOSITION', 'passed', '1', '1', 'Prüfung der Proposition 3.3.13.', '2026-07-20 03:47:38'),
-(188, 46, 'K3.3.9.6.EQUATIONS', 'passed', '30', '30', 'Prüfung der Gleichungen (3.589) bis (3.618).', '2026-07-20 03:47:38'),
-(189, 46, 'K3.3.9.6.AXIOM_DEPENDENCIES', 'passed', '7', '7', 'Prüfung der sieben Axiomabhängigkeiten von Proposition 3.3.13.', '2026-07-20 03:47:38'),
-(190, 46, 'K3.3.9.6.SYMBOLS', 'failed', '11', '0', 'Prüfung der elf zentralen Symbolregistrierungen.', '2026-07-20 03:47:38'),
-(191, 47, 'K3.3.10.PRECONDITION', 'passed', '1', '1', 'Prüfung der Elternrevision und des Kapitelabschnitts 3.3.', '2026-07-20 04:12:50'),
-(192, 47, 'K3.3.10.SECTION', 'passed', '1', '1', 'Prüfung des Abschnitts 3.3.10.', '2026-07-20 04:12:50'),
-(193, 47, 'K3.3.10.PROPOSITION', 'passed', '1', '1', 'Prüfung der Proposition 3.3.14.', '2026-07-20 04:12:50'),
-(194, 47, 'K3.3.10.EQUATIONS', 'passed', '23', '23', 'Prüfung der Gleichungen (3.619) bis (3.641).', '2026-07-20 04:12:50'),
-(195, 47, 'K3.3.10.AXIOM_DEPENDENCIES', 'passed', '7', '7', 'Prüfung der sieben Axiomabhängigkeiten von Proposition 3.3.14.', '2026-07-20 04:12:50'),
-(196, 47, 'K3.3.10.SYMBOLS', 'failed', '9', '0', 'Prüfung der neun zentralen Symbolregistrierungen.', '2026-07-20 04:12:50');
+(184, 45, 'K3.3.9.5.SYMBOLS', 'failed', '14', '0', 'Prüfung der vierzehn zentralen Symbolregistrierungen.', '2026-07-20 03:15:14');
 
 -- --------------------------------------------------------
 
@@ -2115,13 +2009,7 @@ INSERT INTO `section_change_log` (`change_id`, `revision_id`, `section_id`, `cha
 (191, 44, 46, 'symbol_added', 'symbol', '3.3.9.4-symbols', 'Zentrale Symbole des formalen Abhängigkeits- und Rangsystems registriert.', NULL, '12 zentrale Symboldefinitionen', '2026-07-20 03:04:19'),
 (192, 45, 47, 'created', 'section', '3.3.9.5', 'Abschnitt 3.3.9.5 vollständig angelegt.', NULL, 'Reichweite und Grenzen der Vollständigkeit', '2026-07-20 03:15:14'),
 (193, 45, 47, 'proposition_added', 'proposition', '3.3.12', 'Proposition 3.3.12 registriert.', NULL, 'Zielbezogene Vollständigkeit des FRZK', '2026-07-20 03:15:14'),
-(194, 45, 47, 'equation_added', 'equation', '(3.558)–(3.588)', '31 Gleichungen und formale Schemata registriert.', NULL, 'Gleichungen (3.558) bis (3.588)', '2026-07-20 03:15:14'),
-(195, 46, 48, 'created', 'section', '3.3.9.6', 'Abschnitt 3.3.9.6 vollständig angelegt.', NULL, 'Metatheoretischer Abschluss des Axiomensystems', '2026-07-20 03:47:38'),
-(196, 46, 48, 'proposition_added', 'proposition', '3.3.13', 'Proposition 3.3.13 registriert.', NULL, 'Metatheoretische Anschlussfähigkeit', '2026-07-20 03:47:38'),
-(197, 46, 48, 'equation_added', 'equation', '(3.589)–(3.618)', '30 Gleichungen und formale Schemata registriert.', NULL, 'Gleichungen (3.589) bis (3.618)', '2026-07-20 03:47:38'),
-(198, 47, 49, 'created', 'section', '3.3.10', 'Abschnitt 3.3.10 vollständig angelegt.', NULL, 'Zusammenfassung und Übergang zur mathematischen Rekonstruktion', '2026-07-20 04:12:50'),
-(199, 47, 49, 'proposition_added', 'proposition', '3.3.14', 'Proposition 3.3.14 registriert.', NULL, 'Rekonstruktive Anschlussbedingung', '2026-07-20 04:12:50'),
-(200, 47, 49, 'equation_added', 'equation', '(3.619)–(3.641)', '23 Gleichungen und formale Schemata registriert.', NULL, 'Gleichungen (3.619) bis (3.641)', '2026-07-20 04:12:50');
+(194, 45, 47, 'equation_added', 'equation', '(3.558)–(3.588)', '31 Gleichungen und formale Schemata registriert.', NULL, 'Gleichungen (3.558) bis (3.588)', '2026-07-20 03:15:14');
 
 -- --------------------------------------------------------
 
@@ -2718,25 +2606,7 @@ INSERT INTO `symbols` (`symbol_id`, `symbol_latex`, `symbol_word_latex`, `symbol
 (100, '\\mathcal{Q}_F', '\\mathcal{Q}_F', 'Rekonstruktionsaufgaben', 'Menge der zielbezogenen Rekonstruktionsaufgaben', 'chapter', 47, 551, NULL, NULL, NULL, 0, 0, 0, 'In Abschnitt 3.3.9.5 eingeführt oder präzisiert.', 'checked', 45),
 (101, '\\Gamma_i', '\\Gamma_i', 'Aufgabenvoraussetzungen', 'Endliche Teilmenge der für eine Aufgabe benötigten Systemelemente', 'chapter', 47, 553, NULL, NULL, NULL, 0, 0, 0, 'In Abschnitt 3.3.9.5 eingeführt oder präzisiert.', 'checked', 45),
 (102, '\\operatorname{Kompat}', '\\operatorname{Kompat}', 'Kompatibilitätsprädikat', 'Prädikat der Vereinbarkeit einer Systemerweiterung', 'chapter', 47, 558, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.5 eingeführt oder präzisiert.', 'checked', 45),
-(103, '\\subseteq_{\\mathrm{fin}}', '\\subseteq_{\\mathrm{fin}}', 'Endliche Teilmengenrelation', 'Relation der endlichen Teilmengenbildung', 'chapter', 47, 560, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.5 eingeführt oder präzisiert.', 'checked', 45),
-(104, '\\mathfrak{M}_F', '\\mathfrak{M}_F', 'Metatheoretische Gesamtstruktur', 'Gesamtstruktur aus Axiomen, Definitionen, Propositionen, Abhängigkeitsgraph und Rekonstruktionsaufgaben', 'chapter', 48, 561, NULL, NULL, NULL, 0, 0, 0, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(105, '\\mathcal{B}_{\\mathfrak{M}}', '\\mathcal{B}_{\\mathfrak{M}}', 'Metatheoretische Bedingungen', 'Menge der Bedingungen Unabhängigkeit, Konsistenz, Hierarchie und Zielvollständigkeit', 'chapter', 48, 562, NULL, NULL, NULL, 0, 0, 0, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(106, '\\operatorname{Hinr}', '\\operatorname{Hinr}', 'Hinreichende Bestimmtheit', 'Prädikat der hinreichenden metatheoretischen Bestimmtheit', 'chapter', 48, 568, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(107, '\\Pi_{\\mathfrak{M}}', '\\Pi_{\\mathfrak{M}}', 'Metatheoretischer Prüfoperator', 'Prüfoperator für die metatheoretische Bestimmtheit', 'chapter', 48, 573, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(108, '\\mathbf{m}_F', '\\mathbf{m}_F', 'Metatheoretischer Qualitätsvektor', 'Vektor gradueller Qualitätsbewertungen', 'chapter', 48, 576, NULL, NULL, NULL, 1, 0, 0, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(109, 'Q_{\\mathfrak{M}}', 'Q_{\\mathfrak{M}}', 'Metatheoretische Qualitätsfunktion', 'Gewichtete Bewertungsfunktion der metatheoretischen Qualität', 'chapter', 48, 578, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(110, '\\operatorname{Freig}_{3.4}', '\\operatorname{Freig}_{3.4}', 'Freigabeprädikat', 'Prädikat der formalen Freigabe für Kapitel 3.4', 'chapter', 48, 582, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(111, '\\operatorname{Gült}_{\\mathrm{formal}}', '\\operatorname{Gült}_{\\mathrm{formal}}', 'Formale Gültigkeit', 'Gültigkeit einer Ableitung innerhalb des formalen Systems', 'chapter', 48, 586, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(112, '\\operatorname{Bew}_{\\mathrm{emp}}', '\\operatorname{Bew}_{\\mathrm{emp}}', 'Empirische Bewährung', 'Bewährung einer rekonstruierten Struktur an Beobachtungsdaten', 'chapter', 48, 586, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(113, '\\operatorname{Trag}_F', '\\operatorname{Trag}_F', 'Theoretische Tragfähigkeit', 'Verbindung formaler Gültigkeit und empirischer Bewährung', 'chapter', 48, 588, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.6 eingeführt oder metatheoretisch präzisiert.', 'checked', 46),
-(114, '\\mathcal{A}_{\\mathrm{FRZK}}', '\\mathcal{A}_{\\mathrm{FRZK}}', 'Axiomenmenge des FRZK', 'Menge der sieben Grundaxiome des FRZK', 'chapter', 49, 594, NULL, NULL, NULL, 0, 0, 0, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
-(115, '\\mathbf{v}', '\\mathbf{v}', 'Funktionaler Vektor', 'Funktionaler Vektor mit Betrag und Richtungswert', 'chapter', 49, 602, NULL, NULL, NULL, 1, 0, 0, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
-(116, '\\widehat{\\mathbf{v}}', '\\widehat{\\mathbf{v}}', 'Richtungswert', 'Erhaltener Richtungswert eines funktionalen Vektors', 'chapter', 49, 602, NULL, NULL, NULL, 1, 0, 0, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
-(117, '\\mathbf{0}_F', '\\mathbf{0}_F', 'Funktionaler Nullvektor', 'Vollständig gelöschter funktionaler Nullvektor', 'chapter', 49, 604, NULL, NULL, NULL, 1, 0, 0, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
-(118, '\\mathfrak{R}', '\\mathfrak{R}', 'Rekonstruktionsabbildung', 'Abbildung vom formalen System auf mathematische Strukturen', 'chapter', 49, 605, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
-(119, '\\mathfrak{S}_F', '\\mathfrak{S}_F', 'Rekonstruktionsraum', 'Menge der mathematisch rekonstruierbaren FRZK-Strukturen', 'chapter', 49, 605, NULL, NULL, NULL, 0, 0, 0, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
-(120, '\\operatorname{RekGült}', '\\operatorname{RekGült}', 'Rekonstruktionsgültigkeit', 'Prädikat der Gültigkeit einer mathematischen Rekonstruktion', 'chapter', 49, 609, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
-(121, '\\operatorname{DefEin}', '\\operatorname{DefEin}', 'Eindeutige Definition', 'Prädikat der eindeutigen definitorischen Bestimmung', 'chapter', 49, 613, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47);
+(103, '\\subseteq_{\\mathrm{fin}}', '\\subseteq_{\\mathrm{fin}}', 'Endliche Teilmengenrelation', 'Relation der endlichen Teilmengenbildung', 'chapter', 47, 560, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.9.5 eingeführt oder präzisiert.', 'checked', 45);
 
 -- --------------------------------------------------------
 
@@ -3580,7 +3450,7 @@ ALTER TABLE `definitions`
 -- AUTO_INCREMENT für Tabelle `dissertation_sections`
 --
 ALTER TABLE `dissertation_sections`
-  MODIFY `section_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `section_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT für Tabelle `dissertation_tables`
@@ -3598,7 +3468,7 @@ ALTER TABLE `documents`
 -- AUTO_INCREMENT für Tabelle `equations`
 --
 ALTER TABLE `equations`
-  MODIFY `equation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=614;
+  MODIFY `equation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=561;
 
 --
 -- AUTO_INCREMENT für Tabelle `equation_dependencies`
@@ -3610,7 +3480,7 @@ ALTER TABLE `equation_dependencies`
 -- AUTO_INCREMENT für Tabelle `equation_symbols`
 --
 ALTER TABLE `equation_symbols`
-  MODIFY `equation_symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
+  MODIFY `equation_symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=327;
 
 --
 -- AUTO_INCREMENT für Tabelle `figures`
@@ -3652,31 +3522,31 @@ ALTER TABLE `proofs`
 -- AUTO_INCREMENT für Tabelle `propositions`
 --
 ALTER TABLE `propositions`
-  MODIFY `proposition_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `proposition_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT für Tabelle `proposition_dependencies`
 --
 ALTER TABLE `proposition_dependencies`
-  MODIFY `proposition_dependency_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `proposition_dependency_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT für Tabelle `repository_revisions`
 --
 ALTER TABLE `repository_revisions`
-  MODIFY `revision_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `revision_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT für Tabelle `repository_validation_results`
 --
 ALTER TABLE `repository_validation_results`
-  MODIFY `validation_result_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=197;
+  MODIFY `validation_result_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
 
 --
 -- AUTO_INCREMENT für Tabelle `section_change_log`
 --
 ALTER TABLE `section_change_log`
-  MODIFY `change_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
+  MODIFY `change_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
 
 --
 -- AUTO_INCREMENT für Tabelle `sources`
@@ -3700,7 +3570,7 @@ ALTER TABLE `source_usage`
 -- AUTO_INCREMENT für Tabelle `symbols`
 --
 ALTER TABLE `symbols`
-  MODIFY `symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT für Tabelle `theorems`

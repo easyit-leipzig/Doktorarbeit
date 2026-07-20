@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 20. Jul 2026 um 06:14
+-- Erstellungszeit: 20. Jul 2026 um 08:09
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.0.30
 
@@ -213,7 +213,8 @@ INSERT INTO `authors` (`author_id`, `family_name`, `given_names`, `normalized_na
 (116, 'Jacobi', 'Carl Gustav', 'Jacobi, Carl Gustav', NULL, 1804, 1851, 'Autor der Quelle [96].'),
 (117, 'Schmidt', 'Erhard', 'Schmidt, Erhard', NULL, 1876, 1959, 'Autor der Quelle [99].'),
 (118, 'Shannon', 'Claude E.', 'Shannon, Claude E.', NULL, 1916, 2001, 'Autor der Quelle [106].'),
-(119, 'Birkhoff', 'Garrett', 'Birkhoff, Garrett', NULL, 1911, 1996, 'Autor der in Abschnitt 3.3.3 neu aufgenommenen Quelle [107].');
+(119, 'Birkhoff', 'Garrett', 'Birkhoff, Garrett', NULL, 1911, 1996, 'Autor der in Abschnitt 3.3.3 neu aufgenommenen Quelle [107].'),
+(120, 'Awodey', 'Steve', 'Awodey, Steve', NULL, 1959, NULL, 'Autor der Quelle [109]; für Abschnitt 3.4.0 registriert.');
 
 -- --------------------------------------------------------
 
@@ -313,6 +314,14 @@ CREATE TABLE `corollaries` (
   `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
   `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `corollaries`
+--
+
+INSERT INTO `corollaries` (`corollary_id`, `corollary_number`, `section_id`, `title`, `statement_text`, `statement_latex`, `word_latex`, `parent_theorem_id`, `parent_lemma_id`, `provenance`, `source_id`, `validation_status`, `created_revision_id`) VALUES
+(1, '3.4.1', 52, 'Minimalität der Zustandsdarstellung', 'Eine Darstellung, die eine der Komponenten funktionaler Gehalt, funktionale Relation oder funktionale Operation nicht berücksichtigt, ist im Allgemeinen nicht hinreichend, um sämtliche funktionalen Zustände eindeutig zu unterscheiden.', NULL, NULL, 37, NULL, 'original', NULL, 'checked', 49),
+(2, '3.4.2', 55, 'Eindeutige Klassenzugehörigkeit', 'Für jedes z_F aus Omega_F(S) existiert bezüglich eines festgelegten Kriteriums kappa_F genau eine funktionale Zustandsklasse [z_F]_{kappa_F}.', 'forall z_FinOmega_F(mathcal{S});exists!,[z_F]_{kappa_F}', 'forall z_FinOmega_F(mathcal{S});exists!,[z_F]_{kappa_F}', 38, NULL, 'original', NULL, 'checked', 52);
 
 -- --------------------------------------------------------
 
@@ -431,7 +440,11 @@ INSERT INTO `definitions` (`definition_id`, `definition_number`, `section_id`, `
 (105, '3.3.2', 29, 'Qualitative funktionale Unterscheidung', 'Die qualitative funktionale Unterscheidung hält fest, ob zwei funktionale Gehalte innerhalb des Modells funktional unterschieden werden oder nicht.', 'delta_F:mathcal{F}timesmathcal{F}rightarrow{0,1}', 'delta_F:mathcal{F}	imesmathcal{F}\rightarrow{0,1}', 'original', NULL, 'Es wird kein metrischer Abstand vorausgesetzt.', 'Die binäre Form bildet ausschließlich die minimale qualitative Unterscheidung ab.', 'checked', 27),
 (106, '3.3.3', 29, 'Funktionales Differenzmaß', 'Ein funktionales Differenzmaß ordnet zwei funktionalen Gehalten einen nichtnegativen Wert als möglichen Grad ihrer funktionalen Verschiedenheit zu, ohne an dieser Stelle bereits sämtliche Metrikeigenschaften zu fordern.', 'd_F:mathcal{F}timesmathcal{F}rightarrowmathbb{R}_{geq 0}', 'd_F:mathcal{F}	imesmathcal{F}\rightarrowmathbb{R}_{geq 0}', 'original', NULL, 'Symmetrie, Dreiecksungleichung und positive Definitheit werden nicht vorausgesetzt.', 'Vorstruktur für die mathematische Rekonstruktion in Kapitel 3.4.', 'draft', 27),
 (107, '3.3.4', 29, 'Funktionale Wirksamkeit', 'Die funktionale Wirksamkeit beschreibt, wie ein funktionaler Gehalt innerhalb eines funktionalen Kontextes wirksam wird.', 'omega_F:mathcal{F}timesmathcal{C}rightarrowmathcal{W}', 'omega_F:mathcal{F}	imesmathcal{C}\rightarrowmathcal{W}', 'original', NULL, 'Der Kontextbereich und der Wirkungsbereich werden zunächst formal offen gehalten.', 'Bereitet eine relationale und kontextabhängige Rekonstruktion funktionaler Identität vor.', 'checked', 27),
-(108, '3.3.5', 29, 'Aktuell wirksame Teilstruktur', 'Die aktuell wirksame Teilstruktur umfasst diejenigen funktionalen Gehalte des möglichen Trägerbereichs, die innerhalb des betrachteten funktionalen Zusammenhangs tatsächlich wirksam sind.', 'mathcal{F}_A subseteq mathcal{F}', 'mathcal{F}_Asubseteqmathcal{F}', 'original', NULL, 'Zwischen formaler Möglichkeit und aktueller Realisierung wird unterschieden.', 'Verhindert die Gleichsetzung aller formal möglichen mit tatsächlich realisierten Strukturen.', 'checked', 27);
+(108, '3.3.5', 29, 'Aktuell wirksame Teilstruktur', 'Die aktuell wirksame Teilstruktur umfasst diejenigen funktionalen Gehalte des möglichen Trägerbereichs, die innerhalb des betrachteten funktionalen Zusammenhangs tatsächlich wirksam sind.', 'mathcal{F}_A subseteq mathcal{F}', 'mathcal{F}_Asubseteqmathcal{F}', 'original', NULL, 'Zwischen formaler Möglichkeit und aktueller Realisierung wird unterschieden.', 'Verhindert die Gleichsetzung aller formal möglichen mit tatsächlich realisierten Strukturen.', 'checked', 27),
+(109, '3.4.1', 52, 'Funktionaler Zustand', 'Ein funktionaler Zustand z_F einer funktionalen Organisation S ist eine bestimmte, axiomatisch zulässige Konfiguration ihrer funktionalen Gehalte, Relationen und Operationen.', 'z_F:=chi_F(mathcal{S})quad	ext{mit}quadLambda_Fleft(chi_F(mathcal{S})\right)=1', 'z_F:=chi_F(mathcal{S})quad	ext{mit}quadLambda_Fleft(chi_F(mathcal{S})\right)=1', 'original', NULL, 'Axiome zu funktionalem Gehalt, Relation, Operation und Zustandsbildung; Gleichungen (3.645) und (3.646).', 'Zentrale eigene Definition des ersten mathematisch rekonstruierten Grundobjekts des FRZK.', 'checked', 49),
+(110, '3.4.2', 52, 'Identität funktionaler Zustände', 'Zwei funktionale Zustände sind genau dann identisch, wenn ihre funktionalen Gehalte, funktionalen Relationen und funktionalen Operationen jeweils übereinstimmen.', 'z_F^{(i)}=z_F^{(j)}Longleftrightarrow(mathcal{F}_{mathcal{S}}^{(i)}=mathcal{F}_{mathcal{S}}^{(j)})land(mathcal{R}_{mathcal{S}}^{(i)}=mathcal{R}_{mathcal{S}}^{(j)})land(mathcal{O}_{mathcal{S}}^{(i)}=mathcal{O}_{mathcal{S}}^{(j)})', 'z_F^{(i)}=z_F^{(j)}Longleftrightarrow(mathcal{F}_{mathcal{S}}^{(i)}=mathcal{F}_{mathcal{S}}^{(j)})land(mathcal{R}_{mathcal{S}}^{(i)}=mathcal{R}_{mathcal{S}}^{(j)})land(mathcal{O}_{mathcal{S}}^{(i)}=mathcal{O}_{mathcal{S}}^{(j)})', 'original', NULL, 'Definition 3.4.1 und Komponentendarstellung aus Gleichung (3.652).', 'Komponentenweise Identitätsbedingung für funktionale Zustände.', 'checked', 49),
+(113, '3.4.3', 55, 'Funktionale Äquivalenz', 'Zwei funktionale Zustände heißen bezüglich eines festgelegten funktionalen Kriteriums kappa_F funktional äquivalent, wenn ihre durch kappa_F bestimmten Merkmalswerte übereinstimmen.', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)', 'original', NULL, 'Funktionale Zustandsmenge aus Abschnitt 3.4.1 und Merkmalsabbildung aus Gleichung (3.656).', 'Eigene Definition einer kriteriumsabhängigen funktionalen Äquivalenz.', 'checked', 52),
+(114, '3.4.4', 55, 'Funktionale Zustandsklasse', 'Die funktionale Zustandsklasse eines Zustands z_F bezüglich der Relation sim_F ist die Menge aller Zustände der funktionalen Zustandsmenge, die zu z_F funktional äquivalent sind.', '[z_F]_{sim_F}=left{z_F^{\\prime}inOmega_F(mathcal{S})middle|z_F^{\\prime}sim_F z_F\right}', '[z_F]_{sim_F}=left{z_F^{\\prime}inOmega_F(mathcal{S})middle|z_F^{\\prime}sim_F z_F\right}', 'original', NULL, 'Definition 3.4.3 und Lemma 3.4.2.', 'Eigene funktionale Spezifikation der Äquivalenzklasse innerhalb der rekonstruierten Zustandsmenge.', 'checked', 52);
 
 -- --------------------------------------------------------
 
@@ -500,7 +513,11 @@ INSERT INTO `dissertation_sections` (`section_id`, `parent_section_id`, `section
 (46, 42, '3.3.9.4', 'Verhältnis von Axiomen, Definitionen und abgeleiteten Aussagen', 3, 3.3094, 'final', 1, 'Formale Trennung von Grundsetzungen, Begriffsbestimmungen und abgeleiteten Aussagen sowie Einführung eines azyklischen Abhängigkeitsgraphen.', '2026-07-20 03:04:19', '2026-07-20 03:04:19'),
 (47, 42, '3.3.9.5', 'Reichweite und Grenzen der Vollständigkeit', 3, 3.3095, 'final', 1, 'Differenzierung begrifflicher, funktionaler, formallogischer und zielbezogener Vollständigkeit.', '2026-07-20 03:15:14', '2026-07-20 03:15:14'),
 (48, 42, '3.3.9.6', 'Metatheoretischer Abschluss des Axiomensystems', 3, 3.3096, 'final', 1, 'Zusammenführung von Unabhängigkeit, Konsistenz, Hierarchie und zielbezogener Vollständigkeit.', '2026-07-20 03:47:38', '2026-07-20 03:47:38'),
-(49, 26, '3.3.10', 'Zusammenfassung und Übergang zur mathematischen Rekonstruktion', 3, 3.3100, 'final', 1, 'Redaktioneller und formaler Abschluss von Kapitel 3.3 sowie Überleitung zu Kapitel 3.4.', '2026-07-20 04:12:50', '2026-07-20 04:12:50');
+(49, 26, '3.3.10', 'Zusammenfassung und Übergang zur mathematischen Rekonstruktion', 3, 3.3100, 'final', 1, 'Redaktioneller und formaler Abschluss von Kapitel 3.3 sowie Überleitung zu Kapitel 3.4.', '2026-07-20 04:12:50', '2026-07-20 04:12:50'),
+(50, 1, '3.4', 'Mathematische Rekonstruktion funktionaler Organisation', 3, 3.4000, 'draft', 1, 'Kapitel zur schrittweisen mathematischen Rekonstruktion der aus den Axiomen des FRZK ableitbaren Strukturen. Raum und Zeit werden nicht vorausgesetzt, sondern als Ergebnisse funktionaler Organisation hergeleitet.', '2026-07-20 05:06:05', '2026-07-20 05:06:05'),
+(51, 50, '3.4.0', 'Einleitung', 3, 3.4001, 'final', 1, 'Einleitung in die mathematische Rekonstruktion des FRZK. Der Abschnitt bestimmt die Ableitung einer mathematischen Struktur aus dem Axiomensystem als zentrale Aufgabe und legt den rekursiven Aufbau der Rekonstruktion fest.', '2026-07-20 05:06:05', '2026-07-20 05:06:05'),
+(52, 50, '3.4.1', 'Funktionaler Zustand', 3, 3.4010, 'final', 1, 'Rekonstruktion des funktionalen Zustands aus funktionalen Gehalten, Relationen und Operationen; Herleitung der Zustandsmenge, Identitätsbedingung, Unterscheidbarkeit und Minimalität der Zustandsdarstellung.', '2026-07-20 05:17:03', '2026-07-20 05:17:03'),
+(55, 50, '3.4.2', 'Klassen funktionaler Zustände', 3, 3.4020, 'final', 1, 'Rekonstruktion funktionaler Äquivalenz, funktionaler Zustandsklassen und der Quotientenmenge; Nachweis der Äquivalenzeigenschaften, der Partition der Zustandsmenge und der eindeutigen Klassenzugehörigkeit.', '2026-07-20 05:34:21', '2026-07-20 05:34:21');
 
 -- --------------------------------------------------------
 
@@ -1045,7 +1062,38 @@ INSERT INTO `equations` (`equation_id`, `equation_number`, `section_id`, `title`
 (610, '3.638', 49, 'Ableitbarkeit zulässiger Rekonstruktionen', 'S_i\\in\\mathfrak{S}_F\\Rightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash S_i', 'S_i\\in\\mathfrak{S}_F\\Rightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash S_i', 'Jede zulässige Rekonstruktion ist aus einer endlichen Teilmenge des formalen Systems ableitbar.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
 (611, '3.639', 49, 'Trennung rekonstruktiver und empirischer Gültigkeit', '\\operatorname{RekGült}\\left(S_i\\right)\\nRightarrow\\operatorname{Bew}_{\\mathrm{emp}}\\left(S_i\\right)', '\\operatorname{RekGült}\\left(S_i\\right)\\nRightarrow\\operatorname{Bew}_{\\mathrm{emp}}\\left(S_i\\right)', 'Formale Rekonstruktionsgültigkeit impliziert keine empirische Bewährung.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
 (612, '3.640', 49, 'Rekonstruktive Anschlussbedingung', 'S_i\\in\\mathfrak{S}_F\\Leftrightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash S_i\\land\\operatorname{DefEin}\\left(S_i\\right)\\land\\operatorname{Kompat}\\left(S_i,\\mathfrak{L}_F\\right)', 'S_i\\in\\mathfrak{S}_F\\Leftrightarrow\\exists\\Gamma_i\\subseteq_{\\mathrm{fin}}\\mathfrak{L}_F:\\Gamma_i\\vdash S_i\\land\\operatorname{DefEin}\\left(S_i\\right)\\land\\operatorname{Kompat}\\left(S_i,\\mathfrak{L}_F\\right)', 'Zulässigkeit einer Rekonstruktion erfordert Ableitbarkeit, eindeutige Bestimmung und Kompatibilität.', 'theorem', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
-(613, '3.641', 49, 'Prädikat eindeutiger Definition', '\\operatorname{DefEin}', '\\operatorname{DefEin}', 'Prädikat der eindeutigen definitorischen Bestimmung einer rekonstruierten Struktur.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47);
+(613, '3.641', 49, 'Prädikat eindeutiger Definition', '\\operatorname{DefEin}', '\\operatorname{DefEin}', 'Prädikat der eindeutigen definitorischen Bestimmung einer rekonstruierten Struktur.', 'definition', 'original', NULL, 'Formalisierung in Abschnitt 3.3.10.', 'Axiome A1 bis A7 sowie die bis Abschnitt 3.3.9.6 eingeführten Definitionen und Propositionen.', 'checked', 47),
+(614, '3.642', 51, 'Ableitung der mathematischen FRZK-Struktur aus dem Axiomensystem', '\\mathcal{A}_{\\mathrm{FRZK}}\\vdash\\mathcal{M}_{\\mathrm{FRZK}}', '\\mathcal{A}_{\\mathrm{FRZK}}\\vdash\\mathcal{M}_{\\mathrm{FRZK}}', 'Die mathematische Struktur des FRZK soll formal aus der in Kapitel 3.3 entwickelten Axiomenmenge ableitbar sein.', 'schema', 'original', NULL, 'Eigene formale Verdichtung der Zielsetzung von Abschnitt 3.4.0 auf Grundlage der in Kapitel 3.3 abgeschlossenen Axiomatik.', 'Vorausgesetzt werden die Axiome A1 bis A7 sowie die metatheoretische Freigabe zur mathematischen Rekonstruktion aus Abschnitt 3.3.10.', 'checked', 48),
+(615, '3.643', 51, 'Rekursiver Aufbau der mathematischen Rekonstruktion', '\\mathcal{M}_{n+1}=\\mathcal{R}\\left(\\mathcal{M}_{n},\\mathcal{A}_{\\mathrm{FRZK}}\\right)', '\\mathcal{M}_{n+1}=\\mathcal{R}\\left(\\mathcal{M}_{n},\\mathcal{A}_{\\mathrm{FRZK}}\\right)', 'Jede nachfolgende Rekonstruktionsstufe entsteht durch Anwendung des Rekonstruktionsoperators auf die bereits entwickelte Struktur und das FRZK-Axiomensystem.', 'schema', 'original', NULL, 'Eigene rekursive Formalisierung des schrittweisen Rekonstruktionsverfahrens in Abschnitt 3.4.0.', 'Es werden keine zusätzlichen physikalischen Grundannahmen eingeführt; jede Rekonstruktionsstufe muss aus dem Axiomensystem und den bereits hergeleiteten Strukturen folgen.', 'checked', 48),
+(616, '3.644', 52, 'Existenzbedingung eines funktionalen Zustands', 'C_F(mathcal{S})geq C_{mathrm{krit}}Longrightarrowexists z_F', 'C_F(mathcal{S})geq C_{mathrm{krit}}Longrightarrowexists z_F', 'Aus hinreichender funktionaler Kohärenz folgt nach Axiom A6 die Existenz mindestens eines funktionalen Zustands.', 'axiom', 'original', NULL, 'Übernahme und Rekonstruktionsauslegung der Zustandsbildungsforderung aus Axiom A6.', 'Axiom A6 und eine funktionale Organisation mathcal{S}.', 'checked', 49),
+(617, '3.645', 52, 'Elementare funktionale Konfiguration', 'chi_F(mathcal{S})=left(mathcal{F}_{mathcal{S}},mathcal{R}_{mathcal{S}},mathcal{O}_{mathcal{S}}\right)', 'chi_F(mathcal{S})=left(mathcal{F}_{mathcal{S}},mathcal{R}_{mathcal{S}},mathcal{O}_{mathcal{S}}\right)', 'Eine funktionale Konfiguration wird als geordnetes Tripel aus funktionalen Gehalten, Relationen und Operationen dargestellt.', 'definition', 'original', NULL, 'Eigene strukturelle Rekonstruktion aus den in Kapitel 3.3 axiomatisch bestimmten Komponenten.', 'Geltung der Axiome zu funktionalem Gehalt, Relation und Operation.', 'checked', 49),
+(618, '3.646', 52, 'Zulässigkeitsfunktion funktionaler Konfigurationen', 'Lambda_F:chi_Flongrightarrow{0,1}', 'Lambda_F:chi_Flongrightarrow{0,1}', 'Die Zulässigkeitsfunktion bildet eine funktionale Konfiguration auf den Wahrheitswert ihrer axiomatischen Verträglichkeit ab.', 'definition', 'original', NULL, 'Eigene formale Prüffunktion zur Trennung zulässiger und unzulässiger Konfigurationen.', 'Eine formal darstellbare funktionale Konfiguration chi_F.', 'checked', 49),
+(619, '3.647', 52, 'Definition des funktionalen Zustands', 'z_F:=chi_F(mathcal{S})quad	ext{mit}quadLambda_Fleft(chi_F(mathcal{S})\right)=1', 'z_F:=chi_F(mathcal{S})quad	ext{mit}quadLambda_Fleft(chi_F(mathcal{S})\right)=1', 'Ein funktionaler Zustand ist eine bestimmte und axiomatisch zulässige funktionale Konfiguration.', 'definition', 'original', NULL, 'Eigene Definition auf Grundlage der Gleichungen (3.645) und (3.646).', 'Gegeben sind eine Organisation mathcal{S}, ihre Konfiguration und die Zulässigkeitsfunktion.', 'checked', 49),
+(620, '3.648', 52, 'Funktionale Zustandsmenge', 'Omega_F(mathcal{S})=left{chi_F(mathcal{S})middle|Lambda_Fleft(chi_F(mathcal{S})\right)=1\right}', 'Omega_F(mathcal{S})=left{chi_F(mathcal{S})middle|Lambda_Fleft(chi_F(mathcal{S})\right)=1\right}', 'Die Zustandsmenge enthält genau die axiomatisch zulässigen funktionalen Konfigurationen der Organisation.', 'definition', 'original', NULL, 'Eigene mengenbildende Rekonstruktion aus der Zulässigkeitsbedingung.', 'Zulässigkeitsfunktion gemäß Gleichung (3.646).', 'checked', 49),
+(621, '3.649', 52, 'Zugehörigkeit eines Zustands zur Zustandsmenge', 'z_FinOmega_F(mathcal{S})', 'z_FinOmega_F(mathcal{S})', 'Jeder axiomatisch zulässige funktionale Zustand gehört zur funktionalen Zustandsmenge der Organisation.', 'derived', 'original', NULL, 'Unmittelbare Folge aus den Gleichungen (3.647) und (3.648).', 'Definition des funktionalen Zustands und der Zustandsmenge.', 'checked', 49),
+(622, '3.650', 52, 'Kohärenzvoraussetzung des Lemmas', 'C_F(mathcal{S})geq C_{mathrm{krit}}', 'C_F(mathcal{S})geq C_{mathrm{krit}}', 'Voraussetzung für die Existenz mindestens eines funktionalen Zustands.', 'lemma', 'original', NULL, 'Wiederaufnahme der Bedingung aus Gleichung (3.644) als Voraussetzung des Lemmas 3.4.1.', 'Axiom A6.', 'checked', 49),
+(623, '3.651', 52, 'Nichtleere funktionale Zustandsmenge', 'Omega_F(mathcal{S})\neqvarnothing', 'Omega_F(mathcal{S})\neqvarnothing', 'Eine hinreichend kohärente funktionale Organisation besitzt eine nichtleere Zustandsmenge.', 'lemma', 'original', NULL, 'Folgt aus Axiom A6, Definition 3.4.1 und Gleichung (3.649).', 'Kohärenzbedingung gemäß Gleichung (3.650).', 'checked', 49),
+(624, '3.652', 52, 'Komponenten zweier funktionaler Zustände', 'z_F^{(i)}=left(mathcal{F}_{mathcal{S}}^{(i)},mathcal{R}_{mathcal{S}}^{(i)},mathcal{O}_{mathcal{S}}^{(i)}\right)quad	ext{und}quad z_F^{(j)}=left(mathcal{F}_{mathcal{S}}^{(j)},mathcal{R}_{mathcal{S}}^{(j)},mathcal{O}_{mathcal{S}}^{(j)}\right)', 'z_F^{(i)}=left(mathcal{F}_{mathcal{S}}^{(i)},mathcal{R}_{mathcal{S}}^{(i)},mathcal{O}_{mathcal{S}}^{(i)}\right)quad	ext{und}quad z_F^{(j)}=left(mathcal{F}_{mathcal{S}}^{(j)},mathcal{R}_{mathcal{S}}^{(j)},mathcal{O}_{mathcal{S}}^{(j)}\right)', 'Komponentendarstellung zweier funktionaler Zustände zur Bestimmung ihrer Identität.', 'definition', 'original', NULL, 'Konkretisierung der Zustandsdarstellung aus Gleichung (3.645).', 'Zwei zulässige Zustände derselben funktionalen Organisation.', 'checked', 49),
+(625, '3.653', 52, 'Identität funktionaler Zustände', 'z_F^{(i)}=z_F^{(j)}Longleftrightarrowleft(mathcal{F}_{mathcal{S}}^{(i)}=mathcal{F}_{mathcal{S}}^{(j)}\right)landleft(mathcal{R}_{mathcal{S}}^{(i)}=mathcal{R}_{mathcal{S}}^{(j)}\right)landleft(mathcal{O}_{mathcal{S}}^{(i)}=mathcal{O}_{mathcal{S}}^{(j)}\right)', 'z_F^{(i)}=z_F^{(j)}Longleftrightarrowleft(mathcal{F}_{mathcal{S}}^{(i)}=mathcal{F}_{mathcal{S}}^{(j)}\right)landleft(mathcal{R}_{mathcal{S}}^{(i)}=mathcal{R}_{mathcal{S}}^{(j)}\right)landleft(mathcal{O}_{mathcal{S}}^{(i)}=mathcal{O}_{mathcal{S}}^{(j)}\right)', 'Zwei funktionale Zustände sind genau dann identisch, wenn alle drei Zustandskomponenten übereinstimmen.', 'definition', 'original', NULL, 'Eigene komponentenweise Identitätsbedingung für funktionale Zustände.', 'Komponentendarstellung gemäß Gleichung (3.652).', 'checked', 49),
+(626, '3.654', 52, 'Unterscheidbarkeit funktionaler Zustände', 'z_F^{(i)}\neq z_F^{(j)}Longleftrightarrowleft(mathcal{F}_{mathcal{S}}^{(i)}\neqmathcal{F}_{mathcal{S}}^{(j)}\right)lorleft(mathcal{R}_{mathcal{S}}^{(i)}\neqmathcal{R}_{mathcal{S}}^{(j)}\right)lorleft(mathcal{O}_{mathcal{S}}^{(i)}\neqmathcal{O}_{mathcal{S}}^{(j)}\right)', 'z_F^{(i)}\neq z_F^{(j)}Longleftrightarrowleft(mathcal{F}_{mathcal{S}}^{(i)}\neqmathcal{F}_{mathcal{S}}^{(j)}\right)lorleft(mathcal{R}_{mathcal{S}}^{(i)}\neqmathcal{R}_{mathcal{S}}^{(j)}\right)lorleft(mathcal{O}_{mathcal{S}}^{(i)}\neqmathcal{O}_{mathcal{S}}^{(j)}\right)', 'Zwei funktionale Zustände sind genau dann verschieden, wenn sich mindestens eine ihrer Komponenten unterscheidet.', 'theorem', 'original', NULL, 'Logische Negation der Identitätsbedingung aus Gleichung (3.653) unter Anwendung der De-Morgan-Regeln.', 'Definition 3.4.2.', 'checked', 49),
+(663, '3.655', 55, 'Funktionale Vergleichsrelation', 'z_F^{(i)}sim_F z_F^{(j)}', 'z_F^{(i)}sim_F z_F^{(j)}', 'Zwei funktionale Zustände stehen bezüglich eines festgelegten funktionalen Kriteriums in einer Vergleichsrelation.', 'definition', 'original', NULL, 'Einführung einer allgemeinen funktionalen Vergleichsrelation.', 'Zwei Zustände aus der funktionalen Zustandsmenge.', 'checked', 52),
+(664, '3.656', 55, 'Funktionale Merkmalsabbildung', 'kappa_F:Omega_F(mathcal{S})longrightarrow K_F', 'kappa_F:Omega_F(mathcal{S})longrightarrow K_F', 'Die Merkmalsabbildung ordnet jedem funktionalen Zustand einen funktionalen Merkmalswert zu.', 'definition', 'original', NULL, 'Eigene Abbildung zur formalen Darstellung des Klassifikationskriteriums.', 'Funktionale Zustandsmenge und Merkmalswertemenge.', 'checked', 52),
+(665, '3.657', 55, 'Merkmalsinduzierte funktionale Äquivalenz', 'z_F^{(i)}sim_F z_F^{(j)}Longleftrightarrowkappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)', 'z_F^{(i)}sim_F z_F^{(j)}Longleftrightarrowkappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)', 'Zwei Zustände sind funktional gleichartig, wenn ihre Werte unter dem gewählten funktionalen Kriterium übereinstimmen.', 'definition', 'original', NULL, 'Eigene Rekonstruktion einer durch eine Merkmalsabbildung induzierten Relation.', 'Gleichung (3.656).', 'checked', 52),
+(666, '3.658', 55, 'Bedingung funktionaler Äquivalenz', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)', 'Formale Definitionsbedingung der funktionalen Äquivalenz.', 'definition', 'original', NULL, 'Konkretisierung von Gleichung (3.657) in Definition 3.4.3.', 'Festgelegtes funktionales Kriterium kappa_F.', 'checked', 52),
+(667, '3.659', 55, 'Identische funktionale Zustände', 'z_F^{(i)}=z_F^{(j)}', 'z_F^{(i)}=z_F^{(j)}', 'Vollständige Identität zweier funktionaler Zustände.', 'derived', 'original', NULL, 'Wiederaufnahme der Zustandsidentität aus Abschnitt 3.4.1.', 'Definition 3.4.2.', 'checked', 52),
+(668, '3.660', 55, 'Identität impliziert funktionale Äquivalenz', 'z_F^{(i)}sim_F z_F^{(j)}', 'z_F^{(i)}sim_F z_F^{(j)}', 'Identische funktionale Zustände sind bezüglich desselben Kriteriums funktional äquivalent.', 'derived', 'original', NULL, 'Folgerung aus Gleichheit der Zustände und Funktionswerten.', 'Gleichung (3.659) und gleiche Merkmalsabbildung.', 'checked', 52),
+(669, '3.661', 55, 'Reflexivität der Merkmalsgleichheit', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(i)}\right)', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(i)}\right)', 'Jeder funktionale Zustand besitzt denselben Merkmalswert wie er selbst.', 'lemma', 'original', NULL, 'Nachweis der Reflexivität der funktionalen Äquivalenzrelation.', 'Gleichheit ist reflexiv.', 'checked', 52),
+(670, '3.662', 55, 'Ausgangsgleichheit für Symmetrie', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)', 'Voraussetzung des Symmetrienachweises.', 'lemma', 'original', NULL, 'Übernahme der Äquivalenzbedingung.', 'z_i ist funktional äquivalent zu z_j.', 'checked', 52),
+(671, '3.663', 55, 'Symmetrische Merkmalsgleichheit', 'kappa_Fleft(z_F^{(j)}\right)=kappa_Fleft(z_F^{(i)}\right)', 'kappa_Fleft(z_F^{(j)}\right)=kappa_Fleft(z_F^{(i)}\right)', 'Umkehrung der Merkmalsgleichheit aufgrund der Symmetrie der Gleichheit.', 'lemma', 'original', NULL, 'Nachweis der Symmetrie der funktionalen Äquivalenzrelation.', 'Gleichung (3.662).', 'checked', 52),
+(672, '3.664', 55, 'Voraussetzungen der Transitivität', 'z_F^{(i)}sim_F z_F^{(j)}quad	ext{und}quad z_F^{(j)}sim_F z_F^{(k)}', 'z_F^{(i)}sim_F z_F^{(j)}quad	ext{und}quad z_F^{(j)}sim_F z_F^{(k)}', 'Zwei aufeinander bezogene funktionale Äquivalenzen bilden die Voraussetzung des Transitivitätsnachweises.', 'lemma', 'original', NULL, 'Formulierung der Transitivitätsvoraussetzung.', 'Drei Zustände aus der Zustandsmenge.', 'checked', 52),
+(673, '3.665', 55, 'Transitive Merkmalsgleichheit', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)=kappa_Fleft(z_F^{(k)}\right)', 'kappa_Fleft(z_F^{(i)}\right)=kappa_Fleft(z_F^{(j)}\right)=kappa_Fleft(z_F^{(k)}\right)', 'Die Gleichheit der Merkmalswerte überträgt sich transitiv auf den ersten und dritten Zustand.', 'lemma', 'original', NULL, 'Nachweis der Transitivität der funktionalen Äquivalenzrelation.', 'Gleichung (3.664).', 'checked', 52),
+(674, '3.666', 55, 'Funktionale Zustandsklasse', '[z_F]_{sim_F}=left{z_F^{\\prime}inOmega_F(mathcal{S})middle|z_F^{\\prime}sim_F z_F\right}', '[z_F]_{sim_F}=left{z_F^{\\prime}inOmega_F(mathcal{S})middle|z_F^{\\prime}sim_F z_F\right}', 'Die Zustandsklasse enthält alle funktionalen Zustände, die zum gegebenen Zustand funktional äquivalent sind.', 'definition', 'original', NULL, 'Eigene Definition der funktionalen Äquivalenzklasse.', 'Äquivalenzrelation aus Lemma 3.4.2.', 'checked', 52),
+(675, '3.667', 55, 'Quotientenmenge funktionaler Zustände', 'Omega_F(mathcal{S})/{sim_F}=left{[z_F]_{sim_F}middle|z_FinOmega_F(mathcal{S})\right}', 'Omega_F(mathcal{S})/{sim_F}=left{[z_F]_{sim_F}middle|z_FinOmega_F(mathcal{S})\right}', 'Die Quotientenmenge enthält sämtliche funktionalen Zustandsklassen.', 'definition', 'original', NULL, 'Klassische Quotientenbildung, funktional rekonstruiert.', 'Funktionale Zustandsmenge und Äquivalenzrelation.', 'checked', 52),
+(676, '3.668', 55, 'Überdeckung der Zustandsmenge', 'igcup_{z_FinOmega_F(mathcal{S})}[z_F]_{sim_F}=Omega_F(mathcal{S})', 'igcup_{z_FinOmega_F(mathcal{S})}[z_F]_{sim_F}=Omega_F(mathcal{S})', 'Die Vereinigung aller funktionalen Zustandsklassen überdeckt die gesamte Zustandsmenge.', 'theorem', 'original', NULL, 'Erster Teil des Partitionsnachweises.', 'Reflexivität der Äquivalenzrelation.', 'checked', 52),
+(677, '3.669', 55, 'Gemeinsames Element zweier Zustandsklassen', 'z_F^{(k)}sim_F z_F^{(i)}quad	ext{und}quad z_F^{(k)}sim_F z_F^{(j)}', 'z_F^{(k)}sim_F z_F^{(i)}quad	ext{und}quad z_F^{(k)}sim_F z_F^{(j)}', 'Ein gemeinsames Element zweier Klassen ist zu beiden Repräsentanten funktional äquivalent.', 'theorem', 'original', NULL, 'Zwischenschritt des Partitionsnachweises.', 'Nichtleerer Schnitt zweier Zustandsklassen.', 'checked', 52),
+(678, '3.670', 55, 'Äquivalenz der Klassenrepräsentanten', 'z_F^{(i)}sim_F z_F^{(j)}', 'z_F^{(i)}sim_F z_F^{(j)}', 'Aus einem gemeinsamen Klassenelement folgt die funktionale Äquivalenz der Repräsentanten.', 'theorem', 'original', NULL, 'Folgerung aus Symmetrie und Transitivität.', 'Gleichung (3.669).', 'checked', 52),
+(679, '3.671', 55, 'Disjunktheit verschiedener Zustandsklassen', '[z_F^{(i)}]_{sim_F}cap[z_F^{(j)}]_{sim_F}=varnothing', '[z_F^{(i)}]_{sim_F}cap[z_F^{(j)}]_{sim_F}=varnothing', 'Verschiedene funktionale Zustandsklassen besitzen kein gemeinsames Element.', 'theorem', 'original', NULL, 'Zweiter Teil des Partitionsnachweises.', 'Nichtäquivalente Klassenrepräsentanten.', 'checked', 52),
+(680, '3.672', 55, 'Kriteriumsabhängige Zustandsklasse', '[z_F]_{kappa_F}=left{z_F^{\\prime}inOmega_F(mathcal{S})middle|kappa_F(z_F^{\\prime})=kappa_F(z_F)\right}', '[z_F]_{kappa_F}=left{z_F^{\\prime}inOmega_F(mathcal{S})middle|kappa_F(z_F^{\\prime})=kappa_F(z_F)\right}', 'Die Schreibweise macht die Abhängigkeit einer Zustandsklasse vom gewählten funktionalen Kriterium sichtbar.', 'definition', 'original', NULL, 'Explizite kriteriumsabhängige Form der Äquivalenzklasse.', 'Festgelegte Merkmalsabbildung kappa_F.', 'checked', 52);
 
 -- --------------------------------------------------------
 
@@ -1351,7 +1399,27 @@ INSERT INTO `equation_symbols` (`equation_symbol_id`, `equation_id`, `symbol_lat
 (343, 605, '\\mathfrak{S}_F', 'Rekonstruktionsraum', 'Menge der mathematisch rekonstruierbaren FRZK-Strukturen', NULL, NULL, 1),
 (344, 609, '\\operatorname{RekGült}', 'Rekonstruktionsgültigkeit', 'Prädikat der Gültigkeit einer mathematischen Rekonstruktion', NULL, NULL, 1),
 (345, 613, '\\operatorname{DefEin}', 'Eindeutige Definition', 'Prädikat der eindeutigen definitorischen Bestimmung', NULL, NULL, 1),
-(346, 612, '\\operatorname{Kompat}', 'Kompatibilität', 'Prädikat der Vereinbarkeit einer Rekonstruktion mit dem formalen System', NULL, NULL, 1);
+(346, 612, '\\operatorname{Kompat}', 'Kompatibilität', 'Prädikat der Vereinbarkeit einer Rekonstruktion mit dem formalen System', NULL, NULL, 1),
+(347, 614, '\\mathcal{A}_{\\mathrm{FRZK}}', 'FRZK-Axiomensystem', 'Menge der in Kapitel 3.3 formulierten Axiome A1 bis A7.', NULL, 'Axiomenmenge', 1),
+(348, 614, '\\vdash', 'formale Ableitbarkeit', 'Metalogisches Symbol dafür, dass die rechts stehende Struktur aus dem links stehenden formalen System ableitbar ist.', NULL, 'metalogische Relation', 2),
+(349, 614, '\\mathcal{M}_{\\mathrm{FRZK}}', 'mathematische FRZK-Struktur', 'Gesamtheit der aus dem FRZK-Axiomensystem rekonstruierten mathematischen Strukturen.', NULL, 'rekonstruierte mathematische Struktur', 3),
+(350, 615, '\\mathcal{M}_{n}', 'n-te Rekonstruktionsstufe', 'Bis zum Rekonstruktionsschritt n entwickelte mathematische Teilstruktur.', NULL, 'Folge rekonstruierter Teilstrukturen', 1),
+(351, 615, '\\mathcal{M}_{n+1}', 'nachfolgende Rekonstruktionsstufe', 'Aus dem vorherigen Stand und dem Axiomensystem hervorgehende mathematische Teilstruktur.', NULL, 'Folge rekonstruierter Teilstrukturen', 2),
+(352, 615, '\\mathcal{R}', 'Rekonstruktionsoperator', 'Operator, der aus dem bisherigen mathematischen Entwicklungsstand und dem FRZK-Axiomensystem die nächste zulässige Rekonstruktionsstufe bestimmt.', NULL, 'Operator auf Rekonstruktionsstufen und Axiomensystem', 3),
+(353, 616, 'C_F(mathcal{S})', 'funktionale Kohärenz der Organisation', 'Kohärenzwert der betrachteten funktionalen Organisation.', NULL, 'reeller oder normierter Kohärenzwert', 1),
+(354, 616, 'C_{mathrm{krit}}', 'kritischer Kohärenzwert', 'Schwellenwert, ab dem nach Axiom A6 Zustandsbildung möglich ist.', NULL, 'Kohärenzwertebereich', 2),
+(355, 616, 'z_F', 'funktionaler Zustand', 'Bestimmte axiomatisch zulässige funktionale Konfiguration.', NULL, 'Omega_F(mathcal{S})', 3),
+(356, 617, 'chi_F(mathcal{S})', 'funktionale Konfiguration', 'Geordnetes Tripel der funktionalen Gehalte, Relationen und Operationen einer Organisation.', NULL, 'Menge formal darstellbarer Konfigurationen', 1),
+(357, 617, 'mathcal{F}_{mathcal{S}}', 'funktionale Gehalte', 'In der Organisation wirksame funktionale Gehalte.', NULL, 'funktionale Gehaltsmenge', 2),
+(358, 617, 'mathcal{R}_{mathcal{S}}', 'funktionale Relationen', 'Zwischen den funktionalen Gehalten bestehende Relationen.', NULL, 'Relationsmenge', 3),
+(359, 617, 'mathcal{O}_{mathcal{S}}', 'funktionale Operationen', 'In der Konfiguration wirksame oder verfügbare funktionale Operationen.', NULL, 'Operationsmenge', 4),
+(360, 618, 'Lambda_F', 'Zulässigkeitsfunktion', 'Prüffunktion für die axiomatische Verträglichkeit einer funktionalen Konfiguration.', NULL, 'Konfigurationen nach {0,1}', 1),
+(361, 620, 'Omega_F(mathcal{S})', 'funktionale Zustandsmenge', 'Menge aller axiomatisch zulässigen funktionalen Konfigurationen der Organisation.', NULL, 'Potenz- oder Konfigurationsmenge', 1),
+(362, 663, 'sim_F', 'funktionale Äquivalenzrelation', 'Relation funktionaler Gleichartigkeit bezüglich eines festgelegten Kriteriums.', NULL, 'Omega_F(mathcal{S})	imesOmega_F(mathcal{S})', 1),
+(363, 664, 'kappa_F', 'funktionale Merkmalsabbildung', 'Ordnet jedem funktionalen Zustand den für die Klassifikation maßgeblichen Merkmalswert zu.', NULL, 'Omega_F(mathcal{S})	o K_F', 1),
+(364, 664, 'K_F', 'funktionale Merkmalswertemenge', 'Menge aller möglichen Werte des gewählten funktionalen Klassifikationskriteriums.', NULL, 'Menge', 2),
+(365, 674, '[z_F]_{sim_F}', 'funktionale Zustandsklasse', 'Äquivalenzklasse eines funktionalen Zustands bezüglich sim_F.', NULL, 'Teilmenge von Omega_F(mathcal{S})', 1),
+(366, 675, 'Omega_F(mathcal{S})/{sim_F}', 'funktionale Quotientenmenge', 'Menge aller funktionalen Zustandsklassen bezüglich sim_F.', NULL, 'Quotientenmenge', 1);
 
 -- --------------------------------------------------------
 
@@ -1397,6 +1465,14 @@ CREATE TABLE `lemmas` (
   `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
   `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `lemmas`
+--
+
+INSERT INTO `lemmas` (`lemma_id`, `lemma_number`, `section_id`, `title`, `statement_text`, `statement_latex`, `word_latex`, `provenance`, `source_id`, `assumptions`, `validation_status`, `created_revision_id`) VALUES
+(1, '3.4.1', 52, 'Nichtleere Zustandsmenge', 'Erfüllt eine funktionale Organisation S die Bedingung C_F(S) >= C_krit, dann ist ihre funktionale Zustandsmenge nicht leer.', 'C_F(mathcal{S})geq C_{mathrm{krit}}LongrightarrowOmega_F(mathcal{S})\neqvarnothing', 'C_F(mathcal{S})geq C_{mathrm{krit}}LongrightarrowOmega_F(mathcal{S})\neqvarnothing', 'original', NULL, 'Axiom A6, Definition 3.4.1 und Gleichung (3.649).', 'checked', 49),
+(4, '3.4.2', 55, 'Äquivalenzeigenschaften', 'Die durch die Gleichheit der Merkmalswerte einer Abbildung kappa_F definierte Relation sim_F ist reflexiv, symmetrisch und transitiv und damit eine Äquivalenzrelation auf Omega_F(S).', 'sim_F	ext{ ist reflexiv, symmetrisch und transitiv auf }Omega_F(mathcal{S})', 'sim_F	ext{ ist reflexiv, symmetrisch und transitiv auf }Omega_F(mathcal{S})', 'original', NULL, 'Definition 3.4.3 und die Eigenschaften der Gleichheitsrelation auf K_F.', 'checked', 52);
 
 -- --------------------------------------------------------
 
@@ -1522,7 +1598,13 @@ INSERT INTO `proofs` (`proof_id`, `proof_number`, `section_id`, `theorem_id`, `l
 (27, '3.2.29-P', 24, 33, NULL, NULL, 'Beweis zum charakteristischen Polynom', 'Aus Av=λv folgt (A-λI)v=0. Da v nicht der Nullvektor ist, besitzt A-λI einen nichttrivialen Kern und ist daher nicht invertierbar. Für quadratische Matrizen ist dies äquivalent zu det(A-λI)=0. Umgekehrt erzeugt eine verschwindende Determinante einen nichttrivialen Kern und damit einen Eigenvektor.', '(A-lambda I)v=0Longleftrightarrowdet(A-lambda I)=0', 'equivalence', 'adapted', 97, 'checked', 23),
 (28, '3.2.30-P', 24, 34, NULL, NULL, 'Beweisskizze zum Spektralsatz', 'Eine reelle symmetrische Matrix besitzt ausschließlich reelle Eigenwerte. Eigenvektoren zu verschiedenen Eigenwerten sind orthogonal. Innerhalb mehrfacher Eigenräume kann eine Orthonormalbasis gewählt werden. Die Gesamtheit dieser Basisvektoren bildet die orthogonale Matrix Q; die zugehörigen Eigenwerte bilden die Diagonalmatrix Λ.', 'Q^TAQ=LambdaLongleftrightarrow A=QLambda Q^T', '', 'adapted', 106, 'checked', 23),
 (29, '3.2.31-P', 24, 35, NULL, NULL, 'Beweis der Orthogonalität verschiedener Eigenräume', 'Für Av_i=λ_i v_i und Av_j=λ_j v_j gilt wegen der Symmetrie von A: λ_i⟨v_i,v_j⟩=⟨Av_i,v_j⟩=⟨v_i,Av_j⟩=λ_j⟨v_i,v_j⟩. Aus λ_i≠λ_j folgt daher ⟨v_i,v_j⟩=0.', '(lambda_i-lambda_j)langle v_i,v_j\rangle=0', '', 'adapted', 106, 'checked', 23),
-(30, '3.2.32-P', 24, 36, NULL, NULL, 'Beweis des spektralen Langzeitverhaltens', 'Der Anfangsvektor wird in Eigenvektoren zerlegt. Nach n Iterationen wird jede Komponente mit λ_i^n gewichtet. Ist |λ_max| strikt größer als der Betrag aller übrigen Eigenwerte, verschwinden deren relative Beiträge gegenüber der dominanten Komponente. Die normierte Richtung konvergiert daher gegen den dominanten Eigenraum.', 'A^nv=sum_i c_ilambda_i^nv_i', '', 'adapted', 106, 'checked', 23);
+(30, '3.2.32-P', 24, 36, NULL, NULL, 'Beweis des spektralen Langzeitverhaltens', 'Der Anfangsvektor wird in Eigenvektoren zerlegt. Nach n Iterationen wird jede Komponente mit λ_i^n gewichtet. Ist |λ_max| strikt größer als der Betrag aller übrigen Eigenwerte, verschwinden deren relative Beiträge gegenüber der dominanten Komponente. Die normierte Richtung konvergiert daher gegen den dominanten Eigenraum.', 'A^nv=sum_i c_ilambda_i^nv_i', '', 'adapted', 106, 'checked', 23),
+(31, 'B-3.4.1-L1', 52, NULL, 1, NULL, 'Beweis zu Lemma 3.4.1', 'Nach Axiom A6 folgt aus der Kohärenzbedingung die Existenz mindestens eines funktionalen Zustands z_F. Nach Definition 3.4.1 ist jeder funktionale Zustand eine zulässige Konfiguration und gehört daher zur Menge Omega_F(S). Diese Menge enthält folglich mindestens ein Element und ist nicht leer.', 'C_F(mathcal{S})geq C_{mathrm{krit}}Rightarrowexists z_FinOmega_F(mathcal{S})RightarrowOmega_F(mathcal{S})\neqvarnothing', 'direct', 'original', NULL, 'checked', 49),
+(32, 'B-3.4.1-S1', 52, 37, NULL, NULL, 'Beweis zu Satz 3.4.1', 'Nach Definition 3.4.2 sind zwei funktionale Zustände genau dann identisch, wenn alle drei Komponenten paarweise übereinstimmen. Die Negation dieser Konjunktion ist nach den De-Morgan-Regeln genau dann erfüllt, wenn mindestens eine der drei Komponenten nicht übereinstimmt. Damit folgt die behauptete Äquivalenz.', '\neg(Aland Bland C)Longleftrightarrow(\neg Alor\neg Blor\neg C)', 'equivalence', 'original', NULL, 'checked', 49),
+(33, 'B-3.4.1-K1', 52, NULL, NULL, 1, 'Begründung zu Korollar 3.4.1', 'Nach Satz 3.4.1 genügt bereits die Abweichung einer einzigen Zustandskomponente, damit zwei Zustände verschieden sind. Wird eine Komponente aus der Darstellung entfernt, kann eine Abweichung in genau dieser Komponente nicht mehr erkannt werden. Die reduzierte Darstellung ist daher im Allgemeinen nicht injektiv bezüglich der Menge funktionaler Zustände.', NULL, 'direct', 'original', NULL, 'checked', 49),
+(34, 'B-3.4.2-L1', 55, NULL, 4, NULL, 'Beweis zu Lemma 3.4.2', 'Für jeden Zustand ist der Merkmalswert mit sich selbst identisch; daher ist die Relation reflexiv. Aus der Symmetrie der Gleichheit folgt, dass aus kappa_F(z_i)=kappa_F(z_j) auch kappa_F(z_j)=kappa_F(z_i) folgt; daher ist die Relation symmetrisch. Aus kappa_F(z_i)=kappa_F(z_j) und kappa_F(z_j)=kappa_F(z_k) folgt durch Transitivität der Gleichheit kappa_F(z_i)=kappa_F(z_k); daher ist die Relation transitiv. Somit ist sim_F eine Äquivalenzrelation.', '	ext{Reflexivität}land	ext{Symmetrie}land	ext{Transitivität}Rightarrowsim_F	ext{ ist Äquivalenzrelation}', 'direct', 'original', NULL, 'checked', 52),
+(35, 'B-3.4.2-S1', 55, 38, NULL, NULL, 'Beweis zu Satz 3.4.2', 'Aufgrund der Reflexivität gehört jeder Zustand zu seiner eigenen Äquivalenzklasse, sodass die Vereinigung aller Klassen die gesamte Zustandsmenge überdeckt. Besitzen zwei Klassen ein gemeinsames Element, ist dieses Element zu beiden Repräsentanten äquivalent. Aus Symmetrie und Transitivität folgt die Äquivalenz der Repräsentanten und damit die Identität beider Klassen. Verschiedene Klassen sind folglich disjunkt. Überdeckung und paarweise Disjunktheit zeigen, dass die Klassen eine Partition bilden.', 'igcup[z_F]_{sim_F}=Omega_F(mathcal{S})landleft([z_i]_{sim_F}\neq[z_j]_{sim_F}Rightarrow[z_i]_{sim_F}cap[z_j]_{sim_F}=varnothing\right)', '', 'original', NULL, 'checked', 52),
+(36, 'B-3.4.2-K1', 55, NULL, NULL, 2, 'Begründung zu Korollar 3.4.2', 'Nach Satz 3.4.2 bilden die funktionalen Äquivalenzklassen eine Partition der Zustandsmenge. Eine Partition überdeckt die Grundmenge vollständig und ihre Teilmengen sind paarweise disjunkt. Daher gehört jeder funktionale Zustand bezüglich des festgelegten Kriteriums genau einer funktionalen Zustandsklasse an.', 'forall z_FinOmega_F(mathcal{S});exists!,[z_F]_{kappa_F}', 'direct', 'original', NULL, 'checked', 52);
 
 -- --------------------------------------------------------
 
@@ -1652,10 +1734,13 @@ CREATE TABLE `repository_counters` (
 --
 
 INSERT INTO `repository_counters` (`counter_key`, `counter_value`, `updated_at`) VALUES
-('last_completed_section', '3.2.13', '2026-07-18 15:05:27'),
-('last_repository_revision', 'RKB-NEU-K3.2.13-V1', '2026-07-18 15:05:27'),
-('next_citation_number', '103', '2026-07-18 14:51:07'),
-('next_equation_number', '3.354', '2026-07-18 14:51:07');
+('last_citation_number', '109', '2026-07-20 05:17:03'),
+('last_completed_section', '3.4.0', '2026-07-20 05:06:05'),
+('last_completed_section_chapter_3', '3.4.2', '2026-07-20 05:34:21'),
+('last_equation_number_chapter_3', '3.672', '2026-07-20 05:34:21'),
+('last_repository_revision', 'RKB-NEU-K3.4.2-V1', '2026-07-20 05:34:21'),
+('next_citation_number', '110', '2026-07-20 05:06:05'),
+('next_equation_number', '3.644', '2026-07-20 05:06:05');
 
 -- --------------------------------------------------------
 
@@ -1717,7 +1802,10 @@ INSERT INTO `repository_revisions` (`revision_id`, `revision_code`, `revision_da
 (44, 'RKB-NEU-K3.3.9.4-V1', '2026-07-20 05:04:19', 'section', '3.3.9.4', '1.0', 'Abschnitt 3.3.9.4: Verhältnis von Axiomen, Definitionen und Propositionen; Proposition 3.3.11; Gleichungen (3.525) bis (3.557).', 'Olaf Thiele / ChatGPT', 43),
 (45, 'RKB-NEU-K3.3.9.5-V1', '2026-07-20 05:15:14', 'section', '3.3.9.5', '1.0', 'Abschnitt 3.3.9.5: Reichweite und Grenzen der Vollständigkeit; Proposition 3.3.12; Gleichungen (3.558) bis (3.588).', 'Olaf Thiele / ChatGPT', 44),
 (46, 'RKB-NEU-K3.3.9.6-V1', '2026-07-20 05:47:38', 'section', '3.3.9.6', '1.0', 'Abschnitt 3.3.9.6: Metatheoretischer Abschluss des Axiomensystems; Proposition 3.3.13; Gleichungen (3.589) bis (3.618).', 'Olaf Thiele / ChatGPT', 45),
-(47, 'RKB-NEU-K3.3.10-V1', '2026-07-20 06:12:50', 'section', '3.3.10', '1.0', 'Kapitelabschluss 3.3: Zusammenfassung, Rekonstruktionsübergang, Proposition 3.3.14 und Gleichungen (3.619) bis (3.641).', 'Olaf Thiele / ChatGPT', 46);
+(47, 'RKB-NEU-K3.3.10-V1', '2026-07-20 06:12:50', 'section', '3.3.10', '1.0', 'Kapitelabschluss 3.3: Zusammenfassung, Rekonstruktionsübergang, Proposition 3.3.14 und Gleichungen (3.619) bis (3.641).', 'Olaf Thiele / ChatGPT', 46),
+(48, 'RKB-NEU-K3.4.0-V1', '2026-07-20 07:06:05', 'section', '3.4.0', '1.0', 'Neuanlage von Kapitel 3.4 und Abschluss von Abschnitt 3.4.0 Einleitung. Registriert werden die Rekonstruktionszielsetzung, die Gleichungen (3.642) und (3.643), die Wiederverwendung der Quellen [72] und [103] sowie die neuen Quellen [108] und [109].', 'Olaf Thiele / ChatGPT', 47),
+(49, 'RKB-NEU-K3.4.1-V1', '2026-07-20 07:17:03', 'section', '3.4.1', '1.0', 'Rekonstruktion des funktionalen Zustands als kleinster vollständiger Einheit funktionaler Organisation. Registriert werden die Gleichungen (3.644) bis (3.654), zwei Definitionen, ein Lemma, ein Satz, ein Korollar, die zugehörigen Beweise sowie die Wiederverwendung der Quellen [6], [72] und [108].', 'Olaf Thiele / ChatGPT', 48),
+(52, 'RKB-NEU-K3.4.2-V1', '2026-07-20 07:34:21', 'section', '3.4.2', '1.0', 'Rekonstruktion funktionaler Zustandsklassen mittels einer merkmalsinduzierten Äquivalenzrelation. Registriert werden die Gleichungen (3.655) bis (3.672), zwei Definitionen, ein Lemma, ein Satz, ein Korollar, die zugehörigen Beweise sowie die Wiederverwendung der Quellen [6] und [72].', 'Olaf Thiele / ChatGPT', 49);
 
 -- --------------------------------------------------------
 
@@ -1926,7 +2014,10 @@ INSERT INTO `repository_validation_results` (`validation_result_id`, `revision_i
 (193, 47, 'K3.3.10.PROPOSITION', 'passed', '1', '1', 'Prüfung der Proposition 3.3.14.', '2026-07-20 04:12:50'),
 (194, 47, 'K3.3.10.EQUATIONS', 'passed', '23', '23', 'Prüfung der Gleichungen (3.619) bis (3.641).', '2026-07-20 04:12:50'),
 (195, 47, 'K3.3.10.AXIOM_DEPENDENCIES', 'passed', '7', '7', 'Prüfung der sieben Axiomabhängigkeiten von Proposition 3.3.14.', '2026-07-20 04:12:50'),
-(196, 47, 'K3.3.10.SYMBOLS', 'failed', '9', '0', 'Prüfung der neun zentralen Symbolregistrierungen.', '2026-07-20 04:12:50');
+(196, 47, 'K3.3.10.SYMBOLS', 'failed', '9', '0', 'Prüfung der neun zentralen Symbolregistrierungen.', '2026-07-20 04:12:50'),
+(197, 48, 'K3.4.0_SECTION_EXISTS', 'passed', '1', '1', 'Prüfung, ob Abschnitt 3.4.0 genau einmal vorhanden ist.', '2026-07-20 05:06:05'),
+(198, 48, 'K3.4.0_EQUATION_COUNT', 'passed', '2', '2', 'Prüfung der beiden für Abschnitt 3.4.0 vorgesehenen Gleichungen.', '2026-07-20 05:06:05'),
+(199, 48, 'K3.4.0_NEW_SOURCE_COUNT', 'passed', '2', '2', 'Prüfung der neu registrierten Quellen [108] und [109].', '2026-07-20 05:06:05');
 
 -- --------------------------------------------------------
 
@@ -2121,7 +2212,23 @@ INSERT INTO `section_change_log` (`change_id`, `revision_id`, `section_id`, `cha
 (197, 46, 48, 'equation_added', 'equation', '(3.589)–(3.618)', '30 Gleichungen und formale Schemata registriert.', NULL, 'Gleichungen (3.589) bis (3.618)', '2026-07-20 03:47:38'),
 (198, 47, 49, 'created', 'section', '3.3.10', 'Abschnitt 3.3.10 vollständig angelegt.', NULL, 'Zusammenfassung und Übergang zur mathematischen Rekonstruktion', '2026-07-20 04:12:50'),
 (199, 47, 49, 'proposition_added', 'proposition', '3.3.14', 'Proposition 3.3.14 registriert.', NULL, 'Rekonstruktive Anschlussbedingung', '2026-07-20 04:12:50'),
-(200, 47, 49, 'equation_added', 'equation', '(3.619)–(3.641)', '23 Gleichungen und formale Schemata registriert.', NULL, 'Gleichungen (3.619) bis (3.641)', '2026-07-20 04:12:50');
+(200, 47, 49, 'equation_added', 'equation', '(3.619)–(3.641)', '23 Gleichungen und formale Schemata registriert.', NULL, 'Gleichungen (3.619) bis (3.641)', '2026-07-20 04:12:50'),
+(201, 48, 50, 'created', 'section', '3.4', 'Kapitel 3.4 Mathematische Rekonstruktion funktionaler Organisation wurde angelegt.', NULL, 'Status draft; Originalbeitrag; Beginn der mathematischen Rekonstruktion.', '2026-07-20 05:06:05'),
+(202, 48, 51, 'created', 'section', '3.4.0', 'Abschnitt 3.4.0 Einleitung wurde vollständig angelegt und als final registriert.', NULL, 'Rekonstruktionsziel, methodische Abgrenzung, Literaturbezüge und Übergang zu Abschnitt 3.4.1.', '2026-07-20 05:06:05'),
+(203, 48, 51, 'equation_added', 'equation', '3.642-3.643', 'Die Gleichungen (3.642) und (3.643) zur formalen Zielsetzung und zum rekursiven Aufbau der Rekonstruktion wurden registriert.', NULL, '2 neue Gleichungen einschließlich Word-LaTeX und Symbolzuordnungen.', '2026-07-20 05:06:05'),
+(204, 48, 51, 'source_added', 'source', '[108]-[109]', 'Die Quellen Mac Lane [108] und Awodey [109] wurden neu aufgenommen; Bourbaki [72] und Hilbert [103] wurden wiederverwendet.', NULL, '2 neue Quellen und 2 wiederverwendete Quellen.', '2026-07-20 05:06:05'),
+(205, 49, 52, 'created', 'section', '3.4.1', 'Abschnitt 3.4.1 Funktionaler Zustand wurde neu angelegt.', NULL, 'final', '2026-07-20 05:17:03'),
+(206, 49, 52, 'equation_added', 'equation', '3.644-3.654', 'Elf Gleichungen zur Rekonstruktion, Existenz, Identität und Unterscheidbarkeit funktionaler Zustände wurden registriert.', NULL, '3.644 bis 3.654', '2026-07-20 05:17:03'),
+(207, 49, 52, 'definition_added', 'definition', '3.4.1-3.4.2', 'Die Definitionen Funktionaler Zustand und Identität funktionaler Zustände wurden registriert.', NULL, 'Definitionen 3.4.1 und 3.4.2', '2026-07-20 05:17:03'),
+(208, 49, 52, 'statement_added', 'statement', '3.4.1', 'Lemma 3.4.1, Satz 3.4.1 und Korollar 3.4.1 wurden registriert.', NULL, 'Lemma, Satz und Korollar', '2026-07-20 05:17:03'),
+(209, 49, 52, 'proof_added', 'proof', 'B-3.4.1-*', 'Drei Beweise beziehungsweise Begründungen wurden registriert.', NULL, 'B-3.4.1-L1, B-3.4.1-S1, B-3.4.1-K1', '2026-07-20 05:17:03'),
+(210, 49, 52, 'source_reused', 'source', '6,72,108', 'Die vorhandenen Quellen [6], [72] und [108] wurden in Abschnitt 3.4.1 wiederverwendet.', NULL, 'Halmos; Bourbaki; Mac Lane', '2026-07-20 05:17:03'),
+(211, 52, 55, 'created', 'section', '3.4.2', 'Abschnitt 3.4.2 Klassen funktionaler Zustände wurde neu angelegt.', NULL, 'final', '2026-07-20 05:34:21'),
+(212, 52, 55, 'equation_added', 'equation', '3.655-3.672', 'Achtzehn Gleichungen zu funktionaler Äquivalenz, Zustandsklassen, Quotientenmenge und Partition wurden registriert.', NULL, '3.655 bis 3.672', '2026-07-20 05:34:21'),
+(213, 52, 55, 'definition_added', 'definition', '3.4.3-3.4.4', 'Die Definitionen Funktionale Äquivalenz und Funktionale Zustandsklasse wurden registriert.', NULL, 'Definitionen 3.4.3 und 3.4.4', '2026-07-20 05:34:21'),
+(214, 52, 55, 'statement_added', 'statement', '3.4.2', 'Lemma 3.4.2, Satz 3.4.2 und Korollar 3.4.2 wurden registriert.', NULL, 'Lemma, Satz und Korollar', '2026-07-20 05:34:21'),
+(215, 52, 55, 'proof_added', 'proof', 'B-3.4.2-*', 'Drei Beweise beziehungsweise Begründungen wurden registriert.', NULL, 'B-3.4.2-L1, B-3.4.2-S1, B-3.4.2-K1', '2026-07-20 05:34:21'),
+(216, 52, 55, 'source_reused', 'source', '6,72', 'Die vorhandenen Quellen [6] und [72] wurden in Abschnitt 3.4.2 wiederverwendet.', NULL, 'Halmos; Bourbaki', '2026-07-20 05:34:21');
 
 -- --------------------------------------------------------
 
@@ -2272,7 +2379,9 @@ INSERT INTO `sources` (`source_id`, `citation_number`, `source_key`, `source_typ
 (111, 104, 'weinberg_quantum_theory_fields_vol1_1995', 'book', 'The Quantum Theory of Fields', 'Volume I: Foundations', 1995, 1995, NULL, 'Cambridge University Press', 'Cambridge', '1', NULL, NULL, '1', NULL, '978-0-521-55001-7', NULL, 'en', 2, 'textbook', 5, 'partially_verified', '3.3.0', 'Erstnennung als Beispiel für die prinzipiengeleitete Grundlegung einer physikalischen Theorie.', 'Weinberg, Steven (1995): The Quantum Theory of Fields. Volume I: Foundations. Cambridge: Cambridge University Press.', 'Weinberg (1995)', 'Wissenschaftlicher Anschluss zur methodischen Rolle grundlegender Prinzipien in der Physik.', 25, '2026-07-19 07:37:27', '2026-07-19 07:37:27'),
 (112, 105, 'rovelli_relational_quantum_mechanics_1996', 'journal_article', 'Relational Quantum Mechanics', NULL, 1996, 1996, 'International Journal of Theoretical Physics', 'Springer', NULL, '35', '8', '1637–1678', NULL, '10.1007/BF02302261', NULL, NULL, 'en', 1, 'primary', 9, 'verified', '3.3.1', 'Erstnennung zum relationalen Verständnis physikalischer Eigenschaften.', 'Rovelli, Carlo (1996): Relational Quantum Mechanics. In: International Journal of Theoretical Physics, Bd. 35, Nr. 8, S. 1637–1678. DOI: 10.1007/BF02302261.', 'Rovelli (1996)', 'Primärquelle zur relationalen Quantenmechanik.', 27, '2026-07-19 07:37:27', '2026-07-19 07:37:27'),
 (113, 106, 'shannon_mathematical_theory_communication_1948', 'journal_article', 'A Mathematical Theory of Communication', NULL, 1948, 1948, 'Bell System Technical Journal', 'Bell Telephone Laboratories', 'New York', '27', NULL, '379–423; 623–656', NULL, '10.1002/j.1538-7305.1948.tb01338.x', NULL, NULL, 'en', 1, 'primary', 9, 'verified', '3.3.2', 'Erstnennung zur informationstheoretischen Voraussetzung unterscheidbarer Nachrichten- und Zustandsmöglichkeiten.', 'Shannon, Claude E. (1948): A Mathematical Theory of Communication. In: Bell System Technical Journal, Bd. 27, S. 379–423 und 623–656.', 'Shannon (1948)', 'Primärquelle zur mathematischen Informationstheorie.', 28, '2026-07-19 08:04:23', '2026-07-19 08:04:23'),
-(114, 107, 'birkhoff_lattice_theory_1967', 'book', 'Lattice Theory', NULL, 1940, 1967, NULL, 'American Mathematical Society', 'Providence, Rhode Island', NULL, NULL, NULL, '3rd Edition', NULL, NULL, NULL, 'en', 3, 'reference', 6, 'verified', '3.3.3', 'Erstnennung zur mathematischen Bedeutung relationaler Strukturen, Ordnungen und Verbände.', 'Birkhoff, Garrett (1967): Lattice Theory. 3rd Edition. Providence, Rhode Island: American Mathematical Society.', 'Birkhoff (1967)', 'Klassische Referenz für Ordnungs- und Verbandsstrukturen.', 29, '2026-07-19 08:16:47', '2026-07-19 08:16:47');
+(114, 107, 'birkhoff_lattice_theory_1967', 'book', 'Lattice Theory', NULL, 1940, 1967, NULL, 'American Mathematical Society', 'Providence, Rhode Island', NULL, NULL, NULL, '3rd Edition', NULL, NULL, NULL, 'en', 3, 'reference', 6, 'verified', '3.3.3', 'Erstnennung zur mathematischen Bedeutung relationaler Strukturen, Ordnungen und Verbände.', 'Birkhoff, Garrett (1967): Lattice Theory. 3rd Edition. Providence, Rhode Island: American Mathematical Society.', 'Birkhoff (1967)', 'Klassische Referenz für Ordnungs- und Verbandsstrukturen.', 29, '2026-07-19 08:16:47', '2026-07-19 08:16:47'),
+(115, 108, 'mac_lane_categories_working_mathematician_1998', 'book', 'Categories for the Working Mathematician', NULL, 1971, 1998, NULL, 'Springer', 'New York', NULL, NULL, NULL, '2nd Edition', NULL, '978-0-387-98403-2', NULL, 'en', 1, 'textbook', 9, 'verified', '3.4.0', 'Erstnennung zur strukturellen Charakterisierung mathematischer Objekte durch Relationen, Abbildungen und Kompositionen.', 'Mac Lane, Saunders (1998): Categories for the Working Mathematician. 2nd Edition. New York: Springer.', 'Mac Lane (1998)', 'Grundlagenwerk der Kategorientheorie; zweite Auflage der erstmals 1971 erschienenen Monografie.', 48, '2026-07-20 05:06:05', '2026-07-20 05:06:05'),
+(116, 109, 'awodey_category_theory_2010', 'book', 'Category Theory', NULL, 2006, 2010, NULL, 'Oxford University Press', 'Oxford', NULL, NULL, NULL, '2nd Edition', NULL, '978-0-19-923718-0', NULL, 'en', 2, 'textbook', 8, 'verified', '3.4.0', 'Erstnennung zur modernen Einführung struktureller und kategorialer mathematischer Beschreibung.', 'Awodey, Steve (2010): Category Theory. 2nd Edition. Oxford: Oxford University Press.', 'Awodey (2010)', 'Moderne systematische Einführung in die Kategorientheorie.', 48, '2026-07-20 05:06:05', '2026-07-20 05:06:05');
 
 -- --------------------------------------------------------
 
@@ -2419,7 +2528,9 @@ INSERT INTO `source_authors` (`source_id`, `author_id`, `author_order`, `role`) 
 (111, 7, 1, 'author'),
 (112, 3, 1, 'author'),
 (113, 118, 1, 'author'),
-(114, 119, 1, 'author');
+(114, 119, 1, 'author'),
+(115, 75, 1, 'author'),
+(116, 120, 1, 'author');
 
 -- --------------------------------------------------------
 
@@ -2617,7 +2728,16 @@ INSERT INTO `source_usage` (`usage_id`, `source_id`, `section_id`, `usage_type`,
 (170, 113, 30, 'first_citation', 'Unterscheidbare Nachrichten- und Zustandsmöglichkeiten als Voraussetzung mathematisch bestimmbarer Information.', 'Abschnitt 3.3.2, Begründung vor Axiom A1', 1, 1, 'Erstnennung als Quelle [106].', 28),
 (171, 114, 31, 'first_citation', 'Relationen bilden die Grundlage mathematischer Ordnungs-, Äquivalenz- und Verbandsstrukturen.', 'Abschnitt 3.3.3, wissenschaftliche Einordnung vor Axiom A2', 1, 1, 'Erstnennung als neue Quelle [107].', 29),
 (172, 81, 31, 'background', 'Netzwerkstrukturen machen Relationen zu Trägern der Organisation und bestimmen die Einbettung einzelner Knoten.', 'Abschnitt 3.3.3, wissenschaftliche Einordnung vor Axiom A2', 0, 1, 'Bereits vorhandene Quelle [48]; keine neue Literaturzahl.', 29),
-(173, 57, 32, 'first_citation', 'Abbildungen und ihre Komposition können als grundlegende Bestandteile mathematischer Strukturen behandelt werden.', 'Abschnitt 3.3.4, wissenschaftliche Einordnung vor Axiom A3', 1, 1, 'Die vollständige kategoriale Struktur wird im FRZK an dieser Stelle nicht vorausgesetzt.', 30);
+(173, 57, 32, 'first_citation', 'Abbildungen und ihre Komposition können als grundlegende Bestandteile mathematischer Strukturen behandelt werden.', 'Abschnitt 3.3.4, wissenschaftliche Einordnung vor Axiom A3', 1, 1, 'Die vollständige kategoriale Struktur wird im FRZK an dieser Stelle nicht vorausgesetzt.', 30),
+(174, 71, 51, 'background', 'Wiederverwendung zur Einordnung des axiomatischen und strukturellen Aufbaus mathematischer Theorien.', 'Abschnitt 3.4.0, Absatz 1', 0, 1, 'Bereits als Quelle [72] erstmals in Abschnitt 3.2.1 zitiert.', 48),
+(175, 110, 51, 'historical_context', 'Wiederverwendung als historisches Beispiel einer axiomatischen mathematischen Grundlegung.', 'Abschnitt 3.4.0, Absatz 1', 0, 1, 'Bereits als Quelle [103] erstmals in Abschnitt 3.3.0 zitiert.', 48),
+(176, 115, 51, 'first_citation', 'Strukturelle Charakterisierung mathematischer Objekte über Relationen, Abbildungen und Kompositionen.', 'Abschnitt 3.4.0, Absatz 3', 1, 1, 'Erstnennung als Quelle [108].', 48),
+(177, 116, 51, 'first_citation', 'Moderne kategoriale Einordnung struktureller mathematischer Beschreibung.', 'Abschnitt 3.4.0, Absatz 3', 1, 1, 'Erstnennung als Quelle [109].', 48),
+(178, 71, 52, 'background', 'Mengentheoretische Strukturen werden durch Trägermengen, Relationen, Abbildungen und Operationen bestimmt.', 'Abschnitt 3.4.1, strukturelle Einordnung vor Gleichung (3.645)', 0, 1, 'Wiederverwendung der Quelle [72].', 49),
+(179, 115, 52, 'comparison', 'Strukturelle Charakterisierung mathematischer Objekte durch Relationen und Abbildungen als Vergleichshintergrund.', 'Abschnitt 3.4.1, strukturelle Einordnung vor Gleichung (3.645)', 0, 1, 'Wiederverwendung der Quelle [108].', 49),
+(180, 6, 52, 'background', 'Mengen werden über die Bestimmbarkeit beziehungsweise Zugehörigkeit ihrer Elemente charakterisiert.', 'Abschnitt 3.4.1, Erläuterung nach Gleichung (3.648)', 0, 1, 'Wiederverwendung der Quelle [6].', 49),
+(181, 71, 55, 'background', 'Äquivalenzrelationen und Quotientenmengen fassen mathematische Objekte anhand invariant gehaltener Eigenschaften zu Klassen zusammen.', 'Abschnitt 3.4.2, Einordnung nach Gleichung (3.657)', 0, 1, 'Wiederverwendung der Quelle [72].', 52),
+(182, 6, 55, 'background', 'Mengentheoretischer Hintergrund zu Äquivalenzrelationen, Äquivalenzklassen und Partitionen.', 'Abschnitt 3.4.2, Einordnung nach Gleichung (3.657)', 0, 1, 'Wiederverwendung der Quelle [6].', 52);
 
 -- --------------------------------------------------------
 
@@ -2736,7 +2856,13 @@ INSERT INTO `symbols` (`symbol_id`, `symbol_latex`, `symbol_word_latex`, `symbol
 (118, '\\mathfrak{R}', '\\mathfrak{R}', 'Rekonstruktionsabbildung', 'Abbildung vom formalen System auf mathematische Strukturen', 'chapter', 49, 605, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
 (119, '\\mathfrak{S}_F', '\\mathfrak{S}_F', 'Rekonstruktionsraum', 'Menge der mathematisch rekonstruierbaren FRZK-Strukturen', 'chapter', 49, 605, NULL, NULL, NULL, 0, 0, 0, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
 (120, '\\operatorname{RekGült}', '\\operatorname{RekGült}', 'Rekonstruktionsgültigkeit', 'Prädikat der Gültigkeit einer mathematischen Rekonstruktion', 'chapter', 49, 609, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
-(121, '\\operatorname{DefEin}', '\\operatorname{DefEin}', 'Eindeutige Definition', 'Prädikat der eindeutigen definitorischen Bestimmung', 'chapter', 49, 613, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47);
+(121, '\\operatorname{DefEin}', '\\operatorname{DefEin}', 'Eindeutige Definition', 'Prädikat der eindeutigen definitorischen Bestimmung', 'chapter', 49, 613, NULL, NULL, NULL, 0, 0, 1, 'In Abschnitt 3.3.10 eingeführt oder abschließend präzisiert.', 'checked', 47),
+(122, '\\mathcal{M}_{\\mathrm{FRZK}}', '\\mathcal{M}_{\\mathrm{FRZK}}', 'Mathematische Struktur des FRZK', 'Gesamtheit der aus dem Axiomensystem des FRZK zulässig rekonstruierten mathematischen Strukturen.', 'chapter', 51, 614, NULL, 'FRZK-Axiomensystem und daraus ableitbare Teilstrukturen', 'mathematische FRZK-Struktur', 0, 0, 0, 'Erstmalige kapitelbezogene Verwendung in Abschnitt 3.4.0.', 'checked', 48),
+(123, '\\mathcal{R}', '\\mathcal{R}', 'Rekonstruktionsoperator', 'Operator zur schrittweisen Ableitung der nächsten mathematischen Rekonstruktionsstufe aus dem bisherigen Strukturstand und dem FRZK-Axiomensystem.', 'chapter', 51, 615, NULL, 'Paar aus bisheriger Rekonstruktionsstufe und FRZK-Axiomensystem', 'nachfolgende Rekonstruktionsstufe', 0, 0, 1, 'Der Operator erzeugt keine unabhängige physikalische Annahme, sondern formalisiert den schrittweisen Ableitungsprozess.', 'checked', 48),
+(124, 'chi_F', 'chi_F', 'Funktionale Konfiguration', 'Geordnetes Tripel aus funktionalen Gehalten, Relationen und Operationen einer funktionalen Organisation.', 'chapter', 52, 617, NULL, 'funktionale Organisationen', 'funktionale Konfigurationen', 0, 0, 0, 'Erstmalige formale Definition in Abschnitt 3.4.1.', 'checked', 49),
+(125, 'Omega_F(mathcal{S})', 'Omega_F(mathcal{S})', 'Funktionale Zustandsmenge', 'Menge aller axiomatisch zulässigen funktionalen Zustände einer Organisation.', 'chapter', 52, 620, NULL, 'funktionale Organisationen', 'Mengen funktionaler Zustände', 0, 0, 0, 'Erstmalige rekonstruierte Zustandsmenge in Abschnitt 3.4.1.', 'checked', 49),
+(126, 'sim_F', 'sim_F', 'Funktionale Äquivalenzrelation', 'Relation, die zwei funktionale Zustände genau dann verbindet, wenn ihre Werte unter einem festgelegten funktionalen Kriterium übereinstimmen.', 'chapter', 55, 663, NULL, 'Omega_F(mathcal{S})	imesOmega_F(mathcal{S})', '{wahr,falsch}', 0, 0, 0, 'Erstmalige formale Definition in Abschnitt 3.4.2.', 'checked', 52),
+(127, 'kappa_F', 'kappa_F', 'Funktionale Merkmalsabbildung', 'Abbildung, die funktionale Zustände anhand eines festgelegten Kriteriums auf funktionale Merkmalswerte abbildet.', 'chapter', 55, 664, NULL, 'Omega_F(mathcal{S})', 'K_F', 0, 0, 1, 'Erstmalige Definition in Abschnitt 3.4.2.', 'checked', 52);
 
 -- --------------------------------------------------------
 
@@ -2795,7 +2921,9 @@ INSERT INTO `theorems` (`theorem_id`, `theorem_number`, `section_id`, `title`, `
 (33, '3.2.29', 24, 'Charakteristisches Polynom', 'Ein Skalar λ ist genau dann Eigenwert einer quadratischen Matrix A, wenn det(A-λI)=0 gilt.', 'det(A-lambda I)=0', 'det(A-lambda I)=0', 'adapted', 97, 'A ist eine quadratische Matrix über einem Körper, in dem das charakteristische Polynom zerfällt.', 'checked', 23),
 (34, '3.2.30', 24, 'Spektralsatz', 'Jede reelle symmetrische Matrix A ist orthogonal diagonalisierbar und besitzt eine Darstellung A=QΛQ^T.', 'A=QLambda Q^T', 'A=QLambda Q^T', 'adapted', 106, 'A ist reell und symmetrisch.', 'checked', 23),
 (35, '3.2.31', 24, 'Orthogonalität verschiedener Eigenräume', 'Eigenvektoren einer reellen symmetrischen Matrix zu verschiedenen Eigenwerten sind orthogonal.', 'lambda_i\neqlambda_jRightarrow E_iperp E_j', 'lambda_i\neqlambda_jRightarrow E_iperp E_j', 'adapted', 106, 'A ist reell und symmetrisch beziehungsweise selbstadjungiert.', 'checked', 23),
-(36, '3.2.32', 24, 'Langzeitverhalten iterierter Operatoren', 'Besitzt A einen betragsmäßig eindeutig dominanten Eigenwert λ_max und hat der Anfangsvektor eine von Null verschiedene Komponente im zugehörigen Eigenraum, dann wird die Richtung von A^n v asymptotisch durch diesen Eigenraum bestimmt.', 'A^nvsim clambda_{max}^nv_{max}', 'A^nvsim clambda_{max}^nv_{max}', 'adapted', 106, 'A ist diagonalisierbar; |λ_max|>|λ_i| für alle übrigen Eigenwerte und c≠0.', 'checked', 23);
+(36, '3.2.32', 24, 'Langzeitverhalten iterierter Operatoren', 'Besitzt A einen betragsmäßig eindeutig dominanten Eigenwert λ_max und hat der Anfangsvektor eine von Null verschiedene Komponente im zugehörigen Eigenraum, dann wird die Richtung von A^n v asymptotisch durch diesen Eigenraum bestimmt.', 'A^nvsim clambda_{max}^nv_{max}', 'A^nvsim clambda_{max}^nv_{max}', 'adapted', 106, 'A ist diagonalisierbar; |λ_max|>|λ_i| für alle übrigen Eigenwerte und c≠0.', 'checked', 23),
+(37, '3.4.1', 52, 'Unterscheidbarkeit funktionaler Zustände', 'Für zwei zulässige funktionale Zustände gilt: Sie sind genau dann verschieden, wenn sich mindestens eine der drei Komponenten funktionaler Gehalt, funktionale Relation oder funktionale Operation unterscheidet.', 'z_F^{(i)}\neq z_F^{(j)}Longleftrightarrow(mathcal{F}_{mathcal{S}}^{(i)}\neqmathcal{F}_{mathcal{S}}^{(j)})lor(mathcal{R}_{mathcal{S}}^{(i)}\neqmathcal{R}_{mathcal{S}}^{(j)})lor(mathcal{O}_{mathcal{S}}^{(i)}\neqmathcal{O}_{mathcal{S}}^{(j)})', 'z_F^{(i)}\neq z_F^{(j)}Longleftrightarrow(mathcal{F}_{mathcal{S}}^{(i)}\neqmathcal{F}_{mathcal{S}}^{(j)})lor(mathcal{R}_{mathcal{S}}^{(i)}\neqmathcal{R}_{mathcal{S}}^{(j)})lor(mathcal{O}_{mathcal{S}}^{(i)}\neqmathcal{O}_{mathcal{S}}^{(j)})', 'original', NULL, 'Definition 3.4.2 und klassische De-Morgan-Regeln.', 'checked', 49),
+(38, '3.4.2', 55, 'Partition der Zustandsmenge', 'Die Menge der durch sim_F erzeugten funktionalen Zustandsklassen bildet eine Partition der funktionalen Zustandsmenge Omega_F(S).', 'Omega_F(mathcal{S})=iguplus_{[z_F]_{sim_F}inOmega_F(mathcal{S})/{sim_F}}[z_F]_{sim_F}', 'Omega_F(mathcal{S})=iguplus_{[z_F]_{sim_F}inOmega_F(mathcal{S})/{sim_F}}[z_F]_{sim_F}', 'original', NULL, 'Lemma 3.4.2 und klassische Eigenschaften von Äquivalenzklassen.', 'checked', 52);
 
 -- --------------------------------------------------------
 
@@ -3544,7 +3672,7 @@ ALTER TABLE `assumptions`
 -- AUTO_INCREMENT für Tabelle `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `author_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `author_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT für Tabelle `axioms`
@@ -3568,19 +3696,19 @@ ALTER TABLE `citation_corrections`
 -- AUTO_INCREMENT für Tabelle `corollaries`
 --
 ALTER TABLE `corollaries`
-  MODIFY `corollary_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `corollary_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT für Tabelle `definitions`
 --
 ALTER TABLE `definitions`
-  MODIFY `definition_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `definition_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
 -- AUTO_INCREMENT für Tabelle `dissertation_sections`
 --
 ALTER TABLE `dissertation_sections`
-  MODIFY `section_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `section_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT für Tabelle `dissertation_tables`
@@ -3598,7 +3726,7 @@ ALTER TABLE `documents`
 -- AUTO_INCREMENT für Tabelle `equations`
 --
 ALTER TABLE `equations`
-  MODIFY `equation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=614;
+  MODIFY `equation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=708;
 
 --
 -- AUTO_INCREMENT für Tabelle `equation_dependencies`
@@ -3610,7 +3738,7 @@ ALTER TABLE `equation_dependencies`
 -- AUTO_INCREMENT für Tabelle `equation_symbols`
 --
 ALTER TABLE `equation_symbols`
-  MODIFY `equation_symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
+  MODIFY `equation_symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=367;
 
 --
 -- AUTO_INCREMENT für Tabelle `figures`
@@ -3622,7 +3750,7 @@ ALTER TABLE `figures`
 -- AUTO_INCREMENT für Tabelle `lemmas`
 --
 ALTER TABLE `lemmas`
-  MODIFY `lemma_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `lemma_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `object_dependencies`
@@ -3646,7 +3774,7 @@ ALTER TABLE `pending_sources`
 -- AUTO_INCREMENT für Tabelle `proofs`
 --
 ALTER TABLE `proofs`
-  MODIFY `proof_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `proof_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT für Tabelle `propositions`
@@ -3664,25 +3792,25 @@ ALTER TABLE `proposition_dependencies`
 -- AUTO_INCREMENT für Tabelle `repository_revisions`
 --
 ALTER TABLE `repository_revisions`
-  MODIFY `revision_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `revision_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT für Tabelle `repository_validation_results`
 --
 ALTER TABLE `repository_validation_results`
-  MODIFY `validation_result_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=197;
+  MODIFY `validation_result_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
 
 --
 -- AUTO_INCREMENT für Tabelle `section_change_log`
 --
 ALTER TABLE `section_change_log`
-  MODIFY `change_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
+  MODIFY `change_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
 
 --
 -- AUTO_INCREMENT für Tabelle `sources`
 --
 ALTER TABLE `sources`
-  MODIFY `source_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `source_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT für Tabelle `source_relations`
@@ -3694,19 +3822,19 @@ ALTER TABLE `source_relations`
 -- AUTO_INCREMENT für Tabelle `source_usage`
 --
 ALTER TABLE `source_usage`
-  MODIFY `usage_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
+  MODIFY `usage_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
 
 --
 -- AUTO_INCREMENT für Tabelle `symbols`
 --
 ALTER TABLE `symbols`
-  MODIFY `symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT für Tabelle `theorems`
 --
 ALTER TABLE `theorems`
-  MODIFY `theorem_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `theorem_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT für Tabelle `topics`

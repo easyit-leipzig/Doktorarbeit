@@ -1,12 +1,12 @@
 /* ============================================================
    FRZK Repository Update
-   Kapitel 3.6.4
+   Kapitel 3.6.6
 
    Abschnitt:
-   Empirische Anwendung funktionaler Organisationsanalyse
+   Grenzen und Validierungsanforderungen
 
    Neue Gleichungen:
-   (3.1226) - (3.1230)
+   (3.1236) - (3.1238)
 
    ============================================================ */
 
@@ -19,7 +19,7 @@ START TRANSACTION;
 
 
 /* ============================================================
-   Parent Revision bestimmen
+   Revision bestimmen
    ============================================================ */
 
 SET @parent_revision_id =
@@ -49,12 +49,12 @@ INSERT INTO repository_revisions
 )
 VALUES
 (
-    'RKB-REV-K3.6.4-V1',
+    'RKB-REV-K3.6.6-V1',
     NOW(),
     'section',
-    '3.6.4',
+    '3.6.6',
     '1.0',
-    'Kapitel 3.6.4: Empirische Anwendung funktionaler Organisationsanalyse.',
+    'Kapitel 3.6.6: Grenzen und Validierungsanforderungen.',
     'Olaf Thiele / ChatGPT',
     @parent_revision_id
 );
@@ -65,7 +65,7 @@ SET @revision_id = LAST_INSERT_ID();
 
 
 /* ============================================================
-   Abschnitt 3.6.4
+   Abschnitt 3.6.6
    ============================================================ */
 
 INSERT INTO dissertation_sections
@@ -81,13 +81,13 @@ INSERT INTO dissertation_sections
 )
 SELECT
     section_id,
-    '3.6.4',
-    'Empirische Anwendung funktionaler Organisationsanalyse',
+    '3.6.6',
+    'Grenzen und Validierungsanforderungen',
     3,
-    3.64,
+    6.60,
     'completed',
     1,
-    'Überführung mathematischer FRZK-Strukturen in empirisch beobachtbare Organisationsanalysen.'
+    'Kritische Einordnung der funktionalen Organisationsanalyse und Anforderungen an empirische Validierung.'
 FROM dissertation_sections
 WHERE section_code='3.6'
 LIMIT 1;
@@ -98,8 +98,9 @@ SET @section_id = LAST_INSERT_ID();
 
 
 /* ============================================================
-   Gleichungen 3.1226 - 3.1230
+   Gleichungen 3.1236 - 3.1238
    ============================================================ */
+
 
 INSERT INTO equations
 (
@@ -118,78 +119,50 @@ VALUES
 
 
 (
-    '3.1226',
-    @section_id,
-    'Funktionale Beobachtungsrepräsentation',
-    '\\Phi_F:\\mathcal{S}_F\\rightarrow V_F',
-    '\\Phi_F:\\mathcal{S}_F\\rightarrow V_F',
-    'Abbildung einer funktionalen Organisation in einen beobachtbaren Merkmalsraum.',
-    'definition',
-    'FRZK Eigenentwicklung',
-    'checked',
-    @revision_id
+'3.1236',
+@section_id,
+'Funktionale Beobachtungsrepräsentation',
+'\Phi_F:\mathcal{S}_F\rightarrow V_F',
+'\Phi_F:\mathcal{S}_F\rightarrow V_F',
+'Abbildung einer funktionalen Organisation in einen Beobachtungsraum.',
+'definition',
+'FRZK Eigenentwicklung',
+'checked',
+@revision_id
 ),
 
 
 (
-    '3.1227',
-    @section_id,
-    'Funktionaler Beobachtungsvektor',
-    'v_F=\\begin{pmatrix}a_1\\\\a_2\\\\\\vdots\\\\a_n\\end{pmatrix}',
-    'v_F=\\begin{pmatrix}a_1\\\\a_2\\\\\\vdots\\\\a_n\\end{pmatrix}',
-    'Darstellung beobachtbarer funktionaler Eigenschaften als Vektor.',
-    'representation',
-    'FRZK Eigenentwicklung',
-    'checked',
-    @revision_id
+'3.1237',
+@section_id,
+'Funktionale Relationsstruktur',
+'\Gamma_F\subseteq V_F\times V_F',
+'\Gamma_F\subseteq V_F\times V_F',
+'Darstellung funktionaler Beziehungen zwischen Zuständen.',
+'definition',
+'FRZK Eigenentwicklung',
+'checked',
+@revision_id
 ),
 
 
 (
-    '3.1228',
-    @section_id,
-    'Funktionale Zustandsüberführung',
-    'T_F(v_F(t_i))=v_F(t_{i+1})',
-    'T_F(v_F(t_i))=v_F(t_{i+1})',
-    'Transformation zwischen aufeinanderfolgenden funktionalen Zuständen.',
-    'operator',
-    'FRZK Eigenentwicklung',
-    'checked',
-    @revision_id
-),
-
-
-(
-    '3.1229',
-    @section_id,
-    'Zeitabhängige funktionale Kohärenz',
-    'K_F(t)=f(\\mathcal{V}_F(t),\\Gamma_F(t),T_F(t))',
-    'K_F(t)=f(\\mathcal{V}_F(t),\\Gamma_F(t),T_F(t))',
-    'Abhängigkeit funktionaler Kohärenz von Zuständen, Relationen und Transformationen.',
-    'model',
-    'FRZK Eigenentwicklung',
-    'checked',
-    @revision_id
-),
-
-
-(
-    '3.1230',
-    @section_id,
-    'Lernprozess als Zustandsraumtransformation',
-    'L_F:V_F(t)\\rightarrow V_F(t+1)',
-    'L_F:V_F(t)\\rightarrow V_F(t+1)',
-    'Darstellung eines Lernprozesses als funktionale Veränderung eines Zustandsraums.',
-    'operator',
-    'FRZK Eigenentwicklung',
-    'checked',
-    @revision_id
+'3.1238',
+@section_id,
+'Skalierte funktionale Kohärenz',
+'K_F^{(n)}=f(V_F^{(n)},\Gamma_F^{(n)},T_F^{(n)})',
+'K_F^{(n)}=f(V_F^{(n)},\Gamma_F^{(n)},T_F^{(n)})',
+'Beschreibung funktionaler Kohärenz auf unterschiedlichen Organisationsebenen.',
+'model',
+'FRZK Eigenentwicklung',
+'checked',
+@revision_id
 );
 
 
 
 /* ============================================================
-   Abschnittsänderung protokollieren
+   Change Log
    ============================================================ */
 
 INSERT INTO section_change_log
@@ -207,7 +180,7 @@ VALUES
     @revision_id,
     'completed',
     'section',
-    '3.6.4',
+    '3.6.6',
     NOW()
 );
 
@@ -222,7 +195,16 @@ COMMIT;
    ============================================================ */
 
 SELECT
-    'Kapitel 3.6.4 Update erfolgreich'
+    'Kapitel 3.6.6 Update erfolgreich'
     AS status,
     @revision_id AS revision_id,
     @section_id AS section_id;
+
+
+SELECT
+    equation_number,
+    title
+FROM equations
+WHERE equation_number BETWEEN '3.1236'
+AND '3.1238'
+ORDER BY equation_number;

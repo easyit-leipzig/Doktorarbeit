@@ -1,0 +1,5421 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Erstellungszeit: 30. Aug 2026 um 11:19
+-- Server-Version: 10.4.32-MariaDB
+-- PHP-Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Datenbank: `frzk_rkb_32_neu`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `acronyms`
+--
+
+CREATE TABLE `acronyms` (
+  `acronym_id` bigint(20) UNSIGNED NOT NULL,
+  `acronym` varchar(100) NOT NULL,
+  `full_form` varchar(1000) NOT NULL,
+  `explanation` longtext DEFAULT NULL,
+  `first_section_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `language_code` char(2) NOT NULL DEFAULT 'de',
+  `category` varchar(255) DEFAULT NULL,
+  `is_project_specific` tinyint(1) NOT NULL DEFAULT 0,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `annotations`
+--
+
+CREATE TABLE `annotations` (
+  `annotation_id` bigint(20) UNSIGNED NOT NULL,
+  `source_id` bigint(20) UNSIGNED NOT NULL,
+  `contribution` text DEFAULT NULL,
+  `significance_for_dissertation` text DEFAULT NULL,
+  `citation_reason` text DEFAULT NULL,
+  `adopted_claims` text DEFAULT NULL,
+  `limitations` text DEFAULT NULL,
+  `scientific_discussion` text DEFAULT NULL,
+  `annotation_status` enum('draft','reviewed','approved') NOT NULL DEFAULT 'draft',
+  `reviewed_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `appendix_modules`
+--
+
+CREATE TABLE `appendix_modules` (
+  `appendix_module_id` bigint(20) UNSIGNED NOT NULL,
+  `appendix_code` varchar(20) NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `purpose` longtext NOT NULL,
+  `sort_order` int(11) NOT NULL,
+  `status` enum('planned','draft','review','final') NOT NULL DEFAULT 'planned',
+  `created_revision_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `appendix_modules`
+--
+
+INSERT INTO `appendix_modules` (`appendix_module_id`, `appendix_code`, `title`, `purpose`, `sort_order`, `status`, `created_revision_id`) VALUES
+(1, 'M1', 'Mengentheoretische und funktionale Grundlagen', 'Vertiefungen zu Mengen, Relationen, Funktionen, Mengenoperationen, Funktionsklassen und Beispielen.', 1, 'planned', 5),
+(2, 'M2', 'Algebraische Grundlagen des Vektorraums', 'Vektorraumaxiome, Nullvektor, Untervektorräume, Herleitungen, Erzeugungssysteme und Rechenbeispiele.', 2, 'planned', 5),
+(3, 'M3', 'Matrizen, Basiswechsel und Invarianten', 'Matrixdarstellungen, Basiswechselkonstruktionen, Determinantenrechnungen und Darstellungsinvarianten.', 3, 'planned', 5),
+(4, 'M4', 'Rang, Kern, Bild und lineare Gleichungssysteme', 'Vertiefungen zu Rangbestimmung, Kern/Bild, Rang-Nullität und linearen Gleichungssystemen.', 4, 'planned', 5),
+(5, 'M5', 'Eigenwerte, Diagonalisierung und Spektralrechnung', 'Eigenwertrechnungen, Vielfachheiten, Diagonalisierungsbeispiele, Matrixfunktionen und Projektorzerlegungen.', 5, 'planned', 5),
+(6, 'M6', 'Skalarprodukt, Orthogonalität, Projektion und Hilbertraumstrukturen', 'Geometrische Vertiefungen, Cauchy-Schwarz, Winkel, Gram-Schmidt, Projektionen und Funktionenraum/Hilbertraum-Anschluss.', 6, 'planned', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `assumptions`
+--
+
+CREATE TABLE `assumptions` (
+  `assumption_id` bigint(20) UNSIGNED NOT NULL,
+  `assumption_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `assumption_text` longtext NOT NULL,
+  `formal_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `derivation_from_research_gap` longtext DEFAULT NULL,
+  `status` enum('proposed','accepted','rejected','superseded') NOT NULL DEFAULT 'proposed',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `authors`
+--
+
+CREATE TABLE `authors` (
+  `author_id` bigint(20) UNSIGNED NOT NULL,
+  `family_name` varchar(255) NOT NULL,
+  `given_names` varchar(255) DEFAULT NULL,
+  `normalized_name` varchar(500) NOT NULL,
+  `orcid` varchar(50) DEFAULT NULL,
+  `birth_year` smallint(6) DEFAULT NULL,
+  `death_year` smallint(6) DEFAULT NULL,
+  `notes` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `authors`
+--
+
+INSERT INTO `authors` (`author_id`, `family_name`, `given_names`, `normalized_name`, `orcid`, `birth_year`, `death_year`, `notes`) VALUES
+(1, 'Newton', 'Isaac', 'isaac newton', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(2, 'Einstein', 'Albert', 'albert einstein', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(3, 'Rovelli', 'Carlo', 'carlo rovelli', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(4, 'Parmenides', NULL, 'parmenides', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(5, 'Weinberg', 'Steven', 'steven weinberg', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(6, 'Halmos', 'Paul R.', 'paul r. halmos', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(7, 'Platon', NULL, 'platon', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(8, 'Aristoteles', NULL, 'aristoteles', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(9, 'Plotin', NULL, 'plotin', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(10, 'von Kues', 'Nikolaus', 'nikolaus von kues', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(11, 'de Spinoza', 'Baruch', 'baruch de spinoza', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(12, 'Leibniz', 'Gottfried Wilhelm', 'gottfried wilhelm leibniz', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(13, 'Clarke', 'Samuel', 'samuel clarke', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(14, 'Kant', 'Immanuel', 'immanuel kant', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(15, 'Hegel', 'Georg Wilhelm Friedrich', 'georg wilhelm friedrich hegel', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(16, 'Russell', 'Bertrand', 'bertrand russell', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(17, 'Whitehead', 'Alfred North', 'alfred north whitehead', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(18, 'Husserl', 'Edmund', 'edmund husserl', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(19, 'Cassirer', 'Ernst', 'ernst cassirer', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(20, 'Heidegger', 'Martin', 'martin heidegger', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(21, 'Wittgenstein', 'Ludwig', 'ludwig wittgenstein', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(22, 'Carnap', 'Rudolf', 'rudolf carnap', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(23, 'Spencer-Brown', 'George', 'george spencer-brown', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(24, 'Floridi', 'Luciano', 'luciano floridi', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(25, 'Bitbol', 'Michel', 'michel bitbol', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(26, 'Mach', 'Ernst', 'ernst mach', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(27, 'Minkowski', 'Hermann', 'hermann minkowski', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(28, 'Weyl', 'Hermann', 'hermann weyl', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(29, 'Wald', 'Robert M.', 'robert m. wald', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(30, 'Hawking', 'Stephen W.', 'stephen w. hawking', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(31, 'Ellis', 'George F. R.', 'george f. r. ellis', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(32, 'von Neumann', 'John', 'john von neumann', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(33, 'Dirac', 'Paul A. M.', 'paul a. m. dirac', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(34, 'DeWitt', 'Bryce S.', 'bryce s. dewitt', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(35, 'Kiefer', 'Claus', 'claus kiefer', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(36, 'Bombelli', 'Luca', 'luca bombelli', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(37, 'Lee', 'Joohan', 'joohan lee', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(38, 'Meyer', 'David', 'david meyer', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(39, 'Sorkin', 'Rafael D.', 'rafael d. sorkin', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(40, 'Jacobson', 'Ted', 'ted jacobson', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(41, 'Ryu', 'Shinsei', 'shinsei ryu', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(42, 'Takayanagi', 'Tadashi', 'tadashi takayanagi', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(43, 'Van Raamsdonk', 'Mark', 'mark van raamsdonk', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(44, 'Verlinde', 'Erik', 'erik verlinde', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(45, 'von Helmholtz', 'Hermann', 'hermann von helmholtz', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(46, 'Hanson', 'Norwood Russell', 'norwood russell hanson', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(47, 'Kuhn', 'Thomas S.', 'thomas s. kuhn', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(48, 'Popper', 'Karl R.', 'karl r. popper', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(49, 'Lakatos', 'Imre', 'imre lakatos', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(50, 'Quine', 'Willard Van Orman', 'willard van orman quine', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(51, 'Duhem', 'Pierre', 'pierre duhem', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(52, 'van Fraassen', 'Bas C.', 'bas c. van fraassen', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(53, 'Worrall', 'John', 'john worrall', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(54, 'Ladyman', 'James', 'james ladyman', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(55, 'French', 'Steven', 'steven french', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(56, 'Hesse', 'Mary B.', 'mary b. hesse', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(57, 'Giere', 'Ronald N.', 'ronald n. giere', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(58, 'Suppes', 'Patrick', 'patrick suppes', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(59, 'Tarski', 'Alfred', 'alfred tarski', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(60, 'Boole', 'George', 'george boole', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(61, 'Peano', 'Giuseppe', 'giuseppe peano', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(62, 'Hilbert', 'David', 'david hilbert', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(63, 'Cantor', 'Georg', 'georg cantor', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(64, 'Lane', 'Saunders Mac', 'saunders mac lane', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(65, 'Eilenberg', 'Samuel', 'samuel eilenberg', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(66, 'Frege', 'Gottlob', 'gottlob frege', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(67, 'von Bertalanffy', 'Ludwig', 'ludwig von bertalanffy', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(68, 'Wiener', 'Norbert', 'norbert wiener', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(69, 'Ashby', 'W. Ross', 'w. ross ashby', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(70, 'Resnik', 'Michael D.', 'michael d. resnik', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(71, 'Shapiro', 'Stewart', 'stewart shapiro', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(72, 'von Foerster', 'Heinz', 'heinz von foerster', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(73, 'Luhmann', 'Niklas', 'niklas luhmann', NULL, NULL, NULL, 'Aus bibliografischer Angabe Kapitel 3.1 übernommen'),
+(74, 'Lang', 'Serge', 'serge lang', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(75, 'Rudin', 'Walter', 'walter rudin', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(76, 'Munkres', 'James R.', 'james r. munkres', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(77, 'Strang', 'Gilbert', 'gilbert strang', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(78, 'Kreyszig', 'Erwin', 'erwin kreyszig', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(79, 'Reed', 'Michael', 'michael reed', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(80, 'Simon', 'Barry', 'barry simon', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(81, 'Diestel', 'Reinhard', 'reinhard diestel', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(82, 'Kleene', 'Stephen C.', 'stephen c. kleene', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(83, 'Enderton', 'Herbert B.', 'herbert b. enderton', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(84, 'Jech', 'Thomas', 'thomas jech', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(85, 'Bartle', 'Robert G.', 'robert g. bartle', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(86, 'Sherbert', 'Donald R.', 'donald r. sherbert', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(87, 'Friedberg', 'Stephen H.', 'stephen h. friedberg', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(88, 'Insel', 'Arnold J.', 'arnold j. insel', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.'),
+(89, 'Spence', 'Lawrence E.', 'lawrence e. spence', NULL, NULL, NULL, 'Ergänzt für Kapitel 3.2; Identitäten aus dem 3.1-Repository wurden wiederverwendet, sofern bereits vorhanden.');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `axioms`
+--
+
+CREATE TABLE `axioms` (
+  `axiom_id` bigint(20) UNSIGNED NOT NULL,
+  `axiom_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `axiom_text` longtext NOT NULL,
+  `formal_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `motivation` longtext DEFAULT NULL,
+  `independence_note` longtext DEFAULT NULL,
+  `consistency_note` longtext DEFAULT NULL,
+  `operationalization_note` longtext DEFAULT NULL,
+  `source_assumption_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `status` enum('draft','review','accepted','revised','rejected') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `axiom_dependencies`
+--
+
+CREATE TABLE `axiom_dependencies` (
+  `axiom_dependency_id` bigint(20) UNSIGNED NOT NULL,
+  `axiom_id` bigint(20) UNSIGNED NOT NULL,
+  `depends_on_axiom_id` bigint(20) UNSIGNED NOT NULL,
+  `dependency_type` enum('depends_on','extends','specializes','contrasts','independent_of') NOT NULL,
+  `note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `citation_aliases`
+--
+
+CREATE TABLE `citation_aliases` (
+  `citation_alias_id` bigint(20) UNSIGNED NOT NULL,
+  `source_citation_number` int(10) UNSIGNED NOT NULL,
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `status` enum('resolved','unresolved','superseded') NOT NULL DEFAULT 'unresolved',
+  `resolution_note` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `citation_aliases`
+--
+
+INSERT INTO `citation_aliases` (`citation_alias_id`, `source_citation_number`, `source_id`, `status`, `resolution_note`) VALUES
+(1, 6, 6, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(2, 10, NULL, 'unresolved', 'Literaturzahl steht in der Quellfassung, ist im aktuellen Literaturblock nicht eindeutig bibliografisch aufgelöst und wird deshalb nicht geraten.'),
+(3, 13, NULL, 'unresolved', 'Literaturzahl steht in der Quellfassung, ist im aktuellen Literaturblock nicht eindeutig bibliografisch aufgelöst und wird deshalb nicht geraten.'),
+(4, 67, 67, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(5, 68, 68, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(6, 71, 71, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(7, 72, 72, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(8, 73, 73, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(9, 74, 74, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(10, 75, 75, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(11, 76, 76, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(12, 77, 77, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(13, 78, 78, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(14, 79, 79, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(15, 80, 80, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(16, 81, 81, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(17, 82, 82, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(18, 83, 83, 'resolved', 'Aufgelöst gegen die neue Quellenliste.'),
+(19, 84, 84, 'resolved', 'Aufgelöst gegen die neue Quellenliste.');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `citation_corrections`
+--
+
+CREATE TABLE `citation_corrections` (
+  `correction_id` bigint(20) UNSIGNED NOT NULL,
+  `old_citation_label` varchar(50) NOT NULL,
+  `corrected_citation_label` varchar(50) NOT NULL,
+  `section_code` varchar(50) NOT NULL,
+  `reason` text NOT NULL,
+  `revision_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `corrected_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `citation_evidence_links`
+--
+
+CREATE TABLE `citation_evidence_links` (
+  `citation_occurrence_id` bigint(20) UNSIGNED NOT NULL,
+  `evidence_id` bigint(20) UNSIGNED NOT NULL,
+  `link_status` enum('section_source_match','replacement_match','partial_support') NOT NULL,
+  `notes` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `citation_evidence_links`
+--
+
+INSERT INTO `citation_evidence_links` (`citation_occurrence_id`, `evidence_id`, `link_status`, `notes`) VALUES
+(1, 1, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [6]; kanonische Quelle [6].'),
+(2, 2, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(3, 3, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [72]; kanonische Quelle [72].'),
+(4, 4, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [73]; kanonische Quelle [73].'),
+(5, 5, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(6, 6, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [75]; kanonische Quelle [75].'),
+(7, 7, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [76]; kanonische Quelle [76].'),
+(8, 8, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [77]; kanonische Quelle [77].'),
+(9, 9, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [78]; kanonische Quelle [78].'),
+(10, 10, 'section_source_match', 'Zuordnung über Abschnitt 3.2.0 und ursprüngliche Literaturziffer [79]; kanonische Quelle [79].'),
+(11, 11, 'section_source_match', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [6]; kanonische Quelle [6].'),
+(12, 15, 'section_source_match', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [80]; kanonische Quelle [80].'),
+(13, 16, 'section_source_match', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [81]; kanonische Quelle [81].'),
+(14, 12, 'section_source_match', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [67]; kanonische Quelle [67].'),
+(15, 13, 'section_source_match', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [68]; kanonische Quelle [68].'),
+(16, 15, 'section_source_match', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [80]; kanonische Quelle [80].'),
+(17, 16, 'section_source_match', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [81]; kanonische Quelle [81].'),
+(18, 11, 'section_source_match', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [6]; kanonische Quelle [6].'),
+(19, 14, 'partial_support', 'Zuordnung über Abschnitt 3.2.1 und ursprüngliche Literaturziffer [78]; kanonische Quelle [78].'),
+(20, 17, 'section_source_match', 'Zuordnung über Abschnitt 3.2.2 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(21, 18, 'section_source_match', 'Zuordnung über Abschnitt 3.2.2 und ursprüngliche Literaturziffer [72]; kanonische Quelle [72].'),
+(22, 19, 'section_source_match', 'Zuordnung über Abschnitt 3.2.2 und ursprüngliche Literaturziffer [80]; kanonische Quelle [80].'),
+(23, 20, 'section_source_match', 'Zuordnung über Abschnitt 3.2.2 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(24, 21, 'section_source_match', 'Zuordnung über Abschnitt 3.2.2 und ursprüngliche Literaturziffer [83]; kanonische Quelle [83].'),
+(25, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(26, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(27, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(28, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(29, 23, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [13]; kanonische Quelle [76].'),
+(30, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(31, 25, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [80]; kanonische Quelle [80].'),
+(32, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(33, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(34, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(35, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(36, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(37, 22, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [10]; kanonische Quelle [74].'),
+(38, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(39, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(40, 22, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [10]; kanonische Quelle [74].'),
+(41, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(42, 23, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [13]; kanonische Quelle [76].'),
+(43, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(44, 23, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [13]; kanonische Quelle [76].'),
+(45, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(46, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(47, 23, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [13]; kanonische Quelle [76].'),
+(48, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(49, 23, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [13]; kanonische Quelle [76].'),
+(50, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(51, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(52, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(53, 23, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [13]; kanonische Quelle [76].'),
+(54, 22, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [10]; kanonische Quelle [74].'),
+(55, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(56, 22, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [10]; kanonische Quelle [74].'),
+(57, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(58, 22, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [10]; kanonische Quelle [74].'),
+(59, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(60, 22, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [10]; kanonische Quelle [74].'),
+(61, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(62, 23, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [13]; kanonische Quelle [76].'),
+(63, 22, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [10]; kanonische Quelle [74].'),
+(64, 24, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(65, 26, 'section_source_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(66, 23, 'replacement_match', 'Zuordnung über Abschnitt 3.2.3 und ursprüngliche Literaturziffer [13]; kanonische Quelle [76].'),
+(67, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(68, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(69, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(70, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(71, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(72, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(73, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(74, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(75, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(76, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(77, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(78, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(79, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(80, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(81, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(82, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(83, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(84, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(85, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(86, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(87, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(88, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(89, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(90, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(91, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(92, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(93, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(94, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(95, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(96, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(97, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(98, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(99, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(100, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(101, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(102, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(103, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(104, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(105, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(106, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(107, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(108, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(109, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(110, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(111, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(112, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(113, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(114, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(115, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(116, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(117, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(118, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(119, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(120, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(121, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(122, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(123, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(124, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(125, 29, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [76]; kanonische Quelle [76].'),
+(126, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(127, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(128, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(129, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(130, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(131, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(132, 27, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(133, 28, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(134, 30, 'section_source_match', 'Zuordnung über Abschnitt 3.2.4 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(135, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(136, 32, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(137, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(138, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(139, 32, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(140, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(141, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(142, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(143, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(144, 32, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(145, 32, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(146, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(147, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(148, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(149, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(150, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(151, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(152, 32, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(153, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(154, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(155, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(156, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(157, 32, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(158, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(159, 32, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(160, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(161, 31, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(162, 32, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(163, 33, 'section_source_match', 'Zuordnung über Abschnitt 3.2.5 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(164, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(165, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(166, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(167, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(168, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(169, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(170, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(171, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(172, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(173, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(174, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(175, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(176, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(177, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(178, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(179, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(180, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(181, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(182, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(183, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(184, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(185, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(186, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(187, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(188, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(189, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(190, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(191, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(192, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(193, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(194, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(195, 34, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(196, 35, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(197, 36, 'section_source_match', 'Zuordnung über Abschnitt 3.2.6 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(198, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(199, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(200, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(201, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(202, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(203, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(204, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(205, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(206, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(207, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(208, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(209, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(210, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(211, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(212, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(213, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(214, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(215, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(216, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(217, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(218, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(219, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(220, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(221, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(222, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(223, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(224, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(225, 39, 'partial_support', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [76]; kanonische Quelle [76].'),
+(226, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(227, 37, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(228, 38, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(229, 40, 'section_source_match', 'Zuordnung über Abschnitt 3.2.7 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(230, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(231, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(232, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(233, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(234, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(235, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(236, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(237, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(238, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(239, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(240, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(241, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(242, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(243, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(244, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(245, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(246, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(247, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(248, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(249, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(250, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(251, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(252, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(253, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(254, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(255, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(256, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(257, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(258, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(259, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(260, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(261, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(262, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(263, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(264, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(265, 41, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(266, 42, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(267, 43, 'section_source_match', 'Zuordnung über Abschnitt 3.2.8 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(268, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(269, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(270, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(271, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(272, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(273, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(274, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(275, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(276, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(277, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(278, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(279, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(280, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(281, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(282, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(283, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(284, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(285, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(286, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(287, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(288, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(289, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(290, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(291, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(292, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(293, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(294, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(295, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(296, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(297, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(298, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(299, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(300, 44, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(301, 45, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(302, 46, 'section_source_match', 'Zuordnung über Abschnitt 3.2.9 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(303, 47, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(304, 48, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(305, 49, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(306, 47, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(307, 48, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(308, 49, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(309, 47, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(310, 48, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(311, 49, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(312, 47, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(313, 48, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(314, 49, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(315, 47, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(316, 48, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(317, 49, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(318, 47, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [71]; kanonische Quelle [71].'),
+(319, 48, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(320, 49, 'section_source_match', 'Zuordnung über Abschnitt 3.2.10 und ursprüngliche Literaturziffer [82]; kanonische Quelle [82].'),
+(321, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(322, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(323, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(324, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(325, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(326, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(327, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(328, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(329, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(330, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(331, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(332, 50, 'section_source_match', 'Zuordnung über Abschnitt 3.2.11 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(333, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(334, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(335, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(336, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(337, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(338, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(339, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(340, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(341, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(342, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(343, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(344, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(345, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(346, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(347, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(348, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(349, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(350, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(351, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].'),
+(352, 51, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [74]; kanonische Quelle [74].'),
+(353, 52, 'section_source_match', 'Zuordnung über Abschnitt 3.2.12 und ursprüngliche Literaturziffer [84]; kanonische Quelle [84].');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `citation_occurrences`
+--
+
+CREATE TABLE `citation_occurrences` (
+  `citation_occurrence_id` bigint(20) UNSIGNED NOT NULL,
+  `document_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `source_citation_number` int(10) UNSIGNED NOT NULL,
+  `citation_group_text` varchar(255) NOT NULL,
+  `source_line_no` int(10) UNSIGNED DEFAULT NULL,
+  `context_text` longtext NOT NULL,
+  `validation_status` enum('resolved','unresolved','needs_review') NOT NULL DEFAULT 'needs_review'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `citation_occurrences`
+--
+
+INSERT INTO `citation_occurrences` (`citation_occurrence_id`, `document_id`, `section_id`, `source_id`, `source_citation_number`, `citation_group_text`, `source_line_no`, `context_text`, `validation_status`) VALUES
+(1, 1, 22, 6, 6, '[6]', 9, 'Den Ausgangspunkt bildet die Mengenlehre, die eine gemeinsame Grundsprache für große Teile der modernen Mathematik bereitstellt. Paul R. Halmos stellt in *Naive Set Theory* die Begriffe Menge, Element, Teilmenge, Relation und Abbildung als grundlegende Bausteine der weiterführenden Mathematik dar \\[6\\]. Seine Darstellung ist für meinen Aufbau besonders geeignet, weil sie die elementaren Strukturen schrittweise entwickelt, ohne bereits eine bestimmte physikalische Interpretation vorauszusetzen.', 'resolved'),
+(2, 1, 22, 71, 71, '[71]', 11, 'An die Mengenlehre schließen sich die algebraischen Grundlagen an. Serge Lang: *Algebra*. Revised Third Edition. New York: Springer, 2002 \\[71\\]. Lang systematisiert Gruppen, Ringe, Körper, Moduln und lineare Abbildungen als allgemeine Strukturen mathematischer Verknüpfungen. Diese Strukturen benötige ich später, wenn ich funktionale Transformationen nicht nur sprachlich, sondern mathematisch präzise beschreiben will.', 'resolved'),
+(3, 1, 22, 72, 72, '[72]', 13, 'Für die Analysis verwende ich Walter Rudin: *Principles of Mathematical Analysis*. Third Edition. New York: McGraw-Hill, 1976 \\[72\\]. Rudin entwickelt die Begriffe Konvergenz, Stetigkeit, Differenzierbarkeit und Integration auf der Grundlage bereits definierter Zahlen- und Funktionenräume. Für meinen Aufbau ist dabei nicht nur wichtig, was die Analysis leisten kann. Ebenso wichtig ist mir die Grenze ihrer Aussagekraft: Die Analysis untersucht Eigenschaften und Veränderungen innerhalb bereits mathematisch bestimmter Strukturen. Sie begründet nicht selbst, warum gerade diese Strukturen als Ausgangspunkt gewählt wurden.', 'resolved'),
+(4, 1, 22, 73, 73, '[73]', 15, 'Die topologischen Grundlagen stütze ich auf James R. Munkres: *Topology*. Second Edition. Upper Saddle River, New Jersey: Prentice Hall, 2000 \\[73\\]. Munkres entwickelt topologische Räume, Zusammenhang, Kompaktheit und Trennungsaxiome unabhängig von der Notwendigkeit einer bereits vorgegebenen metrischen Geometrie. Für meine weitere Untersuchung ist insbesondere bedeutsam, dass ich damit mathematische Begriffe von Nähe, Zusammenhang und Stetigkeit untersuchen kann, ohne diese bereits mit einem bestimmten physikalischen Raum gleichsetzen zu müssen.', 'resolved'),
+(5, 1, 22, 74, 74, '[74]', 17, 'Für die lineare Algebra verwende ich Gilbert Strang: *Introduction to Linear Algebra*. Fifth Edition. Wellesley, Massachusetts: Wellesley-Cambridge Press, 2016 \\[74\\]. Vektorräume, Matrizen, lineare Transformationen, Basen, Dimensionen sowie Eigenwerte und Eigenvektoren bilden später wesentliche mathematische Werkzeuge meiner Untersuchung. Auch hier halte ich die methodische Trennung ausdrücklich aufrecht. Ein mathematischer Vektorraum ist zunächst eine algebraische Struktur. Allein aus seiner mathematischen Definition folgt noch keine physikalische Interpretation als räumliche oder raumzeitliche Struktur.', 'resolved'),
+(6, 1, 22, 75, 75, '[75]', 19, 'Darauf aufbauend verwende ich funktionalanalytische Konzepte. Erwin Kreyszig: *Introductory Functional Analysis with Applications*. New York: John Wiley & Sons, 1978 \\[75\\]. Michael Reed und Barry Simon: *Methods of Modern Mathematical Physics. Volume I: Functional Analysis*. Revised and Enlarged Edition. San Diego: Academic Press, 1980 \\[76\\]. Beide Werke behandeln normierte Räume, Hilberträume, lineare Funktionale, Operatoren und Spektren. Damit stellen sie mathematische Werkzeuge bereit, die ich später für die Beschreibung von Zustands- und Operatorräumen benötige. Auch aus diesen mathematischen Strukturen leite ich an dieser Stelle noch keine FRZK-spezifische physikalische Interpretation ab.', 'resolved'),
+(7, 1, 22, 76, 76, '[76]', 19, 'Darauf aufbauend verwende ich funktionalanalytische Konzepte. Erwin Kreyszig: *Introductory Functional Analysis with Applications*. New York: John Wiley & Sons, 1978 \\[75\\]. Michael Reed und Barry Simon: *Methods of Modern Mathematical Physics. Volume I: Functional Analysis*. Revised and Enlarged Edition. San Diego: Academic Press, 1980 \\[76\\]. Beide Werke behandeln normierte Räume, Hilberträume, lineare Funktionale, Operatoren und Spektren. Damit stellen sie mathematische Werkzeuge bereit, die ich später für die Beschreibung von Zustands- und Operatorräumen benötige. Auch aus diesen mathematischen Strukturen leite ich an dieser Stelle noch keine FRZK-spezifische physikalische Interpretation ab.', 'resolved'),
+(8, 1, 22, 77, 77, '[77]', 21, 'Für diskrete relationale Strukturen verwende ich Reinhard Diestel: *Graph Theory*. Fifth Edition. Berlin und Heidelberg: Springer, 2017 \\[77\\]. Die Graphentheorie ermöglicht es mir, Elemente und ihre Verbindungen als diskrete mathematische Strukturen zu untersuchen. Gerade im Hinblick auf spätere relationale Beschreibungen ist dabei wesentlich, zwischen dem Vorhandensein einzelner Objekte und den zwischen ihnen definierten Verbindungen zu unterscheiden.', 'resolved'),
+(9, 1, 22, 78, 78, '[78]', 23, 'Eine noch abstraktere Beschreibung mathematischer Strukturen und ihrer Beziehungen erhalte ich durch die Kategorientheorie. Saunders Mac Lane: *Categories for the Working Mathematician*. Second Edition. New York: Springer, 1998 \\[78\\]. Kategorien und Morphismen ermöglichen es, mathematische Strukturen nicht ausschließlich anhand ihrer einzelnen Elemente, sondern auch anhand der zwischen ihnen bestehenden strukturerhaltenden Beziehungen zu untersuchen.', 'resolved'),
+(10, 1, 22, 79, 79, '[79]', 25, 'Die formalen Grundlagen metamathematischer Aussagen ergänze ich durch Stephen C. Kleene: *Introduction to Metamathematics*. Amsterdam: North-Holland Publishing Company, 1952 \\[79\\]. Die mathematische Logik und die Untersuchung formaler Systeme sind für meinen weiteren Aufbau deshalb relevant, weil ich in Kapitel 3.3 von der Darstellung etablierter mathematischer Werkzeuge zur Formulierung eines eigenen Axiomensystems übergehe. Dafür muss eindeutig unterscheidbar bleiben, welche Aussagen Definitionen, welche Axiome, welche daraus abgeleiteten Aussagen und welche lediglich Interpretationen darstellen.', 'resolved'),
+(11, 1, 23, 6, 6, '[6]', 61, 'Paul R. Halmos führt Mengen, Elemente, Teilmengen, Vereinigungen, Schnittmengen, geordnete Paare und Abbildungen als elementare Bausteine einer systematischen mathematischen Sprache ein \\[6\\]. Seine Darstellung ist für meinen Aufbau besonders geeignet, weil sie die grundlegenden Operationen schrittweise entwickelt, ohne bereits eine bestimmte physikalische Interpretation vorauszusetzen. Zugleich macht Halmos deutlich, dass die naive Mengenlehre keine vollständige axiomatische Fundierung der Mengenlehre ersetzt. Für meine grundlegende Einführung mathematischer Modellstrukturen ist sie dennoch geeignet, solange ich ihre Voraussetzungen und Grenzen ausdrücklich benenne.', 'resolved'),
+(12, 1, 23, 80, 80, '[80]', 63, 'Für die systematischere mengentheoretische Einordnung ergänze ich diese Grundlage durch Herbert B. Enderton: *Elements of Set Theory*. New York, San Francisco und London: Academic Press, 1977 \\[80\\]. Enderton entwickelt die elementare Mengenlehre aus formalen Voraussetzungen und behandelt unter anderem Relationen, Funktionen, natürliche Zahlen, Kardinalzahlen und Auswahlprinzipien.', 'resolved'),
+(13, 1, 23, 81, 81, '[81]', 65, 'Für die weiterführende axiomatische Einordnung verwende ich außerdem Thomas Jech: *Set Theory. The Third Millennium Edition, Revised and Expanded*. Berlin und Heidelberg: Springer, 2003 \\[81\\]. Jech führt von den Axiomen der Mengenlehre über Ordinal- und Kardinalzahlen bis zu weiterführenden Ergebnissen der modernen Mengenlehre. Beide Werke erfüllen in meiner Untersuchung unterschiedliche Funktionen: Enderton nutze ich vor allem für die schrittweise begriffliche Grundlegung, während Jech die Einordnung in die axiomatische Mengenlehre und ihre weiterführenden Konsequenzen ermöglicht.', 'resolved'),
+(14, 1, 23, 67, 67, '[67]', 67, 'Ich übernehme aus diesen Darstellungen nicht die Annahme, dass jede wissenschaftlich relevante Struktur vollständig auf Mengen reduziert werden müsse. Michael D. Resnik diskutiert mathematische Strukturen unabhängig von einer unmittelbaren Identifikation mit bestimmten Einzelobjekten \\[67\\]. Stewart Shapiro entwickelt diesen strukturorientierten Zugang weiter und betont, dass mathematische Gegenstände wesentlich durch ihre Stellung innerhalb von Strukturen bestimmt werden können \\[68\\]. Für das FRZK ist diese Einschränkung bedeutsam. Ich verwende die Mengenlehre als formale Ausgangssprache, behaupte damit aber noch nicht, dass Mengen die letzte ontologische Grundlage von Raum, Zeit oder physikalischer Wirklichkeit darstellen.', 'resolved'),
+(15, 1, 23, 68, 68, '[68]', 67, 'Ich übernehme aus diesen Darstellungen nicht die Annahme, dass jede wissenschaftlich relevante Struktur vollständig auf Mengen reduziert werden müsse. Michael D. Resnik diskutiert mathematische Strukturen unabhängig von einer unmittelbaren Identifikation mit bestimmten Einzelobjekten \\[67\\]. Stewart Shapiro entwickelt diesen strukturorientierten Zugang weiter und betont, dass mathematische Gegenstände wesentlich durch ihre Stellung innerhalb von Strukturen bestimmt werden können \\[68\\]. Für das FRZK ist diese Einschränkung bedeutsam. Ich verwende die Mengenlehre als formale Ausgangssprache, behaupte damit aber noch nicht, dass Mengen die letzte ontologische Grundlage von Raum, Zeit oder physikalischer Wirklichkeit darstellen.', 'resolved'),
+(16, 1, 23, 80, 80, '[80, 81]', 133, 'Diese Festlegung entspricht dem Extensionalitätsprinzip. Eine Menge wird demnach durch ihre Elemente bestimmt. Unterschiedliche Bezeichnungen oder unterschiedliche sprachliche Beschreibungen können dieselbe Menge erfassen, wenn sie zu genau demselben Elementbestand führen \\[80, 81\\].', 'resolved'),
+(17, 1, 23, 81, 81, '[80, 81]', 133, 'Diese Festlegung entspricht dem Extensionalitätsprinzip. Eine Menge wird demnach durch ihre Elemente bestimmt. Unterschiedliche Bezeichnungen oder unterschiedliche sprachliche Beschreibungen können dieselbe Menge erfassen, wenn sie zu genau demselben Elementbestand führen \\[80, 81\\].', 'resolved'),
+(18, 1, 23, 6, 6, '[6]', 145, 'Bereits in Abschnitt 3.1.1 habe ich die leere Menge vom absoluten Nichts unterschieden. Diese Unterscheidung bleibt hier verbindlich. Die leere Menge ist ein definiertes mathematisches Objekt innerhalb einer bereits vorausgesetzten Sprache und Struktur \\[6\\]. Sie ist deshalb nicht die Abwesenheit jeder Voraussetzung, sondern eine Menge, für die festgelegt wurde, dass sie kein Element enthält.', 'resolved'),
+(19, 1, 23, 78, 78, '[78]', 235, 'Die formale Untersuchung von Relationen besitzt bereits in den logischen und mathematischen Arbeiten von Gottlob Frege und Alfred Tarski grundlegende Bedeutung. Ich nutze diese Arbeiten hier ausschließlich für den etablierten formallogischen Hintergrund der Relationsbeschreibung. Saunders Mac Lane hebt darüber hinaus hervor, dass mathematische Strukturen nicht nur durch ihre Objekte, sondern wesentlich auch durch die zwischen ihnen bestehenden Abbildungen und Beziehungen verständlich werden \\[78\\]. Die bereits im ursprünglichen Abschnitt enthaltenen Verweise auf Frege und Tarski werden beim zugehörigen Repository-Skript gegen den realen Quellenbestand geprüft und dort mit den tatsächlich gültigen Zitationsnummern synchronisiert.', 'resolved'),
+(20, 1, 24, 71, 71, '[71]', 283, 'Serge Lang behandelt Abbildungen als grundlegende Bestandteile algebraischer Strukturen und zeigt, dass viele mathematische Operationen als Abbildungen zwischen Mengen oder strukturierten Räumen verstanden werden können \\[71\\]. Walter Rudin verwendet Funktionen als zentrale Grundlage der Analysis und untersucht insbesondere deren Grenzverhalten, Stetigkeit und Differenzierbarkeit \\[72\\]. Herbert B. Enderton entwickelt Funktionen aus dem Relationsbegriff und beschreibt sie als besondere Relationen, die jedem Element ihres Definitionsbereichs genau ein Element des Zielbereichs zuordnen \\[80\\]. Diese drei Perspektiven ergänzen sich für meinen Aufbau: Enderton liefert mir die mengentheoretische Grundlage, Lang die strukturelle Einordnung und Rudin die analytische Weiterführung.', 'resolved'),
+(21, 1, 24, 72, 72, '[72]', 283, 'Serge Lang behandelt Abbildungen als grundlegende Bestandteile algebraischer Strukturen und zeigt, dass viele mathematische Operationen als Abbildungen zwischen Mengen oder strukturierten Räumen verstanden werden können \\[71\\]. Walter Rudin verwendet Funktionen als zentrale Grundlage der Analysis und untersucht insbesondere deren Grenzverhalten, Stetigkeit und Differenzierbarkeit \\[72\\]. Herbert B. Enderton entwickelt Funktionen aus dem Relationsbegriff und beschreibt sie als besondere Relationen, die jedem Element ihres Definitionsbereichs genau ein Element des Zielbereichs zuordnen \\[80\\]. Diese drei Perspektiven ergänzen sich für meinen Aufbau: Enderton liefert mir die mengentheoretische Grundlage, Lang die strukturelle Einordnung und Rudin die analytische Weiterführung.', 'resolved'),
+(22, 1, 24, 80, 80, '[80]', 283, 'Serge Lang behandelt Abbildungen als grundlegende Bestandteile algebraischer Strukturen und zeigt, dass viele mathematische Operationen als Abbildungen zwischen Mengen oder strukturierten Räumen verstanden werden können \\[71\\]. Walter Rudin verwendet Funktionen als zentrale Grundlage der Analysis und untersucht insbesondere deren Grenzverhalten, Stetigkeit und Differenzierbarkeit \\[72\\]. Herbert B. Enderton entwickelt Funktionen aus dem Relationsbegriff und beschreibt sie als besondere Relationen, die jedem Element ihres Definitionsbereichs genau ein Element des Zielbereichs zuordnen \\[80\\]. Diese drei Perspektiven ergänzen sich für meinen Aufbau: Enderton liefert mir die mengentheoretische Grundlage, Lang die strukturelle Einordnung und Rudin die analytische Weiterführung.', 'resolved'),
+(23, 1, 24, 82, 82, '[82]', 285, 'Für die präzisere Untersuchung von Abbildungen zwischen algebraischen Strukturen verwende ich außerdem Paul R. Halmos: *Finite-Dimensional Vector Spaces*. New York: Springer, 1974 \\[82\\]. Halmos behandelt lineare Abbildungen, Operatoren und Vektorräume in einer Form, die ich später für die Entwicklung der linearen Algebra und der Operatorenräume benötige. Für die grundlegende Funktionentheorie ergänze ich diese Literatur durch Robert G. Bartle und Donald R. Sherbert: *Introduction to Real Analysis*. Fourth Edition. Hoboken, New Jersey: John Wiley & Sons, 2011 \\[83\\]. Bartle und Sherbert entwickeln Funktionen reeller Variablen, Grenzwerte, Stetigkeit und Ableitungen schrittweise aus den Grundlagen der reellen Zahlen und der Mengenlehre.', 'resolved'),
+(24, 1, 24, 83, 83, '[83]', 285, 'Für die präzisere Untersuchung von Abbildungen zwischen algebraischen Strukturen verwende ich außerdem Paul R. Halmos: *Finite-Dimensional Vector Spaces*. New York: Springer, 1974 \\[82\\]. Halmos behandelt lineare Abbildungen, Operatoren und Vektorräume in einer Form, die ich später für die Entwicklung der linearen Algebra und der Operatorenräume benötige. Für die grundlegende Funktionentheorie ergänze ich diese Literatur durch Robert G. Bartle und Donald R. Sherbert: *Introduction to Real Analysis*. Fourth Edition. Hoboken, New Jersey: John Wiley & Sons, 2011 \\[83\\]. Bartle und Sherbert entwickeln Funktionen reeller Variablen, Grenzwerte, Stetigkeit und Ableitungen schrittweise aus den Grundlagen der reellen Zahlen und der Mengenlehre.', 'resolved'),
+(25, 1, 25, 71, 71, '[71, 82]', 532, 'Im vorhergehenden Abschnitt habe ich Funktionen als eindeutige Zuordnungen zwischen Mengen eingeführt. Damit ist festgelegt, wie Elemente mathematisch miteinander verknüpft werden können. Für die weitere Entwicklung der linearen Algebra genügt diese Beschreibung jedoch nicht. Sobald ich untersuchen möchte, wie sich Zustände innerhalb eines mathematischen Raumes verändern, muss ich Abbildungen betrachten, die zusätzlich die algebraische Struktur des jeweiligen Raumes berücksichtigen. Die lineare Algebra bezeichnet solche strukturerhaltenden Abbildungen als lineare Abbildungen oder -- bei gleichem Definitions- und Zielraum -- als Operatoren \\[71, 82\\]. Der Originalabschnitt entwickelt genau diesen Übergang vom allgemeinen Abbildungsbegriff über Linearität und Operatorverkettung bis zu Matrixdarstellung und Eigenwertproblem.', 'resolved'),
+(26, 1, 25, 82, 82, '[71, 82]', 532, 'Im vorhergehenden Abschnitt habe ich Funktionen als eindeutige Zuordnungen zwischen Mengen eingeführt. Damit ist festgelegt, wie Elemente mathematisch miteinander verknüpft werden können. Für die weitere Entwicklung der linearen Algebra genügt diese Beschreibung jedoch nicht. Sobald ich untersuchen möchte, wie sich Zustände innerhalb eines mathematischen Raumes verändern, muss ich Abbildungen betrachten, die zusätzlich die algebraische Struktur des jeweiligen Raumes berücksichtigen. Die lineare Algebra bezeichnet solche strukturerhaltenden Abbildungen als lineare Abbildungen oder -- bei gleichem Definitions- und Zielraum -- als Operatoren \\[71, 82\\]. Der Originalabschnitt entwickelt genau diesen Übergang vom allgemeinen Abbildungsbegriff über Linearität und Operatorverkettung bis zu Matrixdarstellung und Eigenwertproblem.', 'resolved'),
+(27, 1, 25, 71, 71, '[71, 82, 13]', 534, 'Diese begriffliche Erweiterung ist für den weiteren Aufbau meiner Arbeit notwendig. Der allgemeine Funktionsbegriff beschreibt zunächst lediglich eine eindeutige Zuordnung. Erst zusätzliche mathematische Eigenschaften legen fest, welche Strukturen unter einer Abbildung erhalten bleiben und welche verändert werden dürfen. Dadurch entsteht die Grundlage für lineare Transformationen, Matrizen und später auch für Operatorräume \\[71, 82, 13\\].', 'resolved'),
+(28, 1, 25, 82, 82, '[71, 82, 13]', 534, 'Diese begriffliche Erweiterung ist für den weiteren Aufbau meiner Arbeit notwendig. Der allgemeine Funktionsbegriff beschreibt zunächst lediglich eine eindeutige Zuordnung. Erst zusätzliche mathematische Eigenschaften legen fest, welche Strukturen unter einer Abbildung erhalten bleiben und welche verändert werden dürfen. Dadurch entsteht die Grundlage für lineare Transformationen, Matrizen und später auch für Operatorräume \\[71, 82, 13\\].', 'resolved'),
+(29, 1, 25, NULL, 13, '[71, 82, 13]', 534, 'Diese begriffliche Erweiterung ist für den weiteren Aufbau meiner Arbeit notwendig. Der allgemeine Funktionsbegriff beschreibt zunächst lediglich eine eindeutige Zuordnung. Erst zusätzliche mathematische Eigenschaften legen fest, welche Strukturen unter einer Abbildung erhalten bleiben und welche verändert werden dürfen. Dadurch entsteht die Grundlage für lineare Transformationen, Matrizen und später auch für Operatorräume \\[71, 82, 13\\].', 'unresolved'),
+(30, 1, 25, 71, 71, '[71, 80, 82]', 556, 'Damit besitzt eine Abbildung dieselbe grundlegende Eindeutigkeitsforderung wie eine Funktion. In der mathematischen Literatur werden beide Begriffe häufig synonym verwendet, wobei der Begriff *Abbildung* insbesondere dann verwendet wird, wenn die Wirkung auf mathematische Strukturen untersucht wird \\[71, 80, 82\\].', 'resolved'),
+(31, 1, 25, 80, 80, '[71, 80, 82]', 556, 'Damit besitzt eine Abbildung dieselbe grundlegende Eindeutigkeitsforderung wie eine Funktion. In der mathematischen Literatur werden beide Begriffe häufig synonym verwendet, wobei der Begriff *Abbildung* insbesondere dann verwendet wird, wenn die Wirkung auf mathematische Strukturen untersucht wird \\[71, 80, 82\\].', 'resolved'),
+(32, 1, 25, 82, 82, '[71, 80, 82]', 556, 'Damit besitzt eine Abbildung dieselbe grundlegende Eindeutigkeitsforderung wie eine Funktion. In der mathematischen Literatur werden beide Begriffe häufig synonym verwendet, wobei der Begriff *Abbildung* insbesondere dann verwendet wird, wenn die Wirkung auf mathematische Strukturen untersucht wird \\[71, 80, 82\\].', 'resolved'),
+(33, 1, 25, 71, 71, '[71, 82]', 558, 'Die Abbildung selbst enthält zunächst keine Aussage darüber, ob geometrische, algebraische oder analytische Eigenschaften erhalten bleiben. Solche Eigenschaften ergeben sich erst aus zusätzlichen Bedingungen an die Abbildung \\[71, 82\\].', 'resolved'),
+(34, 1, 25, 82, 82, '[71, 82]', 558, 'Die Abbildung selbst enthält zunächst keine Aussage darüber, ob geometrische, algebraische oder analytische Eigenschaften erhalten bleiben. Solche Eigenschaften ergeben sich erst aus zusätzlichen Bedingungen an die Abbildung \\[71, 82\\].', 'resolved'),
+(35, 1, 25, 71, 71, '[71, 82, 10]', 562, 'Besitzen Definitions- und Zielmenge zusätzliche algebraische Strukturen, kann ich untersuchen, ob diese unter der Abbildung erhalten bleiben. Für Vektorräume betrifft dies insbesondere die Addition von Vektoren und die Multiplikation mit Skalaren. Abbildungen, welche diese Operationen respektieren, bilden den Gegenstand der linearen Algebra \\[71, 82, 10\\].', 'resolved'),
+(36, 1, 25, 82, 82, '[71, 82, 10]', 562, 'Besitzen Definitions- und Zielmenge zusätzliche algebraische Strukturen, kann ich untersuchen, ob diese unter der Abbildung erhalten bleiben. Für Vektorräume betrifft dies insbesondere die Addition von Vektoren und die Multiplikation mit Skalaren. Abbildungen, welche diese Operationen respektieren, bilden den Gegenstand der linearen Algebra \\[71, 82, 10\\].', 'resolved'),
+(37, 1, 25, NULL, 10, '[71, 82, 10]', 562, 'Besitzen Definitions- und Zielmenge zusätzliche algebraische Strukturen, kann ich untersuchen, ob diese unter der Abbildung erhalten bleiben. Für Vektorräume betrifft dies insbesondere die Addition von Vektoren und die Multiplikation mit Skalaren. Abbildungen, welche diese Operationen respektieren, bilden den Gegenstand der linearen Algebra \\[71, 82, 10\\].', 'unresolved'),
+(38, 1, 25, 71, 71, '[71, 82, 10]', 583, 'Erst wenn beide Bedingungen erfüllt sind, handelt es sich um eine lineare Abbildung. Beide Bedingungen bilden gemeinsam die mathematische Definition der Linearität \\[71, 82, 10\\]. Im Original wurden Additivität und Homogenität getrennt als Gleichungen (3.61) und (3.62) geführt; fachlich gehören sie jedoch unmittelbar zusammen.', 'resolved'),
+(39, 1, 25, 82, 82, '[71, 82, 10]', 583, 'Erst wenn beide Bedingungen erfüllt sind, handelt es sich um eine lineare Abbildung. Beide Bedingungen bilden gemeinsam die mathematische Definition der Linearität \\[71, 82, 10\\]. Im Original wurden Additivität und Homogenität getrennt als Gleichungen (3.61) und (3.62) geführt; fachlich gehören sie jedoch unmittelbar zusammen.', 'resolved'),
+(40, 1, 25, NULL, 10, '[71, 82, 10]', 583, 'Erst wenn beide Bedingungen erfüllt sind, handelt es sich um eine lineare Abbildung. Beide Bedingungen bilden gemeinsam die mathematische Definition der Linearität \\[71, 82, 10\\]. Im Original wurden Additivität und Homogenität getrennt als Gleichungen (3.61) und (3.62) geführt; fachlich gehören sie jedoch unmittelbar zusammen.', 'unresolved'),
+(41, 1, 25, 82, 82, '[82, 13]', 593, 'Ein Operator wirkt somit innerhalb desselben Vektorraums. Er erzeugt keinen neuen mathematischen Raum, sondern verändert ausschließlich Elemente eines bereits festgelegten Zustandsraums. Diese Definition wird in der linearen Algebra ebenso verwendet wie in der Funktionalanalysis \\[82, 13\\].', 'resolved'),
+(42, 1, 25, NULL, 13, '[82, 13]', 593, 'Ein Operator wirkt somit innerhalb desselben Vektorraums. Er erzeugt keinen neuen mathematischen Raum, sondern verändert ausschließlich Elemente eines bereits festgelegten Zustandsraums. Diese Definition wird in der linearen Algebra ebenso verwendet wie in der Funktionalanalysis \\[82, 13\\].', 'unresolved'),
+(43, 1, 25, 82, 82, '[82, 13]', 595, 'Die Bezeichnung *Operator* beschreibt dabei keine besondere Rechenvorschrift. Sie charakterisiert zunächst die Tatsache, dass Definitions- und Zielraum identisch sind \\[82, 13\\].', 'resolved'),
+(44, 1, 25, NULL, 13, '[82, 13]', 595, 'Die Bezeichnung *Operator* beschreibt dabei keine besondere Rechenvorschrift. Sie charakterisiert zunächst die Tatsache, dass Definitions- und Zielraum identisch sind \\[82, 13\\].', 'unresolved'),
+(45, 1, 25, 71, 71, '[71, 82, 13]', 616, 'Operatoren bilden somit im Allgemeinen keine kommutative Struktur. Ihre Verkettung ist dagegen assoziativ, sodass ich längere Operatorfolgen eindeutig zusammenfassen kann \\[71, 82, 13\\]. Der ursprüngliche Abschnitt führte die beiden Operatorsignaturen, die Verkettung und deren Wirkung noch als vier eigenständige Gleichungen (3.64)--(3.67); diese künstliche Aufspaltung wird hier beseitigt.', 'resolved'),
+(46, 1, 25, 82, 82, '[71, 82, 13]', 616, 'Operatoren bilden somit im Allgemeinen keine kommutative Struktur. Ihre Verkettung ist dagegen assoziativ, sodass ich längere Operatorfolgen eindeutig zusammenfassen kann \\[71, 82, 13\\]. Der ursprüngliche Abschnitt führte die beiden Operatorsignaturen, die Verkettung und deren Wirkung noch als vier eigenständige Gleichungen (3.64)--(3.67); diese künstliche Aufspaltung wird hier beseitigt.', 'resolved'),
+(47, 1, 25, NULL, 13, '[71, 82, 13]', 616, 'Operatoren bilden somit im Allgemeinen keine kommutative Struktur. Ihre Verkettung ist dagegen assoziativ, sodass ich längere Operatorfolgen eindeutig zusammenfassen kann \\[71, 82, 13\\]. Der ursprüngliche Abschnitt führte die beiden Operatorsignaturen, die Verkettung und deren Wirkung noch als vier eigenständige Gleichungen (3.64)--(3.67); diese künstliche Aufspaltung wird hier beseitigt.', 'unresolved'),
+(48, 1, 25, 82, 82, '[82, 13]', 626, 'Der Identitätsoperator verändert keinen Vektor und bildet das neutrale Element bezüglich der Operatorverkettung \\[82, 13\\]. Deshalb gilt für jeden passenden Operator $T$', 'resolved'),
+(49, 1, 25, NULL, 13, '[82, 13]', 626, 'Der Identitätsoperator verändert keinen Vektor und bildet das neutrale Element bezüglich der Operatorverkettung \\[82, 13\\]. Deshalb gilt für jeden passenden Operator $T$', 'unresolved'),
+(50, 1, 25, 71, 71, '[71, 82]', 630, 'Diese Eigenschaft entspricht der Rolle eines neutralen Elements in algebraischen Strukturen \\[71, 82\\].', 'resolved'),
+(51, 1, 25, 82, 82, '[71, 82]', 630, 'Diese Eigenschaft entspricht der Rolle eines neutralen Elements in algebraischen Strukturen \\[71, 82\\].', 'resolved'),
+(52, 1, 25, 82, 82, '[82, 13]', 646, 'Invertierbare Operatoren ermöglichen eine eindeutige Rückführung transformierter Zustände auf ihren Ausgangszustand. Existiert eine solche Umkehrung nicht, können verschiedene Zustände auf denselben Zielzustand abgebildet werden beziehungsweise bei der Transformation Informationen für eine eindeutige Rekonstruktion verloren gehen \\[82, 13\\]. Im Original wurden $T^{- 1}$ und die beiden Inversenbedingungen getrennt als Gleichungen (3.72)--(3.74) geführt; dies wird hier als zusammengehörende mathematische Aussage behandelt.', 'resolved'),
+(53, 1, 25, NULL, 13, '[82, 13]', 646, 'Invertierbare Operatoren ermöglichen eine eindeutige Rückführung transformierter Zustände auf ihren Ausgangszustand. Existiert eine solche Umkehrung nicht, können verschiedene Zustände auf denselben Zielzustand abgebildet werden beziehungsweise bei der Transformation Informationen für eine eindeutige Rekonstruktion verloren gehen \\[82, 13\\]. Im Original wurden $T^{- 1}$ und die beiden Inversenbedingungen getrennt als Gleichungen (3.72)--(3.74) geführt; dies wird hier als zusammengehörende mathematische Aussage behandelt.', 'unresolved'),
+(54, 1, 25, NULL, 10, '[10, 82]', 650, 'Für endlichdimensionale Vektorräume kann jeder lineare Operator bezüglich einer gewählten Basis durch eine Matrix dargestellt werden. Die Matrix beschreibt dabei nicht den Operator selbst, sondern dessen Darstellung relativ zu einer konkreten Basis. Ändert sich die Basis, so ändert sich im Allgemeinen auch die Matrixdarstellung, während der zugrunde liegende Operator unverändert bleibt \\[10, 82\\].', 'unresolved'),
+(55, 1, 25, 82, 82, '[10, 82]', 650, 'Für endlichdimensionale Vektorräume kann jeder lineare Operator bezüglich einer gewählten Basis durch eine Matrix dargestellt werden. Die Matrix beschreibt dabei nicht den Operator selbst, sondern dessen Darstellung relativ zu einer konkreten Basis. Ändert sich die Basis, so ändert sich im Allgemeinen auch die Matrixdarstellung, während der zugrunde liegende Operator unverändert bleibt \\[10, 82\\].', 'resolved'),
+(56, 1, 25, NULL, 10, '[10, 82]', 666, 'Die Matrixmultiplikation beschreibt damit die Wirkung des Operators auf den dargestellten Vektor. Die geometrische oder physikalische Interpretation dieser Wirkung hängt jedoch vom jeweiligen Anwendungsgebiet ab und folgt nicht aus der Matrixdarstellung selbst \\[10, 82\\].', 'unresolved'),
+(57, 1, 25, 82, 82, '[10, 82]', 666, 'Die Matrixmultiplikation beschreibt damit die Wirkung des Operators auf den dargestellten Vektor. Die geometrische oder physikalische Interpretation dieser Wirkung hängt jedoch vom jeweiligen Anwendungsgebiet ab und folgt nicht aus der Matrixdarstellung selbst \\[10, 82\\].', 'resolved'),
+(58, 1, 25, NULL, 10, '[10, 82]', 670, 'Ein Eigenvektor eines Operators ist ein von Null verschiedener Vektor, dessen Richtungslinie unter der Wirkung des Operators erhalten bleibt. Der Operator verändert ihn lediglich durch Multiplikation mit einem Skalar, dem zugehörigen Eigenwert \\[10, 82\\].', 'unresolved'),
+(59, 1, 25, 82, 82, '[10, 82]', 670, 'Ein Eigenvektor eines Operators ist ein von Null verschiedener Vektor, dessen Richtungslinie unter der Wirkung des Operators erhalten bleibt. Der Operator verändert ihn lediglich durch Multiplikation mit einem Skalar, dem zugehörigen Eigenwert \\[10, 82\\].', 'resolved'),
+(60, 1, 25, NULL, 10, '[10, 82, 13]', 686, 'Eigenwerte und Eigenvektoren bilden einen zentralen Bestandteil der linearen Algebra, weil sie wesentliche Eigenschaften eines Operators unmittelbar beschreiben und zahlreiche Berechnungen vereinfachen. Sie spielen unter anderem bei Stabilitätsuntersuchungen, Spektralzerlegungen und Differentialgleichungen eine grundlegende Rolle \\[10, 82, 13\\]. Der Originalabschnitt endet mit genau dieser Einführung des Eigenwertproblems.', 'unresolved'),
+(61, 1, 25, 82, 82, '[10, 82, 13]', 686, 'Eigenwerte und Eigenvektoren bilden einen zentralen Bestandteil der linearen Algebra, weil sie wesentliche Eigenschaften eines Operators unmittelbar beschreiben und zahlreiche Berechnungen vereinfachen. Sie spielen unter anderem bei Stabilitätsuntersuchungen, Spektralzerlegungen und Differentialgleichungen eine grundlegende Rolle \\[10, 82, 13\\]. Der Originalabschnitt endet mit genau dieser Einführung des Eigenwertproblems.', 'resolved'),
+(62, 1, 25, NULL, 13, '[10, 82, 13]', 686, 'Eigenwerte und Eigenvektoren bilden einen zentralen Bestandteil der linearen Algebra, weil sie wesentliche Eigenschaften eines Operators unmittelbar beschreiben und zahlreiche Berechnungen vereinfachen. Sie spielen unter anderem bei Stabilitätsuntersuchungen, Spektralzerlegungen und Differentialgleichungen eine grundlegende Rolle \\[10, 82, 13\\]. Der Originalabschnitt endet mit genau dieser Einführung des Eigenwertproblems.', 'unresolved'),
+(63, 1, 25, NULL, 10, '[10, 71, 82, 13]', 690, 'Mit den in diesem Abschnitt eingeführten Begriffen erweitere ich den mathematischen Apparat gegenüber dem allgemeinen Funktionsbegriff wesentlich. Funktionen beschreiben eindeutige Zuordnungen zwischen Mengen. Lineare Abbildungen erhalten zusätzlich algebraische Strukturen. Operatoren wirken innerhalb eines gemeinsamen Vektorraums, und Matrizen stellen diese Operatoren bezüglich einer gewählten Basis dar. Eigenwerte und Eigenvektoren charakterisieren schließlich besondere Wirkungsrichtungen eines Operators \\[10, 71, 82, 13\\].', 'unresolved'),
+(64, 1, 25, 71, 71, '[10, 71, 82, 13]', 690, 'Mit den in diesem Abschnitt eingeführten Begriffen erweitere ich den mathematischen Apparat gegenüber dem allgemeinen Funktionsbegriff wesentlich. Funktionen beschreiben eindeutige Zuordnungen zwischen Mengen. Lineare Abbildungen erhalten zusätzlich algebraische Strukturen. Operatoren wirken innerhalb eines gemeinsamen Vektorraums, und Matrizen stellen diese Operatoren bezüglich einer gewählten Basis dar. Eigenwerte und Eigenvektoren charakterisieren schließlich besondere Wirkungsrichtungen eines Operators \\[10, 71, 82, 13\\].', 'resolved'),
+(65, 1, 25, 82, 82, '[10, 71, 82, 13]', 690, 'Mit den in diesem Abschnitt eingeführten Begriffen erweitere ich den mathematischen Apparat gegenüber dem allgemeinen Funktionsbegriff wesentlich. Funktionen beschreiben eindeutige Zuordnungen zwischen Mengen. Lineare Abbildungen erhalten zusätzlich algebraische Strukturen. Operatoren wirken innerhalb eines gemeinsamen Vektorraums, und Matrizen stellen diese Operatoren bezüglich einer gewählten Basis dar. Eigenwerte und Eigenvektoren charakterisieren schließlich besondere Wirkungsrichtungen eines Operators \\[10, 71, 82, 13\\].', 'resolved'),
+(66, 1, 25, NULL, 13, '[10, 71, 82, 13]', 690, 'Mit den in diesem Abschnitt eingeführten Begriffen erweitere ich den mathematischen Apparat gegenüber dem allgemeinen Funktionsbegriff wesentlich. Funktionen beschreiben eindeutige Zuordnungen zwischen Mengen. Lineare Abbildungen erhalten zusätzlich algebraische Strukturen. Operatoren wirken innerhalb eines gemeinsamen Vektorraums, und Matrizen stellen diese Operatoren bezüglich einer gewählten Basis dar. Eigenwerte und Eigenvektoren charakterisieren schließlich besondere Wirkungsrichtungen eines Operators \\[10, 71, 82, 13\\].', 'unresolved'),
+(67, 1, 26, 71, 71, '[71, 74, 82]', 722, 'Nachdem ich im vorhergehenden Abschnitt lineare Abbildungen und Operatoren eingeführt habe, muss ich nun den mathematischen Raum genauer bestimmen, auf dessen Elementen solche Operatoren wirken. Die lineare Algebra beschreibt einen solchen Raum durch den Begriff des Vektorraums. Dabei wird eine Menge von Elementen mit einer inneren Addition und einer äußeren Skalarmultiplikation verbunden \\[71, 74, 82\\]. Der ursprüngliche Abschnitt entwickelt hierzu die Vektorraumdefinition, die Vektorraumaxiome, Nullvektor und additives Inverses, die Eigenschaften der Skalarmultiplikation, Untervektorräume sowie elementare Beispiele.', 'resolved'),
+(68, 1, 26, 74, 74, '[71, 74, 82]', 722, 'Nachdem ich im vorhergehenden Abschnitt lineare Abbildungen und Operatoren eingeführt habe, muss ich nun den mathematischen Raum genauer bestimmen, auf dessen Elementen solche Operatoren wirken. Die lineare Algebra beschreibt einen solchen Raum durch den Begriff des Vektorraums. Dabei wird eine Menge von Elementen mit einer inneren Addition und einer äußeren Skalarmultiplikation verbunden \\[71, 74, 82\\]. Der ursprüngliche Abschnitt entwickelt hierzu die Vektorraumdefinition, die Vektorraumaxiome, Nullvektor und additives Inverses, die Eigenschaften der Skalarmultiplikation, Untervektorräume sowie elementare Beispiele.', 'resolved'),
+(69, 1, 26, 82, 82, '[71, 74, 82]', 722, 'Nachdem ich im vorhergehenden Abschnitt lineare Abbildungen und Operatoren eingeführt habe, muss ich nun den mathematischen Raum genauer bestimmen, auf dessen Elementen solche Operatoren wirken. Die lineare Algebra beschreibt einen solchen Raum durch den Begriff des Vektorraums. Dabei wird eine Menge von Elementen mit einer inneren Addition und einer äußeren Skalarmultiplikation verbunden \\[71, 74, 82\\]. Der ursprüngliche Abschnitt entwickelt hierzu die Vektorraumdefinition, die Vektorraumaxiome, Nullvektor und additives Inverses, die Eigenschaften der Skalarmultiplikation, Untervektorräume sowie elementare Beispiele.', 'resolved'),
+(70, 1, 26, 71, 71, '[71, 82]', 724, 'Der Vektorraumbegriff löst die mathematische Beschreibung von einer ausschließlich geometrischen Vorstellung des Vektors. Vektoren können gerichtete Größen im zwei- oder dreidimensionalen Raum darstellen. Sie können jedoch ebenso Funktionen, Zahlenfolgen, Matrizen oder andere mathematische Objekte sein, sofern die Vektorraumaxiome erfüllt sind \\[71, 82\\].', 'resolved'),
+(71, 1, 26, 82, 82, '[71, 82]', 724, 'Der Vektorraumbegriff löst die mathematische Beschreibung von einer ausschließlich geometrischen Vorstellung des Vektors. Vektoren können gerichtete Größen im zwei- oder dreidimensionalen Raum darstellen. Sie können jedoch ebenso Funktionen, Zahlenfolgen, Matrizen oder andere mathematische Objekte sein, sofern die Vektorraumaxiome erfüllt sind \\[71, 82\\].', 'resolved'),
+(72, 1, 26, 71, 71, '[71, 82]', 730, 'Sei $K$ ein Körper. Unter einem Vektorraum $V$ über $K$ verstehe ich eine nichtleere Menge, auf der eine Vektoraddition und eine Skalarmultiplikation definiert sind, die gemeinsam die Vektorraumaxiome erfüllen \\[71, 82\\].', 'resolved'),
+(73, 1, 26, 82, 82, '[71, 82]', 730, 'Sei $K$ ein Körper. Unter einem Vektorraum $V$ über $K$ verstehe ich eine nichtleere Menge, auf der eine Vektoraddition und eine Skalarmultiplikation definiert sind, die gemeinsam die Vektorraumaxiome erfüllen \\[71, 82\\].', 'resolved'),
+(74, 1, 26, 71, 71, '[71, 74, 82]', 753, 'Die beiden Operationen sind abgeschlossen. Die Summe zweier Vektoren und das Produkt eines zulässigen Skalars mit einem Vektor müssen daher wieder Elemente desselben Vektorraums sein \\[71, 74, 82\\].', 'resolved'),
+(75, 1, 26, 74, 74, '[71, 74, 82]', 753, 'Die beiden Operationen sind abgeschlossen. Die Summe zweier Vektoren und das Produkt eines zulässigen Skalars mit einem Vektor müssen daher wieder Elemente desselben Vektorraums sein \\[71, 74, 82\\].', 'resolved'),
+(76, 1, 26, 82, 82, '[71, 74, 82]', 753, 'Die beiden Operationen sind abgeschlossen. Die Summe zweier Vektoren und das Produkt eines zulässigen Skalars mit einem Vektor müssen daher wieder Elemente desselben Vektorraums sein \\[71, 74, 82\\].', 'resolved'),
+(77, 1, 26, 71, 71, '[71, 82]', 757, 'Der Körper $K$ bestimmt, welche Skalare für die Skalarmultiplikation zulässig sind. In der linearen Algebra werden insbesondere Vektorräume über den reellen und den komplexen Zahlen untersucht \\[71, 82\\].', 'resolved'),
+(78, 1, 26, 82, 82, '[71, 82]', 757, 'Der Körper $K$ bestimmt, welche Skalare für die Skalarmultiplikation zulässig sind. In der linearen Algebra werden insbesondere Vektorräume über den reellen und den komplexen Zahlen untersucht \\[71, 82\\].', 'resolved'),
+(79, 1, 26, 71, 71, '[71, 82]', 771, 'Die Abgeschlossenheit stellt sicher, dass die Addition den betrachteten Vektorraum nicht verlässt \\[71, 82\\].', 'resolved'),
+(80, 1, 26, 82, 82, '[71, 82]', 771, 'Die Abgeschlossenheit stellt sicher, dass die Addition den betrachteten Vektorraum nicht verlässt \\[71, 82\\].', 'resolved'),
+(81, 1, 26, 71, 71, '[71, 74, 82]', 777, 'Dadurch kann ich Summen mehrerer Vektoren unabhängig von ihrer Klammerung auswerten \\[71, 74, 82\\].', 'resolved'),
+(82, 1, 26, 74, 74, '[71, 74, 82]', 777, 'Dadurch kann ich Summen mehrerer Vektoren unabhängig von ihrer Klammerung auswerten \\[71, 74, 82\\].', 'resolved'),
+(83, 1, 26, 82, 82, '[71, 74, 82]', 777, 'Dadurch kann ich Summen mehrerer Vektoren unabhängig von ihrer Klammerung auswerten \\[71, 74, 82\\].', 'resolved'),
+(84, 1, 26, 71, 71, '[71, 82]', 783, 'Damit hängt die Summe zweier Vektoren nicht von ihrer Reihenfolge ab \\[71, 82\\].', 'resolved'),
+(85, 1, 26, 82, 82, '[71, 82]', 783, 'Damit hängt die Summe zweier Vektoren nicht von ihrer Reihenfolge ab \\[71, 82\\].', 'resolved'),
+(86, 1, 26, 71, 71, '[71, 82]', 791, 'Der Index $V$ verdeutlicht, dass der Nullvektor ein Element des jeweiligen Vektorraums ist. Ich darf ihn deshalb nicht ohne weitere Begründung mit dem skalaren Nullelement des Körpers gleichsetzen \\[71, 82\\].', 'resolved'),
+(87, 1, 26, 82, 82, '[71, 82]', 791, 'Der Index $V$ verdeutlicht, dass der Nullvektor ein Element des jeweiligen Vektorraums ist. Ich darf ihn deshalb nicht ohne weitere Begründung mit dem skalaren Nullelement des Körpers gleichsetzen \\[71, 82\\].', 'resolved'),
+(88, 1, 26, 71, 71, '[71, 74, 82]', 802, 'Der Nullvektor besitzt bezüglich der Addition eine neutrale Wirkung. Lineare Abbildungen bilden den Nullvektor des Definitionsraums auf den Nullvektor des Zielraums ab \\[71, 74, 82\\].', 'resolved'),
+(89, 1, 26, 74, 74, '[71, 74, 82]', 802, 'Der Nullvektor besitzt bezüglich der Addition eine neutrale Wirkung. Lineare Abbildungen bilden den Nullvektor des Definitionsraums auf den Nullvektor des Zielraums ab \\[71, 74, 82\\].', 'resolved'),
+(90, 1, 26, 82, 82, '[71, 74, 82]', 802, 'Der Nullvektor besitzt bezüglich der Addition eine neutrale Wirkung. Lineare Abbildungen bilden den Nullvektor des Definitionsraums auf den Nullvektor des Zielraums ab \\[71, 74, 82\\].', 'resolved'),
+(91, 1, 26, 71, 71, '[71, 74]', 810, 'Das additive Inverse ermöglicht mir, die Vektorsubtraktion auf die bereits definierte Addition zurückzuführen \\[71, 74\\]:', 'resolved'),
+(92, 1, 26, 74, 74, '[71, 74]', 810, 'Das additive Inverse ermöglicht mir, die Vektorsubtraktion auf die bereits definierte Addition zurückzuführen \\[71, 74\\]:', 'resolved'),
+(93, 1, 26, 71, 71, '[71, 82]', 822, 'Die Multiplikation eines Vektors mit einem zulässigen Skalar erzeugt damit erneut einen Vektor desselben Raumes \\[71, 82\\].', 'resolved'),
+(94, 1, 26, 82, 82, '[71, 82]', 822, 'Die Multiplikation eines Vektors mit einem zulässigen Skalar erzeugt damit erneut einen Vektor desselben Raumes \\[71, 82\\].', 'resolved'),
+(95, 1, 26, 71, 71, '[71, 74, 82]', 828, 'Dadurch kann ich mehrere aufeinanderfolgende Skalierungen zusammenfassen \\[71, 74, 82\\].', 'resolved'),
+(96, 1, 26, 74, 74, '[71, 74, 82]', 828, 'Dadurch kann ich mehrere aufeinanderfolgende Skalierungen zusammenfassen \\[71, 74, 82\\].', 'resolved'),
+(97, 1, 26, 82, 82, '[71, 74, 82]', 828, 'Dadurch kann ich mehrere aufeinanderfolgende Skalierungen zusammenfassen \\[71, 74, 82\\].', 'resolved'),
+(98, 1, 26, 71, 71, '[71, 82]', 834, 'Die Multiplikation mit dem skalaren Einselement verändert den Vektor somit nicht \\[71, 82\\].', 'resolved'),
+(99, 1, 26, 82, 82, '[71, 82]', 834, 'Die Multiplikation mit dem skalaren Einselement verändert den Vektor somit nicht \\[71, 82\\].', 'resolved'),
+(100, 1, 26, 71, 71, '[71, 74, 82]', 844, 'Diese beiden Distributivgesetze verbinden die innere Addition des Vektorraums mit den Operationen des zugrunde liegenden Körpers \\[71, 74, 82\\]. Der Originalabschnitt führt genau diese Vektorraumaxiome einzeln aus.', 'resolved'),
+(101, 1, 26, 74, 74, '[71, 74, 82]', 844, 'Diese beiden Distributivgesetze verbinden die innere Addition des Vektorraums mit den Operationen des zugrunde liegenden Körpers \\[71, 74, 82\\]. Der Originalabschnitt führt genau diese Vektorraumaxiome einzeln aus.', 'resolved'),
+(102, 1, 26, 82, 82, '[71, 74, 82]', 844, 'Diese beiden Distributivgesetze verbinden die innere Addition des Vektorraums mit den Operationen des zugrunde liegenden Körpers \\[71, 74, 82\\]. Der Originalabschnitt führt genau diese Vektorraumaxiome einzeln aus.', 'resolved'),
+(103, 1, 26, 71, 71, '[71, 82]', 848, 'Aus den Vektorraumaxiomen folgt, dass die Multiplikation eines Vektors mit dem skalaren Nullelement stets den Nullvektor ergibt \\[71, 82\\]:', 'resolved'),
+(104, 1, 26, 82, 82, '[71, 82]', 848, 'Aus den Vektorraumaxiomen folgt, dass die Multiplikation eines Vektors mit dem skalaren Nullelement stets den Nullvektor ergibt \\[71, 82\\]:', 'resolved'),
+(105, 1, 26, 71, 71, '[71, 74, 82]', 858, 'Das algebraische Ergebnis ist damit eindeutig bestimmt. Der Nullvektor enthält innerhalb der klassischen Vektorraumstruktur jedoch keine Information darüber, aus welcher Richtung oder von welchem ursprünglichen Vektor er durch Multiplikation mit null hervorgegangen ist \\[71, 74, 82\\].', 'resolved'),
+(106, 1, 26, 74, 74, '[71, 74, 82]', 858, 'Das algebraische Ergebnis ist damit eindeutig bestimmt. Der Nullvektor enthält innerhalb der klassischen Vektorraumstruktur jedoch keine Information darüber, aus welcher Richtung oder von welchem ursprünglichen Vektor er durch Multiplikation mit null hervorgegangen ist \\[71, 74, 82\\].', 'resolved'),
+(107, 1, 26, 82, 82, '[71, 74, 82]', 858, 'Das algebraische Ergebnis ist damit eindeutig bestimmt. Der Nullvektor enthält innerhalb der klassischen Vektorraumstruktur jedoch keine Information darüber, aus welcher Richtung oder von welchem ursprünglichen Vektor er durch Multiplikation mit null hervorgegangen ist \\[71, 74, 82\\].', 'resolved'),
+(108, 1, 26, 71, 71, '[71, 82]', 873, 'Der Nullvektor bleibt damit unter jeder Skalarmultiplikation invariant \\[71, 82\\].', 'resolved'),
+(109, 1, 26, 82, 82, '[71, 82]', 873, 'Der Nullvektor bleibt damit unter jeder Skalarmultiplikation invariant \\[71, 82\\].', 'resolved'),
+(110, 1, 26, 71, 71, '[71, 74, 82]', 877, 'Eine Teilmenge $U \\subseteq V$ heißt Untervektorraum von $V$, wenn sie mit den aus $V$ übernommenen Operationen selbst einen Vektorraum bildet \\[71, 74, 82\\].', 'resolved'),
+(111, 1, 26, 74, 74, '[71, 74, 82]', 877, 'Eine Teilmenge $U \\subseteq V$ heißt Untervektorraum von $V$, wenn sie mit den aus $V$ übernommenen Operationen selbst einen Vektorraum bildet \\[71, 74, 82\\].', 'resolved'),
+(112, 1, 26, 82, 82, '[71, 74, 82]', 877, 'Eine Teilmenge $U \\subseteq V$ heißt Untervektorraum von $V$, wenn sie mit den aus $V$ übernommenen Operationen selbst einen Vektorraum bildet \\[71, 74, 82\\].', 'resolved'),
+(113, 1, 26, 71, 71, '[71, 74, 82]', 896, 'Aus diesen Bedingungen folgt insbesondere, dass jeder Untervektorraum den Nullvektor des übergeordneten Vektorraums enthält \\[71, 74, 82\\]. Im Original wurden Teilmengenbedingung, Additionsabschluss und Abschluss unter Skalarmultiplikation auf drei einzelne Gleichungsnummern verteilt; mathematisch bilden sie hier eine gemeinsame Untervektorraumbedingung.', 'resolved'),
+(114, 1, 26, 74, 74, '[71, 74, 82]', 896, 'Aus diesen Bedingungen folgt insbesondere, dass jeder Untervektorraum den Nullvektor des übergeordneten Vektorraums enthält \\[71, 74, 82\\]. Im Original wurden Teilmengenbedingung, Additionsabschluss und Abschluss unter Skalarmultiplikation auf drei einzelne Gleichungsnummern verteilt; mathematisch bilden sie hier eine gemeinsame Untervektorraumbedingung.', 'resolved'),
+(115, 1, 26, 82, 82, '[71, 74, 82]', 896, 'Aus diesen Bedingungen folgt insbesondere, dass jeder Untervektorraum den Nullvektor des übergeordneten Vektorraums enthält \\[71, 74, 82\\]. Im Original wurden Teilmengenbedingung, Additionsabschluss und Abschluss unter Skalarmultiplikation auf drei einzelne Gleichungsnummern verteilt; mathematisch bilden sie hier eine gemeinsame Untervektorraumbedingung.', 'resolved'),
+(116, 1, 26, 71, 71, '[71, 74, 82]', 908, 'Mit komponentenweiser Addition und reeller Skalarmultiplikation bildet $\\mathbb{R}^{n}$ einen Vektorraum über $\\mathbb{R}$ \\[71, 74, 82\\].', 'resolved'),
+(117, 1, 26, 74, 74, '[71, 74, 82]', 908, 'Mit komponentenweiser Addition und reeller Skalarmultiplikation bildet $\\mathbb{R}^{n}$ einen Vektorraum über $\\mathbb{R}$ \\[71, 74, 82\\].', 'resolved'),
+(118, 1, 26, 82, 82, '[71, 74, 82]', 908, 'Mit komponentenweiser Addition und reeller Skalarmultiplikation bildet $\\mathbb{R}^{n}$ einen Vektorraum über $\\mathbb{R}$ \\[71, 74, 82\\].', 'resolved'),
+(119, 1, 26, 71, 71, '[71, 74, 82]', 916, 'Die Komponenten eines Koordinatenvektors hängen von der gewählten Basis ab. Der mathematische Vektor als Element des Vektorraums ist deshalb von seiner konkreten Koordinatendarstellung zu unterscheiden \\[71, 74, 82\\].', 'resolved'),
+(120, 1, 26, 74, 74, '[71, 74, 82]', 916, 'Die Komponenten eines Koordinatenvektors hängen von der gewählten Basis ab. Der mathematische Vektor als Element des Vektorraums ist deshalb von seiner konkreten Koordinatendarstellung zu unterscheiden \\[71, 74, 82\\].', 'resolved'),
+(121, 1, 26, 82, 82, '[71, 74, 82]', 916, 'Die Komponenten eines Koordinatenvektors hängen von der gewählten Basis ab. Der mathematische Vektor als Element des Vektorraums ist deshalb von seiner konkreten Koordinatendarstellung zu unterscheiden \\[71, 74, 82\\].', 'resolved'),
+(122, 1, 26, 71, 71, '[71, 74]', 922, 'bildet mit der gewöhnlichen Matrizenaddition und der Skalarmultiplikation einen reellen Vektorraum \\[71, 74\\].', 'resolved'),
+(123, 1, 26, 74, 74, '[71, 74]', 922, 'bildet mit der gewöhnlichen Matrizenaddition und der Skalarmultiplikation einen reellen Vektorraum \\[71, 74\\].', 'resolved'),
+(124, 1, 26, 71, 71, '[71, 76, 82]', 924, 'Ebenso können geeignete Mengen reellwertiger Funktionen als Vektorräume aufgefasst werden, sofern Addition und Skalarmultiplikation punktweise definiert sind und die jeweilige Funktionenklasse unter diesen Operationen abgeschlossen bleibt \\[71, 76, 82\\].', 'resolved'),
+(125, 1, 26, 76, 76, '[71, 76, 82]', 924, 'Ebenso können geeignete Mengen reellwertiger Funktionen als Vektorräume aufgefasst werden, sofern Addition und Skalarmultiplikation punktweise definiert sind und die jeweilige Funktionenklasse unter diesen Operationen abgeschlossen bleibt \\[71, 76, 82\\].', 'resolved'),
+(126, 1, 26, 82, 82, '[71, 76, 82]', 924, 'Ebenso können geeignete Mengen reellwertiger Funktionen als Vektorräume aufgefasst werden, sofern Addition und Skalarmultiplikation punktweise definiert sind und die jeweilige Funktionenklasse unter diesen Operationen abgeschlossen bleibt \\[71, 76, 82\\].', 'resolved'),
+(127, 1, 26, 71, 71, '[71, 82]', 930, 'Der Vektorraum stellt für mich eine abstrakte algebraische Struktur dar, durch die sehr unterschiedliche mathematische Objekte einheitlich behandelt werden können. Entscheidend ist nicht die konkrete Gestalt seiner Elemente, sondern die Erfüllung der Vektorraumaxiome \\[71, 82\\].', 'resolved'),
+(128, 1, 26, 82, 82, '[71, 82]', 930, 'Der Vektorraum stellt für mich eine abstrakte algebraische Struktur dar, durch die sehr unterschiedliche mathematische Objekte einheitlich behandelt werden können. Entscheidend ist nicht die konkrete Gestalt seiner Elemente, sondern die Erfüllung der Vektorraumaxiome \\[71, 82\\].', 'resolved');
+INSERT INTO `citation_occurrences` (`citation_occurrence_id`, `document_id`, `section_id`, `source_id`, `source_citation_number`, `citation_group_text`, `source_line_no`, `context_text`, `validation_status`) VALUES
+(129, 1, 26, 71, 71, '[71, 74, 82]', 932, 'Durch die Einführung des Vektorraums kann ich anschließend lineare Kombinationen, Spannräume, lineare Unabhängigkeit, Basen und Dimensionen präzise definieren. Diese Begriffe benötige ich wiederum, um Zustände durch Koordinaten darzustellen und lineare Operatoren durch Matrizen zu beschreiben \\[71, 74, 82\\].', 'resolved'),
+(130, 1, 26, 74, 74, '[71, 74, 82]', 932, 'Durch die Einführung des Vektorraums kann ich anschließend lineare Kombinationen, Spannräume, lineare Unabhängigkeit, Basen und Dimensionen präzise definieren. Diese Begriffe benötige ich wiederum, um Zustände durch Koordinaten darzustellen und lineare Operatoren durch Matrizen zu beschreiben \\[71, 74, 82\\].', 'resolved'),
+(131, 1, 26, 82, 82, '[71, 74, 82]', 932, 'Durch die Einführung des Vektorraums kann ich anschließend lineare Kombinationen, Spannräume, lineare Unabhängigkeit, Basen und Dimensionen präzise definieren. Diese Begriffe benötige ich wiederum, um Zustände durch Koordinaten darzustellen und lineare Operatoren durch Matrizen zu beschreiben \\[71, 74, 82\\].', 'resolved'),
+(132, 1, 26, 71, 71, '[71, 74, 82]', 940, 'Methodologisch ist für mich besonders wichtig, dass der Begriff des Vektorraums keine konkrete physikalische Interpretation seiner Elemente voraussetzt. Dieselben Vektorraumaxiome können für Koordinatenvektoren, Matrizen, Funktionen oder andere mathematische Objekte gelten \\[71, 74, 82\\].', 'resolved'),
+(133, 1, 26, 74, 74, '[71, 74, 82]', 940, 'Methodologisch ist für mich besonders wichtig, dass der Begriff des Vektorraums keine konkrete physikalische Interpretation seiner Elemente voraussetzt. Dieselben Vektorraumaxiome können für Koordinatenvektoren, Matrizen, Funktionen oder andere mathematische Objekte gelten \\[71, 74, 82\\].', 'resolved'),
+(134, 1, 26, 82, 82, '[71, 74, 82]', 940, 'Methodologisch ist für mich besonders wichtig, dass der Begriff des Vektorraums keine konkrete physikalische Interpretation seiner Elemente voraussetzt. Dieselben Vektorraumaxiome können für Koordinatenvektoren, Matrizen, Funktionen oder andere mathematische Objekte gelten \\[71, 74, 82\\].', 'resolved'),
+(135, 1, 27, 71, 71, '[71, 74, 82]', 972, 'Mit der Definition des Vektorraums habe ich die beiden grundlegenden Operationen der linearen Algebra eingeführt. Daraus ergibt sich unmittelbar die Frage, welche Vektoren ich aus bereits bekannten Vektoren konstruieren kann. Die lineare Algebra beantwortet diese Frage mit dem Begriff der Linearkombination. Er beschreibt, wie durch Skalarmultiplikation und anschließende Addition aus vorhandenen Vektoren weitere Vektoren entstehen \\[71, 74, 82\\]. Genau auf diesem Aufbau basiert auch der ursprüngliche Abschnitt 3.2.5.', 'resolved'),
+(136, 1, 27, 74, 74, '[71, 74, 82]', 972, 'Mit der Definition des Vektorraums habe ich die beiden grundlegenden Operationen der linearen Algebra eingeführt. Daraus ergibt sich unmittelbar die Frage, welche Vektoren ich aus bereits bekannten Vektoren konstruieren kann. Die lineare Algebra beantwortet diese Frage mit dem Begriff der Linearkombination. Er beschreibt, wie durch Skalarmultiplikation und anschließende Addition aus vorhandenen Vektoren weitere Vektoren entstehen \\[71, 74, 82\\]. Genau auf diesem Aufbau basiert auch der ursprüngliche Abschnitt 3.2.5.', 'resolved'),
+(137, 1, 27, 82, 82, '[71, 74, 82]', 972, 'Mit der Definition des Vektorraums habe ich die beiden grundlegenden Operationen der linearen Algebra eingeführt. Daraus ergibt sich unmittelbar die Frage, welche Vektoren ich aus bereits bekannten Vektoren konstruieren kann. Die lineare Algebra beantwortet diese Frage mit dem Begriff der Linearkombination. Er beschreibt, wie durch Skalarmultiplikation und anschließende Addition aus vorhandenen Vektoren weitere Vektoren entstehen \\[71, 74, 82\\]. Genau auf diesem Aufbau basiert auch der ursprüngliche Abschnitt 3.2.5.', 'resolved'),
+(138, 1, 27, 71, 71, '[71, 74, 82]', 974, 'Die Linearkombination besitzt eine zentrale Bedeutung, weil nahezu alle unmittelbar folgenden Begriffe der linearen Algebra auf ihr aufbauen. Dazu gehören insbesondere Spannräume, Erzeugendensysteme, lineare Unabhängigkeit, Basen und Dimensionen. Ohne den Begriff der Linearkombination kann ich weder bestimmen, welche Vektoren sich aus einer gegebenen Vektormenge erzeugen lassen, noch welche Vektoren für die vollständige Beschreibung eines Vektorraums tatsächlich erforderlich sind \\[71, 74, 82\\].', 'resolved'),
+(139, 1, 27, 74, 74, '[71, 74, 82]', 974, 'Die Linearkombination besitzt eine zentrale Bedeutung, weil nahezu alle unmittelbar folgenden Begriffe der linearen Algebra auf ihr aufbauen. Dazu gehören insbesondere Spannräume, Erzeugendensysteme, lineare Unabhängigkeit, Basen und Dimensionen. Ohne den Begriff der Linearkombination kann ich weder bestimmen, welche Vektoren sich aus einer gegebenen Vektormenge erzeugen lassen, noch welche Vektoren für die vollständige Beschreibung eines Vektorraums tatsächlich erforderlich sind \\[71, 74, 82\\].', 'resolved'),
+(140, 1, 27, 82, 82, '[71, 74, 82]', 974, 'Die Linearkombination besitzt eine zentrale Bedeutung, weil nahezu alle unmittelbar folgenden Begriffe der linearen Algebra auf ihr aufbauen. Dazu gehören insbesondere Spannräume, Erzeugendensysteme, lineare Unabhängigkeit, Basen und Dimensionen. Ohne den Begriff der Linearkombination kann ich weder bestimmen, welche Vektoren sich aus einer gegebenen Vektormenge erzeugen lassen, noch welche Vektoren für die vollständige Beschreibung eines Vektorraums tatsächlich erforderlich sind \\[71, 74, 82\\].', 'resolved'),
+(141, 1, 27, 71, 71, '[71, 82]', 998, 'Jede solche Linearkombination ist aufgrund der Vektorraumaxiome wiederum ein Element desselben Vektorraums \\[71, 82\\]. Die ältere Repository-Fassung beschreibt die Linearkombination entsprechend als Summe $\\lambda_{1}v_{1} + \\cdots + \\lambda_{n}v_{n}$.', 'resolved'),
+(142, 1, 27, 82, 82, '[71, 82]', 998, 'Jede solche Linearkombination ist aufgrund der Vektorraumaxiome wiederum ein Element desselben Vektorraums \\[71, 82\\]. Die ältere Repository-Fassung beschreibt die Linearkombination entsprechend als Summe $\\lambda_{1}v_{1} + \\cdots + \\lambda_{n}v_{n}$.', 'resolved'),
+(143, 1, 27, 71, 71, '[71, 74]', 1000, 'Die Skalare bestimmen den jeweiligen Beitrag der einzelnen Vektoren zur resultierenden Linearkombination. Verändere ich einen oder mehrere dieser Skalare, erhalte ich im Allgemeinen einen anderen Vektor \\[71, 74\\].', 'resolved'),
+(144, 1, 27, 74, 74, '[71, 74]', 1000, 'Die Skalare bestimmen den jeweiligen Beitrag der einzelnen Vektoren zur resultierenden Linearkombination. Verändere ich einen oder mehrere dieser Skalare, erhalte ich im Allgemeinen einen anderen Vektor \\[71, 74\\].', 'resolved'),
+(145, 1, 27, 74, 74, '[74, 82]', 1028, 'Dieses Beispiel zeigt, wie aus gegebenen Vektoren durch geeignete Wahl der Skalare ein weiterer Vektor desselben Vektorraums entsteht. Der resultierende Vektor muss im Allgemeinen mit keinem der Ausgangsvektoren übereinstimmen \\[74, 82\\]. Der Originalabschnitt enthält genau diesen didaktischen Schritt von zwei gegebenen Vektoren zu einer konkreten Linearkombination.', 'resolved'),
+(146, 1, 27, 82, 82, '[74, 82]', 1028, 'Dieses Beispiel zeigt, wie aus gegebenen Vektoren durch geeignete Wahl der Skalare ein weiterer Vektor desselben Vektorraums entsteht. Der resultierende Vektor muss im Allgemeinen mit keinem der Ausgangsvektoren übereinstimmen \\[74, 82\\]. Der Originalabschnitt enthält genau diesen didaktischen Schritt von zwei gegebenen Vektoren zu einer konkreten Linearkombination.', 'resolved'),
+(147, 1, 27, 71, 71, '[71, 82]', 1034, 'Die Gesamtheit aller Linearkombinationen einer gegebenen Vektormenge bezeichnet deren Spannraum \\[71, 82\\].', 'resolved'),
+(148, 1, 27, 82, 82, '[71, 82]', 1034, 'Die Gesamtheit aller Linearkombinationen einer gegebenen Vektormenge bezeichnet deren Spannraum \\[71, 82\\].', 'resolved'),
+(149, 1, 27, 71, 71, '[71, 82]', 1046, 'Der Spannraum ist nicht lediglich eine beliebige Teilmenge des Vektorraums. Er ist selbst ein Untervektorraum von $V$ und zugleich der kleinste Untervektorraum, der alle betrachteten Vektoren $v_{1},\\ldots,v_{n}$ enthält \\[71, 82\\].', 'resolved'),
+(150, 1, 27, 82, 82, '[71, 82]', 1046, 'Der Spannraum ist nicht lediglich eine beliebige Teilmenge des Vektorraums. Er ist selbst ein Untervektorraum von $V$ und zugleich der kleinste Untervektorraum, der alle betrachteten Vektoren $v_{1},\\ldots,v_{n}$ enthält \\[71, 82\\].', 'resolved'),
+(151, 1, 27, 71, 71, '[71, 74, 82]', 1054, 'Eine Menge von Vektoren heißt Erzeugendensystem eines Vektorraums $V$, wenn ihr Spannraum den gesamten Vektorraum ergibt \\[71, 74, 82\\].', 'resolved'),
+(152, 1, 27, 74, 74, '[71, 74, 82]', 1054, 'Eine Menge von Vektoren heißt Erzeugendensystem eines Vektorraums $V$, wenn ihr Spannraum den gesamten Vektorraum ergibt \\[71, 74, 82\\].', 'resolved'),
+(153, 1, 27, 82, 82, '[71, 74, 82]', 1054, 'Eine Menge von Vektoren heißt Erzeugendensystem eines Vektorraums $V$, wenn ihr Spannraum den gesamten Vektorraum ergibt \\[71, 74, 82\\].', 'resolved'),
+(154, 1, 27, 71, 71, '[71, 82]', 1060, 'Dann kann ich jeden Vektor $v \\in V$ als Linearkombination der Vektoren des Erzeugendensystems schreiben \\[71, 82\\]. Der ursprüngliche Abschnitt verwendet genau diese Bedingung zur Definition eines Erzeugendensystems.', 'resolved'),
+(155, 1, 27, 82, 82, '[71, 82]', 1060, 'Dann kann ich jeden Vektor $v \\in V$ als Linearkombination der Vektoren des Erzeugendensystems schreiben \\[71, 82\\]. Der ursprüngliche Abschnitt verwendet genau diese Bedingung zur Definition eines Erzeugendensystems.', 'resolved'),
+(156, 1, 27, 71, 71, '[71, 74]', 1062, 'Das bedeutet nicht, dass die Darstellung eines Vektors durch ein Erzeugendensystem eindeutig sein muss. Enthält das Erzeugendensystem mehr Vektoren als für die Erzeugung des Raums erforderlich sind, kann derselbe Vektor durch unterschiedliche Linearkombinationen dargestellt werden \\[71, 74\\].', 'resolved'),
+(157, 1, 27, 74, 74, '[71, 74]', 1062, 'Das bedeutet nicht, dass die Darstellung eines Vektors durch ein Erzeugendensystem eindeutig sein muss. Enthält das Erzeugendensystem mehr Vektoren als für die Erzeugung des Raums erforderlich sind, kann derselbe Vektor durch unterschiedliche Linearkombinationen dargestellt werden \\[71, 74\\].', 'resolved'),
+(158, 1, 27, 71, 71, '[71, 74, 82]', 1068, 'Enthält ein Erzeugendensystem einen Vektor, der bereits als Linearkombination der übrigen Vektoren dargestellt werden kann, trägt dieser Vektor nichts zusätzlich zum Spannraum bei. Ich kann ihn entfernen, ohne den erzeugten Raum zu verändern \\[71, 74, 82\\].', 'resolved'),
+(159, 1, 27, 74, 74, '[71, 74, 82]', 1068, 'Enthält ein Erzeugendensystem einen Vektor, der bereits als Linearkombination der übrigen Vektoren dargestellt werden kann, trägt dieser Vektor nichts zusätzlich zum Spannraum bei. Ich kann ihn entfernen, ohne den erzeugten Raum zu verändern \\[71, 74, 82\\].', 'resolved'),
+(160, 1, 27, 82, 82, '[71, 74, 82]', 1068, 'Enthält ein Erzeugendensystem einen Vektor, der bereits als Linearkombination der übrigen Vektoren dargestellt werden kann, trägt dieser Vektor nichts zusätzlich zum Spannraum bei. Ich kann ihn entfernen, ohne den erzeugten Raum zu verändern \\[71, 74, 82\\].', 'resolved'),
+(161, 1, 27, 71, 71, '[71, 74, 82]', 1078, 'Die Linearkombination bildet eine der grundlegenden Konstruktionen innerhalb eines Vektorraums. Aus ihr entstehen Spannräume, Erzeugendensysteme, Basen und schließlich Koordinatendarstellungen. Damit bildet sie den Ausgangspunkt für einen großen Teil der strukturellen Untersuchungen der linearen Algebra \\[71, 74, 82\\].', 'resolved'),
+(162, 1, 27, 74, 74, '[71, 74, 82]', 1078, 'Die Linearkombination bildet eine der grundlegenden Konstruktionen innerhalb eines Vektorraums. Aus ihr entstehen Spannräume, Erzeugendensysteme, Basen und schließlich Koordinatendarstellungen. Damit bildet sie den Ausgangspunkt für einen großen Teil der strukturellen Untersuchungen der linearen Algebra \\[71, 74, 82\\].', 'resolved'),
+(163, 1, 27, 82, 82, '[71, 74, 82]', 1078, 'Die Linearkombination bildet eine der grundlegenden Konstruktionen innerhalb eines Vektorraums. Aus ihr entstehen Spannräume, Erzeugendensysteme, Basen und schließlich Koordinatendarstellungen. Damit bildet sie den Ausgangspunkt für einen großen Teil der strukturellen Untersuchungen der linearen Algebra \\[71, 74, 82\\].', 'resolved'),
+(164, 1, 28, 71, 71, '[71, 74, 82]', 1161, 'Mit dem Spannraum kann ich bestimmen, welche Vektoren sich aus einer gegebenen Vektormenge durch Linearkombinationen erzeugen lassen. Damit ist jedoch noch nicht geklärt, ob alle verwendeten Vektoren tatsächlich erforderlich sind. Enthält eine Vektormenge einen Vektor, der bereits durch die übrigen Vektoren erzeugt werden kann, ist dieser für die Erzeugung des Spannraums redundant. Die lineare Algebra erfasst diesen Unterschied durch die Begriffe der linearen Unabhängigkeit und linearen Abhängigkeit \\[71, 74, 82\\].', 'resolved'),
+(165, 1, 28, 74, 74, '[71, 74, 82]', 1161, 'Mit dem Spannraum kann ich bestimmen, welche Vektoren sich aus einer gegebenen Vektormenge durch Linearkombinationen erzeugen lassen. Damit ist jedoch noch nicht geklärt, ob alle verwendeten Vektoren tatsächlich erforderlich sind. Enthält eine Vektormenge einen Vektor, der bereits durch die übrigen Vektoren erzeugt werden kann, ist dieser für die Erzeugung des Spannraums redundant. Die lineare Algebra erfasst diesen Unterschied durch die Begriffe der linearen Unabhängigkeit und linearen Abhängigkeit \\[71, 74, 82\\].', 'resolved'),
+(166, 1, 28, 82, 82, '[71, 74, 82]', 1161, 'Mit dem Spannraum kann ich bestimmen, welche Vektoren sich aus einer gegebenen Vektormenge durch Linearkombinationen erzeugen lassen. Damit ist jedoch noch nicht geklärt, ob alle verwendeten Vektoren tatsächlich erforderlich sind. Enthält eine Vektormenge einen Vektor, der bereits durch die übrigen Vektoren erzeugt werden kann, ist dieser für die Erzeugung des Spannraums redundant. Die lineare Algebra erfasst diesen Unterschied durch die Begriffe der linearen Unabhängigkeit und linearen Abhängigkeit \\[71, 74, 82\\].', 'resolved'),
+(167, 1, 28, 71, 71, '[71, 74, 82]', 1163, 'Diese Unterscheidung führt unmittelbar zum Basisbegriff. Eine Basis soll einerseits den gesamten Vektorraum erzeugen, andererseits aber keine überflüssigen Vektoren enthalten. Sie ist deshalb ein linear unabhängiges Erzeugendensystem. Die Anzahl der Vektoren einer Basis bestimmt bei endlichdimensionalen Vektorräumen schließlich deren Dimension \\[71, 74, 82\\].', 'resolved'),
+(168, 1, 28, 74, 74, '[71, 74, 82]', 1163, 'Diese Unterscheidung führt unmittelbar zum Basisbegriff. Eine Basis soll einerseits den gesamten Vektorraum erzeugen, andererseits aber keine überflüssigen Vektoren enthalten. Sie ist deshalb ein linear unabhängiges Erzeugendensystem. Die Anzahl der Vektoren einer Basis bestimmt bei endlichdimensionalen Vektorräumen schließlich deren Dimension \\[71, 74, 82\\].', 'resolved'),
+(169, 1, 28, 82, 82, '[71, 74, 82]', 1163, 'Diese Unterscheidung führt unmittelbar zum Basisbegriff. Eine Basis soll einerseits den gesamten Vektorraum erzeugen, andererseits aber keine überflüssigen Vektoren enthalten. Sie ist deshalb ein linear unabhängiges Erzeugendensystem. Die Anzahl der Vektoren einer Basis bestimmt bei endlichdimensionalen Vektorräumen schließlich deren Dimension \\[71, 74, 82\\].', 'resolved'),
+(170, 1, 28, 71, 71, '[71, 74, 82]', 1187, 'Die Aussage bedeutet, dass ausschließlich die triviale Linearkombination den Nullvektor erzeugt. Es gibt also keine nichttriviale Kombination der betrachteten Vektoren, deren Ergebnis $0_{V}$ ist \\[71, 74, 82\\].', 'resolved'),
+(171, 1, 28, 74, 74, '[71, 74, 82]', 1187, 'Die Aussage bedeutet, dass ausschließlich die triviale Linearkombination den Nullvektor erzeugt. Es gibt also keine nichttriviale Kombination der betrachteten Vektoren, deren Ergebnis $0_{V}$ ist \\[71, 74, 82\\].', 'resolved'),
+(172, 1, 28, 82, 82, '[71, 74, 82]', 1187, 'Die Aussage bedeutet, dass ausschließlich die triviale Linearkombination den Nullvektor erzeugt. Es gibt also keine nichttriviale Kombination der betrachteten Vektoren, deren Ergebnis $0_{V}$ ist \\[71, 74, 82\\].', 'resolved'),
+(173, 1, 28, 71, 71, '[71, 74, 82]', 1197, 'Die lineare Abhängigkeit ist damit genau das Gegenstück zur linearen Unabhängigkeit \\[71, 74, 82\\].', 'resolved'),
+(174, 1, 28, 74, 74, '[71, 74, 82]', 1197, 'Die lineare Abhängigkeit ist damit genau das Gegenstück zur linearen Unabhängigkeit \\[71, 74, 82\\].', 'resolved'),
+(175, 1, 28, 82, 82, '[71, 74, 82]', 1197, 'Die lineare Abhängigkeit ist damit genau das Gegenstück zur linearen Unabhängigkeit \\[71, 74, 82\\].', 'resolved'),
+(176, 1, 28, 71, 71, '[71, 74]', 1247, 'folgt unmittelbar, dass die beiden Vektoren linear unabhängig sind \\[71, 74\\].', 'resolved'),
+(177, 1, 28, 74, 74, '[71, 74]', 1247, 'folgt unmittelbar, dass die beiden Vektoren linear unabhängig sind \\[71, 74\\].', 'resolved'),
+(178, 1, 28, 71, 71, '[71, 74, 82]', 1265, 'Eine Basis ist damit ein vollständiges, aber nicht redundantes Erzeugungssystem \\[71, 74, 82\\].', 'resolved'),
+(179, 1, 28, 74, 74, '[71, 74, 82]', 1265, 'Eine Basis ist damit ein vollständiges, aber nicht redundantes Erzeugungssystem \\[71, 74, 82\\].', 'resolved'),
+(180, 1, 28, 82, 82, '[71, 74, 82]', 1265, 'Eine Basis ist damit ein vollständiges, aber nicht redundantes Erzeugungssystem \\[71, 74, 82\\].', 'resolved'),
+(181, 1, 28, 71, 71, '[71, 74, 82]', 1275, 'Die Koeffizienten $\\lambda_{1},\\ldots,\\lambda_{n}$ heißen die Koordinaten des Vektors $v$ bezüglich der Basis $B$ \\[71, 74, 82\\].', 'resolved'),
+(182, 1, 28, 74, 74, '[71, 74, 82]', 1275, 'Die Koeffizienten $\\lambda_{1},\\ldots,\\lambda_{n}$ heißen die Koordinaten des Vektors $v$ bezüglich der Basis $B$ \\[71, 74, 82\\].', 'resolved'),
+(183, 1, 28, 82, 82, '[71, 74, 82]', 1275, 'Die Koeffizienten $\\lambda_{1},\\ldots,\\lambda_{n}$ heißen die Koordinaten des Vektors $v$ bezüglich der Basis $B$ \\[71, 74, 82\\].', 'resolved'),
+(184, 1, 28, 71, 71, '[71, 74]', 1304, 'wobei beim Vektor $e_{i}$ genau die $i$-te Komponente den Wert $1$ besitzt und alle übrigen Komponenten gleich $0$ sind \\[71, 74\\].', 'resolved'),
+(185, 1, 28, 74, 74, '[71, 74]', 1304, 'wobei beim Vektor $e_{i}$ genau die $i$-te Komponente den Wert $1$ besitzt und alle übrigen Komponenten gleich $0$ sind \\[71, 74\\].', 'resolved'),
+(186, 1, 28, 71, 71, '[71, 74, 82]', 1330, 'Ich muss den mathematischen Vektor von seiner Koordinatendarstellung unterscheiden. Der Vektor ist ein Element des Vektorraums. Ein Koordinatenvektor beschreibt dieses Element dagegen bezüglich einer konkret gewählten Basis \\[71, 74, 82\\].', 'resolved'),
+(187, 1, 28, 74, 74, '[71, 74, 82]', 1330, 'Ich muss den mathematischen Vektor von seiner Koordinatendarstellung unterscheiden. Der Vektor ist ein Element des Vektorraums. Ein Koordinatenvektor beschreibt dieses Element dagegen bezüglich einer konkret gewählten Basis \\[71, 74, 82\\].', 'resolved'),
+(188, 1, 28, 82, 82, '[71, 74, 82]', 1330, 'Ich muss den mathematischen Vektor von seiner Koordinatendarstellung unterscheiden. Der Vektor ist ein Element des Vektorraums. Ein Koordinatenvektor beschreibt dieses Element dagegen bezüglich einer konkret gewählten Basis \\[71, 74, 82\\].', 'resolved'),
+(189, 1, 28, 71, 71, '[71, 74, 82]', 1357, 'Alle Basen desselben endlichdimensionalen Vektorraums besitzen dieselbe Anzahl von Elementen. Dadurch ist die Dimension unabhängig davon, welche konkrete Basis ich zur Darstellung verwende \\[71, 74, 82\\].', 'resolved'),
+(190, 1, 28, 74, 74, '[71, 74, 82]', 1357, 'Alle Basen desselben endlichdimensionalen Vektorraums besitzen dieselbe Anzahl von Elementen. Dadurch ist die Dimension unabhängig davon, welche konkrete Basis ich zur Darstellung verwende \\[71, 74, 82\\].', 'resolved'),
+(191, 1, 28, 82, 82, '[71, 74, 82]', 1357, 'Alle Basen desselben endlichdimensionalen Vektorraums besitzen dieselbe Anzahl von Elementen. Dadurch ist die Dimension unabhängig davon, welche konkrete Basis ich zur Darstellung verwende \\[71, 74, 82\\].', 'resolved'),
+(192, 1, 28, 71, 71, '[71, 74, 82]', 1370, 'Eine linear unabhängige Menge in einem endlichdimensionalen Vektorraum kann zu einer Basis ergänzt werden. Fehlen noch Richtungen zur Erzeugung des gesamten Raumes, können geeignete weitere Vektoren hinzugefügt werden, bis der gesamte Raum aufgespannt wird \\[71, 74, 82\\].', 'resolved'),
+(193, 1, 28, 74, 74, '[71, 74, 82]', 1370, 'Eine linear unabhängige Menge in einem endlichdimensionalen Vektorraum kann zu einer Basis ergänzt werden. Fehlen noch Richtungen zur Erzeugung des gesamten Raumes, können geeignete weitere Vektoren hinzugefügt werden, bis der gesamte Raum aufgespannt wird \\[71, 74, 82\\].', 'resolved'),
+(194, 1, 28, 82, 82, '[71, 74, 82]', 1370, 'Eine linear unabhängige Menge in einem endlichdimensionalen Vektorraum kann zu einer Basis ergänzt werden. Fehlen noch Richtungen zur Erzeugung des gesamten Raumes, können geeignete weitere Vektoren hinzugefügt werden, bis der gesamte Raum aufgespannt wird \\[71, 74, 82\\].', 'resolved'),
+(195, 1, 28, 71, 71, '[71, 74, 82]', 1376, 'Ein Erzeugendensystem eines $n$-dimensionalen Vektorraums, das mehr als $n$ Vektoren enthält, ist notwendigerweise linear abhängig. Umgekehrt kann eine linear unabhängige Vektormenge in diesem Raum höchstens $n$ Elemente enthalten \\[71, 74, 82\\].', 'resolved'),
+(196, 1, 28, 74, 74, '[71, 74, 82]', 1376, 'Ein Erzeugendensystem eines $n$-dimensionalen Vektorraums, das mehr als $n$ Vektoren enthält, ist notwendigerweise linear abhängig. Umgekehrt kann eine linear unabhängige Vektormenge in diesem Raum höchstens $n$ Elemente enthalten \\[71, 74, 82\\].', 'resolved'),
+(197, 1, 28, 82, 82, '[71, 74, 82]', 1376, 'Ein Erzeugendensystem eines $n$-dimensionalen Vektorraums, das mehr als $n$ Vektoren enthält, ist notwendigerweise linear abhängig. Umgekehrt kann eine linear unabhängige Vektormenge in diesem Raum höchstens $n$ Elemente enthalten \\[71, 74, 82\\].', 'resolved'),
+(198, 1, 29, 71, 71, '[71, 74, 82]', 1439, 'Mit einer Basis kann ich jeden Vektor eines endlichdimensionalen Vektorraums eindeutig durch Koordinaten beschreiben. Diese Koordinaten gehören jedoch nicht zum Vektor selbst. Sie entstehen erst dadurch, dass ich eine bestimmte Basis für seine Darstellung auswähle. Wähle ich eine andere Basis desselben Vektorraums, können sich sämtliche Koordinaten ändern, obwohl der mathematische Vektor unverändert bleibt \\[71, 74, 82\\].', 'resolved'),
+(199, 1, 29, 74, 74, '[71, 74, 82]', 1439, 'Mit einer Basis kann ich jeden Vektor eines endlichdimensionalen Vektorraums eindeutig durch Koordinaten beschreiben. Diese Koordinaten gehören jedoch nicht zum Vektor selbst. Sie entstehen erst dadurch, dass ich eine bestimmte Basis für seine Darstellung auswähle. Wähle ich eine andere Basis desselben Vektorraums, können sich sämtliche Koordinaten ändern, obwohl der mathematische Vektor unverändert bleibt \\[71, 74, 82\\].', 'resolved'),
+(200, 1, 29, 82, 82, '[71, 74, 82]', 1439, 'Mit einer Basis kann ich jeden Vektor eines endlichdimensionalen Vektorraums eindeutig durch Koordinaten beschreiben. Diese Koordinaten gehören jedoch nicht zum Vektor selbst. Sie entstehen erst dadurch, dass ich eine bestimmte Basis für seine Darstellung auswähle. Wähle ich eine andere Basis desselben Vektorraums, können sich sämtliche Koordinaten ändern, obwohl der mathematische Vektor unverändert bleibt \\[71, 74, 82\\].', 'resolved'),
+(201, 1, 29, 71, 71, '[71, 74, 82]', 1443, 'Dasselbe gilt für lineare Operatoren. Ein Operator ist als Abbildung zwischen Vektoren definiert. Seine Matrixdarstellung hängt dagegen von der verwendeten Basis ab. Damit muss ich bei jeder späteren mathematischen Beschreibung sorgfältig zwischen einer Struktur und ihrer konkreten Darstellung unterscheiden \\[71, 74, 82\\].', 'resolved'),
+(202, 1, 29, 74, 74, '[71, 74, 82]', 1443, 'Dasselbe gilt für lineare Operatoren. Ein Operator ist als Abbildung zwischen Vektoren definiert. Seine Matrixdarstellung hängt dagegen von der verwendeten Basis ab. Damit muss ich bei jeder späteren mathematischen Beschreibung sorgfältig zwischen einer Struktur und ihrer konkreten Darstellung unterscheiden \\[71, 74, 82\\].', 'resolved'),
+(203, 1, 29, 82, 82, '[71, 74, 82]', 1443, 'Dasselbe gilt für lineare Operatoren. Ein Operator ist als Abbildung zwischen Vektoren definiert. Seine Matrixdarstellung hängt dagegen von der verwendeten Basis ab. Damit muss ich bei jeder späteren mathematischen Beschreibung sorgfältig zwischen einer Struktur und ihrer konkreten Darstellung unterscheiden \\[71, 74, 82\\].', 'resolved'),
+(204, 1, 29, 71, 71, '[71, 74, 82]', 1463, 'Die Eindeutigkeit dieser Skalare folgt aus der linearen Unabhängigkeit der Basisvektoren \\[71, 74, 82\\].', 'resolved'),
+(205, 1, 29, 74, 74, '[71, 74, 82]', 1463, 'Die Eindeutigkeit dieser Skalare folgt aus der linearen Unabhängigkeit der Basisvektoren \\[71, 74, 82\\].', 'resolved'),
+(206, 1, 29, 82, 82, '[71, 74, 82]', 1463, 'Die Eindeutigkeit dieser Skalare folgt aus der linearen Unabhängigkeit der Basisvektoren \\[71, 74, 82\\].', 'resolved'),
+(207, 1, 29, 71, 71, '[71, 82]', 1497, 'Die Zahlen $\\lambda_{i}$ und $\\mu_{i}$ können voneinander verschieden sein. Trotzdem beschreiben beide Koordinatenvektoren denselben Vektor $v$ \\[71, 82\\].', 'resolved'),
+(208, 1, 29, 82, 82, '[71, 82]', 1497, 'Die Zahlen $\\lambda_{i}$ und $\\mu_{i}$ können voneinander verschieden sein. Trotzdem beschreiben beide Koordinatenvektoren denselben Vektor $v$ \\[71, 82\\].', 'resolved'),
+(209, 1, 29, 71, 71, '[71, 74, 82]', 1503, 'Zwischen den Koordinaten bezüglich zweier Basen existiert eine eindeutig bestimmte invertierbare lineare Transformation \\[71, 74, 82\\].', 'resolved'),
+(210, 1, 29, 74, 74, '[71, 74, 82]', 1503, 'Zwischen den Koordinaten bezüglich zweier Basen existiert eine eindeutig bestimmte invertierbare lineare Transformation \\[71, 74, 82\\].', 'resolved'),
+(211, 1, 29, 82, 82, '[71, 74, 82]', 1503, 'Zwischen den Koordinaten bezüglich zweier Basen existiert eine eindeutig bestimmte invertierbare lineare Transformation \\[71, 74, 82\\].', 'resolved'),
+(212, 1, 29, 71, 71, '[71, 74, 82]', 1528, 'Damit kann ich jede Koordinatentransformation eindeutig rückgängig machen \\[71, 74, 82\\].', 'resolved'),
+(213, 1, 29, 74, 74, '[71, 74, 82]', 1528, 'Damit kann ich jede Koordinatentransformation eindeutig rückgängig machen \\[71, 74, 82\\].', 'resolved'),
+(214, 1, 29, 82, 82, '[71, 74, 82]', 1528, 'Damit kann ich jede Koordinatentransformation eindeutig rückgängig machen \\[71, 74, 82\\].', 'resolved'),
+(215, 1, 29, 71, 71, '[71, 74, 82]', 1547, 'Damit besitzt jede Spalte der Matrix eine unmittelbar nachvollziehbare Bedeutung: Sie beschreibt einen Basisvektor der Basis $C$ in den Koordinaten der Basis $B$ \\[71, 74, 82\\].', 'resolved'),
+(216, 1, 29, 74, 74, '[71, 74, 82]', 1547, 'Damit besitzt jede Spalte der Matrix eine unmittelbar nachvollziehbare Bedeutung: Sie beschreibt einen Basisvektor der Basis $C$ in den Koordinaten der Basis $B$ \\[71, 74, 82\\].', 'resolved'),
+(217, 1, 29, 82, 82, '[71, 74, 82]', 1547, 'Damit besitzt jede Spalte der Matrix eine unmittelbar nachvollziehbare Bedeutung: Sie beschreibt einen Basisvektor der Basis $C$ in den Koordinaten der Basis $B$ \\[71, 74, 82\\].', 'resolved'),
+(218, 1, 29, 71, 71, '[71, 74, 82]', 1607, 'Gleichung (3.94) ist eine Ähnlichkeitstransformation. Die Matrizen $A_{B}$ und $A_{C}$ können unterschiedliche Einträge besitzen, stellen aber denselben linearen Operator bezüglich unterschiedlicher Basen dar \\[71, 74, 82\\].', 'resolved'),
+(219, 1, 29, 74, 74, '[71, 74, 82]', 1607, 'Gleichung (3.94) ist eine Ähnlichkeitstransformation. Die Matrizen $A_{B}$ und $A_{C}$ können unterschiedliche Einträge besitzen, stellen aber denselben linearen Operator bezüglich unterschiedlicher Basen dar \\[71, 74, 82\\].', 'resolved'),
+(220, 1, 29, 82, 82, '[71, 74, 82]', 1607, 'Gleichung (3.94) ist eine Ähnlichkeitstransformation. Die Matrizen $A_{B}$ und $A_{C}$ können unterschiedliche Einträge besitzen, stellen aber denselben linearen Operator bezüglich unterschiedlicher Basen dar \\[71, 74, 82\\].', 'resolved'),
+(221, 1, 29, 71, 71, '[71, 74, 82]', 1615, 'Zu diesen unter Ähnlichkeit erhaltenen Eigenschaften gehören insbesondere Rang, Determinante, Spur, charakteristisches Polynom, Eigenwerte und Spektrum \\[71, 74, 82\\].', 'resolved'),
+(222, 1, 29, 74, 74, '[71, 74, 82]', 1615, 'Zu diesen unter Ähnlichkeit erhaltenen Eigenschaften gehören insbesondere Rang, Determinante, Spur, charakteristisches Polynom, Eigenwerte und Spektrum \\[71, 74, 82\\].', 'resolved'),
+(223, 1, 29, 82, 82, '[71, 74, 82]', 1615, 'Zu diesen unter Ähnlichkeit erhaltenen Eigenschaften gehören insbesondere Rang, Determinante, Spur, charakteristisches Polynom, Eigenwerte und Spektrum \\[71, 74, 82\\].', 'resolved'),
+(224, 1, 29, 71, 71, '[71, 76, 82]', 1637, 'Dabei bezeichnet $\\sigma(A)$ das Spektrum der Matrix beziehungsweise des dargestellten Operators \\[71, 76, 82\\].', 'resolved'),
+(225, 1, 29, 76, 76, '[71, 76, 82]', 1637, 'Dabei bezeichnet $\\sigma(A)$ das Spektrum der Matrix beziehungsweise des dargestellten Operators \\[71, 76, 82\\].', 'resolved'),
+(226, 1, 29, 82, 82, '[71, 76, 82]', 1637, 'Dabei bezeichnet $\\sigma(A)$ das Spektrum der Matrix beziehungsweise des dargestellten Operators \\[71, 76, 82\\].', 'resolved'),
+(227, 1, 29, 71, 71, '[71, 74, 82]', 1647, 'Damit hängt eine mathematische Aussage über ein abstraktes Objekt nicht von einer bestimmten Koordinatenwahl ab, sofern die Aussage tatsächlich eine intrinsische Eigenschaft dieses Objekts beschreibt \\[71, 74, 82\\].', 'resolved'),
+(228, 1, 29, 74, 74, '[71, 74, 82]', 1647, 'Damit hängt eine mathematische Aussage über ein abstraktes Objekt nicht von einer bestimmten Koordinatenwahl ab, sofern die Aussage tatsächlich eine intrinsische Eigenschaft dieses Objekts beschreibt \\[71, 74, 82\\].', 'resolved'),
+(229, 1, 29, 82, 82, '[71, 74, 82]', 1647, 'Damit hängt eine mathematische Aussage über ein abstraktes Objekt nicht von einer bestimmten Koordinatenwahl ab, sofern die Aussage tatsächlich eine intrinsische Eigenschaft dieses Objekts beschreibt \\[71, 74, 82\\].', 'resolved'),
+(230, 1, 30, 71, 71, '[71, 74, 82]', 1713, 'Nachdem ich lineare Operatoren durch Matrizen beschrieben und die Abhängigkeit ihrer Matrixdarstellung von der gewählten Basis untersucht habe, benötige ich nun eine Größe, mit der ich die geometrische Wirkung einer linearen Transformation quantitativ erfassen kann. Für quadratische Matrizen übernimmt die Determinante diese Funktion. Sie beschreibt gleichzeitig, ob eine lineare Transformation Flächen beziehungsweise Volumina vergrößert oder verkleinert, ob sie die Orientierung erhält oder umkehrt und ob durch die Transformation eine Dimension verloren geht \\[71, 74, 82\\].', 'resolved'),
+(231, 1, 30, 74, 74, '[71, 74, 82]', 1713, 'Nachdem ich lineare Operatoren durch Matrizen beschrieben und die Abhängigkeit ihrer Matrixdarstellung von der gewählten Basis untersucht habe, benötige ich nun eine Größe, mit der ich die geometrische Wirkung einer linearen Transformation quantitativ erfassen kann. Für quadratische Matrizen übernimmt die Determinante diese Funktion. Sie beschreibt gleichzeitig, ob eine lineare Transformation Flächen beziehungsweise Volumina vergrößert oder verkleinert, ob sie die Orientierung erhält oder umkehrt und ob durch die Transformation eine Dimension verloren geht \\[71, 74, 82\\].', 'resolved'),
+(232, 1, 30, 82, 82, '[71, 74, 82]', 1713, 'Nachdem ich lineare Operatoren durch Matrizen beschrieben und die Abhängigkeit ihrer Matrixdarstellung von der gewählten Basis untersucht habe, benötige ich nun eine Größe, mit der ich die geometrische Wirkung einer linearen Transformation quantitativ erfassen kann. Für quadratische Matrizen übernimmt die Determinante diese Funktion. Sie beschreibt gleichzeitig, ob eine lineare Transformation Flächen beziehungsweise Volumina vergrößert oder verkleinert, ob sie die Orientierung erhält oder umkehrt und ob durch die Transformation eine Dimension verloren geht \\[71, 74, 82\\].', 'resolved'),
+(233, 1, 30, 71, 71, '[71, 74, 82]', 1715, 'Die Determinante ist damit nicht lediglich eine Rechenvorschrift für Matrixelemente. Sie ordnet einer quadratischen Matrix einen einzelnen Skalar zu, in dem mehrere strukturelle Eigenschaften der dargestellten linearen Transformation zusammenlaufen. Da ähnliche Matrizen dieselbe Determinante besitzen, hängt diese Kennzahl nicht von der konkreten Basisdarstellung des Operators ab \\[71, 74, 82\\].', 'resolved'),
+(234, 1, 30, 74, 74, '[71, 74, 82]', 1715, 'Die Determinante ist damit nicht lediglich eine Rechenvorschrift für Matrixelemente. Sie ordnet einer quadratischen Matrix einen einzelnen Skalar zu, in dem mehrere strukturelle Eigenschaften der dargestellten linearen Transformation zusammenlaufen. Da ähnliche Matrizen dieselbe Determinante besitzen, hängt diese Kennzahl nicht von der konkreten Basisdarstellung des Operators ab \\[71, 74, 82\\].', 'resolved'),
+(235, 1, 30, 82, 82, '[71, 74, 82]', 1715, 'Die Determinante ist damit nicht lediglich eine Rechenvorschrift für Matrixelemente. Sie ordnet einer quadratischen Matrix einen einzelnen Skalar zu, in dem mehrere strukturelle Eigenschaften der dargestellten linearen Transformation zusammenlaufen. Da ähnliche Matrizen dieselbe Determinante besitzen, hängt diese Kennzahl nicht von der konkreten Basisdarstellung des Operators ab \\[71, 74, 82\\].', 'resolved'),
+(236, 1, 30, 71, 71, '[71, 74, 82]', 1735, 'Die Determinante ist ausschließlich für quadratische Matrizen definiert. Für nichtquadratische Matrizen kann ich deshalb nicht in derselben Weise von einer Determinante sprechen \\[71, 74, 82\\].', 'resolved'),
+(237, 1, 30, 74, 74, '[71, 74, 82]', 1735, 'Die Determinante ist ausschließlich für quadratische Matrizen definiert. Für nichtquadratische Matrizen kann ich deshalb nicht in derselben Weise von einer Determinante sprechen \\[71, 74, 82\\].', 'resolved'),
+(238, 1, 30, 82, 82, '[71, 74, 82]', 1735, 'Die Determinante ist ausschließlich für quadratische Matrizen definiert. Für nichtquadratische Matrizen kann ich deshalb nicht in derselben Weise von einer Determinante sprechen \\[71, 74, 82\\].', 'resolved'),
+(239, 1, 30, 71, 71, '[71, 74]', 1749, 'Die Determinante ergibt sich hier aus der Differenz des Produkts der Hauptdiagonale und des Produkts der Nebendiagonale \\[71, 74\\].', 'resolved'),
+(240, 1, 30, 74, 74, '[71, 74]', 1749, 'Die Determinante ergibt sich hier aus der Differenz des Produkts der Hauptdiagonale und des Produkts der Nebendiagonale \\[71, 74\\].', 'resolved'),
+(241, 1, 30, 74, 74, '[74, 82]', 1763, 'Die durch diese Matrix dargestellte lineare Transformation vergrößert Flächeninhalte damit um den Faktor $6$ \\[74, 82\\]. Das entspricht unmittelbar der anschaulichen Wirkung der Matrix: Eine Richtung wird mit dem Faktor $2$, die andere mit dem Faktor $3$ skaliert. Der resultierende Flächenfaktor ist das Produkt beider Skalierungen.', 'resolved'),
+(242, 1, 30, 82, 82, '[74, 82]', 1763, 'Die durch diese Matrix dargestellte lineare Transformation vergrößert Flächeninhalte damit um den Faktor $6$ \\[74, 82\\]. Das entspricht unmittelbar der anschaulichen Wirkung der Matrix: Eine Richtung wird mit dem Faktor $2$, die andere mit dem Faktor $3$ skaliert. Der resultierende Flächenfaktor ist das Produkt beider Skalierungen.', 'resolved'),
+(243, 1, 30, 71, 71, '[71, 74, 82]', 1787, 'Diese Form entspricht der Laplace-Entwicklung nach der ersten Zeile. Grundsätzlich kann die Entwicklung nach jeder beliebigen Zeile oder Spalte erfolgen \\[71, 74, 82\\].', 'resolved'),
+(244, 1, 30, 74, 74, '[71, 74, 82]', 1787, 'Diese Form entspricht der Laplace-Entwicklung nach der ersten Zeile. Grundsätzlich kann die Entwicklung nach jeder beliebigen Zeile oder Spalte erfolgen \\[71, 74, 82\\].', 'resolved'),
+(245, 1, 30, 82, 82, '[71, 74, 82]', 1787, 'Diese Form entspricht der Laplace-Entwicklung nach der ersten Zeile. Grundsätzlich kann die Entwicklung nach jeder beliebigen Zeile oder Spalte erfolgen \\[71, 74, 82\\].', 'resolved'),
+(246, 1, 30, 71, 71, '[71, 74, 82]', 1793, 'Die Determinante beschreibt den orientierten Skalierungsfaktor einer linearen Transformation. Ihr Betrag gibt an, wie stark Flächen oder Volumina durch die Transformation skaliert werden \\[71, 74, 82\\].', 'resolved'),
+(247, 1, 30, 74, 74, '[71, 74, 82]', 1793, 'Die Determinante beschreibt den orientierten Skalierungsfaktor einer linearen Transformation. Ihr Betrag gibt an, wie stark Flächen oder Volumina durch die Transformation skaliert werden \\[71, 74, 82\\].', 'resolved'),
+(248, 1, 30, 82, 82, '[71, 74, 82]', 1793, 'Die Determinante beschreibt den orientierten Skalierungsfaktor einer linearen Transformation. Ihr Betrag gibt an, wie stark Flächen oder Volumina durch die Transformation skaliert werden \\[71, 74, 82\\].', 'resolved'),
+(249, 1, 30, 71, 71, '[71, 74, 82]', 1826, 'Der Betrag der Determinante beschreibt die Größenänderung. Das Vorzeichen enthält eine zusätzliche Information: Es zeigt an, ob die Orientierung einer linearen Transformation erhalten bleibt oder umgekehrt wird \\[71, 74, 82\\].', 'resolved'),
+(250, 1, 30, 74, 74, '[71, 74, 82]', 1826, 'Der Betrag der Determinante beschreibt die Größenänderung. Das Vorzeichen enthält eine zusätzliche Information: Es zeigt an, ob die Orientierung einer linearen Transformation erhalten bleibt oder umgekehrt wird \\[71, 74, 82\\].', 'resolved'),
+(251, 1, 30, 82, 82, '[71, 74, 82]', 1826, 'Der Betrag der Determinante beschreibt die Größenänderung. Das Vorzeichen enthält eine zusätzliche Information: Es zeigt an, ob die Orientierung einer linearen Transformation erhalten bleibt oder umgekehrt wird \\[71, 74, 82\\].', 'resolved'),
+(252, 1, 30, 74, 74, '[74, 82]', 1847, 'Der Betrag der Determinante ist $1$. Flächeninhalte bleiben somit erhalten. Das negative Vorzeichen zeigt jedoch, dass die Orientierung umgekehrt wird \\[74, 82\\].', 'resolved'),
+(253, 1, 30, 82, 82, '[74, 82]', 1847, 'Der Betrag der Determinante ist $1$. Flächeninhalte bleiben somit erhalten. Das negative Vorzeichen zeigt jedoch, dass die Orientierung umgekehrt wird \\[74, 82\\].', 'resolved'),
+(254, 1, 30, 71, 71, '[71, 74, 82]', 1862, 'Eine Determinante von null besitzt zugleich eine geometrische Bedeutung. Der $n$-dimensionale Raum wird durch die Transformation auf eine Struktur geringerer Dimension abgebildet. Im zweidimensionalen Fall kann eine Fläche beispielsweise auf eine Gerade zusammenfallen. Im dreidimensionalen Fall kann ein Volumen auf eine Ebene oder sogar eine Gerade reduziert werden \\[71, 74, 82\\].', 'resolved'),
+(255, 1, 30, 74, 74, '[71, 74, 82]', 1862, 'Eine Determinante von null besitzt zugleich eine geometrische Bedeutung. Der $n$-dimensionale Raum wird durch die Transformation auf eine Struktur geringerer Dimension abgebildet. Im zweidimensionalen Fall kann eine Fläche beispielsweise auf eine Gerade zusammenfallen. Im dreidimensionalen Fall kann ein Volumen auf eine Ebene oder sogar eine Gerade reduziert werden \\[71, 74, 82\\].', 'resolved'),
+(256, 1, 30, 82, 82, '[71, 74, 82]', 1862, 'Eine Determinante von null besitzt zugleich eine geometrische Bedeutung. Der $n$-dimensionale Raum wird durch die Transformation auf eine Struktur geringerer Dimension abgebildet. Im zweidimensionalen Fall kann eine Fläche beispielsweise auf eine Gerade zusammenfallen. Im dreidimensionalen Fall kann ein Volumen auf eine Ebene oder sogar eine Gerade reduziert werden \\[71, 74, 82\\].', 'resolved'),
+(257, 1, 30, 71, 71, '[71, 74, 82]', 1897, 'Diese Äquivalenz verbindet mehrere Betrachtungsebenen \\[71, 74, 82\\]:', 'resolved'),
+(258, 1, 30, 74, 74, '[71, 74, 82]', 1897, 'Diese Äquivalenz verbindet mehrere Betrachtungsebenen \\[71, 74, 82\\]:', 'resolved'),
+(259, 1, 30, 82, 82, '[71, 74, 82]', 1897, 'Diese Äquivalenz verbindet mehrere Betrachtungsebenen \\[71, 74, 82\\]:', 'resolved'),
+(260, 1, 30, 71, 71, '[71, 74, 82]', 1915, 'Damit multiplizieren sich auch die orientierten Volumenskalierungsfaktoren aufeinanderfolgender linearer Transformationen \\[71, 74, 82\\].', 'resolved'),
+(261, 1, 30, 74, 74, '[71, 74, 82]', 1915, 'Damit multiplizieren sich auch die orientierten Volumenskalierungsfaktoren aufeinanderfolgender linearer Transformationen \\[71, 74, 82\\].', 'resolved'),
+(262, 1, 30, 82, 82, '[71, 74, 82]', 1915, 'Damit multiplizieren sich auch die orientierten Volumenskalierungsfaktoren aufeinanderfolgender linearer Transformationen \\[71, 74, 82\\].', 'resolved'),
+(263, 1, 30, 71, 71, '[71, 74]', 1930, 'Die inverse Transformation hebt damit die Volumenskalierung der ursprünglichen Transformation exakt wieder auf \\[71, 74\\].', 'resolved'),
+(264, 1, 30, 74, 74, '[71, 74]', 1930, 'Die inverse Transformation hebt damit die Volumenskalierung der ursprünglichen Transformation exakt wieder auf \\[71, 74\\].', 'resolved'),
+(265, 1, 30, 71, 71, '[71, 74, 82]', 1956, 'Damit ist die Determinante zwar formal an einer Matrix berechenbar, ihr Wert ist bei Matrixdarstellungen desselben Operators unter einem Basiswechsel invariant \\[71, 74, 82\\].', 'resolved'),
+(266, 1, 30, 74, 74, '[71, 74, 82]', 1956, 'Damit ist die Determinante zwar formal an einer Matrix berechenbar, ihr Wert ist bei Matrixdarstellungen desselben Operators unter einem Basiswechsel invariant \\[71, 74, 82\\].', 'resolved'),
+(267, 1, 30, 82, 82, '[71, 74, 82]', 1956, 'Damit ist die Determinante zwar formal an einer Matrix berechenbar, ihr Wert ist bei Matrixdarstellungen desselben Operators unter einem Basiswechsel invariant \\[71, 74, 82\\].', 'resolved'),
+(268, 1, 31, 71, 71, '[71, 74, 82]', 2045, 'Die Determinante liefert mir für quadratische Matrizen ein Kriterium dafür, ob eine lineare Transformation invertierbar ist. Lineare Abbildungen müssen jedoch weder durch quadratische Matrizen dargestellt werden noch zwischen Vektorräumen gleicher Dimension wirken. Für diese allgemeinere Situation benötige ich Begriffe, die unabhängig von der Quadratform einer Matrix beschreiben, welche Richtungen durch eine Abbildung erreicht werden, welche vollständig verschwinden und wie viele unabhängige Richtungen tatsächlich übertragen werden. Genau diese Aufgaben übernehmen Bild, Kern und Rang \\[71, 74, 82\\].', 'resolved'),
+(269, 1, 31, 74, 74, '[71, 74, 82]', 2045, 'Die Determinante liefert mir für quadratische Matrizen ein Kriterium dafür, ob eine lineare Transformation invertierbar ist. Lineare Abbildungen müssen jedoch weder durch quadratische Matrizen dargestellt werden noch zwischen Vektorräumen gleicher Dimension wirken. Für diese allgemeinere Situation benötige ich Begriffe, die unabhängig von der Quadratform einer Matrix beschreiben, welche Richtungen durch eine Abbildung erreicht werden, welche vollständig verschwinden und wie viele unabhängige Richtungen tatsächlich übertragen werden. Genau diese Aufgaben übernehmen Bild, Kern und Rang \\[71, 74, 82\\].', 'resolved'),
+(270, 1, 31, 82, 82, '[71, 74, 82]', 2045, 'Die Determinante liefert mir für quadratische Matrizen ein Kriterium dafür, ob eine lineare Transformation invertierbar ist. Lineare Abbildungen müssen jedoch weder durch quadratische Matrizen dargestellt werden noch zwischen Vektorräumen gleicher Dimension wirken. Für diese allgemeinere Situation benötige ich Begriffe, die unabhängig von der Quadratform einer Matrix beschreiben, welche Richtungen durch eine Abbildung erreicht werden, welche vollständig verschwinden und wie viele unabhängige Richtungen tatsächlich übertragen werden. Genau diese Aufgaben übernehmen Bild, Kern und Rang \\[71, 74, 82\\].', 'resolved'),
+(271, 1, 31, 71, 71, '[71, 74, 82]', 2047, 'Der Rang gibt an, wie viele linear unabhängige Richtungen im Bild einer linearen Abbildung vorhanden sind. Der Kern enthält dagegen diejenigen Vektoren des Definitionsraums, die auf den Nullvektor des Zielraums abgebildet werden. Das Bild umfasst sämtliche Vektoren, die durch die Abbildung tatsächlich erreicht werden können. Zusammen ermöglichen mir diese drei Begriffe eine strukturelle Beschreibung linearer Abbildungen, die über die bloße Betrachtung einzelner Matrixelemente hinausgeht \\[71, 74, 82\\].', 'resolved'),
+(272, 1, 31, 74, 74, '[71, 74, 82]', 2047, 'Der Rang gibt an, wie viele linear unabhängige Richtungen im Bild einer linearen Abbildung vorhanden sind. Der Kern enthält dagegen diejenigen Vektoren des Definitionsraums, die auf den Nullvektor des Zielraums abgebildet werden. Das Bild umfasst sämtliche Vektoren, die durch die Abbildung tatsächlich erreicht werden können. Zusammen ermöglichen mir diese drei Begriffe eine strukturelle Beschreibung linearer Abbildungen, die über die bloße Betrachtung einzelner Matrixelemente hinausgeht \\[71, 74, 82\\].', 'resolved'),
+(273, 1, 31, 82, 82, '[71, 74, 82]', 2047, 'Der Rang gibt an, wie viele linear unabhängige Richtungen im Bild einer linearen Abbildung vorhanden sind. Der Kern enthält dagegen diejenigen Vektoren des Definitionsraums, die auf den Nullvektor des Zielraums abgebildet werden. Das Bild umfasst sämtliche Vektoren, die durch die Abbildung tatsächlich erreicht werden können. Zusammen ermöglichen mir diese drei Begriffe eine strukturelle Beschreibung linearer Abbildungen, die über die bloße Betrachtung einzelner Matrixelemente hinausgeht \\[71, 74, 82\\].', 'resolved'),
+(274, 1, 31, 71, 71, '[71, 74, 82]', 2073, 'Das Bild enthält damit genau diejenigen Vektoren des Zielraums, die durch Anwendung von $T$ auf mindestens einen Vektor des Definitionsraums tatsächlich entstehen können \\[71, 74, 82\\].', 'resolved'),
+(275, 1, 31, 74, 74, '[71, 74, 82]', 2073, 'Das Bild enthält damit genau diejenigen Vektoren des Zielraums, die durch Anwendung von $T$ auf mindestens einen Vektor des Definitionsraums tatsächlich entstehen können \\[71, 74, 82\\].', 'resolved'),
+(276, 1, 31, 82, 82, '[71, 74, 82]', 2073, 'Das Bild enthält damit genau diejenigen Vektoren des Zielraums, die durch Anwendung von $T$ auf mindestens einen Vektor des Definitionsraums tatsächlich entstehen können \\[71, 74, 82\\].', 'resolved'),
+(277, 1, 31, 71, 71, '[71, 74, 82]', 2093, 'Der Kern beantwortet damit eine andere Frage als das Bild. Beim Bild frage ich, welche Ausgangszustände erreichbar sind. Beim Kern frage ich, welche Eingangsvektoren durch die Abbildung vollständig auf denselben Nullvektor zusammengeführt werden \\[71, 74, 82\\].', 'resolved'),
+(278, 1, 31, 74, 74, '[71, 74, 82]', 2093, 'Der Kern beantwortet damit eine andere Frage als das Bild. Beim Bild frage ich, welche Ausgangszustände erreichbar sind. Beim Kern frage ich, welche Eingangsvektoren durch die Abbildung vollständig auf denselben Nullvektor zusammengeführt werden \\[71, 74, 82\\].', 'resolved'),
+(279, 1, 31, 82, 82, '[71, 74, 82]', 2093, 'Der Kern beantwortet damit eine andere Frage als das Bild. Beim Bild frage ich, welche Ausgangszustände erreichbar sind. Beim Kern frage ich, welche Eingangsvektoren durch die Abbildung vollständig auf denselben Nullvektor zusammengeführt werden \\[71, 74, 82\\].', 'resolved'),
+(280, 1, 31, 71, 71, '[71, 74, 82]', 2110, 'Der Rang gibt damit die Anzahl linear unabhängiger Richtungen an, die im Bildraum tatsächlich vorhanden sind \\[71, 74, 82\\].', 'resolved'),
+(281, 1, 31, 74, 74, '[71, 74, 82]', 2110, 'Der Rang gibt damit die Anzahl linear unabhängiger Richtungen an, die im Bildraum tatsächlich vorhanden sind \\[71, 74, 82\\].', 'resolved'),
+(282, 1, 31, 82, 82, '[71, 74, 82]', 2110, 'Der Rang gibt damit die Anzahl linear unabhängiger Richtungen an, die im Bildraum tatsächlich vorhanden sind \\[71, 74, 82\\].', 'resolved'),
+(283, 1, 31, 71, 71, '[71, 74]', 2120, 'Ebenso kann ich den von den Zeilenvektoren aufgespannten Raum betrachten. Ein grundlegendes Ergebnis der linearen Algebra besagt, dass Zeilenrang und Spaltenrang übereinstimmen \\[71, 74\\].', 'resolved'),
+(284, 1, 31, 74, 74, '[71, 74]', 2120, 'Ebenso kann ich den von den Zeilenvektoren aufgespannten Raum betrachten. Ein grundlegendes Ergebnis der linearen Algebra besagt, dass Zeilenrang und Spaltenrang übereinstimmen \\[71, 74\\].', 'resolved'),
+(285, 1, 31, 74, 74, '[74, 82]', 2159, 'Obwohl die Matrix zwei Spalten besitzt, enthält ihr Bild also nur eine linear unabhängige Richtung \\[74, 82\\].', 'resolved'),
+(286, 1, 31, 82, 82, '[74, 82]', 2159, 'Obwohl die Matrix zwei Spalten besitzt, enthält ihr Bild also nur eine linear unabhängige Richtung \\[74, 82\\].', 'resolved'),
+(287, 1, 31, 71, 71, '[71, 74, 82]', 2175, 'Für quadratische Matrizen ist voller Rang äquivalent zu einer nicht verschwindenden Determinante und damit zur Invertierbarkeit \\[71, 74, 82\\].', 'resolved'),
+(288, 1, 31, 74, 74, '[71, 74, 82]', 2175, 'Für quadratische Matrizen ist voller Rang äquivalent zu einer nicht verschwindenden Determinante und damit zur Invertierbarkeit \\[71, 74, 82\\].', 'resolved'),
+(289, 1, 31, 82, 82, '[71, 74, 82]', 2175, 'Für quadratische Matrizen ist voller Rang äquivalent zu einer nicht verschwindenden Determinante und damit zur Invertierbarkeit \\[71, 74, 82\\].', 'resolved'),
+(290, 1, 31, 71, 71, '[71, 74, 82]', 2193, 'Diese Beziehung wird als **Dimensionssatz** oder **Rang-Nullitätssatz** bezeichnet \\[71, 74, 82\\].', 'resolved'),
+(291, 1, 31, 74, 74, '[71, 74, 82]', 2193, 'Diese Beziehung wird als **Dimensionssatz** oder **Rang-Nullitätssatz** bezeichnet \\[71, 74, 82\\].', 'resolved'),
+(292, 1, 31, 82, 82, '[71, 74, 82]', 2193, 'Diese Beziehung wird als **Dimensionssatz** oder **Rang-Nullitätssatz** bezeichnet \\[71, 74, 82\\].', 'resolved'),
+(293, 1, 31, 74, 74, '[74, 82]', 2220, 'Eine der beiden unabhängigen Richtungen des Definitionsraums trägt somit zum Bild bei, während eine unabhängige Richtung im Kern liegt \\[74, 82\\].', 'resolved'),
+(294, 1, 31, 82, 82, '[74, 82]', 2220, 'Eine der beiden unabhängigen Richtungen des Definitionsraums trägt somit zum Bild bei, während eine unabhängige Richtung im Kern liegt \\[74, 82\\].', 'resolved');
+INSERT INTO `citation_occurrences` (`citation_occurrence_id`, `document_id`, `section_id`, `source_id`, `source_citation_number`, `citation_group_text`, `source_line_no`, `context_text`, `validation_status`) VALUES
+(295, 1, 31, 71, 71, '[71, 74]', 2270, 'Ist das System lösbar und besitzt $A$ vollen Spaltenrang, ist die Lösung eindeutig. Besitzt der Kern dagegen positive Dimension, können zu einer vorhandenen Lösung weitere Lösungen durch Addition von Kernvektoren erzeugt werden \\[71, 74\\]. Die Bedeutung des Rangs für lineare Gleichungssysteme ist damit unmittelbar mit Kern und Bild verknüpft.', 'resolved'),
+(296, 1, 31, 74, 74, '[71, 74]', 2270, 'Ist das System lösbar und besitzt $A$ vollen Spaltenrang, ist die Lösung eindeutig. Besitzt der Kern dagegen positive Dimension, können zu einer vorhandenen Lösung weitere Lösungen durch Addition von Kernvektoren erzeugt werden \\[71, 74\\]. Die Bedeutung des Rangs für lineare Gleichungssysteme ist damit unmittelbar mit Kern und Bild verknüpft.', 'resolved'),
+(297, 1, 31, 71, 71, '[71, 74, 82]', 2284, 'Damit beschreiben vier Begriffe dieselbe strukturelle Eigenschaft aus unterschiedlichen Blickwinkeln \\[71, 74, 82\\].', 'resolved'),
+(298, 1, 31, 74, 74, '[71, 74, 82]', 2284, 'Damit beschreiben vier Begriffe dieselbe strukturelle Eigenschaft aus unterschiedlichen Blickwinkeln \\[71, 74, 82\\].', 'resolved'),
+(299, 1, 31, 82, 82, '[71, 74, 82]', 2284, 'Damit beschreiben vier Begriffe dieselbe strukturelle Eigenschaft aus unterschiedlichen Blickwinkeln \\[71, 74, 82\\].', 'resolved'),
+(300, 1, 31, 71, 71, '[71, 74, 82]', 2298, 'Mit Bild, Kern und Rang kann ich lineare Abbildungen unabhängig davon untersuchen, ob ihre Darstellungsmatrix quadratisch ist. Damit erhalte ich eine allgemeinere Beschreibung als mit der Determinante allein. Das Bild bestimmt den tatsächlich erreichbaren Teil des Zielraums, der Kern die auf den Nullvektor abgebildeten Richtungen und der Rang die Dimension des erreichbaren Unterraums \\[71, 74, 82\\].', 'resolved'),
+(301, 1, 31, 74, 74, '[71, 74, 82]', 2298, 'Mit Bild, Kern und Rang kann ich lineare Abbildungen unabhängig davon untersuchen, ob ihre Darstellungsmatrix quadratisch ist. Damit erhalte ich eine allgemeinere Beschreibung als mit der Determinante allein. Das Bild bestimmt den tatsächlich erreichbaren Teil des Zielraums, der Kern die auf den Nullvektor abgebildeten Richtungen und der Rang die Dimension des erreichbaren Unterraums \\[71, 74, 82\\].', 'resolved'),
+(302, 1, 31, 82, 82, '[71, 74, 82]', 2298, 'Mit Bild, Kern und Rang kann ich lineare Abbildungen unabhängig davon untersuchen, ob ihre Darstellungsmatrix quadratisch ist. Damit erhalte ich eine allgemeinere Beschreibung als mit der Determinante allein. Das Bild bestimmt den tatsächlich erreichbaren Teil des Zielraums, der Kern die auf den Nullvektor abgebildeten Richtungen und der Rang die Dimension des erreichbaren Unterraums \\[71, 74, 82\\].', 'resolved'),
+(303, 1, 32, 71, 71, '[71, 74, 82]', 2367, 'Genau diese Richtungen werden durch Eigenvektoren beschrieben. Der zugehörige Skalierungsfaktor ist der Eigenwert. Beide Begriffe gehören zu den zentralen Werkzeugen der linearen Algebra, weil sie komplexe lineare Transformationen auf besonders einfache Wirkungen entlang bestimmter Richtungen zurückführen \\[71, 74, 82\\].', 'resolved'),
+(304, 1, 32, 74, 74, '[71, 74, 82]', 2367, 'Genau diese Richtungen werden durch Eigenvektoren beschrieben. Der zugehörige Skalierungsfaktor ist der Eigenwert. Beide Begriffe gehören zu den zentralen Werkzeugen der linearen Algebra, weil sie komplexe lineare Transformationen auf besonders einfache Wirkungen entlang bestimmter Richtungen zurückführen \\[71, 74, 82\\].', 'resolved'),
+(305, 1, 32, 82, 82, '[71, 74, 82]', 2367, 'Genau diese Richtungen werden durch Eigenvektoren beschrieben. Der zugehörige Skalierungsfaktor ist der Eigenwert. Beide Begriffe gehören zu den zentralen Werkzeugen der linearen Algebra, weil sie komplexe lineare Transformationen auf besonders einfache Wirkungen entlang bestimmter Richtungen zurückführen \\[71, 74, 82\\].', 'resolved'),
+(306, 1, 32, 71, 71, '[71, 74, 82]', 2387, 'Die Gleichung sagt aus, dass die Transformation $A$ den Eigenvektor nicht in eine neue unabhängige Richtung dreht. Sie verändert lediglich seine Länge und gegebenenfalls seine Orientierung \\[71, 74, 82\\].', 'resolved'),
+(307, 1, 32, 74, 74, '[71, 74, 82]', 2387, 'Die Gleichung sagt aus, dass die Transformation $A$ den Eigenvektor nicht in eine neue unabhängige Richtung dreht. Sie verändert lediglich seine Länge und gegebenenfalls seine Orientierung \\[71, 74, 82\\].', 'resolved'),
+(308, 1, 32, 82, 82, '[71, 74, 82]', 2387, 'Die Gleichung sagt aus, dass die Transformation $A$ den Eigenvektor nicht in eine neue unabhängige Richtung dreht. Sie verändert lediglich seine Länge und gegebenenfalls seine Orientierung \\[71, 74, 82\\].', 'resolved'),
+(309, 1, 32, 71, 71, '[71, 74, 82]', 2419, 'Diese Gleichung heißt charakteristische Gleichung der Matrix $A$ \\[71, 74, 82\\].', 'resolved'),
+(310, 1, 32, 74, 74, '[71, 74, 82]', 2419, 'Diese Gleichung heißt charakteristische Gleichung der Matrix $A$ \\[71, 74, 82\\].', 'resolved'),
+(311, 1, 32, 82, 82, '[71, 74, 82]', 2419, 'Diese Gleichung heißt charakteristische Gleichung der Matrix $A$ \\[71, 74, 82\\].', 'resolved'),
+(312, 1, 32, 71, 71, '[71, 74, 82]', 2487, 'Der Eigenraum enthält damit den Nullvektor und sämtliche Eigenvektoren, die zum Eigenwert $\\lambda$ gehören \\[71, 74, 82\\].', 'resolved'),
+(313, 1, 32, 74, 74, '[71, 74, 82]', 2487, 'Der Eigenraum enthält damit den Nullvektor und sämtliche Eigenvektoren, die zum Eigenwert $\\lambda$ gehören \\[71, 74, 82\\].', 'resolved'),
+(314, 1, 32, 82, 82, '[71, 74, 82]', 2487, 'Der Eigenraum enthält damit den Nullvektor und sämtliche Eigenvektoren, die zum Eigenwert $\\lambda$ gehören \\[71, 74, 82\\].', 'resolved'),
+(315, 1, 32, 71, 71, '[71, 74, 82]', 2555, 'Ein grundlegendes Ergebnis lautet: Eigenvektoren zu paarweise verschiedenen Eigenwerten sind linear unabhängig \\[71, 74, 82\\].', 'resolved'),
+(316, 1, 32, 74, 74, '[71, 74, 82]', 2555, 'Ein grundlegendes Ergebnis lautet: Eigenvektoren zu paarweise verschiedenen Eigenwerten sind linear unabhängig \\[71, 74, 82\\].', 'resolved'),
+(317, 1, 32, 82, 82, '[71, 74, 82]', 2555, 'Ein grundlegendes Ergebnis lautet: Eigenvektoren zu paarweise verschiedenen Eigenwerten sind linear unabhängig \\[71, 74, 82\\].', 'resolved'),
+(318, 1, 32, 71, 71, '[71, 74, 82]', 2571, 'Die Determinante ist damit das Produkt aller Eigenwerte \\[71, 74, 82\\].', 'resolved'),
+(319, 1, 32, 74, 74, '[71, 74, 82]', 2571, 'Die Determinante ist damit das Produkt aller Eigenwerte \\[71, 74, 82\\].', 'resolved'),
+(320, 1, 32, 82, 82, '[71, 74, 82]', 2571, 'Die Determinante ist damit das Produkt aller Eigenwerte \\[71, 74, 82\\].', 'resolved'),
+(321, 1, 33, 74, 74, '[74]', 2734, 'Mit Eigenwerten und Eigenvektoren kann ich diejenigen Richtungen eines linearen Operators bestimmen, die unter seiner Wirkung lediglich skaliert werden. Der nächste Schritt besteht darin zu prüfen, ob sich aus diesen ausgezeichneten Richtungen eine vollständige Basis des betrachteten Vektorraums bilden lässt. Ist das möglich, kann ich die Matrixdarstellung des Operators durch einen geeigneten Basiswechsel auf eine Diagonalmatrix zurückführen. Genau darin liegt die Idee der Diagonalisierung \\[74\\]. Strang behandelt diesen Zusammenhang ausdrücklich in Kapitel 6, insbesondere in §6.2 „Diagonalizing a Matrix\".', 'resolved'),
+(322, 1, 33, 74, 74, '[74]', 2736, 'Die Bedeutung dieser Umformung liegt für mich nicht darin, dass ein anderer Operator entsteht. Wie beim allgemeinen Basiswechsel bleibt der lineare Operator selbst unverändert. Lediglich seine Matrixdarstellung wird in einer besonders geeigneten Basis wesentlich einfacher. Wenn diese Basis aus Eigenvektoren besteht, wirkt der Operator entlang jeder Basisrichtung nur noch durch Multiplikation mit dem zugehörigen Eigenwert \\[74\\].', 'resolved'),
+(323, 1, 33, 74, 74, '[74]', 2759, 'Die Spalten von $P$ werden dabei aus linear unabhängigen Eigenvektoren von $A$ gebildet. Die zugehörigen Eigenwerte stehen in derselben Reihenfolge auf der Hauptdiagonale von $D$ \\[74\\].', 'resolved'),
+(324, 1, 33, 74, 74, '[74]', 2807, 'Eine $n \\times n$-Matrix ist genau dann diagonalisierbar, wenn sie $n$ linear unabhängige Eigenvektoren besitzt \\[74\\]. Das offizielle MIT-Material formuliert die Diagonalisierung entsprechend über eine Matrix aus unabhängigen Eigenvektoren.', 'resolved'),
+(325, 1, 33, 74, 74, '[74]', 2815, 'Besitzt eine $n \\times n$-Matrix $n$ paarweise verschiedene Eigenwerte, so besitzt sie automatisch $n$ linear unabhängige Eigenvektoren und ist damit diagonalisierbar \\[74\\].', 'resolved'),
+(326, 1, 33, 74, 74, '[74]', 2986, 'Damit reduziert sich die wiederholte Anwendung eines linearen Operators auf die Potenzierung seiner Eigenwerte. Dieser Zusammenhang ist ein zentraler Grund dafür, warum Diagonalisierung bei iterierten linearen Prozessen so nützlich ist \\[74\\].', 'resolved'),
+(327, 1, 33, 74, 74, '[74]', 3009, 'Eine besonders starke Form der Diagonalisierung tritt bei reellen symmetrischen Matrizen auf. Strang behandelt symmetrische Matrizen unmittelbar in §6.4 und verweist dort ausdrücklich auf den Spektralsatz. Die offiziellen Lösungen bestätigen, dass die Eigenvektoren symmetrischer Matrizen orthogonal gewählt werden können. \\[74\\]', 'resolved'),
+(328, 1, 33, 74, 74, '[74]', 3026, 'Diese Aussage ist die endlichdimensionale Form des **Spektralsatzes für reelle symmetrische Matrizen** \\[74\\].', 'resolved'),
+(329, 1, 33, 74, 74, '[74]', 3047, 'Damit besitzt jede reelle symmetrische Matrix eine orthonormale Eigenvektorbasis und ausschließlich reelle Eigenwerte \\[74\\].', 'resolved'),
+(330, 1, 33, 74, 74, '[74]', 3124, 'Existiert eine vollständige Eigenvektorbasis, kann ich den Operator in dieser Basis diagonal darstellen. Dann wirkt er auf jede Eigenrichtung unabhängig durch Multiplikation mit einem einzigen Eigenwert \\[74\\].', 'resolved'),
+(331, 1, 33, 74, 74, '[74]', 3126, 'Für symmetrische Matrizen ist die Situation noch stärker strukturiert. Ihre Eigenvektoren können orthonormal gewählt werden und ihre Eigenwerte sind reell. Dadurch entsteht eine orthogonale Spektralzerlegung des gesamten Raums \\[74\\].', 'resolved'),
+(332, 1, 33, 74, 74, '[74]', 3198, 'Für reelle symmetrische Matrizen liefert der Spektralsatz eine noch stärkere Struktur: Es existiert eine orthonormale Eigenbasis, sodass der Operator orthogonal diagonalisiert und als Summe seiner Eigenprojektoren dargestellt werden kann \\[74\\].', 'resolved'),
+(333, 1, 34, 74, 74, '[74]', 3212, 'Als zentrale Literaturgrundlage verwende ich hierfür **Gilbert Strang: *Introduction to Linear Algebra*. 5th Edition. Wellesley, Massachusetts: Wellesley-Cambridge Press, 2016 \\[74\\]**. Strang behandelt Längen und Skalarprodukte bereits in §1.2 und führt die darauf aufbauenden Begriffe der Orthogonalität, Projektion und orthonormalen Basen systematisch in Kapitel 4 weiter.', 'resolved'),
+(334, 1, 34, 84, 84, '[84]', 3214, 'Ergänzend ziehe ich **Stephen H. Friedberg, Arnold J. Insel und Lawrence E. Spence: *Linear Algebra*. 5th Edition. Pearson, 2018 \\[84\\]** heran. Dort bilden Skalarprodukte und Normen den Ausgangspunkt von Kapitel 6 „Inner Product Spaces\"; anschließend folgen Gram-Schmidt, orthogonale Komplemente, orthogonale Projektionen und der Spektralsatz.', 'resolved'),
+(335, 1, 34, 84, 84, '[84]', 3244, 'Diese Eigenschaften bilden gemeinsam die mathematische Grundlage dafür, aus dem Skalarprodukt geometrische Größen abzuleiten \\[84\\]. Kapitel 6.1 von Friedberg, Insel und Spence ist ausdrücklich den „Inner Products and Norms\" gewidmet.', 'resolved'),
+(336, 1, 34, 74, 74, '[74]', 3277, 'Strang behandelt genau diesen Zusammenhang zwischen Vektorlänge und Skalarprodukt bereits in §1.2 „Lengths and Dot Products\" \\[74\\].', 'resolved'),
+(337, 1, 34, 84, 84, '[84]', 3297, 'Damit verallgemeinere ich unmittelbar den Satz des Pythagoras auf den (n)-dimensionalen euklidischen Raum. Diese Definition der Norm aus dem Skalarprodukt ist Standardbestandteil der Theorie der Skalarprodukträume \\[84\\].', 'resolved'),
+(338, 1, 34, 74, 74, '[74]', 3384, 'Strang entwickelt Orthogonalität, Projektionen und orthogonale Basen zusammenhängend in Kapitel 4 \\[74\\]. Friedberg, Insel und Spence behandeln dieselbe Struktur in Kapitel 6 über Skalarprodukträume und orthogonale Komplemente \\[84\\].', 'resolved'),
+(339, 1, 34, 84, 84, '[84]', 3384, 'Strang entwickelt Orthogonalität, Projektionen und orthogonale Basen zusammenhängend in Kapitel 4 \\[74\\]. Friedberg, Insel und Spence behandeln dieselbe Struktur in Kapitel 6 über Skalarprodukträume und orthogonale Komplemente \\[84\\].', 'resolved'),
+(340, 1, 34, 84, 84, '[84]', 3500, 'Die Zerlegung in einen Anteil innerhalb eines Unterraums und einen dazu orthogonalen Anteil bildet die Grundlage der orthogonalen Projektion. Friedberg, Insel und Spence führen orthogonale Komplemente und den Gram-Schmidt-Prozess gemeinsam in §6.2 sowie orthogonale Projektionen in §6.6 \\[84\\].', 'resolved'),
+(341, 1, 34, 74, 74, '[74]', 3522, 'Strang behandelt Projektionen ausdrücklich in §4.2 \\[74\\].', 'resolved'),
+(342, 1, 34, 74, 74, '[74, 84]', 3572, 'Eine beliebige linear unabhängige Basis ist im Allgemeinen nicht orthogonal. Ich kann sie jedoch systematisch in eine orthonormale Basis desselben Unterraums überführen. Dieses Verfahren ist die Gram-Schmidt-Orthogonalisierung \\[74, 84\\]. Strang behandelt sie ausdrücklich in §4.4, Friedberg, Insel und Spence in §6.2.', 'resolved'),
+(343, 1, 34, 84, 84, '[74, 84]', 3572, 'Eine beliebige linear unabhängige Basis ist im Allgemeinen nicht orthogonal. Ich kann sie jedoch systematisch in eine orthonormale Basis desselben Unterraums überführen. Dieses Verfahren ist die Gram-Schmidt-Orthogonalisierung \\[74, 84\\]. Strang behandelt sie ausdrücklich in §4.4, Friedberg, Insel und Spence in §6.2.', 'resolved'),
+(344, 1, 34, 74, 74, '[74, 84]', 3739, 'Die Gram-Schmidt-Orthogonalisierung zeigt schließlich, dass ich eine ungünstige, schiefwinklige Basis nicht einfach hinnehmen muss. Solange die Ausgangsvektoren linear unabhängig sind, kann ich aus ihnen schrittweise eine orthonormale Basis desselben Unterraums konstruieren \\[74, 84\\].', 'resolved'),
+(345, 1, 34, 84, 84, '[74, 84]', 3739, 'Die Gram-Schmidt-Orthogonalisierung zeigt schließlich, dass ich eine ungünstige, schiefwinklige Basis nicht einfach hinnehmen muss. Solange die Ausgangsvektoren linear unabhängig sind, kann ich aus ihnen schrittweise eine orthonormale Basis desselben Unterraums konstruieren \\[74, 84\\].', 'resolved'),
+(346, 1, 34, 74, 74, '[74, 84]', 3745, 'Mit dem Skalarprodukt habe ich den bisher rein algebraisch behandelten Vektorräumen eine zusätzliche geometrische Struktur gegeben. Aus dem Skalarprodukt konnte ich Norm, Abstand und Winkel ableiten. Orthogonalität lässt sich durch das Verschwinden des Skalarprodukts charakterisieren, und orthonormale Basen ermöglichen eine besonders einfache Zerlegung von Vektoren \\[74, 84\\].', 'resolved'),
+(347, 1, 34, 84, 84, '[74, 84]', 3745, 'Mit dem Skalarprodukt habe ich den bisher rein algebraisch behandelten Vektorräumen eine zusätzliche geometrische Struktur gegeben. Aus dem Skalarprodukt konnte ich Norm, Abstand und Winkel ableiten. Orthogonalität lässt sich durch das Verschwinden des Skalarprodukts charakterisieren, und orthonormale Basen ermöglichen eine besonders einfache Zerlegung von Vektoren \\[74, 84\\].', 'resolved'),
+(348, 1, 34, 74, 74, '[74, 84]', 3747, 'Mit orthogonalen Projektionen kann ich einen Vektor eindeutig in einen Anteil innerhalb eines Unterraums und einen dazu orthogonalen Anteil zerlegen. Die Gram-Schmidt-Orthogonalisierung erlaubt mir wiederum, aus jeder linear unabhängigen endlichen Vektormenge eine orthonormale Basis ihres aufgespannten Unterraums zu erzeugen \\[74, 84\\].', 'resolved'),
+(349, 1, 34, 84, 84, '[74, 84]', 3747, 'Mit orthogonalen Projektionen kann ich einen Vektor eindeutig in einen Anteil innerhalb eines Unterraums und einen dazu orthogonalen Anteil zerlegen. Die Gram-Schmidt-Orthogonalisierung erlaubt mir wiederum, aus jeder linear unabhängigen endlichen Vektormenge eine orthonormale Basis ihres aufgespannten Unterraums zu erzeugen \\[74, 84\\].', 'resolved'),
+(350, 1, 34, 74, 74, '[74]', 3757, 'Für das folgende Repository-Skript sind damit **\\[74\\]** und die neue Literaturstelle **\\[84\\]** zu erfassen. Für \\[74\\] sind insbesondere §1.2, §4.2 und §4.4 als verifizierte source_usage-Bereiche verfügbar; für \\[84\\] sind §6.1, §6.2 und §6.6 durch das reale Inhaltsverzeichnis verifiziert. Wo der konkrete Quellentext nicht zugänglich verifiziert wurde, darf im SQL **kein erfundener source_excerpt** eingetragen werden.', 'resolved'),
+(351, 1, 34, 84, 84, '[84]', 3757, 'Für das folgende Repository-Skript sind damit **\\[74\\]** und die neue Literaturstelle **\\[84\\]** zu erfassen. Für \\[74\\] sind insbesondere §1.2, §4.2 und §4.4 als verifizierte source_usage-Bereiche verfügbar; für \\[84\\] sind §6.1, §6.2 und §6.6 durch das reale Inhaltsverzeichnis verifiziert. Wo der konkrete Quellentext nicht zugänglich verifiziert wurde, darf im SQL **kein erfundener source_excerpt** eingetragen werden.', 'resolved'),
+(352, 1, 34, 74, 74, '[74]', 3757, 'Für das folgende Repository-Skript sind damit **\\[74\\]** und die neue Literaturstelle **\\[84\\]** zu erfassen. Für \\[74\\] sind insbesondere §1.2, §4.2 und §4.4 als verifizierte source_usage-Bereiche verfügbar; für \\[84\\] sind §6.1, §6.2 und §6.6 durch das reale Inhaltsverzeichnis verifiziert. Wo der konkrete Quellentext nicht zugänglich verifiziert wurde, darf im SQL **kein erfundener source_excerpt** eingetragen werden.', 'resolved'),
+(353, 1, 34, 84, 84, '[84]', 3757, 'Für das folgende Repository-Skript sind damit **\\[74\\]** und die neue Literaturstelle **\\[84\\]** zu erfassen. Für \\[74\\] sind insbesondere §1.2, §4.2 und §4.4 als verifizierte source_usage-Bereiche verfügbar; für \\[84\\] sind §6.1, §6.2 und §6.6 durch das reale Inhaltsverzeichnis verifiziert. Wo der konkrete Quellentext nicht zugänglich verifiziert wurde, darf im SQL **kein erfundener source_excerpt** eingetragen werden.', 'resolved');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `citation_resolutions`
+--
+
+CREATE TABLE `citation_resolutions` (
+  `citation_occurrence_id` bigint(20) UNSIGNED NOT NULL,
+  `original_citation_number` int(10) UNSIGNED NOT NULL,
+  `canonical_source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `canonical_citation_number` int(10) UNSIGNED DEFAULT NULL,
+  `resolution_type` enum('same','replaced','unresolved') NOT NULL,
+  `resolution_reason` longtext DEFAULT NULL,
+  `verification_status` enum('verified','needs_review') NOT NULL DEFAULT 'verified'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `citation_resolutions`
+--
+
+INSERT INTO `citation_resolutions` (`citation_occurrence_id`, `original_citation_number`, `canonical_source_id`, `canonical_citation_number`, `resolution_type`, `resolution_reason`, `verification_status`) VALUES
+(1, 6, 6, 6, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(2, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(3, 72, 72, 72, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(4, 73, 73, 73, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(5, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(6, 75, 75, 75, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(7, 76, 76, 76, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(8, 77, 77, 77, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(9, 78, 78, 78, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(10, 79, 79, 79, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(11, 6, 6, 6, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(12, 80, 80, 80, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(13, 81, 81, 81, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(14, 67, 67, 67, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(15, 68, 68, 68, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(16, 80, 80, 80, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(17, 81, 81, 81, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(18, 6, 6, 6, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(19, 78, 78, 78, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(20, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(21, 72, 72, 72, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(22, 80, 80, 80, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(23, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(24, 83, 83, 83, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(25, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(26, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(27, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(28, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(29, 13, 76, 76, 'replaced', 'Vorläufige Literaturziffer [13] wird durch [76] Reed/Simon ersetzt.', 'verified'),
+(30, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(31, 80, 80, 80, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(32, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(33, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(34, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(35, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(36, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(37, 10, 74, 74, 'replaced', 'Vorläufige Literaturziffer [10] wird durch [74] Strang ersetzt.', 'verified'),
+(38, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(39, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(40, 10, 74, 74, 'replaced', 'Vorläufige Literaturziffer [10] wird durch [74] Strang ersetzt.', 'verified'),
+(41, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(42, 13, 76, 76, 'replaced', 'Vorläufige Literaturziffer [13] wird durch [76] Reed/Simon ersetzt.', 'verified'),
+(43, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(44, 13, 76, 76, 'replaced', 'Vorläufige Literaturziffer [13] wird durch [76] Reed/Simon ersetzt.', 'verified'),
+(45, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(46, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(47, 13, 76, 76, 'replaced', 'Vorläufige Literaturziffer [13] wird durch [76] Reed/Simon ersetzt.', 'verified'),
+(48, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(49, 13, 76, 76, 'replaced', 'Vorläufige Literaturziffer [13] wird durch [76] Reed/Simon ersetzt.', 'verified'),
+(50, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(51, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(52, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(53, 13, 76, 76, 'replaced', 'Vorläufige Literaturziffer [13] wird durch [76] Reed/Simon ersetzt.', 'verified'),
+(54, 10, 74, 74, 'replaced', 'Vorläufige Literaturziffer [10] wird durch [74] Strang ersetzt.', 'verified'),
+(55, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(56, 10, 74, 74, 'replaced', 'Vorläufige Literaturziffer [10] wird durch [74] Strang ersetzt.', 'verified'),
+(57, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(58, 10, 74, 74, 'replaced', 'Vorläufige Literaturziffer [10] wird durch [74] Strang ersetzt.', 'verified'),
+(59, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(60, 10, 74, 74, 'replaced', 'Vorläufige Literaturziffer [10] wird durch [74] Strang ersetzt.', 'verified'),
+(61, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(62, 13, 76, 76, 'replaced', 'Vorläufige Literaturziffer [13] wird durch [76] Reed/Simon ersetzt.', 'verified'),
+(63, 10, 74, 74, 'replaced', 'Vorläufige Literaturziffer [10] wird durch [74] Strang ersetzt.', 'verified'),
+(64, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(65, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(66, 13, 76, 76, 'replaced', 'Vorläufige Literaturziffer [13] wird durch [76] Reed/Simon ersetzt.', 'verified'),
+(67, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(68, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(69, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(70, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(71, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(72, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(73, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(74, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(75, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(76, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(77, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(78, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(79, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(80, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(81, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(82, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(83, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(84, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(85, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(86, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(87, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(88, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(89, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(90, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(91, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(92, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(93, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(94, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(95, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(96, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(97, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(98, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(99, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(100, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(101, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(102, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(103, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(104, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(105, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(106, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(107, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(108, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(109, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(110, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(111, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(112, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(113, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(114, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(115, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(116, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(117, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(118, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(119, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(120, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(121, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(122, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(123, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(124, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(125, 76, 76, 76, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(126, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(127, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(128, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(129, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(130, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(131, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(132, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(133, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(134, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(135, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(136, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(137, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(138, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(139, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(140, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(141, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(142, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(143, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(144, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(145, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(146, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(147, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(148, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(149, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(150, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(151, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(152, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(153, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(154, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(155, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(156, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(157, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(158, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(159, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(160, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(161, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(162, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(163, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(164, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(165, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(166, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(167, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(168, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(169, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(170, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(171, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(172, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(173, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(174, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(175, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(176, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(177, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(178, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(179, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(180, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(181, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(182, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(183, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(184, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(185, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(186, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(187, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(188, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(189, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(190, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(191, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(192, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(193, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(194, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(195, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(196, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(197, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(198, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(199, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(200, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(201, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(202, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(203, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(204, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(205, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(206, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(207, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(208, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(209, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(210, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(211, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(212, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(213, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(214, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(215, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(216, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(217, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(218, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(219, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(220, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(221, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(222, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(223, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(224, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(225, 76, 76, 76, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(226, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(227, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(228, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(229, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(230, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(231, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(232, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(233, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(234, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(235, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(236, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(237, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(238, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(239, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(240, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(241, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(242, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(243, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(244, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(245, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(246, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(247, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(248, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(249, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(250, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(251, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(252, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(253, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(254, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(255, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(256, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(257, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(258, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(259, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(260, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(261, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(262, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(263, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(264, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(265, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(266, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(267, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(268, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(269, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(270, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(271, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(272, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(273, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(274, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(275, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(276, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(277, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(278, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(279, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(280, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(281, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(282, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(283, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(284, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(285, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(286, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(287, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(288, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(289, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(290, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(291, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(292, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(293, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(294, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(295, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(296, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(297, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(298, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(299, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(300, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(301, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(302, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(303, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(304, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(305, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(306, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(307, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(308, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(309, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(310, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(311, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(312, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(313, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(314, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(315, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(316, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(317, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(318, 71, 71, 71, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(319, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(320, 82, 82, 82, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(321, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(322, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(323, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(324, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(325, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(326, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(327, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(328, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(329, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(330, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(331, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(332, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(333, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(334, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(335, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(336, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(337, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(338, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(339, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(340, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(341, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(342, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(343, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(344, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(345, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(346, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(347, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(348, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(349, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(350, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(351, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(352, 74, 74, 74, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified'),
+(353, 84, 84, 84, 'same', 'Aktuelle Literaturziffer bleibt kanonisch.', 'verified');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `corollaries`
+--
+
+CREATE TABLE `corollaries` (
+  `corollary_id` bigint(20) UNSIGNED NOT NULL,
+  `corollary_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `statement_text` longtext NOT NULL,
+  `statement_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `parent_theorem_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `parent_lemma_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `provenance` enum('original','adapted','literature') NOT NULL DEFAULT 'literature',
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `definitions`
+--
+
+CREATE TABLE `definitions` (
+  `definition_id` bigint(20) UNSIGNED NOT NULL,
+  `definition_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `definition_text` longtext NOT NULL,
+  `formal_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `provenance` enum('original','adapted','literature') NOT NULL DEFAULT 'original',
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `assumptions` text DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `definition_candidates`
+--
+
+CREATE TABLE `definition_candidates` (
+  `definition_candidate_id` bigint(20) UNSIGNED NOT NULL,
+  `document_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `source_definition_number` varchar(50) NOT NULL,
+  `proposed_definition_number` varchar(50) DEFAULT NULL,
+  `title` varchar(500) NOT NULL,
+  `source_text` longtext NOT NULL,
+  `proposed_text` longtext DEFAULT NULL,
+  `formal_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `provenance` enum('literature','adapted','original','mixed','needs_review') NOT NULL DEFAULT 'needs_review',
+  `candidate_status` enum('source_import','rewrite','accepted','rejected','superseded') NOT NULL DEFAULT 'source_import',
+  `notes` longtext DEFAULT NULL,
+  `created_revision_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `definition_candidates`
+--
+
+INSERT INTO `definition_candidates` (`definition_candidate_id`, `document_id`, `section_id`, `source_definition_number`, `proposed_definition_number`, `title`, `source_text`, `proposed_text`, `formal_latex`, `word_latex`, `provenance`, `candidate_status`, `notes`, `created_revision_id`) VALUES
+(1, 1, 23, '3.2.1', NULL, 'Menge und Element', 'Unter einer Menge $M$ verstehe ich zunächst eine formal bestimmte Zusammenfassung unterscheidbarer Objekte. Die zu $M$ gehörenden Objekte bezeichne ich als Elemente der Menge.\n\nDie Zugehörigkeit eines Objekts $x$ zu einer Menge $M$ schreibe ich als\n\n$x \\in \\, M$ (3.1)\n\nDabei ist $x$ das betrachtete Objekt und die Menge $M$, hinsichtlich derer ich die Zugehörigkeit prüfe.\n\nDie Nichtzugehörigkeit schreibe ich entsprechend als\n\n$x \\notin M$ (3.2)\n\nDie Aussagen (3.1) und (3.2) legen ausschließlich fest, ob ein Objekt innerhalb der betrachteten Menge geführt wird. Sie bestimmen weder seine Eigenschaften noch seine Beziehungen zu anderen Elementen. Diese Unterscheidung ist für meine weitere Entwicklung wesentlich. Die Aufnahme eines Zustands in eine Zustandsmenge bedeutet noch nicht, dass seine innere Struktur, seine Ursache oder seine funktionale Bedeutung bereits erklärt wäre.\n\nEine endliche Menge kann ich durch die Aufzählung ihrer Elemente angeben. Für drei Elemente $a$, $b$ und $c$ schreibe ich beispielsweise\n\n$M = \\text{\\{}a,b,c\\text{\\}}$ (3.3)\n\nDabei bezeichnet $M$ die betrachtete Menge; $a$, $b$ und $c$ sind ihre Elemente.\n\nDie Reihenfolge der Elemente ist für eine Menge nicht von Bedeutung. Ebenso verändert eine wiederholte Nennung eines Elements die Menge nicht. Es gilt daher\n\n$\\text{\\{}a,b,c\\text{\\}} = \\text{\\{}c,a,b\\text{\\}} = \\text{\\{}a,a,b,c\\text{\\}}$ (3.4)\n\nAn dieser Stelle wird bereits eine erste Grenze der Mengenbeschreibung sichtbar. Die Menge (3.3) enthält zwar die Elemente $a$, $b$ und $c$, sie enthält jedoch keine Information darüber, ob eines dieser Elemente zuerst oder zuletzt auftritt, ob ein Element gegenüber einem anderen hervorgehoben ist oder ob zwischen den Elementen eine bestimmte Wirkungsrichtung besteht. Eine Menge stellt damit zunächst eine Zusammenfassung bereit, aber noch keine Ordnung, Gewichtung oder Dynamik.\n\nNeben der Aufzählung kann ich eine Menge durch eine Eigenschaft ihrer Elemente bestimmen. Die allgemeine Form lautet\n\n$$M = \\text{\\{}x \\in U \\mid P(x)\\text{\\}}\\ (3.5)$$\n\nDabei ist $U$ die Grundmenge, aus der ich die Elemente auswähle. $P(x)$ bezeichnet eine Bedingung, die für jedes $x \\in U$ eindeutig erfüllt oder nicht erfüllt sein muss. Die Menge $M$ enthält genau diejenigen Elemente aus $U$, für die $P(x)$ gilt.\n\nIch halte die Grundmenge $U$ in (3.5) ausdrücklich fest, weil eine Auswahlbedingung niemals unabhängig von einem zugelassenen Ausgangsbereich wirkt. Wenn ich beispielsweise die Menge der geraden natürlichen Zahlen bestimme, muss zunächst feststehen, dass natürliche Zahlen betrachtet werden:\n\n$$G = \\text{\\{}n \\in \\mathbb{N} \\mid \\exists k \\in \\mathbb{N}:n = 2k\\text{\\}}\\ (3.6)$$\n\nDabei bezeichnet $G$ die Menge der geraden natürlichen Zahlen, $n$ das jeweils betrachtete Element und $k$ eine natürliche Zahl, durch die die Geradheit von $n$ ausgedrückt wird.\n\nDie Bedingung entscheidet innerhalb des Zahlenbereichs $\\mathbb{N}$, welche Elemente zu $G$ gehören. Würde ich einen anderen Grundbereich wählen, könnte dieselbe sprachliche Bedingung eine andere Menge bestimmen. Für meine weitere Modellbildung folgt daraus, dass die Festlegung eines zulässigen Objekt- oder Zustandsbereichs keine beiläufige Entscheidung ist. Sie bestimmt, welche Gegenstände innerhalb des Modells überhaupt auftreten können.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(2, 1, 23, '3.2.2', NULL, 'Binäre Relation', 'Eine binäre Relation $R$ zwischen den Mengen $A$ und $B$ ist eine Teilmenge ihres kartesischen Produkts:\n\n$$R \\subseteq A \\times B\\ (3.22)$$\n\nDabei bezeichnet $R$ die Relation und $A \\times B$ die Menge aller formal möglichen geordneten Paare zwischen den beiden betrachteten Mengen.\n\nGilt $(a,b) \\in R$, schreibe ich auch\n\n$$aRb \\Longleftrightarrow (a,b) \\in R\\ (3.23)$$\n\nDabei bedeutet $aRb$, dass das Element $a$ bezüglich der Relation $R$ zum Element $b$ in Beziehung steht.\n\nDamit wird erstmals eine ausgewählte Verbindung zwischen Elementen formal beschrieben. Das kartesische Produkt enthält alle möglichen Paarungen; die Relation bestimmt, welche dieser Paarungen innerhalb der jeweiligen mathematischen Struktur tatsächlich berücksichtigt werden.\n\nDie formale Untersuchung von Relationen besitzt bereits in den logischen und mathematischen Arbeiten von Gottlob Frege und Alfred Tarski grundlegende Bedeutung. Ich nutze diese Arbeiten hier ausschließlich für den etablierten formallogischen Hintergrund der Relationsbeschreibung. Saunders Mac Lane hebt darüber hinaus hervor, dass mathematische Strukturen nicht nur durch ihre Objekte, sondern wesentlich auch durch die zwischen ihnen bestehenden Abbildungen und Beziehungen verständlich werden \\[78\\]. Die bereits im ursprünglichen Abschnitt enthaltenen Verweise auf Frege und Tarski werden beim zugehörigen Repository-Skript gegen den realen Quellenbestand geprüft und dort mit den tatsächlich gültigen Zitationsnummern synchronisiert.\n\nFür meine Untersuchung ist dies ein entscheidender Übergang. Eine Menge erfasst, welche Elemente betrachtet werden. Eine Relation erfasst zusätzlich, welche Elemente innerhalb einer gewählten Beschreibung miteinander verbunden sind.\n\nIch übernehme für das FRZK jedoch nicht jede beliebige mengentheoretisch mögliche Relation. Gleichung (3.22) beschreibt zunächst nur die formale Grundstruktur. Ob eine Relation symmetrisch, gerichtet, transitiv, reflexiv, funktional oder empirisch begründet ist, muss jeweils zusätzlich bestimmt werden. Ebenso folgt aus dem bloßen Bestehen einer Relation noch keine physikalische Wechselwirkung und keine kausale Verbindung.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(3, 1, 24, '3.2.3', NULL, 'Funktion', 'Eine Funktion $f$ von einer Menge $A$ in eine Menge $B$ ist eine Relation, die jedem Element $a \\in A$ genau ein Element $b \\in B$ zuordnet. Ich fasse die Abbildung und ihre Eindeutigkeitsbedingung deshalb gemeinsam zusammen:\n\n$$f:A \\rightarrow B,\\quad\\quad\\forall a \\in A\\ \\exists!\\, b \\in B:\\ f(a) = b(3.24)$$\n\nDabei gilt:\n\n-   $f$ ist die Funktion,\n\n-   $A$ ist ihre Definitionsmenge beziehungsweise ihr Definitionsbereich,\n\n-   $B$ ist ihre Zielmenge,\n\n-   $a$ ist ein Element des Definitionsbereichs,\n\n-   $b = fa$ ist der $a$ eindeutig zugeordnete Funktionswert,\n\n-   $\\exists!$ bezeichnet die eindeutige Existenz.\n\nDamit fasse ich die im ursprünglichen Text noch getrennt nummerierten Ausdrücke für die Funktionsschreibweise, den Funktionswert und die Eindeutigkeit bewusst zu **einer** mathematischen Aussage zusammen. Die einzelnen darin auftretenden Größen erhalten keine eigenen Gleichungsnummern.\n\nGleichung (3.24) enthält zwei Anforderungen. Erstens muss zu jedem Element $a \\in A$ mindestens ein zugeordnetes Element $b \\in B$ existieren. Zweitens darf es für dasselbe Element $a$ nicht mehrere verschiedene Funktionswerte geben.\n\nDiese Bedingung ist für den Funktionsbegriff wesentlich. Eine Relation, die einem Element mehrere verschiedene Werte zuordnet, ist keine Funktion im hier verwendeten Sinn. Ebenso ist eine Zuordnung keine Funktion auf ganz $A$, wenn für einzelne Elemente aus $A$ kein Funktionswert bestimmt ist.\n\nMengentheoretisch kann ich eine Funktion als Teilmenge des kartesischen Produkts auffassen. Dabei müssen sowohl die Eindeutigkeit als auch die vollständige Erfassung des Definitionsbereichs gleichzeitig gelten:\n\n$$\\ (a,b\\_ 1) \\in \\begin{matrix}\nf \\subseteq A \\times B, \\\\\nf \\land (a,b_{2}) \\in f\\& \\Rightarrow b_{1} = b_{2}, \\\\\n\\forall a \\in A\\ \\&\\exists b \\in B:\\ (a,b) \\in f.\n\\end{matrix}(3.25)$$\n\nDabei sind $b_{1}$ und $b_{2}$ zwei mögliche Werte, die demselben Element $a$ zugeordnet sein könnten. Die zweite Zeile schließt aus, dass diese Werte verschieden sind. Die dritte Zeile stellt sicher, dass jedes Element des Definitionsbereichs tatsächlich in einem geordneten Paar der Funktion auftritt.\n\nErst die Verbindung dieser Bedingungen ergibt eine Funktion auf der gesamten Definitionsmenge $A$.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(4, 1, 25, '3.2.4', NULL, 'Mathematische Abbildung', 'Seien $X$ und $Y$ Mengen. Eine Abbildung $T$ ordnet jedem Element $x \\in X$ genau ein Element $y \\in Y$ zu. Ich fasse die Abbildungsvorschrift und ihre Wirkung deshalb unmittelbar zusammen:\n\n$$T:X \\rightarrow Y,\\quad\\quad T(x) = y,\\quad x \\in X,\\ y \\in Y\\ (3.41)$$\n\nDabei gilt:\n\n-   $T$ bezeichnet die Abbildung,\n\n-   $X$ ist der Definitionsbereich,\n\n-   $Y$ ist der Zielbereich,\n\n-   $x$ ist ein Element aus $X$,\n\n-   $y = T(x)$ ist das $x$ zugeordnete Element aus $Y$.\n\nDamit besitzt eine Abbildung dieselbe grundlegende Eindeutigkeitsforderung wie eine Funktion. In der mathematischen Literatur werden beide Begriffe häufig synonym verwendet, wobei der Begriff *Abbildung* insbesondere dann verwendet wird, wenn die Wirkung auf mathematische Strukturen untersucht wird \\[71, 80, 82\\].\n\nDie Abbildung selbst enthält zunächst keine Aussage darüber, ob geometrische, algebraische oder analytische Eigenschaften erhalten bleiben. Solche Eigenschaften ergeben sich erst aus zusätzlichen Bedingungen an die Abbildung \\[71, 82\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(5, 1, 25, '3.2.5', NULL, 'Linearer Operator', 'Sind Definitions- und Zielraum identisch, spreche ich von einem linearen Operator. Formal schreibe ich\n\n$$T:V \\rightarrow V\\ (3.43)$$\n\nDabei bezeichnet $V$ den Vektorraum, auf dessen Elementen der Operator $T$ wirkt.\n\nEin Operator wirkt somit innerhalb desselben Vektorraums. Er erzeugt keinen neuen mathematischen Raum, sondern verändert ausschließlich Elemente eines bereits festgelegten Zustandsraums. Diese Definition wird in der linearen Algebra ebenso verwendet wie in der Funktionalanalysis \\[82, 13\\].\n\nDie Bezeichnung *Operator* beschreibt dabei keine besondere Rechenvorschrift. Sie charakterisiert zunächst die Tatsache, dass Definitions- und Zielraum identisch sind \\[82, 13\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(6, 1, 26, '3.2.6', NULL, 'Vektorraum', 'Sei $K$ ein Körper. Unter einem Vektorraum $V$ über $K$ verstehe ich eine nichtleere Menge, auf der eine Vektoraddition und eine Skalarmultiplikation definiert sind, die gemeinsam die Vektorraumaxiome erfüllen \\[71, 82\\].\n\nDie beiden grundlegenden Operationen fasse ich gemeinsam zusammen:\n\n$$\\begin{matrix}\n + :V \\times V \\rightarrow V,\\ (x,y) \\mapsto x + y, \\\\\n \\cdot K \\times V \\rightarrow V,(\\lambda,x) \\mapsto \\lambda x.\n\\end{matrix}\\ (3.51)$$\n\nDabei gilt:\n\n-   $V$ ist der Vektorraum,\n\n-   $K$ ist der zugrunde liegende Körper,\n\n-   $x,y \\in V$ sind Vektoren,\n\n-   $\\lambda \\in K$ ist ein Skalar,\n\n-   $+$bezeichnet die Vektoraddition,\n\n-   $\\cdot$ bezeichnet die Skalarmultiplikation.\n\nDie beiden Operationen sind abgeschlossen. Die Summe zweier Vektoren und das Produkt eines zulässigen Skalars mit einem Vektor müssen daher wieder Elemente desselben Vektorraums sein \\[71, 74, 82\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(7, 1, 26, '3.2.7', NULL, 'Nullvektor', 'In jedem Vektorraum existiert ein eindeutig bestimmtes neutrales Element bezüglich der Addition. Ich bezeichne dieses Element als Nullvektor $0_{V}$. Seine Zugehörigkeit zum Raum und seine neutrale Wirkung fasse ich zusammen:\n\n$$0_{V} \\in V,\\quad\\quad x + 0_{V} = 0_{V} + x = x\\quad\\forall x \\in V\\ (3.56)$$\n\nDer Index $V$ verdeutlicht, dass der Nullvektor ein Element des jeweiligen Vektorraums ist. Ich darf ihn deshalb nicht ohne weitere Begründung mit dem skalaren Nullelement des Körpers gleichsetzen \\[71, 82\\].\n\nIn Koordinatenräumen wird der Nullvektor durch einen Koordinatenvektor dargestellt, dessen sämtliche Komponenten gleich null sind. Für den zweidimensionalen reellen Koordinatenraum gilt beispielsweise\n\n$$0_{R^{\\mathbb{2}}} = \\begin{pmatrix}\n\\begin{matrix}\n0 \\\\\n0\n\\end{matrix}\n\\end{pmatrix}\\ (3.57)$$\n\nDer Nullvektor besitzt bezüglich der Addition eine neutrale Wirkung. Lineare Abbildungen bilden den Nullvektor des Definitionsraums auf den Nullvektor des Zielraums ab \\[71, 74, 82\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(8, 1, 26, '3.2.8', NULL, 'Untervektorraum', 'Eine Teilmenge $U \\subseteq V$ heißt Untervektorraum von $V$, wenn sie mit den aus $V$ übernommenen Operationen selbst einen Vektorraum bildet \\[71, 74, 82\\].\n\nFür eine nichtleere Teilmenge genügt es zu prüfen, ob sie unter Vektoraddition und Skalarmultiplikation abgeschlossen ist. Ich fasse diese Bedingungen zusammen:\n\n$$\\begin{matrix}\nx,y \\in U \\Rightarrow x + y \\in U, \\\\\n\\lambda \\in K,\\ x \\in U \\Rightarrow \\lambda x \\in U.\n\\end{matrix}\\ (3.67)$$\n\nDabei gilt:\n\n-   $U$ ist die betrachtete Teilmenge,\n\n-   $V$ ist der übergeordnete Vektorraum,\n\n-   $x,y$ sind Vektoren aus $U$,\n\n-   $\\lambda$ ist ein Skalar aus $K$.\n\nAus diesen Bedingungen folgt insbesondere, dass jeder Untervektorraum den Nullvektor des übergeordneten Vektorraums enthält \\[71, 74, 82\\]. Im Original wurden Teilmengenbedingung, Additionsabschluss und Abschluss unter Skalarmultiplikation auf drei einzelne Gleichungsnummern verteilt; mathematisch bilden sie hier eine gemeinsame Untervektorraumbedingung.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(9, 1, 27, '3.2.9', NULL, 'Linearkombination', 'Seien $v_{1},v_{2},\\ldots,v_{n} \\in V\\ $Vektoren eines Vektorraums $V$ und $\\lambda_{1},\\lambda_{2},\\ldots,\\lambda_{n} \\in K$ Skalare des zugrunde liegenden Körpers $K$.\n\nDann heißt der Ausdruck\n\n$$v = \\lambda_{1}v_{1} + \\lambda_{2}v_{2} + \\cdots + \\lambda_{n}v_{n} = \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}}\\ (3.70)$$\n\neine Linearkombination der Vektoren $v_{1},\\ldots,v_{n}$.\n\nDabei gilt:\n\n-   $v_{1},\\ldots,v_{n}$ sind die Vektoren, aus denen die Kombination gebildet wird,\n\n-   $\\lambda_{1},\\ldots,\\lambda_{n}$ sind die zugehörigen Skalare,\n\n-   $K$ ist der Skalarkörper,\n\n-   $v$ ist der durch die Linearkombination erzeugte Vektor.\n\nJede solche Linearkombination ist aufgrund der Vektorraumaxiome wiederum ein Element desselben Vektorraums \\[71, 82\\]. Die ältere Repository-Fassung beschreibt die Linearkombination entsprechend als Summe $\\lambda_{1}v_{1} + \\cdots + \\lambda_{n}v_{n}$.\n\nDie Skalare bestimmen den jeweiligen Beitrag der einzelnen Vektoren zur resultierenden Linearkombination. Verändere ich einen oder mehrere dieser Skalare, erhalte ich im Allgemeinen einen anderen Vektor \\[71, 74\\].\n\nDabei ist wichtig, dass eine Linearkombination keine neue mathematische Operation neben Addition und Skalarmultiplikation einführt. Sie setzt ausschließlich die beiden bereits definierten Vektorraumoperationen miteinander zusammen. Gerade dadurch zeigt sich, wie aus den elementaren Axiomen des Vektorraums weiterführende Strukturen entstehen.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(10, 1, 27, '3.2.10', NULL, 'Spannraum', 'Die Gesamtheit aller Linearkombinationen einer gegebenen Vektormenge bezeichnet deren Spannraum \\[71, 82\\].\n\nFür $v_{1},\\ldots,v_{n} \\in V$ definiere ich\n\n$$\\text{span}\\left( v_{1},\\ldots,v_{n} \\right) = \\left\\{ \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} \\middle| \\lambda_{1},\\ldots,\\lambda_{n} \\in K \\right\\}\\ (3.71)$$\n\nDabei bezeichnet $\\text{span}\\left( v_{1},\\ldots,v_{n} \\right)$ die Menge aller Vektoren, die ich aus $v_{1},\\ldots,v_{n}$ durch Linearkombinationen erzeugen kann.\n\nIm älteren Repository ist derselbe Begriff als Menge aller Summen $\\sum_{i = 1}^{n}{\\lambda_{i}v_{i}}$ erfasst.\n\nIm Originalabschnitt wurden zunächst eine kürzere Spannschreibweise und anschließend deren Mengendarstellung getrennt nummeriert. Beide Ausdrücke bezeichnen jedoch **denselben mathematischen Gegenstand**. Ich führe sie deshalb hier in Gleichung (3.71) zu einer einzigen Definition zusammen.\n\nDer Spannraum ist nicht lediglich eine beliebige Teilmenge des Vektorraums. Er ist selbst ein Untervektorraum von $V$ und zugleich der kleinste Untervektorraum, der alle betrachteten Vektoren $v_{1},\\ldots,v_{n}$ enthält \\[71, 82\\].\n\nDas Wort *kleinste* ist dabei wesentlich. Jeder Untervektorraum, der sämtliche Vektoren $v_{1},\\ldots,v_{n}$ enthält, muss aufgrund seiner Abgeschlossenheit auch sämtliche Linearkombinationen dieser Vektoren enthalten. Damit muss er auch den gesamten Spannraum enthalten.\n\nDer Spannraum beschreibt somit genau denjenigen Teil des Vektorraums, den ich mit den vorgegebenen Vektoren erreichen kann.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(11, 1, 28, '3.2.11', NULL, 'Lineare Unabhängigkeit', 'Seien $v_{1},\\ldots,v_{n} \\in V$ Vektoren eines Vektorraums $V$ über einem Körper $K$.\n\nDie Vektoren $v_{1},\\ldots,v_{n}$ heißen linear unabhängig, wenn die Gleichung\n\n$$\\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} = 0_{V}\\quad \\Longrightarrow \\quad\\lambda_{1} = \\lambda_{2} = \\cdots = \\lambda_{n} = 0_{K}\\ (3.74)$$\n\nfür $\\lambda_{1},\\ldots,\\lambda_{n} \\in K$ gilt.\n\nDabei bezeichnet\n\n-   $v_{1},\\ldots,v_{n}$ die untersuchten Vektoren,\n\n-   $\\lambda_{1},\\ldots,\\lambda_{n}$ die zugehörigen Skalare,\n\n-   $0_{V}$ den Nullvektor des Vektorraums,\n\n-   $0_{K}$ das additive Nullelement des Skalarkörpers.\n\nDie Aussage bedeutet, dass ausschließlich die triviale Linearkombination den Nullvektor erzeugt. Es gibt also keine nichttriviale Kombination der betrachteten Vektoren, deren Ergebnis $0_{V}$ ist \\[71, 74, 82\\].\n\nDamit besitzt keiner der Vektoren eine Erzeugungsinformation, die bereits vollständig in den übrigen Vektoren enthalten wäre.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(12, 1, 28, '3.2.12', NULL, 'Lineare Abhängigkeit', 'Eine Vektormenge $v_{1},\\ldots,v_{n}$ heißt linear abhängig, wenn Skalare existieren, die nicht sämtlich null sind und dennoch den Nullvektor erzeugen:\n\n$$\\exists\\,\\lambda_{1},\\ldots,\\lambda_{n} \\in K:\\quad\\quad\\left( \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} = 0_{V} \\right) \\land \\left( \\exists j:\\lambda_{j} \\neq 0_{K} \\right)(3.75)$$\n\nDie lineare Abhängigkeit ist damit genau das Gegenstück zur linearen Unabhängigkeit \\[71, 74, 82\\].\n\nIst beispielsweise $\\lambda_{j} \\neq 0_{K}$, kann ich Gleichung (3.75) nach $v_{j}$ auflösen:\n\n$$v_{j} = - \\frac{1}{\\lambda_{j}}\\sum_{i = 1\\backslash\\backslash i \\neq j}^{n}{\\lambda_{i}v_{i}}\\ (3.76)$$\n\nDamit wird unmittelbar sichtbar, was lineare Abhängigkeit bedeutet: Mindestens ein Vektor kann vollständig als Linearkombination der übrigen dargestellt werden. Dieser Vektor erweitert den erzeugten Spannraum nicht.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(13, 1, 28, '3.2.13', NULL, 'Basis', 'Eine geordnete Vektormenge\\\n$$B = \\left( b_{1},\\ldots,b_{n} \\right)$$\n\nbezeichne ich als Basis eines Vektorraums $V$, wenn zwei Bedingungen gleichzeitig erfüllt sind:\n\n$$\\begin{matrix}\nV = \\text{span}\\left( b_{1},\\ldots,b_{n} \\right), \\\\\n\\text{∑}_{i = 1}^{n}\\lambda_{i}b_{i} = 0_{V} \\Longrightarrow \\lambda_{1} = \\cdots = \\lambda_{n} = 0_{K}.\n\\end{matrix}\\ (3.79)$$\n\nDie erste Bedingung verlangt, dass die Basis den gesamten Vektorraum erzeugt. Die zweite Bedingung verlangt lineare Unabhängigkeit.\n\nEine Basis ist damit ein vollständiges, aber nicht redundantes Erzeugungssystem \\[71, 74, 82\\].\n\nGerade die Verbindung dieser beiden Eigenschaften ist entscheidend. Ein lediglich linear unabhängiges System muss nicht den gesamten Raum erzeugen. Ein Erzeugendensystem kann dagegen redundante Vektoren enthalten. Erst die Basis erfüllt beide Anforderungen gleichzeitig.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(14, 1, 28, '3.2.14', NULL, 'Dimension', 'Besitzt ein Vektorraum $V$ eine endliche Basis mit $n$ Elementen, dann bezeichne ich $V$ als endlichdimensional und definiere\n\n$$\\dim(V) = n\\ (3.84)$$\n\nAlle Basen desselben endlichdimensionalen Vektorraums besitzen dieselbe Anzahl von Elementen. Dadurch ist die Dimension unabhängig davon, welche konkrete Basis ich zur Darstellung verwende \\[71, 74, 82\\].\n\nFür den reellen Koordinatenraum folgt\n\n$$\\dim\\left( \\mathbb{R}^{n} \\right) = n\\ (3.85)$$\n\nDamit gilt insbesondere\\\n$$\\dim\\left( \\mathbb{R}^{2} \\right) = 2,\\quad\\quad\\dim\\left( \\mathbb{R}^{3} \\right) = 3.$$\n\nDiese beiden Aussagen sind unmittelbare Spezialfälle von Gleichung (3.85). Die Dimension beschreibt damit die Anzahl unabhängiger Basisrichtungen, die erforderlich ist, um den gesamten Vektorraum zu erzeugen.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(15, 1, 30, '3.2.15', NULL, 'Determinante einer quadratischen Matrix', 'Für eine quadratische reelle Matrix $A \\in \\mathbb{R}^{n \\times n}$ bezeichne ich die Determinante mit $\\det(A)$ beziehungsweise $|A|$. Formal fasse ich sie als Abbildung\n\n$$\\det:\\mathbb{R}^{n \\times n} \\longrightarrow \\mathbb{R},\\quad\\quad A \\longmapsto \\det(A)\\ (3.97)$$\n\nDabei gilt:\n\n-   $A$ ist eine quadratische $n \\times n$-Matrix,\n\n-   $\\mathbb{R}^{n \\times n}$ ist der Raum der reellen quadratischen Matrizen der Ordnung $n$,\n\n-   $\\det(A)$ ist der der Matrix eindeutig zugeordnete reelle Skalar,\n\n-   $n$ bezeichnet die Dimension des zugrunde liegenden endlichdimensionalen Raumes.\n\nDie Determinante ist ausschließlich für quadratische Matrizen definiert. Für nichtquadratische Matrizen kann ich deshalb nicht in derselben Weise von einer Determinante sprechen \\[71, 74, 82\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(16, 1, 31, '3.2.16', NULL, 'Bild einer linearen Abbildung', 'Seien $V$ und $W$ Vektorräume und $T:V \\rightarrow W$ eine lineare Abbildung.\n\nDiese Angabe legt Definitions- und Zielraum sowie die verwendete Abbildung fest. Sie ist eine Voraussetzung der folgenden Definition und erhält deshalb keine eigene Gleichungsnummer.\n\nDas Bild von $T$ definiere ich durch\n\n$$\\text{Bild}(T) = \\left\\{ T(v) \\in W \\middle| v \\in V \\right\\}\\ (3.111)$$\n\nDabei bezeichnet\n\n-   $T$ die lineare Abbildung,\n\n-   $V$ ihren Definitionsraum,\n\n-   $W$ ihren Zielraum,\n\n-   $v$ einen Vektor aus $V$,\n\n-   $T(v)$ den zugehörigen Bildvektor.\n\nDas Bild enthält damit genau diejenigen Vektoren des Zielraums, die durch Anwendung von $T$ auf mindestens einen Vektor des Definitionsraums tatsächlich entstehen können \\[71, 74, 82\\].\n\nIm Allgemeinen muss das Bild nicht mit dem gesamten Zielraum übereinstimmen. Es gilt lediglich$\\ \\text{Bild}(T) \\subseteq W.\\ $Diese Inklusion ist eine unmittelbare Eigenschaft der Definition und erhält keine eigene Gleichungsnummer.\n\nDa $T$ linear ist, bildet $\\text{Bild}T$ selbst einen Untervektorraum von $W$. Sind zwei Vektoren $w_{1},w_{2} \\in \\text{Bild}T$, so existieren $v_{1},v_{2} \\in V$ mit $T\\left( v_{1} \\right) = w_{1}$ und $T\\left( v_{2} \\right) = w_{2}$. Für Skalare $\\lambda,\\mu$ folgt aus der Linearität\n\n$$\\lambda w_{1} + \\mu w_{2} = T\\left( \\lambda v_{1} + \\mu v_{2} \\right) \\in \\text{Bild}(T).$$\n\nDieser Ausdruck gehört zur Begründung der Untervektorraumeigenschaft und wird nicht als zusätzliche Gleichung nummeriert.\n\nDas Bild beschreibt damit den tatsächlich erreichbaren Teil des Zielraums.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(17, 1, 31, '3.2.17', NULL, 'Kern einer linearen Abbildung', 'Der Kern derselben linearen Abbildung $T:V \\rightarrow W$ besteht aus allen Vektoren des Definitionsraums, die auf den Nullvektor des Zielraums abgebildet werden:\n\n$$\\ker(T) = \\left\\{ v \\in V \\middle| T(v) = 0_{W} \\right\\}\\ (3.112)$$\n\nDabei ist $0_{W}$ der Nullvektor des Zielraums $W$.\n\nDer Kern beantwortet damit eine andere Frage als das Bild. Beim Bild frage ich, welche Ausgangszustände erreichbar sind. Beim Kern frage ich, welche Eingangsvektoren durch die Abbildung vollständig auf denselben Nullvektor zusammengeführt werden \\[71, 74, 82\\].\n\nAuch der Kern ist ein Untervektorraum, diesmal des Definitionsraums $V$. Für $v_{1},v_{2} \\in \\ker(T)$ und Skalare (\\\\lambda,\\\\mu) gilt nämlich\\\n$$\\mathbf{T}\\left( \\mathbf{\\lambda}\\mathbf{v}_{\\mathbf{1}}\\mathbf{+}\\mathbf{\\mu}\\mathbf{v}_{\\mathbf{2}} \\right)\\mathbf{=}\\mathbf{\\lambda}\\mathbf{T}\\left( \\mathbf{v}_{\\mathbf{1}} \\right)\\mathbf{+}\\mathbf{\\mu}\\mathbf{T}\\left( \\mathbf{v}_{\\mathbf{2}} \\right)\\mathbf{0}_{\\mathbf{W}}\\mathbf{.}$$\n\nDamit ist auch jede Linearkombination zweier Kernvektoren wieder ein Element des Kerns. Diese Herleitung erhält keine eigene Gleichungsnummer.\n\nDer Nullvektor $0_{V}$ gehört immer zum Kern, weil jede lineare Abbildung den Nullvektor auf den Nullvektor abbildet.\n\nBesitzt eine lineare Abbildung nur den trivialen Kern $\\ker(T) = 0_{V},$ so werden keine zwei verschiedenen Vektoren allein aufgrund einer nichttrivialen Kernrichtung miteinander identifiziert. Für lineare Abbildungen entspricht dies der Injektivität.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(18, 1, 31, '3.2.18', NULL, 'Rang einer linearen Abbildung', 'Den Rang einer linearen Abbildung definiere ich als Dimension ihres Bildes:\n\n$$\\text{rang}(T) = \\dim\\left( \\text{Bild}(T) \\right)\\ (3.113)$$\n\nDer Rang gibt damit die Anzahl linear unabhängiger Richtungen an, die im Bildraum tatsächlich vorhanden sind \\[71, 74, 82\\].\n\nIst $A$ eine Darstellungsmatrix der linearen Abbildung, schreibe ich entsprechend $\\text{rang}A$. Diese Schreibweise bezeichnet denselben strukturellen Begriff auf der Ebene der Matrixdarstellung und benötigt keine zusätzliche Gleichungsnummer.\n\nDer Rang darf dabei nicht mit der Anzahl der Spalten oder Zeilen einer Matrix verwechselt werden. Entscheidend ist nicht, wie viele Vektoren formal vorhanden sind, sondern wie viele davon linear unabhängig sind.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(19, 1, 32, '3.2.19', NULL, 'Eigenwert und Eigenvektor', 'Sei $A \\in \\mathbb{R}^{n \\times n}$ eine quadratische Matrix.\n\nEin von null verschiedener Vektor $v \\in \\mathbb{R}^{n}$ heißt Eigenvektor von $A$, wenn ein Skalar $\\lambda \\in \\mathbb{R}$ existiert, sodass\n\n$$Av = \\lambda v,\\quad\\quad v \\neq 0\\ (3.126)$$\n\nDabei bezeichnet\n\n-   $A$ die betrachtete quadratische Matrix,\n\n-   $v$ den Eigenvektor,\n\n-   $\\lambda$ den zugehörigen Eigenwert.\n\nDie Gleichung sagt aus, dass die Transformation $A$ den Eigenvektor nicht in eine neue unabhängige Richtung dreht. Sie verändert lediglich seine Länge und gegebenenfalls seine Orientierung \\[71, 74, 82\\].\n\nFür $\\lambda > 0$ bleibt die Orientierung der Eigenrichtung erhalten. Für $\\lambda < 0$ wird sie umgekehrt. Für $\\lambda = 0$ wird der Eigenvektor auf den Nullvektor abgebildet.\n\nDer Nullvektor selbst wird ausdrücklich nicht als Eigenvektor zugelassen, weil $A0 = 0$ für jede lineare Transformation gilt und damit keine ausgezeichnete Richtung charakterisieren würde.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(20, 1, 32, '3.2.20', NULL, 'Charakteristisches Polynom', 'Das charakteristische Polynom einer Matrix $A \\in \\mathbb{R}^{n \\times n}$ definiere ich durch\n\n$$p_{A}(\\lambda) = \\det(A - \\lambda I)\\ (3.130)$$\n\nDie Eigenwerte von $A$ sind genau die Nullstellen dieses Polynoms:\n\n$$p_{A}(\\lambda) = 0\\ (3.131)$$\n\nDa $p_{A}$ ein Polynom vom Grad $n$ ist, besitzt eine $n \\times n$-Matrix über den komplexen Zahlen unter Berücksichtigung algebraischer Vielfachheiten genau $n$ Eigenwerte. Über den reellen Zahlen müssen dagegen nicht alle Nullstellen reell sein.\n\nDamit ist wichtig: Eine reelle Matrix besitzt nicht notwendigerweise ausschließlich reelle Eigenwerte.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(21, 1, 32, '3.2.21', NULL, 'Eigenraum', 'Zu einem Eigenwert $\\lambda$ definiere ich den Eigenraum durch\n\n$$E_{\\lambda} = \\ker(A - \\lambda I)\\ (3.134)$$\n\nDer Eigenraum enthält damit den Nullvektor und sämtliche Eigenvektoren, die zum Eigenwert $\\lambda$ gehören \\[71, 74, 82\\].\n\nDie Eigenvektoren eines Eigenwerts bilden also zusammen mit dem Nullvektor einen Untervektorraum.\n\nFür das vorherige Beispiel gilt beispielsweise\n\n$$E_{2} = \\text{span}\\left\\{ \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} \\right\\},\\quad\\quad E_{3} = \\text{span}\\left\\{ \\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix} \\right\\}\\ (3.135)$$\n\nJeder von null verschiedene Vektor aus $E_{2}$ bleibt unter $A$ auf derselben Geraden und wird mit $2$ skaliert. Entsprechend werden die Vektoren aus $E_{3}$ mit $3$ skaliert.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(22, 1, 32, '3.2.22', NULL, 'Spektrum', 'Für eine quadratische Matrix $A$ definiere ich\n\n$$\\sigma(A) = \\left\\{ \\lambda \\middle| \\det(A - \\lambda I) = 0 \\right\\}\\ (3.145)$$\n\nDas Spektrum enthält damit sämtliche Eigenwerte der Matrix.\n\nIm endlichdimensionalen Fall ist diese Beschreibung unmittelbar mit dem charakteristischen Polynom verbunden. In allgemeineren funktionalanalytischen Räumen wird der Spektralbegriff umfassender und kann auch Werte enthalten, die nicht zu gewöhnlichen Eigenvektoren gehören. Diese Erweiterung benötige ich an dieser Stelle noch nicht.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(23, 1, 33, '3.2.23', NULL, 'Diagonalisierbarkeit', 'Eine quadratische Matrix\\\n$$A \\in \\mathbb{R}^{n \\times n}$$\n\nheißt diagonalisierbar, wenn eine invertierbare Matrix $P$ und eine Diagonalmatrix $D$ existieren, sodass\n\n$$A = PDP^{- 1}\\ (3.147)$$\n\nDabei gilt:\n\n-   $A$ ist die ursprüngliche Matrixdarstellung,\n\n-   $P$ ist die Basiswechselmatrix,\n\n-   $D$ ist die Diagonalmatrix,\n\n-   $P^{- 1}$ ist die inverse Basiswechselmatrix.\n\nDie Spalten von $P$ werden dabei aus linear unabhängigen Eigenvektoren von $A$ gebildet. Die zugehörigen Eigenwerte stehen in derselben Reihenfolge auf der Hauptdiagonale von $D$ \\[74\\].\n\nSchreibe ich die Eigenvektoren als $v_{1},\\ldots,v_{n}$, dann hat $P$ die Form\n\n$$P = \\begin{pmatrix}\nv_{1} & v_{2} & \\cdots & v_{n}\n\\end{pmatrix}\\ (3.148)$$\n\nDie zugehörige Diagonalmatrix lautet\n\n$$D = \\begin{pmatrix}\n\\lambda_{1} & 0 & \\cdots & 0 \\\\\n0 & \\lambda_{2} & \\cdots & 0 \\\\\n \\vdots & \\vdots & \\ddots & \\vdots \\\\\n0 & 0 & \\cdots & \\lambda_{n}\n\\end{pmatrix}\\ (3.149)$$\n\nDabei gehört $\\lambda_{i}$ jeweils zum Eigenvektor $v_{i}$.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(24, 1, 33, '3.2.24', NULL, 'Orthogonale Diagonalisierung', 'Eine reelle Matrix $A$ heißt orthogonal diagonalisierbar, wenn eine orthogonale Matrix $Q$ und eine Diagonalmatrix $\\Lambda$ existieren, sodass\n\n$$Q^{T}AQ = \\Lambda\\ (3.167)$$\n\nFür reelle Matrizen gilt der grundlegende Zusammenhang\n\n$$A\\,\\text{orthogonal diagonalisierbar}\\quad \\Longleftrightarrow \\quad A = A^{T}\\ (3.168)$$\n\nDamit besitzt jede reelle symmetrische Matrix eine orthonormale Eigenvektorbasis und ausschließlich reelle Eigenwerte \\[74\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(25, 1, 34, '3.2.25', NULL, 'Skalarprodukt', 'Sei (V) ein reeller Vektorraum. Ein Skalarprodukt ist eine Abbildung\n\n$$\\left\\langle \\cdot , \\cdot \\right\\rangle:V \\times V\\mathbb{\\longrightarrow R,\\quad\\quad}(x,y) \\longmapsto \\left\\langle x,y \\right\\rangle.\\ (3.179)$$\n\nDabei sind\n\n-   \\(V\\) der betrachtete reelle Vektorraum,\n\n-   (x,y\\\\in V) zwei Vektoren,\n\n-   (\\\\langle x,y\\\\rangle) der durch das Skalarprodukt erzeugte reelle Skalar.\n\nDamit eine solche Abbildung ein Skalarprodukt ist, muss sie bestimmte Eigenschaften erfüllen. Für alle (x,y,z\\\\in V) und alle (\\\\alpha,\\\\beta\\\\inℝ) fordere ich zunächst Linearität:\n\n$$\\langle\\alpha x + \\beta y,z\\rangle = \\alpha\\langle x,z\\rangle + \\beta\\langle y,z\\rangle\\ (3.180)$$\n\nAußerdem fordere ich Symmetrie:\n\n$$\\langle x,y\\rangle = \\langle y,x\\rangle\\ (3.181)$$\n\nSchließlich muss das Skalarprodukt positiv definit sein:\n\n$$\\left\\langle x,x \\right\\rangle \\geq 0,\\quad\\quad\\left\\langle x,x \\right\\rangle = 0 \\Longleftrightarrow x = 0\\ (3.182)$$\n\nDiese Eigenschaften bilden gemeinsam die mathematische Grundlage dafür, aus dem Skalarprodukt geometrische Größen abzuleiten \\[84\\]. Kapitel 6.1 von Friedberg, Insel und Spence ist ausdrücklich den „Inner Products and Norms\" gewidmet.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(26, 1, 34, '3.2.26', NULL, 'Norm', 'Aus einem Skalarprodukt kann ich unmittelbar die Länge eines Vektors ableiten. Die vom Skalarprodukt induzierte Norm definiere ich durch\n\n$$\\text{|}x\\text{|} = \\sqrt{\\left\\langle x,x \\right\\rangle}\\ (3.185)$$\n\nDabei bezeichnet\n\n-   \\(x\\) den betrachteten Vektor,\n\n-   (\\\\langle x,x\\\\rangle) sein Skalarprodukt mit sich selbst,\n\n-   (\\|x\\|) seine durch das Skalarprodukt induzierte Norm.\n\nFür das euklidische Skalarprodukt folgt daraus\n\n$$\\text{|}x\\text{|} = \\sqrt{x_{1}^{2} + x_{2}^{2} + \\cdots + x_{n}^{2}}\\ (3.186)$$\n\nDamit verallgemeinere ich unmittelbar den Satz des Pythagoras auf den (n)-dimensionalen euklidischen Raum. Diese Definition der Norm aus dem Skalarprodukt ist Standardbestandteil der Theorie der Skalarprodukträume \\[84\\].\n\nEine Norm erfüllt insbesondere\n\n**Word-LaTeX:**\n\n$$\\text{|}x\\text{|} \\geq 0,\\quad\\quad\\text{|}x\\text{|} = 0 \\Longleftrightarrow x = 0\\ (3.187)$$\n\nFür die Multiplikation eines Vektors mit einem Skalar gilt\n\n$$\\text{|}\\alpha x\\text{|} = |\\alpha|\\,\\text{|}x\\text{|}\\ (3.188)$$\n\nAußerdem gilt die Dreiecksungleichung\n\n$$\\text{|}x + y\\text{|} \\leq \\text{|}x\\text{|} + \\text{|}y\\text{|}\\ (3.189)$$\n\nDamit besitzt die Norm genau diejenigen Eigenschaften, die ich von einem mathematischen Längenbegriff erwarte.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(27, 1, 34, '3.2.27', NULL, 'Abstand', 'Sobald eine Norm gegeben ist, kann ich auch einen Abstand zwischen zwei Vektoren definieren:\n\n$$d(x,y) = \\text{|}x - y\\text{|}\\ (3.190)$$\n\nDabei sind\n\n-   \\(x\\) und (y) die beiden betrachteten Vektoren,\n\n-   (x-y) ihr Differenzvektor,\n\n-   (d(x,y)) der durch die Norm bestimmte Abstand.\n\nDiese Definition macht eine für die spätere Verwendung wichtige Trennung sichtbar:\n\n**Vektorraum, Skalarprodukt, Norm und Abstand sind nicht dasselbe.**\n\nVielmehr entsteht eine strukturelle Kette:\n\n$$\\text{Skalarprodukt} \\longrightarrow \\text{Norm} \\longrightarrow \\text{Abstand}\\ (3.191)$$\n\nDiese Abhängigkeit ist für meine weitere Argumentation wichtig. Einen Abstand darf ich später nicht allein deshalb voraussetzen, weil ich Zustände als Vektoren darstelle.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(28, 1, 34, '3.2.28', NULL, 'Winkel zwischen zwei Vektoren', 'Für zwei von null verschiedene Vektoren (x) und (y) definiere ich den Winkel (\\\\theta) durch\n\n$$\\cos\\theta = \\frac{\\left\\langle x,y \\right\\rangle}{\\text{|}x\\text{|}\\,\\text{|}y\\text{|}}\\ (3.194)$$\n\nDabei gilt\n\n-   (x,y\\\\neq0),\n\n-   (\\\\theta) ist der Winkel zwischen beiden Vektoren,\n\n-   (\\\\langle x,y\\\\rangle) beschreibt ihre skalare Beziehung,\n\n-   (\\|x\\|) und (\\|y\\|) normieren diese Beziehung auf die Längen der beiden Vektoren.\n\nFür normierte Vektoren mit $|x| = |y| = 1$ vereinfacht sich Gleichung (3.194) zu\n\n$$cos\\theta = \\langle x,y\\rangle\\ (3.195)$$', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(29, 1, 34, '3.2.29', NULL, 'Orthogonalität', 'Zwei Vektoren (x,y\\\\in V) heißen orthogonal, wenn ihr Skalarprodukt null ist:\n\n$$x\\bot y\\quad \\Longleftrightarrow \\quad\\left\\langle x,y \\right\\rangle = 0\\ (3.196)$$\n\nFür zwei von null verschiedene Vektoren bedeutet dies nach Gleichung (3.194), dass\\\n$$\\cos\\theta = 0,$$\n\nalso ein rechter Winkel vorliegt.\n\nStrang entwickelt Orthogonalität, Projektionen und orthogonale Basen zusammenhängend in Kapitel 4 \\[74\\]. Friedberg, Insel und Spence behandeln dieselbe Struktur in Kapitel 6 über Skalarprodukträume und orthogonale Komplemente \\[84\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(30, 1, 34, '3.2.30', NULL, 'Normierter Vektor', 'Ein Vektor (x) heißt normiert, wenn\n\n$$\\text{|}x\\text{|} = 1\\ (3.199)$$\n\nFür jeden Vektor (x\\\\neq0) kann ich durch Division durch seine Norm einen normierten Vektor erzeugen:\n\n$$\\widehat{x} = \\frac{x}{\\text{|}x\\text{|}}\\ (3.200)$$\n\nDabei bezeichnet\n\n-   \\(x\\) den ursprünglichen Vektor,\n\n-   (\\|x\\|) seine Norm,\n\n-   (\\\\hat{x}) den normierten Vektor mit derselben Richtung.\n\nDie Normierung verändert also die Richtung nicht. Sie entfernt lediglich die ursprüngliche Länge des Vektors.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(31, 1, 34, '3.2.31', NULL, 'Orthonormale Vektoren', 'Eine Menge von Vektoren\n\n$$q_{1},\\ldots,q_{m}$$\n\nheißt orthonormal, wenn die Vektoren paarweise orthogonal und jeweils normiert sind. Beides kann ich kompakt durch\n\n$$\\left\\langle q_{i},q_{j} \\right\\rangle = \\delta_{ij}\\ (3.201)$$\n\nausdrücken.\n\nDabei ist (δ\\_{ij}) das Kronecker-Delta mit den beiden Fällen\n\n-   (δ\\_{ij}=1) für (i=j),\n\n-   (δ\\_{ij}=0) für (i\\\\neq j).\n\nDie beiden Werte sind lediglich die Definition der in Gleichung (3.201) verwendeten Größe (δ\\_{ij}) und werden deshalb nicht als eigenständige nummerierte Gleichungen geführt.\n\nFür eine orthonormale Basis (q_1,\\\\ldots,q_n) kann ich jeden Vektor (x\\\\in V) eindeutig darstellen als\n\n$$x = \\sum_{i = 1}^{n}{\\left\\langle q_{i},x \\right\\rangle q_{i}}\\ (3.202)$$\n\nDie Koordinate des Vektors entlang der Basisrichtung (q_i) ist damit unmittelbar sein Skalarprodukt mit (q_i).\n\nDiese Eigenschaft erklärt rückwirkend die in Abschnitt 3.2.11 verwendete Darstellung eines Vektors in einer orthonormalen Eigenbasis.', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(32, 1, 34, '3.2.32', NULL, 'Orthogonales Komplement', 'Sei (U\\\\subseteq V) ein Unterraum. Das orthogonale Komplement von (U) definiere ich als\n\n$$U^{\\bot} = \\left\\{ x \\in V\\mid\\left\\langle x,u \\right\\rangle = 0\\text{ für alle }u \\in U \\right\\}\\ (3.207)$$\n\nDabei bezeichnet\n\n-   \\(U\\) den ursprünglichen Unterraum,\n\n-   (U\\^\\\\perp) sein orthogonales Komplement,\n\n-   \\(u\\) einen beliebigen Vektor aus (U),\n\n-   \\(x\\) einen Vektor, der zu jedem Vektor aus (U) orthogonal ist.\n\nIm endlichdimensionalen reellen Skalarproduktraum kann ich den gesamten Raum in den Unterraum und sein orthogonales Komplement zerlegen:\n\n$$V = U \\oplus U^{\\bot}\\ (3.208)$$\n\nDamit besitzt jeder Vektor (x\\\\in V) eine eindeutige Zerlegung\n\n$$x = u + u_{\\bot},\\quad\\quad u \\in U,\\quad u_{\\bot} \\in U^{\\bot}\\ (3.209)$$\n\nDie Zerlegung in einen Anteil innerhalb eines Unterraums und einen dazu orthogonalen Anteil bildet die Grundlage der orthogonalen Projektion. Friedberg, Insel und Spence führen orthogonale Komplemente und den Gram-Schmidt-Prozess gemeinsam in §6.2 sowie orthogonale Projektionen in §6.6 \\[84\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2),
+(33, 1, 34, '3.2.33', NULL, 'Orthogonale Projektion auf einen Vektor', 'Sei (u\\\\neq0). Die orthogonale Projektion eines Vektors (x) auf die von (u) aufgespannte Richtung ist\n\n$$proj_{u}(x) = \\frac{\\left\\langle x,u \\right\\rangle}{\\left\\langle u,u \\right\\rangle}u\\ (3.210)$$\n\nDabei sind\n\n-   \\(x\\) der zu projizierende Vektor,\n\n-   (u\\\\neq0) die Projektionsrichtung,\n\n-   (\\\\langle x,u\\\\rangle/\\\\langle u,u\\\\rangle) der skalare Projektionsfaktor,\n\n-   (\\\\text{proj}\\_{u}(x)) der auf (u) liegende Anteil von (x).\n\nIst (u) bereits normiert, also (\\|u\\|=1), vereinfacht sich die Projektion zu\n\n$$\\text{proj}_{u}(x) = \\left\\langle x,u \\right\\rangle u\\ (3.211)$$\n\nStrang behandelt Projektionen ausdrücklich in §4.2 \\[74\\].', NULL, NULL, NULL, 'needs_review', 'source_import', 'Quellbestand; sichtbare Nummer wird erst nach redaktioneller Freigabe als definition_number übernommen.', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `dissertation_sections`
+--
+
+CREATE TABLE `dissertation_sections` (
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `parent_section_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `section_code` varchar(50) NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `chapter_no` int(11) NOT NULL,
+  `section_order` decimal(10,4) NOT NULL,
+  `status` enum('planned','draft','review','final') NOT NULL DEFAULT 'planned',
+  `is_original_contribution` tinyint(1) NOT NULL DEFAULT 0,
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `dissertation_sections`
+--
+
+INSERT INTO `dissertation_sections` (`section_id`, `parent_section_id`, `section_code`, `title`, `chapter_no`, `section_order`, `status`, `is_original_contribution`, `notes`, `created_at`, `updated_at`) VALUES
+(1, NULL, '3.1', 'Grundlagen der funktionalen Beschreibung von Raum und Zeit', 3, 3100.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:44', '2026-08-09 08:05:44'),
+(2, 1, '3.1.0', 'Einleitung', 3, 3101.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:44', '2026-08-09 08:05:44'),
+(3, 1, '3.1.1', 'Das Nichts als mathematischer Ausgangspunkt', 3, 3102.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:44', '2026-08-09 08:05:44'),
+(4, 1, '3.1.2', 'Philosophische Grundlagen (Teil 1)', 3, 3103.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:44', '2026-08-09 08:05:44'),
+(5, 1, '3.1.3', 'Physikalische Grundlagen', 3, 3104.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:44', '2026-08-09 08:05:44'),
+(6, 1, '3.1.4', 'Erkenntnistheoretische Grundlagen', 3, 3105.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(7, 6, '3.1.4.1', 'Mathematische Voraussetzungen funktionaler Beschreibung', 3, 3106.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(8, 1, '3.1.5', 'Methodologische Konsequenzen für das Funktionale Raum-Zeit-Kohärenzsystem', 3, 3107.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(9, 1, '3.1.6', 'Funktion statt Objekt – Paradigmenwechsel moderner Wissenschaft', 3, 3108.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(10, 1, '3.1.7', 'Forschungsstand, Forschungslücke und wissenschaftliche Zielsetzung', 3, 3109.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(11, 10, '3.1.7.1', 'Gemeinsame Entwicklungslinien des Forschungsstandes', 3, 3110.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(12, 10, '3.1.7.2', 'Gemeinsame Grenze bestehender Ansätze', 3, 3111.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(13, 10, '3.1.7.3', 'Abgrenzung der Forschungslücke', 3, 3112.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(14, 10, '3.1.7.4', 'Wissenschaftliche Positionierung des FRZK', 3, 3113.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(15, 10, '3.1.7.5', 'Das Minimalitätsproblem', 3, 3114.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(16, 10, '3.1.7.6', 'Wissenschaftliche Zielsetzung', 3, 3115.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(17, 10, '3.1.7.7', 'Forschungsfragen', 3, 3116.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(18, 10, '3.1.7.8', 'Wissenschaftlicher Erkenntnisanspruch', 3, 3117.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(19, 10, '3.1.7.9', 'Abgrenzung des Geltungsanspruchs', 3, 3118.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(20, 10, '3.1.7.10', 'Abschluss der Grundlegung', 3, 3119.0000, 'review', 0, 'Import aus Kapitel 3.1 V2; Literaturbereinigung 2026-08-09', '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(21, NULL, '3.2', 'Mathematische Grundlagen', 3, 3200.0000, 'draft', 0, 'Hauptabschnitt; Quellfassung wird vollständig neu redigiert. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(22, 21, '3.2.0', 'Einleitung', 3, 3201.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(23, 21, '3.2.1', 'Mengen, Elemente und elementare Relationen', 3, 3202.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(24, 21, '3.2.2', 'Funktionen und eindeutige Zuordnungen', 3, 3203.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(25, 21, '3.2.3', 'Abbildungen, Operatoren und mathematische Transformationen', 3, 3204.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(26, 21, '3.2.4', 'Vektorräume als mathematische Zustandsräume', 3, 3205.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(27, 21, '3.2.5', 'Linearkombinationen, Spannräume und Erzeugendensysteme', 3, 3206.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(28, 21, '3.2.6', 'Lineare Unabhängigkeit, Basis und Dimension', 3, 3207.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(29, 21, '3.2.7', 'Basiswechsel und Koordinatentransformationen', 3, 3208.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(30, 21, '3.2.8', 'Determinanten, Orientierung und Volumenänderung', 3, 3209.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(31, 21, '3.2.9', 'Rang, Kern und Bild linearer Abbildungen', 3, 3210.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(32, 21, '3.2.10', 'Eigenwerte, Eigenvektoren und Eigenräume', 3, 3211.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(33, 21, '3.2.11', 'Diagonalisierung und Spektralzerlegung', 3, 3212.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(34, 21, '3.2.12', 'Skalarprodukt, Norm und Orthogonalität', 3, 3213.0000, 'draft', 0, 'Aus der hochgeladenen Quellfassung importiert; noch nicht als kanonische Neufassung freigegeben. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(35, 21, '3.2.13', 'Funktionenräume, L^2-Strukturen und Hilberträume', 3, 3214.0000, 'planned', 0, 'In der Quellfassung nur als nächster Abschnitt angekündigt; kein Abschnittstext vorhanden. | Übernommen als Kapitel-3.2-Arbeitsstruktur; kanonische Freigabe erfolgt abschnittsweise.', '2026-08-30 09:09:11', '2026-08-30 09:09:11');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `dissertation_tables`
+--
+
+CREATE TABLE `dissertation_tables` (
+  `table_id` bigint(20) UNSIGNED NOT NULL,
+  `table_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `caption` longtext DEFAULT NULL,
+  `table_schema_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`table_schema_json`)),
+  `table_data_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`table_data_json`)),
+  `file_name` varchar(500) DEFAULT NULL,
+  `file_path` varchar(1500) DEFAULT NULL,
+  `provenance` enum('original','adapted','literature') NOT NULL DEFAULT 'original',
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `generation_method` text DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `documents`
+--
+
+CREATE TABLE `documents` (
+  `document_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `file_name` varchar(500) DEFAULT NULL,
+  `document_type` enum('dissertation','chapter','article','book','dataset','appendix','other') NOT NULL DEFAULT 'other',
+  `version_label` varchar(100) DEFAULT NULL,
+  `file_path` varchar(1000) DEFAULT NULL,
+  `checksum_sha256` char(64) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `documents`
+--
+
+INSERT INTO `documents` (`document_id`, `title`, `file_name`, `document_type`, `version_label`, `file_path`, `checksum_sha256`, `created_at`, `updated_at`) VALUES
+(1, '3.2 Mathematische Grundlagen – Quellfassung', '3.2 Mathematische Grundlagen_V2.docx', 'chapter', 'V2-source', NULL, '2eb3973c5cfe642020c033f00b9fdebff71bafdc67ef54d8576baadd2c6c983e', '2026-08-30 09:09:11', '2026-08-30 09:09:11');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `equations`
+--
+
+CREATE TABLE `equations` (
+  `equation_id` bigint(20) UNSIGNED NOT NULL,
+  `equation_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) DEFAULT NULL,
+  `equation_latex` text NOT NULL,
+  `word_latex` text NOT NULL,
+  `plain_description` text NOT NULL,
+  `equation_type` enum('definition','axiom','theorem','lemma','derived','schema','model','metric','other') NOT NULL DEFAULT 'other',
+  `provenance` enum('original','adapted','literature') NOT NULL DEFAULT 'original',
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `derivation` text DEFAULT NULL,
+  `assumptions` text DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `equation_candidates`
+--
+
+CREATE TABLE `equation_candidates` (
+  `equation_candidate_id` bigint(20) UNSIGNED NOT NULL,
+  `document_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `source_equation_number` varchar(50) NOT NULL,
+  `proposed_equation_number` varchar(50) DEFAULT NULL,
+  `source_line_no` int(10) UNSIGNED DEFAULT NULL,
+  `number_origin` enum('explicit','source_context','context_inferred') NOT NULL DEFAULT 'explicit',
+  `source_latex` longtext NOT NULL,
+  `source_word_latex` longtext DEFAULT NULL,
+  `proposed_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `plain_description` longtext DEFAULT NULL,
+  `equation_type` varchar(50) NOT NULL DEFAULT 'needs_review',
+  `provenance` enum('literature','adapted','original','mixed','needs_review') NOT NULL DEFAULT 'needs_review',
+  `source_integrity_status` enum('ok','number_missing','formula_broken','needs_review') NOT NULL DEFAULT 'ok',
+  `candidate_status` enum('source_import','rewrite','accepted','rejected','superseded') NOT NULL DEFAULT 'source_import',
+  `notes` longtext DEFAULT NULL,
+  `created_revision_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `equation_candidates`
+--
+
+INSERT INTO `equation_candidates` (`equation_candidate_id`, `document_id`, `section_id`, `source_equation_number`, `proposed_equation_number`, `source_line_no`, `number_origin`, `source_latex`, `source_word_latex`, `proposed_latex`, `word_latex`, `plain_description`, `equation_type`, `provenance`, `source_integrity_status`, `candidate_status`, `notes`, `created_revision_id`) VALUES
+(1, 1, 23, '3.1', NULL, 75, 'explicit', 'x \\in \\, M', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(2, 1, 23, '3.2', NULL, 81, 'explicit', 'x \\notin M', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(3, 1, 23, '3.3', NULL, 87, 'explicit', 'M = \\text{\\{}a,b,c\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(4, 1, 23, '3.4', NULL, 93, 'explicit', '\\text{\\{}a,b,c\\text{\\}} = \\text{\\{}c,a,b\\text{\\}} = \\text{\\{}a,a,b,c\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(5, 1, 23, '3.5', NULL, 99, 'explicit', 'M = \\text{\\{}x \\in U \\mid P(x)\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(6, 1, 23, '3.6', NULL, 105, 'explicit', 'G = \\text{\\{}n \\in \\mathbb{N} \\mid \\exists k \\in \\mathbb{N}:n = 2k\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(7, 1, 23, '3.7', NULL, 115, 'explicit', 'A \\subseteq B \\Longleftrightarrow \\forall x\\,(x \\in A \\Rightarrow x \\in B)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(8, 1, 23, '3.8', NULL, 123, 'explicit', 'A \\subset B \\Longleftrightarrow A \\subseteq B \\land A \\neq B', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(9, 1, 23, '3.9', NULL, 131, 'explicit', 'A = B \\Longleftrightarrow \\forall x\\,(x \\in A \\Leftrightarrow x \\in B)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(10, 1, 23, '3.10', NULL, 141, 'explicit', '\\varnothing = \\text{\\{}x|\\ x \\neq x\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(11, 1, 23, '3.11', NULL, 149, 'explicit', '\\varnothing \\subseteq A', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(12, 1, 23, '3.12', NULL, 159, 'explicit', 'A \\cup B = \\text{\\{}x|\\ x \\in A \\vee x \\in B\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(13, 1, 23, '3.13', NULL, 165, 'explicit', 'A \\cap B = \\text{\\{}x|\\ x \\in A \\land x \\in B\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(14, 1, 23, '3.14', NULL, 169, 'explicit', 'A \\smallsetminus B = \\text{\\{}x|\\ x \\in A \\land x \\notin B\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(15, 1, 23, '3.15', NULL, 175, 'explicit', 'A \\cap B = \\varnothing', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(16, 1, 23, '3.16', NULL, 183, 'explicit', '\\mathcal{P(}A) = \\text{\\{}B|\\ B \\subseteq A\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(17, 1, 23, '3.17', NULL, 189, 'explicit', '\\mathcal{P}(A) = \\text{\\{}\\varnothing,\\text{\\{}a\\text{\\}},\\text{\\{}b\\text{\\}},\\text{\\{}a,b\\text{\\}\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(18, 1, 23, '3.18', NULL, 193, 'explicit', '|A| = n \\Rightarrow \\left| \\mathcal{P}A \\right| = 2^{n}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(19, 1, 23, '3.19', NULL, 203, 'explicit', '(a,b) \\neq (b,a)\\quad\\quad\\text{für }a \\neq b', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(20, 1, 23, '3.20', NULL, 209, 'explicit', 'A \\times B = \\text{\\{}(a,b)|\\ a \\in A \\land b \\in B\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(21, 1, 23, '3.21', NULL, 215, 'explicit', '|A \\times B| = |A| \\cdot |B|', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(22, 1, 23, '3.22', NULL, 223, 'explicit', 'R \\subseteq A \\times B', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(23, 1, 23, '3.23', NULL, 229, 'explicit', 'aRb \\Longleftrightarrow (a,b) \\in R', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(24, 1, 24, '3.24', NULL, 293, 'explicit', 'f:A \\rightarrow B,\\quad\\quad\\forall a \\in A\\ \\exists!\\, b \\in B:\\ f(a) = b', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(25, 1, 24, '3.25', NULL, 317, 'explicit', '\\ (a,b\\_ 1) \\in \\begin{matrix}\nf \\subseteq A \\times B, \\\\\nf \\land (a,b_{2}) \\in f\\& \\Rightarrow b_{1} = b_{2}, \\\\\n\\forall a \\in A\\ \\&\\exists b \\in B:\\ (a,b) \\in f.\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(26, 1, 24, '3.26', NULL, 333, 'explicit', 'f(A) = \\text{\\{}f(a) \\mid a \\in A\\text{\\}} \\subseteq B', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(27, 1, 24, '3.27', NULL, 341, 'explicit', 'f(C) = \\text{\\{}f(c) \\mid c \\in C\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(28, 1, 24, '3.28', NULL, 347, 'explicit', 'f^{- 1}(D) = \\text{\\{}a \\in A \\mid f(a) \\in D\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(29, 1, 24, '3.29', NULL, 355, 'explicit', '\\forall a_{1},a_{2} \\in A:\\quad f\\left( a_{1} \\right) = f\\left( a_{2} \\right) \\Rightarrow a_{1} = a_{2}\\quad \\Longleftrightarrow \\quad a_{1} \\neq a_{2} \\Rightarrow f\\left( a_{1} \\right) \\neq f\\left( a_{2} \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(30, 1, 24, '3.30', NULL, 367, 'explicit', '\\forall b \\in B\\ \\exists a \\in A:\\ f(a) = b\\quad\\quad \\Longleftrightarrow \\quad\\quad f(A) = B', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(31, 1, 24, '3.31', NULL, 377, 'explicit', 'f\\text{ bijektiv}\\quad \\Longleftrightarrow \\quad f\\text{ injektiv} \\land f\\text{ surjektiv}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(32, 1, 24, '3.32', NULL, 383, 'explicit', '\\begin{matrix}\nf^{- 1}:B \\rightarrow A, \\\\\nf^{- 1}(f(a)) = a,\\forall a \\in A,\\  \\\\\n{f(f}^{- 1}b = b,\\ \\forall b \\in B.\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(33, 1, 24, '3.33', NULL, 397, 'explicit', 'id_{A}:A \\rightarrow A,\\quad\\quad id_{A}(a) = a\\quad\\forall a \\in A', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(34, 1, 24, '3.34', NULL, 409, 'explicit', 'g \\circ f:A \\rightarrow C,\\quad\\quad(g \\circ f)(a) = g\\left( f(a) \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(35, 1, 24, '3.35', NULL, 415, 'explicit', 'g \\circ f \\neq f \\circ g', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(36, 1, 24, '3.36', NULL, 419, 'explicit', 'h \\circ (g \\circ f) = (h \\circ g) \\circ f', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(37, 1, 24, '3.37', NULL, 429, 'explicit', 'f:A \\times B \\rightarrow C,\\quad\\quad f(a,b) = c \\in C,\\quad a \\in A,\\ b \\in B', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(38, 1, 24, '3.38', NULL, 437, 'explicit', '\\begin{matrix}\nf:A_{1} \\times A_{2} \\times \\cdots \\times A_{n} \\rightarrow B, \\\\\n\\left( a_{1},a_{2},\\ldots,a_{n} \\right) \\in A_{1} \\times A_{2} \\times \\cdots \\times A_{n}, \\\\\nf\\left( a_{1},a_{2},\\ldots,a_{n} \\right) \\in B.\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(39, 1, 24, '3.39', NULL, 451, 'explicit', '\\text{\\{}f_{\\theta} \\mid \\theta \\in \\Theta\\text{\\}},\\quad\\quad f_{\\theta}:A \\rightarrow B\\quad\\forall\\theta \\in', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(40, 1, 24, '3.40', NULL, 463, 'explicit', 'f:D \\rightarrow B,\\quad\\quad D \\subseteq A', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(41, 1, 25, '3.41', NULL, 542, 'explicit', 'T:X \\rightarrow Y,\\quad\\quad T(x) = y,\\quad x \\in X,\\ y \\in Y', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(42, 1, 25, '3.42', NULL, 566, 'explicit', '\\begin{matrix}\n\\begin{matrix}\nT(x + y) = T(x) + T(y), \\\\\nT(\\lambda x)\\& = \\lambda T(x),\n\\end{matrix} & x,y \\in V,\\ \\lambda \\in K\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(43, 1, 25, '3.43', NULL, 589, 'explicit', 'T:V \\rightarrow V', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(44, 1, 25, '3.44', NULL, 601, 'explicit', '\\begin{matrix}\nA\\&:V \\rightarrow V, \\\\\nV \\rightarrow V, \\\\\n\\begin{matrix}\nA\\&:V \\rightarrow V, \\\\\nx\\& = B(A(x))\n\\end{matrix}\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(45, 1, 25, '3.45', NULL, 614, 'explicit', 'B \\circ A \\neq A \\circ B', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(46, 1, 25, '3.46', NULL, 622, 'explicit', 'I:V \\rightarrow V,\\quad\\quad I(x) = x\\quad\\forall x \\in V', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(47, 1, 25, '3.47', NULL, 628, 'explicit', 'I \\circ T = T \\circ I = T', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(48, 1, 25, '3.48', NULL, 636, 'explicit', '\\begin{matrix}\nT^{- 1}:V \\rightarrow V, \\\\\n\\begin{matrix}\nT^{- 1} \\circ T = I \\\\\nT \\circ T^{- 1} = I\n\\end{matrix}\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(49, 1, 25, '3.49', NULL, 654, 'context_inferred', 'Ax = y', 'Ax=y', NULL, NULL, NULL, 'needs_review', 'needs_review', 'number_missing', 'source_import', 'Nummer (3.49) ist im Quelltext nicht am Formelsatz sichtbar; Zuordnung wird durch den unmittelbar folgenden Erläuterungstext bestätigt.', 2),
+(50, 1, 25, '3.50', NULL, 674, 'context_inferred', 'Ax = \\lambda x,\\quad\\quad x \\neq 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'number_missing', 'source_import', 'Nummer (3.50) ist nicht sichtbar; Zuordnung ist aus der fortlaufenden Abschnittslogik abgeleitet und muss im Rewrite bestätigt werden.', 2),
+(51, 1, 26, '3.51', NULL, 734, 'explicit', '\\begin{matrix}\n + :V \\times V \\rightarrow V,\\ (x,y) \\mapsto x + y, \\\\\n \\cdot K \\times V \\rightarrow V,(\\lambda,x) \\mapsto \\lambda x.\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(52, 1, 26, '3.52', NULL, 761, 'explicit', 'K = R', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(53, 1, 26, '3.53', NULL, 769, 'explicit', 'x + y \\in V', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(54, 1, 26, '3.54', NULL, 775, 'explicit', '(x + y) + z = x + (y + z)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(55, 1, 26, '3.55', NULL, 781, 'explicit', 'x + y = y + x', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(56, 1, 26, '3.56', NULL, 789, 'explicit', '0_{V} \\in V,\\quad\\quad x + 0_{V} = 0_{V} + x = x\\quad\\forall x \\in V', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(57, 1, 26, '3.57', NULL, 795, 'explicit', '0_{R^{\\mathbb{2}}} = \\begin{pmatrix}\n\\begin{matrix}\n0 \\\\\n0\n\\end{matrix}\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(58, 1, 26, '3.58', NULL, 808, 'explicit', 'x + ( - x) = ( - x) + x = 0_{V}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(59, 1, 26, '3.59', NULL, 812, 'explicit', 'x - y ≔ x + ( - y)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(60, 1, 26, '3.60', NULL, 820, 'explicit', '\\lambda x \\in V', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(61, 1, 26, '3.61', NULL, 826, 'explicit', '(\\lambda\\mu)x = \\lambda(\\mu x)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(62, 1, 26, '3.62', NULL, 832, 'explicit', '1_{K}x = x', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(63, 1, 26, '3.63', NULL, 838, 'explicit', '\\lambda(x + y) = \\lambda x + \\lambda y', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(64, 1, 26, '3.64', NULL, 842, 'explicit', '(\\lambda + \\mu)x = \\lambda x + \\mu x', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(65, 1, 26, '3.65', NULL, 850, 'explicit', '0_{K}x = 0_{V}\\quad\\forall x \\in V', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(66, 1, 26, '3.66', NULL, 866, 'explicit', '\\lambda 0_{V} = 0_{V}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(67, 1, 26, '3.67', NULL, 881, 'explicit', '\\begin{matrix}\nx,y \\in U \\Rightarrow x + y \\in U, \\\\\n\\lambda \\in K,\\ x \\in U \\Rightarrow \\lambda x \\in U.\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(68, 1, 26, '3.68', NULL, 902, 'explicit', '\\mathbb{R}^{n} = \\left\\{ \\begin{pmatrix}\nx_{1} \\\\\n \\vdots \\\\\nx_{n}\n\\end{pmatrix} \\middle| x_{1},\\ldots,x_{n} \\in \\mathbb{R} \\right\\}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(69, 1, 26, '3.69', NULL, 920, 'explicit', '\\mathbb{R}^{m \\times n}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(70, 1, 27, '3.70', NULL, 984, 'explicit', 'v = \\lambda_{1}v_{1} + \\lambda_{2}v_{2} + \\cdots + \\lambda_{n}v_{n} = \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(71, 1, 27, '3.71', NULL, 1038, 'explicit', '\\text{span}\\left( v_{1},\\ldots,v_{n} \\right) = \\left\\{ \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} \\middle| \\lambda_{1},\\ldots,\\lambda_{n} \\in K \\right\\}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(72, 1, 27, '3.72', NULL, 1058, 'explicit', 'V = \\text{span}\\left( v_{1},\\ldots,v_{n} \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(73, 1, 28, '3.74', NULL, 1173, 'explicit', '\\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} = 0_{V}\\quad \\Longrightarrow \\quad\\lambda_{1} = \\lambda_{2} = \\cdots = \\lambda_{n} = 0_{K}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(74, 1, 28, '3.75', NULL, 1195, 'explicit', '\\exists\\,\\lambda_{1},\\ldots,\\lambda_{n} \\in K:\\quad\\quad\\left( \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} = 0_{V} \\right) \\land \\left( \\exists j:\\lambda_{j} \\neq 0_{K} \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(75, 1, 28, '3.76', NULL, 1201, 'explicit', 'v_{j} = - \\frac{1}{\\lambda_{j}}\\sum_{i = 1\\backslash\\backslash i \\neq j}^{n}{\\lambda_{i}v_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(76, 1, 28, '3.77', NULL, 1217, 'explicit', 'v_{2} = 2v_{1}\\quad\\quad \\Longleftrightarrow \\quad\\quad 2v_{1} - v_{2} = 0_{R^{\\mathbb{2}}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(77, 1, 28, '3.78', NULL, 1236, 'explicit', '\\lambda_{1}\\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} + \\lambda_{2}\\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix} = \\begin{pmatrix}\n0 \\\\\n0\n\\end{pmatrix}\\quad \\Longrightarrow \\quad\\lambda_{1} = \\lambda_{2} = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(78, 1, 28, '3.79', NULL, 1258, 'explicit', '\\begin{matrix}\nV = \\text{span}\\left( b_{1},\\ldots,b_{n} \\right), \\\\\n\\text{∑}_{i = 1}^{n}\\lambda_{i}b_{i} = 0_{V} \\Longrightarrow \\lambda_{1} = \\cdots = \\lambda_{n} = 0_{K}.\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(79, 1, 28, '3.80', NULL, 1273, 'explicit', 'v = \\sum_{i = 1}^{n}{\\lambda_{i}b_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(80, 1, 28, '3.81', NULL, 1296, 'explicit', 'E_{n} = \\left( e_{1},\\ldots,e_{n} \\right),\\quad\\quad e_{i} = \\begin{pmatrix}\n0 \\\\\n \\vdots \\\\\n1 \\\\\n \\vdots \\\\\n0\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(81, 1, 28, '3.82', NULL, 1324, 'explicit', 'v = v_{1}e_{1} + \\cdots + v_{n}e_{n} = \\sum_{i = 1}^{n}v_{i}e_{i}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(82, 1, 28, '3.83', NULL, 1340, 'explicit', '\\lbrack v\\rbrack_{B} = \\begin{pmatrix}\n\\lambda_{1} \\\\\n\\lambda_{2} \\\\\n \\vdots \\\\\n\\lambda_{n}\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(83, 1, 28, '3.84', NULL, 1355, 'explicit', '\\dim(V) = n', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(84, 1, 28, '3.85', NULL, 1361, 'explicit', '\\dim\\left( \\mathbb{R}^{n} \\right) = n', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(85, 1, 29, '3.86', NULL, 1451, 'explicit', 'v = \\sum_{i = 1}^{n}{\\lambda_{i}b_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(86, 1, 29, '3.87', NULL, 1467, 'explicit', '\\lbrack v\\rbrack_{B} = \\begin{pmatrix}\n\\lambda_{1} \\\\\n\\lambda_{2} \\\\\n \\vdots \\\\\n\\lambda_{n}\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(87, 1, 29, '3.88', NULL, 1487, 'explicit', '\\lbrack v\\rbrack_{B} = \\begin{pmatrix}\n\\lambda_{1} \\\\\n \\vdots \\\\\n\\lambda_{n}\n\\end{pmatrix},\\quad\\quad\\lbrack v\\rbrack_{C} = \\begin{pmatrix}\n\\mu_{1} \\\\\n \\vdots \\\\\n\\mu_{n}\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(88, 1, 29, '3.89', NULL, 1509, 'explicit', '\\lbrack v\\rbrack_{C} = P_{B \\rightarrow C}\\lbrack v\\rbrack_{B}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(89, 1, 29, '3.90', NULL, 1523, 'explicit', '\\begin{matrix}\nP_{C \\rightarrow B} = P_{B \\rightarrow C}^{- 1} \\\\\n\\lbrack v\\rbrack_{B} = P_{C \\rightarrow B}\\lbrack v\\rbrack_{C}.\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(90, 1, 29, '3.91', NULL, 1543, 'explicit', 'P_{C \\rightarrow B} = \\begin{pmatrix}\n\\left\\lbrack c_{1} \\right\\rbrack_{B} & \\left\\lbrack c_{2} \\right\\rbrack_{B} & \\cdots & \\left\\lbrack c_{n} \\right\\rbrack_{B}\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(91, 1, 29, '3.92', NULL, 1571, 'explicit', 'P_{C \\rightarrow B} = \\begin{pmatrix}\n1 & 1 \\\\\n1 & - 1\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(92, 1, 29, '3.93', NULL, 1580, 'explicit', 'P_{B \\rightarrow C} = P_{C \\rightarrow B}^{- 1} = \\frac{1}{2}\\begin{pmatrix}\n1 & 1 \\\\\n1 & - 1\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(93, 1, 29, '3.94', NULL, 1597, 'explicit', 'A_{C} = P_{B \\rightarrow C}A_{B}P_{C \\rightarrow B}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(94, 1, 29, '3.95', NULL, 1621, 'explicit', '\\det\\left( A_{C} \\right) = \\det\\left( A_{B} \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(95, 1, 29, '3.96', NULL, 1635, 'explicit', '\\sigma\\left( A_{B} \\right) = \\sigma\\left( A_{C} \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(96, 1, 30, '3.97', NULL, 1723, 'explicit', '\\det:\\mathbb{R}^{n \\times n} \\longrightarrow \\mathbb{R},\\quad\\quad A \\longmapsto \\det(A)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(97, 1, 30, '3.98', NULL, 1747, 'explicit', '\\det(A) = ad - bc', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(98, 1, 30, '3.99', NULL, 1761, 'explicit', '\\det(A) = 2 \\cdot 3 - 0 \\cdot 0 = 6', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(99, 1, 30, '3.100', NULL, 1776, 'explicit', '\\det(A) = a_{11}\\left| \\begin{matrix}\na_{22} & a_{23} \\\\\na_{32} & a_{33}\n\\end{matrix} \\right| - a_{12}\\left| \\begin{matrix}\na_{21} & a_{2311} \\\\\na_{31} & a_{33}\n\\end{matrix} \\right| + a_{13}\\left| \\begin{matrix}\na_{1121} & a_{22} \\\\\na_{31} & a_{32}\n\\end{matrix} \\right|', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(100, 1, 30, '3.101', NULL, 1800, 'explicit', 'vol(T_{A}(M)) = |\\ det(A)|\\, vol(M)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(101, 1, 30, '3.102', NULL, 1816, 'explicit', '\\left\\{ \\begin{matrix}\n|\\ det(A)| > 1 \\Rightarrow Vergrößerung \\\\\n0 < |\\ det(A)| < 1 \\Rightarrow Verkleinerung \\\\\n|\\ det(A)| = 1 \\Rightarrow Volumenerhaltung.\n\\end{matrix} \\right.', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(102, 1, 30, '3.103', NULL, 1830, 'explicit', '\\left\\{ \\begin{aligned}\ndet(A) > 0 & \\Rightarrow Orientierung\\ bleibt\\ erhalten \\\\\ndet(A) < 0 & \\Rightarrow \"\\{ Orientierung\\ wird\\ umgekehrt.\n\\end{aligned} \\right.', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(103, 1, 30, '3.104', NULL, 1845, 'explicit', '\\det(S) = - 1', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(104, 1, 30, '3.105', NULL, 1855, 'explicit', '\\det(A) = 0\\quad \\Longleftrightarrow \\quad A\\,\\text{ist singulär}\\quad \\Longleftrightarrow \\quad A^{- 1}\\,\\text{existiert nicht}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(105, 1, 30, '3.106', NULL, 1878, 'explicit', '\\det(A) = 1 \\cdot 4 - 2 \\cdot 2 = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(106, 1, 30, '3.107', NULL, 1895, 'explicit', '\\det(A) \\neq 0\\quad \\Longleftrightarrow \\quad a_{1},\\ldots,a_{n}\\,\\text{sind linear unabhängig}\\quad \\Longleftrightarrow \\quad\\text{rank}(A) = n\\quad \\Longleftrightarrow \\quad A^{- 1}\\,\\text{existiert}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(107, 1, 30, '3.108', NULL, 1913, 'explicit', '\\det(AB) = \\det(A)\\det(B)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(108, 1, 30, '3.109', NULL, 1928, 'explicit', '\\det\\left( A^{- 1} \\right) = \\frac{1}{\\det(A)}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(109, 1, 30, '3.110', NULL, 1945, 'explicit', '\\begin{matrix}\ndet(A_{C})\\& = \\ det(P_{B \\rightarrow C}^{- 1}) \\\\\n = det(P_{B \\rightarrow C})\\ det(A_{B})\\ det(P_{B \\rightarrow C}^{- 1}) \\\\\n = det(A_{B})\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(110, 1, 31, '3.111', NULL, 2059, 'explicit', '\\text{Bild}(T) = \\left\\{ T(v) \\in W \\middle| v \\in V \\right\\}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(111, 1, 31, '3.112', NULL, 2089, 'explicit', '\\ker(T) = \\left\\{ v \\in V \\middle| T(v) = 0_{W} \\right\\}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(112, 1, 31, '3.113', NULL, 2108, 'explicit', '\\text{rang}(T) = \\dim\\left( \\text{Bild}(T) \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(113, 1, 31, '3.114', NULL, 2124, 'explicit', '\\text{rang}(A) = \\dim\\left( \\text{Spaltenraum}(A) \\right) = \\dim\\left( \\text{Zeilenraum}(A) \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(114, 1, 31, '3.115', NULL, 2157, 'explicit', '\\text{rang}(A) = 1', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(115, 1, 31, '3.116', NULL, 2169, 'explicit', '\\text{rang}(A) = \\min(m,n)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(116, 1, 31, '3.117', NULL, 2179, 'explicit', '\\text{rang}(A) = n\\quad \\Longleftrightarrow \\quad\\det(A) \\neq 0\\quad \\Longleftrightarrow \\quad A^{- 1}\\,\\text{existiert}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(117, 1, 31, '3.118', NULL, 2191, 'explicit', '\\dim(V) = \\dim\\left( \\ker(T) \\right) + \\text{rang}(T)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(118, 1, 31, '3.119', NULL, 2218, 'explicit', '2 = \\dim\\left( \\ker(A) \\right) + 1\\quad \\Longrightarrow \\quad\\dim\\left( \\ker(A) \\right) = 1', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(119, 1, 31, '3.120', NULL, 2243, 'explicit', 'T\\,\\text{injektiv}\\quad \\Longleftrightarrow \\quad\\ker(T) = \\text{\\{}0_{V}\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(120, 1, 31, '3.121', NULL, 2252, 'explicit', 'T\\,\\text{surjektiv}\\quad \\Longleftrightarrow \\quad\\text{Bild}(T) = W', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(121, 1, 31, '3.122', NULL, 2264, 'explicit', 'Ax = b\\,\\text{ist lösbar}\\quad \\Longleftrightarrow \\quad b \\in \\text{Bild}(A)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(122, 1, 31, '3.123', NULL, 2268, 'explicit', 'Ax = b\\,\\text{ist lösbar}\\quad \\Longleftrightarrow \\quad\\text{rang}(A) = \\text{rang}\\left( A \\middle| b \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(123, 1, 31, '3.124', NULL, 2274, 'explicit', 'x = x_{0} + z,\\quad\\quad z \\in \\ker(A)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(124, 1, 31, '3.125', NULL, 2282, 'explicit', '\\det(A) \\neq 0\\quad \\Longleftrightarrow \\quad\\text{rang}(A) = n\\quad \\Longleftrightarrow \\quad\\ker(A) = \\text{\\{}0\\text{\\}}\\quad \\Longleftrightarrow \\quad A\\,\\text{ist invertierbar}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(125, 1, 32, '3.126', NULL, 2377, 'explicit', 'Av = \\lambda v,\\quad\\quad v \\neq 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(126, 1, 32, '3.127', NULL, 2399, 'explicit', '(A - \\lambda I)v = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(127, 1, 32, '3.128', NULL, 2407, 'explicit', 'v \\in \\ker(A - \\lambda I),\\quad\\quad v \\neq 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(128, 1, 32, '3.129', NULL, 2417, 'explicit', '\\det(A - \\lambda I) = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(129, 1, 32, '3.130', NULL, 2427, 'explicit', 'p_{A}(\\lambda) = \\det(A - \\lambda I)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(130, 1, 32, '3.131', NULL, 2431, 'explicit', 'p_{A}(\\lambda) = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(131, 1, 32, '3.132', NULL, 2447, 'explicit', 'p_{A}(\\lambda) = \\ det\\begin{pmatrix}\n2 - \\lambda & 0 \\\\\n0 & 3 - \\lambda\n\\end{pmatrix} = (2 - \\lambda)(3 - \\lambda).', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(132, 1, 32, '3.133', NULL, 2454, 'explicit', '\\lambda_{1} = 2,\\quad\\quad\\lambda_{2} = 3', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(133, 1, 32, '3.134', NULL, 2485, 'explicit', 'E_{\\lambda} = \\ker(A - \\lambda I)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(134, 1, 32, '3.135', NULL, 2493, 'explicit', 'E_{2} = \\text{span}\\left\\{ \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} \\right\\},\\quad\\quad E_{3} = \\text{span}\\left\\{ \\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix} \\right\\}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(135, 1, 32, '3.136', NULL, 2509, 'explicit', 'm_{g}(\\lambda) = \\dim\\left( E_{\\lambda} \\right)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(136, 1, 32, '3.137', NULL, 2513, 'explicit', '1 \\leq m_{g}(\\lambda) \\leq m_{a}(\\lambda)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(137, 1, 32, '3.138', NULL, 2529, 'explicit', 'p_{A}(\\lambda) = (2 - \\lambda)^{2}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(138, 1, 32, '3.139', NULL, 2541, 'explicit', 'E_{2} = \\text{span}\\left\\{ \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} \\right\\}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(139, 1, 32, '3.140', NULL, 2569, 'explicit', '\\det(A) = \\prod_{i = 1}^{n}\\lambda_{i}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(140, 1, 32, '3.141', NULL, 2575, 'explicit', '\\text{tr}(A) = \\sum_{i = 1}^{n}\\lambda_{i}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(141, 1, 32, '3.142', NULL, 2589, 'explicit', '0\\,\\text{ist Eigenwert von }A\\quad \\Longleftrightarrow \\quad\\ker(A) \\neq \\text{\\{}0\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(142, 1, 32, '3.143', NULL, 2593, 'explicit', '0\\,\\text{ist Eigenwert}\\quad \\Longleftrightarrow \\quad\\det(A) = 0\\quad \\Longleftrightarrow \\quad A\\,\\text{ist nicht invertierbar}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(143, 1, 32, '3.144', NULL, 2606, 'explicit', 'p_{A_{C}}(\\lambda) = p_{A_{B}}(\\lambda)', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(144, 1, 32, '3.145', NULL, 2622, 'explicit', '\\sigma(A) = \\left\\{ \\lambda \\middle| \\det(A - \\lambda I) = 0 \\right\\}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(145, 1, 32, '3.146', NULL, 2662, 'explicit', 'A^{k}v = \\lambda^{k}v', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(146, 1, 33, '3.147', NULL, 2747, 'explicit', 'A = PDP^{- 1}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(147, 1, 33, '3.148', NULL, 2763, 'explicit', 'P = \\begin{pmatrix}\nv_{1} & v_{2} & \\cdots & v_{n}\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(148, 1, 33, '3.149', NULL, 2769, 'explicit', 'D = \\begin{pmatrix}\n\\lambda_{1} & 0 & \\cdots & 0 \\\\\n0 & \\lambda_{2} & \\cdots & 0 \\\\\n \\vdots & \\vdots & \\ddots & \\vdots \\\\\n0 & 0 & \\cdots & \\lambda_{n}\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(149, 1, 33, '3.150', NULL, 2785, 'explicit', 'AP = PD', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(150, 1, 33, '3.151', NULL, 2801, 'explicit', 'D = P^{- 1}AP', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(151, 1, 33, '3.152', NULL, 2811, 'explicit', 'A\\,\\text{diagonalisierbar}\\quad \\Longleftrightarrow \\quad A\\,\\text{besitzt }n\\text{ linear unabhängige Eigenvektoren}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(152, 1, 33, '3.153', NULL, 2819, 'explicit', '\\lambda_{1},\\ldots,\\lambda_{n}\\,\\text{paarweise verschieden}\\quad \\Longrightarrow \\quad A\\,\\text{diagonalisierbar}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(153, 1, 33, '3.154', NULL, 2831, 'explicit', 'A\\,\\text{diagonalisierbar}\\quad \\Longleftrightarrow \\quad\\sum_{\\lambda \\in \\sigma(A)}^{}{\\dim\\left( E_{\\lambda} \\right)} = n', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(154, 1, 33, '3.155', NULL, 2866, 'explicit', 'P^{- 1}AP = A = D', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(155, 1, 33, '3.156', NULL, 2882, 'explicit', 'p_{A}(\\lambda) = \\det\\begin{pmatrix}\n4 - \\lambda & 1 \\\\\n2 & 3 - \\lambda\n\\end{pmatrix} = (4 - \\lambda)(3 - \\lambda) - 2 = \\lambda^{2} - 7\\lambda + 10.', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(156, 1, 33, '3.157', NULL, 2893, 'explicit', '\\lambda_{1} = 5,\\quad\\quad\\lambda_{2} = 2', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(157, 1, 33, '3.158', NULL, 2917, 'explicit', 'P = \\begin{pmatrix}\n1 & 1 \\\\\n1 & - 2\n\\end{pmatrix},\\quad\\quad D = \\begin{pmatrix}\n5 & 0 \\\\\n0 & 2\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(158, 1, 33, '3.159', NULL, 2927, 'explicit', 'P^{- 1}AP = D', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(159, 1, 33, '3.160', NULL, 2957, 'explicit', 'A\\,\\text{ist nicht diagonalisierbar}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(160, 1, 33, '3.161', NULL, 2975, 'explicit', 'A^{k} = PD^{k}P^{- 1}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(161, 1, 33, '3.162', NULL, 2979, 'explicit', 'D^{k} = \\begin{pmatrix}\n\\lambda_{1}^{k} & 0 & \\cdots & 0 \\\\\n0 & \\lambda_{2}^{k} & \\cdots & 0 \\\\\n \\vdots & \\vdots & \\ddots & \\vdots \\\\\n0 & 0 & \\cdots & \\lambda_{n}^{k}\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(162, 1, 33, '3.163', NULL, 2994, 'explicit', 'f(A) = P\\, f(D)\\, P^{- 1}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(163, 1, 33, '3.164', NULL, 2998, 'explicit', 'f(D) = \\begin{pmatrix}\nf\\left( \\lambda_{1} \\right) & 0 & \\cdots & 0 \\\\\n0 & f\\left( \\lambda_{2} \\right) & \\cdots & 0 \\\\\n \\vdots & \\vdots & \\ddots & \\vdots \\\\\n0 & 0 & \\cdots & f\\left( \\lambda_{n} \\right)\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(164, 1, 33, '3.165', NULL, 3016, 'explicit', 'A = Q\\Lambda Q^{T}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(165, 1, 33, '3.166', NULL, 3030, 'explicit', 'Q^{T}Q = QQ^{T} = I', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(166, 1, 33, '3.167', NULL, 3041, 'explicit', 'Q^{T}AQ = \\Lambda', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(167, 1, 33, '3.168', NULL, 3045, 'explicit', 'A\\,\\text{orthogonal diagonalisierbar}\\quad \\Longleftrightarrow \\quad A = A^{T}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(168, 1, 33, '3.169', NULL, 3053, 'explicit', 'A = \\sum_{i = 1}^{n}{\\lambda_{i}q_{i}q_{i}^{T}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(169, 1, 33, '3.170', NULL, 3064, 'explicit', 'A = \\sum_{\\lambda \\in \\sigma(A)}^{}{\\lambda P_{\\lambda}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(170, 1, 33, '3.171', NULL, 3074, 'explicit', '\\sum_{i = 1}^{n}q_{i}q_{i}^{T} = I', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(171, 1, 33, '3.172', NULL, 3078, 'explicit', '\\sum_{\\lambda \\in \\sigma(A)}^{}P_{\\lambda} = I', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(172, 1, 33, '3.173', NULL, 3084, 'source_context', 'P_{\\lambda}P_{\\mu} = 0\\quad\\quad\\text{für }\\lambda \\neq', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'formula_broken', 'source_import', 'Quellformel ist unvollständig; sie wird absichtlich nicht automatisch korrigiert.', 2),
+(173, 1, 33, '3.174', NULL, 3088, 'explicit', 'P_{\\lambda}^{2} = P_{\\lambda}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(174, 1, 33, '3.175', NULL, 3096, 'explicit', 'x = \\sum_{i = 1}^{n}\\left( q_{i}^{T}x \\right)\\, q_{i}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(175, 1, 33, '3.176', NULL, 3102, 'explicit', 'Ax = \\sum_{i = 1}^{n}{\\lambda_{i}\\left( q_{i}^{T}x \\right)}\\, q_{i}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(176, 1, 33, '3.177', NULL, 3112, 'explicit', 'f(A) = \\sum_{i = 1}^{n}{f\\left( \\lambda_{i} \\right)}\\, q_{i}q_{i}^{T}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(177, 1, 33, '3.178', NULL, 3116, 'explicit', 'f(A) = \\sum_{\\lambda \\in \\sigma(A)}^{}{f(\\lambda)P_{\\lambda}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(178, 1, 34, '3.179', NULL, 3222, 'explicit', '\\left\\langle \\cdot , \\cdot \\right\\rangle:V \\times V\\mathbb{\\longrightarrow R,\\quad\\quad}(x,y) \\longmapsto \\left\\langle x,y \\right\\rangle.', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(179, 1, 34, '3.180', NULL, 3234, 'explicit', '\\langle\\alpha x + \\beta y,z\\rangle = \\alpha\\langle x,z\\rangle + \\beta\\langle y,z\\rangle', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(180, 1, 34, '3.181', NULL, 3238, 'explicit', '\\langle x,y\\rangle = \\langle y,x\\rangle', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(181, 1, 34, '3.182', NULL, 3242, 'explicit', '\\left\\langle x,x \\right\\rangle \\geq 0,\\quad\\quad\\left\\langle x,x \\right\\rangle = 0 \\Longleftrightarrow x = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(182, 1, 34, '3.183', NULL, 3261, 'explicit', '\\left\\langle x,y \\right\\rangle = x^{T}y = \\sum_{i = 1}^{n}{x_{i}y_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(183, 1, 34, '3.184', NULL, 3275, 'explicit', '\\left\\langle x,y \\right\\rangle = x_{1}y_{1} + x_{2}y_{2}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(184, 1, 34, '3.185', NULL, 3283, 'explicit', '\\text{|}x\\text{|} = \\sqrt{\\left\\langle x,x \\right\\rangle}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(185, 1, 34, '3.186', NULL, 3295, 'explicit', '\\text{|}x\\text{|} = \\sqrt{x_{1}^{2} + x_{2}^{2} + \\cdots + x_{n}^{2}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(186, 1, 34, '3.187', NULL, 3303, 'explicit', '\\text{|}x\\text{|} \\geq 0,\\quad\\quad\\text{|}x\\text{|} = 0 \\Longleftrightarrow x = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(187, 1, 34, '3.188', NULL, 3307, 'explicit', '\\text{|}\\alpha x\\text{|} = |\\alpha|\\,\\text{|}x\\text{|}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(188, 1, 34, '3.189', NULL, 3311, 'explicit', '\\text{|}x + y\\text{|} \\leq \\text{|}x\\text{|} + \\text{|}y\\text{|}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(189, 1, 34, '3.190', NULL, 3319, 'explicit', 'd(x,y) = \\text{|}x - y\\text{|}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(190, 1, 34, '3.191', NULL, 3335, 'explicit', '\\text{Skalarprodukt} \\longrightarrow \\text{Norm} \\longrightarrow \\text{Abstand}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(191, 1, 34, '3.192', NULL, 3343, 'explicit', '\\left| \\left\\langle x,y \\right\\rangle \\right| \\leq \\text{|}x\\text{|}\\,\\text{|}y\\text{|}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(192, 1, 34, '3.193', NULL, 3349, 'explicit', '- 1 \\leq \\frac{\\left\\langle x,y \\right\\rangle}{\\text{|}x\\text{|}\\,\\text{|}y\\text{|}} \\leq 1', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(193, 1, 34, '3.194', NULL, 3357, 'explicit', '\\cos\\theta = \\frac{\\left\\langle x,y \\right\\rangle}{\\text{|}x\\text{|}\\,\\text{|}y\\text{|}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(194, 1, 34, '3.195', NULL, 3371, 'explicit', 'cos\\theta = \\langle x,y\\rangle', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(195, 1, 34, '3.196', NULL, 3377, 'explicit', 'x\\bot y\\quad \\Longleftrightarrow \\quad\\left\\langle x,y \\right\\rangle = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(196, 1, 34, '3.197', NULL, 3390, 'explicit', '\\text{|}x + y\\text{|}^{2} = \\text{|}x\\text{|}^{2} + \\text{|}y\\text{|}^{2}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(197, 1, 34, '3.198', NULL, 3394, 'explicit', '\\begin{matrix}\n\\text{|}x + y\\text{|}^{2} = \\langle x + y,x + y\\rangle \\\\\n = \\langle x,x\\rangle + 2\\langle x,y\\rangle + \\langle y,y\\rangle \\\\\n = \\text{|}x\\text{|}^{2} + \\text{|}y\\text{|}^{2}.\n\\end{matrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(198, 1, 34, '3.199', NULL, 3408, 'explicit', '\\text{|}x\\text{|} = 1', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(199, 1, 34, '3.200', NULL, 3412, 'explicit', '\\widehat{x} = \\frac{x}{\\text{|}x\\text{|}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(200, 1, 34, '3.201', NULL, 3432, 'explicit', '\\left\\langle q_{i},q_{j} \\right\\rangle = \\delta_{ij}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(201, 1, 34, '3.202', NULL, 3446, 'explicit', 'x = \\sum_{i = 1}^{n}{\\left\\langle q_{i},x \\right\\rangle q_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(202, 1, 34, '3.203', NULL, 3456, 'explicit', 'Q^{T}Q = I', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(203, 1, 34, '3.204', NULL, 3460, 'explicit', 'Q^{- 1} = Q^{T}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(204, 1, 34, '3.205', NULL, 3466, 'explicit', '\\langle Qx,Qy\\rangle = \\langle x,y\\rangle', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(205, 1, 34, '3.206', NULL, 3470, 'explicit', '\\text{|}Qx\\text{|} = \\text{|}x\\text{|}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(206, 1, 34, '3.207', NULL, 3480, 'explicit', 'U^{\\bot} = \\left\\{ x \\in V\\mid\\left\\langle x,u \\right\\rangle = 0\\text{ für alle }u \\in U \\right\\}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(207, 1, 34, '3.208', NULL, 3494, 'explicit', 'V = U \\oplus U^{\\bot}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(208, 1, 34, '3.209', NULL, 3498, 'explicit', 'x = u + u_{\\bot},\\quad\\quad u \\in U,\\quad u_{\\bot} \\in U^{\\bot}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(209, 1, 34, '3.210', NULL, 3506, 'explicit', 'proj_{u}(x) = \\frac{\\left\\langle x,u \\right\\rangle}{\\left\\langle u,u \\right\\rangle}u', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(210, 1, 34, '3.211', NULL, 3520, 'explicit', '\\text{proj}_{u}(x) = \\left\\langle x,u \\right\\rangle u', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(211, 1, 34, '3.212', NULL, 3528, 'explicit', 'P_{U}x = \\sum_{i = 1}^{m}{\\left\\langle q_{i},x \\right\\rangle q_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(212, 1, 34, '3.213', NULL, 3534, 'explicit', 'P_{U} = QQ^{T}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(213, 1, 34, '3.214', NULL, 3538, 'explicit', 'P_{U}x = QQ^{T}x', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(214, 1, 34, '3.215', NULL, 3542, 'explicit', 'P_{U}^{2} = P_{U}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(215, 1, 34, '3.216', NULL, 3546, 'explicit', 'P_{U}^{T} = P_{U}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(216, 1, 34, '3.217', NULL, 3554, 'explicit', 'x = P_{U}x + \\left( I - P_{U} \\right)x', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(217, 1, 34, '3.218', NULL, 3566, 'explicit', '\\left\\langle P_{U}x,\\left( I - P_{U} \\right)x \\right\\rangle = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(218, 1, 34, '3.219', NULL, 3578, 'explicit', 'u_{1} = v_{1}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(219, 1, 34, '3.220', NULL, 3582, 'explicit', 'u_{2} = v_{2} - \\frac{\\left\\langle v_{2},u_{1} \\right\\rangle}{\\left\\langle u_{1},u_{1} \\right\\rangle}u_{1}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(220, 1, 34, '3.221', NULL, 3586, 'explicit', 'u_{k} = v_{k} - \\sum_{j = 1}^{k - 1}{\\frac{\\left\\langle v_{k},u_{j} \\right\\rangle}{\\left\\langle u_{j},u_{j} \\right\\rangle}u_{j}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(221, 1, 34, '3.222', NULL, 3592, 'explicit', 'q_{k} = \\frac{u_{k}}{\\text{|}u_{k}\\text{|}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(222, 1, 34, '3.223', NULL, 3598, 'explicit', '\\text{span}\\text{\\{}v_{1},\\ldots,v_{m}\\text{\\}} = \\text{span}\\text{\\{}q_{1},\\ldots,q_{m}\\text{\\}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(223, 1, 34, '3.224', NULL, 3608, 'explicit', 'x = \\sum_{i = 1}^{n}{\\left\\langle q_{i},x \\right\\rangle q_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(224, 1, 34, '3.225', NULL, 3612, 'explicit', 'Ax = \\sum_{i = 1}^{n}{\\lambda_{i}\\left\\langle q_{i},x \\right\\rangle q_{i}}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(225, 1, 34, '3.226', NULL, 3641, 'explicit', '\\left\\langle x,y \\right\\rangle = 3( - 4) + 4(3) = 0', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(226, 1, 34, '3.227', NULL, 3645, 'explicit', 'x\\bot y', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(227, 1, 34, '3.228', NULL, 3649, 'explicit', '\\text{|}x\\text{|} = \\sqrt{3^{2} + 4^{2}} = 5', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(228, 1, 34, '3.229', NULL, 3653, 'explicit', '\\text{|}y\\text{|} = \\sqrt{( - 4)^{2} + 3^{2}} = 5', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(229, 1, 34, '3.230', NULL, 3657, 'explicit', '\\widehat{x} = \\begin{pmatrix}\n3\\text{/}5 \\\\\n4\\text{/}5\n\\end{pmatrix},\\quad\\quad\\widehat{y} = \\begin{pmatrix}\n - 4\\text{/}5 \\\\\n3\\text{/}5\n\\end{pmatrix}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(230, 1, 34, '3.231', NULL, 3673, 'explicit', '\\left\\langle x,y \\right\\rangle_{G} = x^{T}Gy', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(231, 1, 34, '3.232', NULL, 3685, 'explicit', '\\text{|}x\\text{|}_{G} = \\sqrt{x^{T}Gx}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2),
+(232, 1, 34, '3.233', NULL, 3703, 'explicit', '\\text{Vektorraum} \\longrightarrow \\text{Skalarproduktraum} \\longrightarrow \\text{Norm} \\longrightarrow \\text{Abstand und Winkel}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2);
+INSERT INTO `equation_candidates` (`equation_candidate_id`, `document_id`, `section_id`, `source_equation_number`, `proposed_equation_number`, `source_line_no`, `number_origin`, `source_latex`, `source_word_latex`, `proposed_latex`, `word_latex`, `plain_description`, `equation_type`, `provenance`, `source_integrity_status`, `candidate_status`, `notes`, `created_revision_id`) VALUES
+(233, 1, 34, '3.234', NULL, 3737, 'explicit', '\\text{Skalarprodukt} \\longrightarrow \\text{Länge und Winkel} \\longrightarrow \\text{Orthogonalität} \\longrightarrow \\text{Projektion} \\longrightarrow \\text{orthonormale Zerlegung}', NULL, NULL, NULL, NULL, 'needs_review', 'needs_review', 'ok', 'source_import', NULL, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `equation_dependencies`
+--
+
+CREATE TABLE `equation_dependencies` (
+  `dependency_id` bigint(20) UNSIGNED NOT NULL,
+  `equation_id` bigint(20) UNSIGNED NOT NULL,
+  `depends_on_equation_id` bigint(20) UNSIGNED NOT NULL,
+  `dependency_type` enum('derived_from','uses','special_case_of','generalizes','validates','contrasts') NOT NULL,
+  `dependency_note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `equation_symbols`
+--
+
+CREATE TABLE `equation_symbols` (
+  `equation_symbol_id` bigint(20) UNSIGNED NOT NULL,
+  `equation_id` bigint(20) UNSIGNED NOT NULL,
+  `symbol_latex` varchar(255) NOT NULL,
+  `symbol_name` varchar(255) NOT NULL,
+  `definition_text` text NOT NULL,
+  `unit_text` varchar(255) DEFAULT NULL,
+  `domain_text` varchar(500) DEFAULT NULL,
+  `symbol_order` smallint(5) UNSIGNED NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `figures`
+--
+
+CREATE TABLE `figures` (
+  `figure_id` bigint(20) UNSIGNED NOT NULL,
+  `figure_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `caption` longtext NOT NULL,
+  `file_name` varchar(500) DEFAULT NULL,
+  `file_path` varchar(1500) DEFAULT NULL,
+  `alt_text` longtext DEFAULT NULL,
+  `figure_type` enum('diagram','plot','photograph','schema','flowchart','network','other') NOT NULL DEFAULT 'other',
+  `provenance` enum('original','adapted','literature') NOT NULL DEFAULT 'original',
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `generation_method` text DEFAULT NULL,
+  `data_reference` text DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `lemmas`
+--
+
+CREATE TABLE `lemmas` (
+  `lemma_id` bigint(20) UNSIGNED NOT NULL,
+  `lemma_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `statement_text` longtext NOT NULL,
+  `statement_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `provenance` enum('original','adapted','literature') NOT NULL DEFAULT 'literature',
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `assumptions` text DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `mathematical_object_profiles`
+--
+
+CREATE TABLE `mathematical_object_profiles` (
+  `repo_object_id` bigint(20) UNSIGNED NOT NULL,
+  `document_location` enum('main_text','appendix') NOT NULL,
+  `importance_level` enum('core','supporting','derivation','example') NOT NULL,
+  `equation_role` enum('canonical','derived','proof_step','example') DEFAULT NULL,
+  `appendix_module_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `appendix_anchor` varchar(100) DEFAULT NULL,
+  `classification_reason` longtext NOT NULL,
+  `classification_status` enum('proposed','reviewed','approved') NOT NULL DEFAULT 'proposed',
+  `created_revision_id` bigint(20) UNSIGNED NOT NULL
+) ;
+
+--
+-- Daten für Tabelle `mathematical_object_profiles`
+--
+
+INSERT INTO `mathematical_object_profiles` (`repo_object_id`, `document_location`, `importance_level`, `equation_role`, `appendix_module_id`, `appendix_anchor`, `classification_reason`, `classification_status`, `created_revision_id`) VALUES
+(1, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(2, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(3, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(4, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(5, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(6, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(7, 'appendix', 'supporting', NULL, 2, 'M2-DEF-007', 'Mathematisch vollständig zu erhalten, für den Hauptargumentationsgang jedoch als Vertiefung in die Anlage ausgelagert.', 'proposed', 5),
+(8, 'appendix', 'supporting', NULL, 2, 'M2-DEF-008', 'Mathematisch vollständig zu erhalten, für den Hauptargumentationsgang jedoch als Vertiefung in die Anlage ausgelagert.', 'proposed', 5),
+(9, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(10, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(11, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(12, 'appendix', 'supporting', NULL, 2, 'M2-DEF-012', 'Mathematisch vollständig zu erhalten, für den Hauptargumentationsgang jedoch als Vertiefung in die Anlage ausgelagert.', 'proposed', 5),
+(13, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(14, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(15, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(16, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(17, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(18, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(19, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(20, 'main_text', 'supporting', NULL, NULL, NULL, 'Unterstützende Definition, die den Hauptpfad ohne ausführliche Herleitung präzisiert.', 'proposed', 5),
+(21, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(22, 'main_text', 'supporting', NULL, NULL, NULL, 'Unterstützende Definition, die den Hauptpfad ohne ausführliche Herleitung präzisiert.', 'proposed', 5),
+(23, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(24, 'main_text', 'supporting', NULL, NULL, NULL, 'Unterstützende Definition, die den Hauptpfad ohne ausführliche Herleitung präzisiert.', 'proposed', 5),
+(25, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(26, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(27, 'appendix', 'supporting', NULL, 6, 'M6-DEF-027', 'Mathematisch vollständig zu erhalten, für den Hauptargumentationsgang jedoch als Vertiefung in die Anlage ausgelagert.', 'proposed', 5),
+(28, 'appendix', 'supporting', NULL, 6, 'M6-DEF-028', 'Mathematisch vollständig zu erhalten, für den Hauptargumentationsgang jedoch als Vertiefung in die Anlage ausgelagert.', 'proposed', 5),
+(29, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(30, 'appendix', 'supporting', NULL, 6, 'M6-DEF-030', 'Mathematisch vollständig zu erhalten, für den Hauptargumentationsgang jedoch als Vertiefung in die Anlage ausgelagert.', 'proposed', 5),
+(31, 'main_text', 'supporting', NULL, NULL, NULL, 'Unterstützende Definition, die den Hauptpfad ohne ausführliche Herleitung präzisiert.', 'proposed', 5),
+(32, 'appendix', 'supporting', NULL, 6, 'M6-DEF-032', 'Mathematisch vollständig zu erhalten, für den Hauptargumentationsgang jedoch als Vertiefung in die Anlage ausgelagert.', 'proposed', 5),
+(33, 'main_text', 'core', NULL, NULL, NULL, 'Kanonische Begriffsdefinition für den mathematischen Hauptpfad zu Kapitel 3.3.', 'proposed', 5),
+(34, 'main_text', 'core', NULL, NULL, NULL, 'Struktureller Satz bzw. Kriterium mit unmittelbarer Bedeutung für den mathematischen Anschluss an Kapitel 3.3.', 'proposed', 5),
+(35, 'main_text', 'core', NULL, NULL, NULL, 'Struktureller Satz bzw. Kriterium mit unmittelbarer Bedeutung für den mathematischen Anschluss an Kapitel 3.3.', 'proposed', 5),
+(36, 'main_text', 'supporting', NULL, NULL, NULL, 'Unterstützender Satz für den Hauptpfad.', 'proposed', 5),
+(37, 'main_text', 'core', NULL, NULL, NULL, 'Struktureller Satz bzw. Kriterium mit unmittelbarer Bedeutung für den mathematischen Anschluss an Kapitel 3.3.', 'proposed', 5),
+(38, 'main_text', 'core', NULL, NULL, NULL, 'Struktureller Satz bzw. Kriterium mit unmittelbarer Bedeutung für den mathematischen Anschluss an Kapitel 3.3.', 'proposed', 5),
+(39, 'appendix', 'derivation', NULL, 6, 'M6-SATZ-006', 'Herleitung, Hilfssatz oder Verfahren bleibt vollständig in der mathematischen Anlage dokumentiert.', 'proposed', 5),
+(40, 'appendix', 'derivation', NULL, 6, 'M6-SATZ-007', 'Herleitung, Hilfssatz oder Verfahren bleibt vollständig in der mathematischen Anlage dokumentiert.', 'proposed', 5),
+(41, 'appendix', 'derivation', NULL, 6, 'M6-SATZ-008', 'Herleitung, Hilfssatz oder Verfahren bleibt vollständig in der mathematischen Anlage dokumentiert.', 'proposed', 5),
+(42, 'appendix', 'derivation', NULL, 6, 'M6-SATZ-009', 'Herleitung, Hilfssatz oder Verfahren bleibt vollständig in der mathematischen Anlage dokumentiert.', 'proposed', 5),
+(43, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(44, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(45, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(46, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(47, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(48, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(49, 'appendix', 'supporting', 'derived', 1, 'M1-GL-007', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(50, 'appendix', 'supporting', 'derived', 1, 'M1-GL-008', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(51, 'appendix', 'supporting', 'derived', 1, 'M1-GL-009', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(52, 'appendix', 'supporting', 'derived', 1, 'M1-GL-010', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(53, 'appendix', 'supporting', 'derived', 1, 'M1-GL-011', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(54, 'appendix', 'supporting', 'derived', 1, 'M1-GL-012', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(55, 'appendix', 'supporting', 'derived', 1, 'M1-GL-013', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(56, 'appendix', 'supporting', 'derived', 1, 'M1-GL-014', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(57, 'appendix', 'supporting', 'derived', 1, 'M1-GL-015', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(58, 'appendix', 'supporting', 'derived', 1, 'M1-GL-016', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(59, 'appendix', 'supporting', 'derived', 1, 'M1-GL-017', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(60, 'appendix', 'supporting', 'derived', 1, 'M1-GL-018', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(61, 'appendix', 'supporting', 'derived', 1, 'M1-GL-019', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(62, 'appendix', 'supporting', 'derived', 1, 'M1-GL-020', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(63, 'appendix', 'supporting', 'derived', 1, 'M1-GL-021', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(64, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(65, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(66, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(67, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(68, 'appendix', 'supporting', 'derived', 1, 'M1-GL-026', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(69, 'appendix', 'supporting', 'derived', 1, 'M1-GL-027', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(70, 'appendix', 'supporting', 'derived', 1, 'M1-GL-028', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(71, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(72, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(73, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(74, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(75, 'appendix', 'supporting', 'derived', 1, 'M1-GL-033', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(76, 'appendix', 'supporting', 'derived', 1, 'M1-GL-034', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(77, 'appendix', 'supporting', 'derived', 1, 'M1-GL-035', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(78, 'appendix', 'supporting', 'derived', 1, 'M1-GL-036', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(79, 'appendix', 'supporting', 'derived', 1, 'M1-GL-037', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(80, 'appendix', 'supporting', 'derived', 1, 'M1-GL-038', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(81, 'appendix', 'supporting', 'derived', 1, 'M1-GL-039', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(82, 'appendix', 'supporting', 'derived', 1, 'M1-GL-040', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(83, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(84, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(85, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(86, 'appendix', 'supporting', 'derived', 3, 'M3-GL-044', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(87, 'appendix', 'supporting', 'derived', 3, 'M3-GL-045', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(88, 'appendix', 'supporting', 'derived', 3, 'M3-GL-046', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(89, 'appendix', 'supporting', 'derived', 3, 'M3-GL-047', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(90, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(91, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(92, 'appendix', 'supporting', 'derived', 3, 'M3-GL-050', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(93, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(94, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(95, 'appendix', 'supporting', 'derived', 2, 'M2-GL-053', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(96, 'appendix', 'supporting', 'derived', 2, 'M2-GL-054', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(97, 'appendix', 'supporting', 'derived', 2, 'M2-GL-055', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(98, 'appendix', 'supporting', 'canonical', 2, 'M2-GL-056', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(99, 'appendix', 'supporting', 'canonical', 2, 'M2-GL-057', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(100, 'appendix', 'supporting', 'derived', 2, 'M2-GL-058', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(101, 'appendix', 'supporting', 'derived', 2, 'M2-GL-059', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(102, 'appendix', 'supporting', 'derived', 2, 'M2-GL-060', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(103, 'appendix', 'supporting', 'derived', 2, 'M2-GL-061', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(104, 'appendix', 'supporting', 'derived', 2, 'M2-GL-062', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(105, 'appendix', 'supporting', 'derived', 2, 'M2-GL-063', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(106, 'appendix', 'supporting', 'derived', 2, 'M2-GL-064', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(107, 'appendix', 'derivation', 'proof_step', 2, 'M2-GL-065', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(108, 'appendix', 'derivation', 'proof_step', 2, 'M2-GL-066', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(109, 'appendix', 'supporting', 'canonical', 2, 'M2-GL-067', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(110, 'appendix', 'example', 'example', 2, 'M2-GL-068', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(111, 'appendix', 'example', 'example', 2, 'M2-GL-069', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(112, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(113, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(114, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(115, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(116, 'appendix', 'supporting', 'canonical', 2, 'M2-GL-074', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(117, 'appendix', 'supporting', 'canonical', 2, 'M2-GL-075', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(118, 'appendix', 'example', 'example', 2, 'M2-GL-076', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(119, 'appendix', 'example', 'example', 2, 'M2-GL-077', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(120, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(121, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(122, 'appendix', 'example', 'example', 2, 'M2-GL-080', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(123, 'appendix', 'example', 'example', 2, 'M2-GL-081', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(124, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(125, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(126, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(127, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(128, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(129, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(130, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(131, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(132, 'appendix', 'derivation', 'proof_step', 3, 'M3-GL-090', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(133, 'appendix', 'example', 'example', 3, 'M3-GL-091', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(134, 'appendix', 'example', 'example', 3, 'M3-GL-092', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(135, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(136, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(137, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(138, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(139, 'appendix', 'supporting', 'derived', 3, 'M3-GL-097', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(140, 'appendix', 'supporting', 'derived', 3, 'M3-GL-098', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(141, 'appendix', 'supporting', 'derived', 3, 'M3-GL-099', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(142, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(143, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(144, 'appendix', 'supporting', 'derived', 3, 'M3-GL-102', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(145, 'appendix', 'supporting', 'derived', 3, 'M3-GL-103', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(146, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(147, 'appendix', 'example', 'example', 3, 'M3-GL-105', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(148, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(149, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(150, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(151, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(152, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(153, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(154, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(155, 'appendix', 'supporting', 'derived', 4, 'M4-GL-113', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(156, 'appendix', 'example', 'example', 4, 'M4-GL-114', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(157, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(158, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(159, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(160, 'appendix', 'example', 'example', 4, 'M4-GL-118', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(161, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(162, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(163, 'appendix', 'supporting', 'derived', 4, 'M4-GL-121', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(164, 'appendix', 'supporting', 'derived', 4, 'M4-GL-122', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(165, 'appendix', 'supporting', 'derived', 4, 'M4-GL-123', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(166, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(167, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(168, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(169, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(170, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(171, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(172, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(173, 'appendix', 'example', 'example', 5, 'M5-GL-131', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(174, 'appendix', 'example', 'example', 5, 'M5-GL-132', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(175, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(176, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(177, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-135', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(178, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-136', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(179, 'appendix', 'example', 'example', 5, 'M5-GL-137', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(180, 'appendix', 'example', 'example', 5, 'M5-GL-138', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(181, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-139', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(182, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-140', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(183, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(184, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(185, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(186, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(187, 'appendix', 'supporting', 'derived', 5, 'M5-GL-145', 'Wiederholende methodische/didaktische Formalisierung; in Anlage dokumentiert statt im Hauptfluss wiederholt.', 'proposed', 5),
+(188, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(189, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(190, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(191, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(192, 'main_text', 'supporting', 'derived', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(193, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(194, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(195, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-153', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(196, 'appendix', 'example', 'example', 5, 'M5-GL-154', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(197, 'appendix', 'example', 'example', 5, 'M5-GL-155', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(198, 'appendix', 'example', 'example', 5, 'M5-GL-156', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(199, 'appendix', 'example', 'example', 5, 'M5-GL-157', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(200, 'appendix', 'example', 'example', 5, 'M5-GL-158', 'Konkretes Rechen- oder Anschauungsbeispiel; vollständig in der Anlage erhalten.', 'proposed', 5),
+(201, 'appendix', 'supporting', 'derived', 5, 'M5-GL-159', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(202, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-160', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(203, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-161', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(204, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-162', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(205, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-163', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(206, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(207, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(208, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(209, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(210, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-168', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(211, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-169', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(212, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-170', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(213, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-171', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(214, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-172', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(215, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-173', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(216, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-174', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(217, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-175', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(218, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-176', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(219, 'appendix', 'derivation', 'proof_step', 5, 'M5-GL-177', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(220, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(221, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(222, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(223, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(224, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(225, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(226, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(227, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(228, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(229, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(230, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(231, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-189', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(232, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-190', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(233, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-191', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(234, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-192', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(235, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-193', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(236, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-194', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(237, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(238, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-196', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(239, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-197', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(240, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-198', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(241, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-199', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(242, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(243, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(244, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(245, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(246, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(247, 'main_text', 'supporting', 'canonical', NULL, NULL, 'Kurze unterstützende Gleichung im Hauptpfad; ausführliche Erläuterung kann in der Anlage stehen.', 'proposed', 5),
+(248, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-206', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(249, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-207', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(250, 'appendix', 'supporting', 'canonical', 6, 'M6-GL-208', 'Definition bzw. formale Vertiefung bleibt vollständig in der Anlage, ist aber nicht Teil des kompakten Hauptpfads.', 'proposed', 5),
+(251, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(252, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(253, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-211', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(254, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-212', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(255, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-213', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(256, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-214', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(257, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-215', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(258, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-216', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(259, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-217', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(260, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-218', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(261, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-219', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(262, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-220', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(263, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-221', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(264, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-222', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(265, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-223', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(266, 'appendix', 'derivation', 'proof_step', 6, 'M6-GL-224', 'Herleitungs- oder Rechenschritt; wird aus dem Haupttext ausgelagert, bleibt aber vollständig referenzierbar.', 'proposed', 5),
+(267, 'appendix', 'supporting', 'derived', 6, 'M6-GL-225', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(268, 'appendix', 'supporting', 'derived', 6, 'M6-GL-226', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(269, 'appendix', 'supporting', 'derived', 6, 'M6-GL-227', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(270, 'appendix', 'supporting', 'derived', 6, 'M6-GL-228', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(271, 'appendix', 'supporting', 'derived', 6, 'M6-GL-229', 'Mathematisches Detail bleibt vollständig erhalten, wird aber zur Straffung des Haupttextes in die thematisch passende Anlage ausgelagert.', 'proposed', 5),
+(272, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(273, 'main_text', 'core', 'canonical', NULL, NULL, 'Für den kompakten mathematischen Hauptpfad erforderlich.', 'proposed', 5),
+(274, 'appendix', 'supporting', 'derived', 6, 'M6-GL-232', 'Wiederholende methodische/didaktische Formalisierung; in Anlage dokumentiert statt im Hauptfluss wiederholt.', 'proposed', 5),
+(275, 'appendix', 'supporting', 'derived', 6, 'M6-GL-233', 'Wiederholende methodische/didaktische Formalisierung; in Anlage dokumentiert statt im Hauptfluss wiederholt.', 'proposed', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `object_dependencies`
+--
+
+CREATE TABLE `object_dependencies` (
+  `object_dependency_id` bigint(20) UNSIGNED NOT NULL,
+  `object_type_from` enum('definition','theorem','lemma','corollary','proof','equation','assumption','axiom','figure','table') NOT NULL,
+  `object_id_from` bigint(20) UNSIGNED NOT NULL,
+  `object_type_to` enum('definition','theorem','lemma','corollary','proof','equation','assumption','axiom','figure','table') NOT NULL,
+  `object_id_to` bigint(20) UNSIGNED NOT NULL,
+  `dependency_type` enum('depends_on','derives_from','supports','contrasts','generalizes','specializes','validates') NOT NULL,
+  `note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `object_section_requirements`
+--
+
+CREATE TABLE `object_section_requirements` (
+  `requirement_id` bigint(20) UNSIGNED NOT NULL,
+  `repo_object_id` bigint(20) UNSIGNED NOT NULL,
+  `required_for_section_code` varchar(50) NOT NULL,
+  `required_for_section_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `requirement_type` enum('required','supporting','methodological','notation') NOT NULL DEFAULT 'required',
+  `rationale` longtext NOT NULL,
+  `created_revision_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `object_section_requirements`
+--
+
+INSERT INTO `object_section_requirements` (`requirement_id`, `repo_object_id`, `required_for_section_code`, `required_for_section_id`, `requirement_type`, `rationale`, `created_revision_id`) VALUES
+(1, 1, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(2, 2, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(3, 3, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(4, 4, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(5, 5, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(6, 6, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(7, 9, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(8, 10, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(9, 11, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(10, 13, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(11, 14, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(12, 15, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(13, 16, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(14, 17, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(15, 18, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(16, 19, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(17, 20, '3.3', NULL, 'supporting', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(18, 21, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(19, 22, '3.3', NULL, 'supporting', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(20, 23, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(21, 24, '3.3', NULL, 'supporting', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(22, 25, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(23, 26, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(24, 29, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(25, 31, '3.3', NULL, 'supporting', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(26, 33, '3.3', NULL, 'required', 'Begründet den mathematischen Hauptpfad als Voraussetzung für die FRZK-Axiomatik; Feingranulare 3.3.x-Zuordnung erfolgt nach Vorliegen der verbindlichen 3.3-Struktur.', 5),
+(27, 34, '3.3', NULL, 'required', 'Begründet einen strukturellen Übergang in die Axiomatik; konkrete Zieluntersektion wird später präzisiert.', 5),
+(28, 35, '3.3', NULL, 'required', 'Begründet einen strukturellen Übergang in die Axiomatik; konkrete Zieluntersektion wird später präzisiert.', 5),
+(29, 36, '3.3', NULL, 'supporting', 'Begründet einen strukturellen Übergang in die Axiomatik; konkrete Zieluntersektion wird später präzisiert.', 5),
+(30, 37, '3.3', NULL, 'required', 'Begründet einen strukturellen Übergang in die Axiomatik; konkrete Zieluntersektion wird später präzisiert.', 5),
+(31, 38, '3.3', NULL, 'required', 'Begründet einen strukturellen Übergang in die Axiomatik; konkrete Zieluntersektion wird später präzisiert.', 5),
+(32, 43, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(33, 44, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(34, 45, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(35, 46, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(36, 47, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(37, 48, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(38, 64, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(39, 65, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(40, 66, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(41, 67, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(42, 71, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(43, 72, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(44, 73, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(45, 74, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(46, 83, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(47, 84, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(48, 85, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(49, 90, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(50, 91, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(51, 93, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(52, 94, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(53, 112, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(54, 113, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(55, 114, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(56, 115, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(57, 120, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(58, 121, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(59, 124, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(60, 125, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(61, 126, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(62, 127, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(63, 128, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(64, 129, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(65, 130, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(66, 131, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(67, 135, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(68, 136, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(69, 137, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(70, 138, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(71, 142, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(72, 143, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(73, 146, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(74, 148, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(75, 149, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(76, 150, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(77, 151, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(78, 152, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(79, 153, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(80, 154, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(81, 157, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(82, 158, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(83, 159, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(84, 161, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(85, 162, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(86, 166, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(87, 167, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(88, 168, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(89, 169, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(90, 170, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(91, 171, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(92, 172, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(93, 175, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(94, 176, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(95, 183, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(96, 184, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(97, 185, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(98, 186, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(99, 188, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(100, 189, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(101, 190, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(102, 191, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(103, 192, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(104, 193, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(105, 194, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(106, 206, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(107, 207, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(108, 208, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(109, 209, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(110, 220, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(111, 221, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(112, 222, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(113, 223, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(114, 224, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(115, 225, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(116, 226, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(117, 227, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(118, 228, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(119, 229, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(120, 230, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(121, 237, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(122, 242, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(123, 243, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(124, 244, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(125, 245, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(126, 246, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(127, 247, '3.3', NULL, 'supporting', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(128, 251, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(129, 252, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(130, 272, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5),
+(131, 273, '3.3', NULL, 'required', 'Formaler Bestandteil des mathematischen Hauptpfads; konkrete 3.3.x-Abhängigkeit wird bei der 3.3-Neufassung aufgelöst.', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `object_source_links`
+--
+
+CREATE TABLE `object_source_links` (
+  `object_source_link_id` bigint(20) UNSIGNED NOT NULL,
+  `object_type` enum('definition','theorem','lemma','corollary','proof','proposition','equation','figure','table','symbol','acronym','assumption','axiom') NOT NULL,
+  `object_id` bigint(20) UNSIGNED NOT NULL,
+  `source_id` bigint(20) UNSIGNED NOT NULL,
+  `usage_type` enum('primary_source','supporting_source','adapted_from','contrasts','historical_context','verification') NOT NULL,
+  `note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `pending_sources`
+--
+
+CREATE TABLE `pending_sources` (
+  `pending_source_id` bigint(20) UNSIGNED NOT NULL,
+  `proposed_source_key` varchar(150) DEFAULT NULL,
+  `title` varchar(1000) NOT NULL,
+  `authors_text` varchar(1000) DEFAULT NULL,
+  `year_text` varchar(50) DEFAULT NULL,
+  `publication_text` varchar(1000) DEFAULT NULL,
+  `doi_or_url` varchar(1500) DEFAULT NULL,
+  `proposed_section_code` varchar(50) DEFAULT NULL,
+  `discovery_context` text NOT NULL,
+  `proposed_claim` text DEFAULT NULL,
+  `priority` tinyint(3) UNSIGNED NOT NULL DEFAULT 3,
+  `review_status` enum('open','in_review','accepted','rejected','merged') NOT NULL DEFAULT 'open',
+  `merged_source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `discovered_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `reviewed_at` datetime DEFAULT NULL,
+  `review_notes` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `proofs`
+--
+
+CREATE TABLE `proofs` (
+  `proof_id` bigint(20) UNSIGNED NOT NULL,
+  `proof_number` varchar(50) DEFAULT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `theorem_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `lemma_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `corollary_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `title` varchar(500) DEFAULT NULL,
+  `proof_text` longtext NOT NULL,
+  `proof_latex` longtext DEFAULT NULL,
+  `proof_method` enum('direct','contradiction','induction','construction','equivalence','existence','uniqueness','computational','other') NOT NULL DEFAULT 'direct',
+  `provenance` enum('original','adapted','literature') NOT NULL DEFAULT 'original',
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `propositions`
+--
+
+CREATE TABLE `propositions` (
+  `proposition_id` bigint(20) UNSIGNED NOT NULL,
+  `proposition_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `statement_text` longtext NOT NULL,
+  `statement_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `logical_derivation` longtext NOT NULL,
+  `based_on_axioms` varchar(255) DEFAULT NULL,
+  `status` enum('draft','review','accepted','revised','rejected') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `proposition_dependencies`
+--
+
+CREATE TABLE `proposition_dependencies` (
+  `proposition_dependency_id` bigint(20) UNSIGNED NOT NULL,
+  `proposition_id` bigint(20) UNSIGNED NOT NULL,
+  `axiom_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `assumption_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `dependency_type` enum('derived_from','uses','motivated_by','contrasts') NOT NULL DEFAULT 'derived_from',
+  `note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `quotations`
+--
+
+CREATE TABLE `quotations` (
+  `quotation_id` bigint(20) UNSIGNED NOT NULL,
+  `source_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `quotation_text` longtext NOT NULL,
+  `exact_location` varchar(1000) NOT NULL,
+  `quotation_language` char(2) DEFAULT NULL,
+  `verification_status` enum('unverified','checked','verified') NOT NULL DEFAULT 'unverified',
+  `notes` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `quotations`
+--
+
+INSERT INTO `quotations` (`quotation_id`, `source_id`, `section_id`, `quotation_text`, `exact_location`, `quotation_language`, `verification_status`, `notes`) VALUES
+(1, 77, 22, 'A graph is a pair G = (V,E) of sets.', 'Diestel, Graph Theory, 5th ed., Kap. 1, §1.1, gedruckte S. 2.', 'en', 'verified', 'Kurzauszug aus einsehbarem Originaltext; vollständige Definition wird aus Copyright-Gründen nicht reproduziert.'),
+(2, 68, 23, 'the places within structures', 'Shapiro, Philosophy of Mathematics: Structure and Ontology, Kap. 3 Structure, Abstract, S. 71–108.', 'en', 'verified', 'Kurzer Originalwortlaut aus dem Oxford-Academic-Abstract; dient nur als Anker für die strukturtheoretische Einordnung.');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `repository_counters`
+--
+
+CREATE TABLE `repository_counters` (
+  `counter_key` varchar(100) NOT NULL,
+  `counter_value` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `repository_counters`
+--
+
+INSERT INTO `repository_counters` (`counter_key`, `counter_value`, `updated_at`) VALUES
+('chapter_3_2_status', 'rewrite', '2026-08-30 09:09:14'),
+('current_revision', 'RKB32-CONFORM-31-2026-08-29', '2026-08-30 09:09:14'),
+('current_section', '3.2.0', '2026-08-30 09:09:14'),
+('k32_deep_research_citation_occurrences', '353', '2026-08-30 09:09:14'),
+('k32_deep_research_source_usages', '52', '2026-08-30 09:09:14'),
+('k32_deep_research_sources', '17', '2026-08-30 09:09:14'),
+('last_completed_section', '3.1.7.10', '2026-08-30 09:09:14'),
+('planned_next_source_section', '3.2.13', '2026-08-30 09:09:14'),
+('quotations_verified', '2', '2026-08-30 09:09:14'),
+('source_citation_label_count', '19', '2026-08-30 09:09:14'),
+('source_definition_candidate_count', '33', '2026-08-30 09:09:14'),
+('source_equation_candidate_count', '233', '2026-08-30 09:09:14'),
+('source_equation_max_visible_number', '3.234', '2026-08-30 09:09:14'),
+('source_equation_missing_number', '3.73', '2026-08-30 09:09:14'),
+('source_last_definition_candidate', '3.2.33', '2026-08-30 09:09:14'),
+('source_section_count', '13', '2026-08-30 09:09:14'),
+('source_unresolved_citations', '10,13 (resolved by migration layer to 74,76)', '2026-08-30 09:09:14');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `repository_objects`
+--
+
+CREATE TABLE `repository_objects` (
+  `repo_object_id` bigint(20) UNSIGNED NOT NULL,
+  `object_scope` enum('candidate','canonical') NOT NULL,
+  `object_type` enum('definition','statement','equation','theorem','lemma','corollary','proposition','proof','axiom','assumption','figure','table','symbol','other') NOT NULL,
+  `source_table` varchar(64) NOT NULL,
+  `source_pk` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `object_label` varchar(255) NOT NULL,
+  `object_title` varchar(500) DEFAULT NULL,
+  `created_revision_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `repository_objects`
+--
+
+INSERT INTO `repository_objects` (`repo_object_id`, `object_scope`, `object_type`, `source_table`, `source_pk`, `section_id`, `object_label`, `object_title`, `created_revision_id`) VALUES
+(1, 'candidate', 'definition', 'definition_candidates', 1, 23, 'Definition 3.2.1', 'Menge und Element', 5),
+(2, 'candidate', 'definition', 'definition_candidates', 2, 23, 'Definition 3.2.2', 'Binäre Relation', 5),
+(3, 'candidate', 'definition', 'definition_candidates', 3, 24, 'Definition 3.2.3', 'Funktion', 5),
+(4, 'candidate', 'definition', 'definition_candidates', 4, 25, 'Definition 3.2.4', 'Mathematische Abbildung', 5),
+(5, 'candidate', 'definition', 'definition_candidates', 5, 25, 'Definition 3.2.5', 'Linearer Operator', 5),
+(6, 'candidate', 'definition', 'definition_candidates', 6, 26, 'Definition 3.2.6', 'Vektorraum', 5),
+(7, 'candidate', 'definition', 'definition_candidates', 7, 26, 'Definition 3.2.7', 'Nullvektor', 5),
+(8, 'candidate', 'definition', 'definition_candidates', 8, 26, 'Definition 3.2.8', 'Untervektorraum', 5),
+(9, 'candidate', 'definition', 'definition_candidates', 9, 27, 'Definition 3.2.9', 'Linearkombination', 5),
+(10, 'candidate', 'definition', 'definition_candidates', 10, 27, 'Definition 3.2.10', 'Spannraum', 5),
+(11, 'candidate', 'definition', 'definition_candidates', 11, 28, 'Definition 3.2.11', 'Lineare Unabhängigkeit', 5),
+(12, 'candidate', 'definition', 'definition_candidates', 12, 28, 'Definition 3.2.12', 'Lineare Abhängigkeit', 5),
+(13, 'candidate', 'definition', 'definition_candidates', 13, 28, 'Definition 3.2.13', 'Basis', 5),
+(14, 'candidate', 'definition', 'definition_candidates', 14, 28, 'Definition 3.2.14', 'Dimension', 5),
+(15, 'candidate', 'definition', 'definition_candidates', 15, 30, 'Definition 3.2.15', 'Determinante einer quadratischen Matrix', 5),
+(16, 'candidate', 'definition', 'definition_candidates', 16, 31, 'Definition 3.2.16', 'Bild einer linearen Abbildung', 5),
+(17, 'candidate', 'definition', 'definition_candidates', 17, 31, 'Definition 3.2.17', 'Kern einer linearen Abbildung', 5),
+(18, 'candidate', 'definition', 'definition_candidates', 18, 31, 'Definition 3.2.18', 'Rang einer linearen Abbildung', 5),
+(19, 'candidate', 'definition', 'definition_candidates', 19, 32, 'Definition 3.2.19', 'Eigenwert und Eigenvektor', 5),
+(20, 'candidate', 'definition', 'definition_candidates', 20, 32, 'Definition 3.2.20', 'Charakteristisches Polynom', 5),
+(21, 'candidate', 'definition', 'definition_candidates', 21, 32, 'Definition 3.2.21', 'Eigenraum', 5),
+(22, 'candidate', 'definition', 'definition_candidates', 22, 32, 'Definition 3.2.22', 'Spektrum', 5),
+(23, 'candidate', 'definition', 'definition_candidates', 23, 33, 'Definition 3.2.23', 'Diagonalisierbarkeit', 5),
+(24, 'candidate', 'definition', 'definition_candidates', 24, 33, 'Definition 3.2.24', 'Orthogonale Diagonalisierung', 5),
+(25, 'candidate', 'definition', 'definition_candidates', 25, 34, 'Definition 3.2.25', 'Skalarprodukt', 5),
+(26, 'candidate', 'definition', 'definition_candidates', 26, 34, 'Definition 3.2.26', 'Norm', 5),
+(27, 'candidate', 'definition', 'definition_candidates', 27, 34, 'Definition 3.2.27', 'Abstand', 5),
+(28, 'candidate', 'definition', 'definition_candidates', 28, 34, 'Definition 3.2.28', 'Winkel zwischen zwei Vektoren', 5),
+(29, 'candidate', 'definition', 'definition_candidates', 29, 34, 'Definition 3.2.29', 'Orthogonalität', 5),
+(30, 'candidate', 'definition', 'definition_candidates', 30, 34, 'Definition 3.2.30', 'Normierter Vektor', 5),
+(31, 'candidate', 'definition', 'definition_candidates', 31, 34, 'Definition 3.2.31', 'Orthonormale Vektoren', 5),
+(32, 'candidate', 'definition', 'definition_candidates', 32, 34, 'Definition 3.2.32', 'Orthogonales Komplement', 5),
+(33, 'candidate', 'definition', 'definition_candidates', 33, 34, 'Definition 3.2.33', 'Orthogonale Projektion auf einen Vektor', 5),
+(34, 'candidate', 'statement', 'statement_candidates', 1, 31, 'Rang-Nullitätssatz', 'Rang-Nullitätssatz', 5),
+(35, 'candidate', 'statement', 'statement_candidates', 2, 31, 'Zusammenhang mit Injektivität und Surjektivität', 'Zusammenhang mit Injektivität und Surjektivität', 5),
+(36, 'candidate', 'statement', 'statement_candidates', 3, 32, 'Eigenvektoren zu verschiedenen Eigenwerten', 'Eigenvektoren zu verschiedenen Eigenwerten', 5),
+(37, 'candidate', 'statement', 'statement_candidates', 4, 33, 'Voraussetzung der Diagonalisierbarkeit', 'Voraussetzung der Diagonalisierbarkeit', 5),
+(38, 'candidate', 'statement', 'statement_candidates', 5, 33, 'Spektralzerlegung', 'Spektralzerlegung', 5),
+(39, 'candidate', 'statement', 'statement_candidates', 6, 34, 'Cauchy-Schwarz-Ungleichung', 'Cauchy-Schwarz-Ungleichung', 5),
+(40, 'candidate', 'statement', 'statement_candidates', 7, 34, 'Satz des Pythagoras im Skalarproduktraum', 'Satz des Pythagoras im Skalarproduktraum', 5),
+(41, 'candidate', 'statement', 'statement_candidates', 8, 34, 'Orthogonale Matrizen', 'Orthogonale Matrizen', 5),
+(42, 'candidate', 'statement', 'statement_candidates', 9, 34, 'Gram-Schmidt-Orthogonalisierung', 'Gram-Schmidt-Orthogonalisierung', 5),
+(43, 'candidate', 'equation', 'equation_candidates', 1, 23, '(3.1)', 'Definition 3.2.1: Menge und Element', 5),
+(44, 'candidate', 'equation', 'equation_candidates', 2, 23, '(3.2)', 'Definition 3.2.1: Menge und Element', 5),
+(45, 'candidate', 'equation', 'equation_candidates', 3, 23, '(3.3)', 'Definition 3.2.1: Menge und Element', 5),
+(46, 'candidate', 'equation', 'equation_candidates', 4, 23, '(3.4)', 'Definition 3.2.1: Menge und Element', 5),
+(47, 'candidate', 'equation', 'equation_candidates', 5, 23, '(3.5)', 'Definition 3.2.1: Menge und Element', 5),
+(48, 'candidate', 'equation', 'equation_candidates', 6, 23, '(3.6)', 'Definition 3.2.1: Menge und Element', 5),
+(49, 'candidate', 'equation', 'equation_candidates', 7, 23, '(3.7)', 'Teilmengen', 5),
+(50, 'candidate', 'equation', 'equation_candidates', 8, 23, '(3.8)', 'Teilmengen', 5),
+(51, 'candidate', 'equation', 'equation_candidates', 9, 23, '(3.9)', 'Gleichheit von Mengen', 5),
+(52, 'candidate', 'equation', 'equation_candidates', 10, 23, '(3.10)', 'Die leere Menge', 5),
+(53, 'candidate', 'equation', 'equation_candidates', 11, 23, '(3.11)', 'Die leere Menge', 5),
+(54, 'candidate', 'equation', 'equation_candidates', 12, 23, '(3.12)', 'Mengenoperationen', 5),
+(55, 'candidate', 'equation', 'equation_candidates', 13, 23, '(3.13)', 'Mengenoperationen', 5),
+(56, 'candidate', 'equation', 'equation_candidates', 14, 23, '(3.14)', 'Mengenoperationen', 5),
+(57, 'candidate', 'equation', 'equation_candidates', 15, 23, '(3.15)', 'Mengenoperationen', 5),
+(58, 'candidate', 'equation', 'equation_candidates', 16, 23, '(3.16)', 'Potenzmenge', 5),
+(59, 'candidate', 'equation', 'equation_candidates', 17, 23, '(3.17)', 'Potenzmenge', 5),
+(60, 'candidate', 'equation', 'equation_candidates', 18, 23, '(3.18)', 'Potenzmenge', 5),
+(61, 'candidate', 'equation', 'equation_candidates', 19, 23, '(3.19)', 'Geordnete Paare und kartesisches Produkt', 5),
+(62, 'candidate', 'equation', 'equation_candidates', 20, 23, '(3.20)', 'Geordnete Paare und kartesisches Produkt', 5),
+(63, 'candidate', 'equation', 'equation_candidates', 21, 23, '(3.21)', 'Geordnete Paare und kartesisches Produkt', 5),
+(64, 'candidate', 'equation', 'equation_candidates', 22, 23, '(3.22)', 'Definition 3.2.2: Binäre Relation', 5),
+(65, 'candidate', 'equation', 'equation_candidates', 23, 23, '(3.23)', 'Definition 3.2.2: Binäre Relation', 5),
+(66, 'candidate', 'equation', 'equation_candidates', 24, 24, '(3.24)', 'Definition 3.2.3: Funktion', 5),
+(67, 'candidate', 'equation', 'equation_candidates', 25, 24, '(3.25)', 'Definition 3.2.3: Funktion', 5),
+(68, 'candidate', 'equation', 'equation_candidates', 26, 24, '(3.26)', 'Definitionsmenge, Zielmenge und Bildmenge', 5),
+(69, 'candidate', 'equation', 'equation_candidates', 27, 24, '(3.27)', 'Definitionsmenge, Zielmenge und Bildmenge', 5),
+(70, 'candidate', 'equation', 'equation_candidates', 28, 24, '(3.28)', 'Definitionsmenge, Zielmenge und Bildmenge', 5),
+(71, 'candidate', 'equation', 'equation_candidates', 29, 24, '(3.29)', 'Injektive Funktionen', 5),
+(72, 'candidate', 'equation', 'equation_candidates', 30, 24, '(3.30)', 'Surjektive Funktionen', 5),
+(73, 'candidate', 'equation', 'equation_candidates', 31, 24, '(3.31)', 'Bijektive Funktionen', 5),
+(74, 'candidate', 'equation', 'equation_candidates', 32, 24, '(3.32)', 'Bijektive Funktionen', 5),
+(75, 'candidate', 'equation', 'equation_candidates', 33, 24, '(3.33)', 'Identische Funktion', 5),
+(76, 'candidate', 'equation', 'equation_candidates', 34, 24, '(3.34)', 'Verkettung von Funktionen', 5),
+(77, 'candidate', 'equation', 'equation_candidates', 35, 24, '(3.35)', 'Verkettung von Funktionen', 5),
+(78, 'candidate', 'equation', 'equation_candidates', 36, 24, '(3.36)', 'Verkettung von Funktionen', 5),
+(79, 'candidate', 'equation', 'equation_candidates', 37, 24, '(3.37)', 'Funktionen mit mehreren Eingangsgrößen', 5),
+(80, 'candidate', 'equation', 'equation_candidates', 38, 24, '(3.38)', 'Funktionen mit mehreren Eingangsgrößen', 5),
+(81, 'candidate', 'equation', 'equation_candidates', 39, 24, '(3.39)', 'Funktionsfamilien und parametrisierte Funktionen', 5),
+(82, 'candidate', 'equation', 'equation_candidates', 40, 24, '(3.40)', 'Partielle Funktionen', 5),
+(83, 'candidate', 'equation', 'equation_candidates', 41, 25, '(3.41)', 'Definition 3.2.4: Mathematische Abbildung', 5),
+(84, 'candidate', 'equation', 'equation_candidates', 42, 25, '(3.42)', 'Strukturerhaltende Abbildungen', 5),
+(85, 'candidate', 'equation', 'equation_candidates', 43, 25, '(3.43)', 'Definition 3.2.5: Linearer Operator', 5),
+(86, 'candidate', 'equation', 'equation_candidates', 44, 25, '(3.44)', 'Verkettung von Operatoren', 5),
+(87, 'candidate', 'equation', 'equation_candidates', 45, 25, '(3.45)', 'Verkettung von Operatoren', 5),
+(88, 'candidate', 'equation', 'equation_candidates', 46, 25, '(3.46)', 'Identitätsoperator', 5),
+(89, 'candidate', 'equation', 'equation_candidates', 47, 25, '(3.47)', 'Identitätsoperator', 5),
+(90, 'candidate', 'equation', 'equation_candidates', 48, 25, '(3.48)', 'Inverse Operatoren', 5),
+(91, 'candidate', 'equation', 'equation_candidates', 49, 25, '(3.49)', 'Matrixdarstellung linearer Operatoren', 5),
+(92, 'candidate', 'equation', 'equation_candidates', 50, 25, '(3.50)', 'Eigenwerte und Eigenvektoren', 5),
+(93, 'candidate', 'equation', 'equation_candidates', 51, 26, '(3.51)', 'Definition 3.2.6: Vektorraum', 5),
+(94, 'candidate', 'equation', 'equation_candidates', 52, 26, '(3.52)', 'Reelle Vektorräume', 5),
+(95, 'candidate', 'equation', 'equation_candidates', 53, 26, '(3.53)', 'Axiome der Vektoraddition', 5),
+(96, 'candidate', 'equation', 'equation_candidates', 54, 26, '(3.54)', 'Axiome der Vektoraddition', 5),
+(97, 'candidate', 'equation', 'equation_candidates', 55, 26, '(3.55)', 'Axiome der Vektoraddition', 5),
+(98, 'candidate', 'equation', 'equation_candidates', 56, 26, '(3.56)', 'Definition 3.2.7: Nullvektor', 5),
+(99, 'candidate', 'equation', 'equation_candidates', 57, 26, '(3.57)', 'Definition 3.2.7: Nullvektor', 5),
+(100, 'candidate', 'equation', 'equation_candidates', 58, 26, '(3.58)', 'Additives Inverses', 5),
+(101, 'candidate', 'equation', 'equation_candidates', 59, 26, '(3.59)', 'Additives Inverses', 5),
+(102, 'candidate', 'equation', 'equation_candidates', 60, 26, '(3.60)', 'Axiome der Skalarmultiplikation', 5),
+(103, 'candidate', 'equation', 'equation_candidates', 61, 26, '(3.61)', 'Axiome der Skalarmultiplikation', 5),
+(104, 'candidate', 'equation', 'equation_candidates', 62, 26, '(3.62)', 'Axiome der Skalarmultiplikation', 5),
+(105, 'candidate', 'equation', 'equation_candidates', 63, 26, '(3.63)', 'Axiome der Skalarmultiplikation', 5),
+(106, 'candidate', 'equation', 'equation_candidates', 64, 26, '(3.64)', 'Axiome der Skalarmultiplikation', 5),
+(107, 'candidate', 'equation', 'equation_candidates', 65, 26, '(3.65)', 'Multiplikation eines Vektors mit null', 5),
+(108, 'candidate', 'equation', 'equation_candidates', 66, 26, '(3.66)', 'Multiplikation des Nullvektors mit einem Skalar', 5),
+(109, 'candidate', 'equation', 'equation_candidates', 67, 26, '(3.67)', 'Definition 3.2.8: Untervektorraum', 5),
+(110, 'candidate', 'equation', 'equation_candidates', 68, 26, '(3.68)', 'Beispiele für Vektorräume', 5),
+(111, 'candidate', 'equation', 'equation_candidates', 69, 26, '(3.69)', 'Beispiele für Vektorräume', 5),
+(112, 'candidate', 'equation', 'equation_candidates', 70, 27, '(3.70)', 'Definition 3.2.9: Linearkombination', 5),
+(113, 'candidate', 'equation', 'equation_candidates', 71, 27, '(3.71)', 'Definition 3.2.10: Spannraum', 5),
+(114, 'candidate', 'equation', 'equation_candidates', 72, 27, '(3.72)', 'Erzeugendensysteme', 5),
+(115, 'candidate', 'equation', 'equation_candidates', 73, 28, '(3.74)', 'Definition 3.2.11: Lineare Unabhängigkeit', 5),
+(116, 'candidate', 'equation', 'equation_candidates', 74, 28, '(3.75)', 'Definition 3.2.12: Lineare Abhängigkeit', 5),
+(117, 'candidate', 'equation', 'equation_candidates', 75, 28, '(3.76)', 'Definition 3.2.12: Lineare Abhängigkeit', 5),
+(118, 'candidate', 'equation', 'equation_candidates', 76, 28, '(3.77)', 'Beispiel für lineare Abhängigkeit', 5),
+(119, 'candidate', 'equation', 'equation_candidates', 77, 28, '(3.78)', 'Beispiel für lineare Unabhängigkeit', 5),
+(120, 'candidate', 'equation', 'equation_candidates', 78, 28, '(3.79)', 'Definition 3.2.13: Basis', 5),
+(121, 'candidate', 'equation', 'equation_candidates', 79, 28, '(3.80)', 'Eindeutige Darstellung bezüglich einer Basis', 5),
+(122, 'candidate', 'equation', 'equation_candidates', 80, 28, '(3.81)', 'Standardbasis des reellen Koordinatenraums', 5),
+(123, 'candidate', 'equation', 'equation_candidates', 81, 28, '(3.82)', 'Standardbasis des reellen Koordinatenraums', 5),
+(124, 'candidate', 'equation', 'equation_candidates', 82, 28, '(3.83)', 'Vektor und Koordinatendarstellung', 5),
+(125, 'candidate', 'equation', 'equation_candidates', 83, 28, '(3.84)', 'Definition 3.2.14: Dimension', 5),
+(126, 'candidate', 'equation', 'equation_candidates', 84, 28, '(3.85)', 'Definition 3.2.14: Dimension', 5),
+(127, 'candidate', 'equation', 'equation_candidates', 85, 29, '(3.86)', 'Darstellung eines Vektors bezüglich einer Basis', 5),
+(128, 'candidate', 'equation', 'equation_candidates', 86, 29, '(3.87)', 'Darstellung eines Vektors bezüglich einer Basis', 5),
+(129, 'candidate', 'equation', 'equation_candidates', 87, 29, '(3.88)', 'Zwei verschiedene Basen', 5),
+(130, 'candidate', 'equation', 'equation_candidates', 88, 29, '(3.89)', 'Basiswechselmatrix', 5),
+(131, 'candidate', 'equation', 'equation_candidates', 89, 29, '(3.90)', 'Basiswechselmatrix', 5),
+(132, 'candidate', 'equation', 'equation_candidates', 90, 29, '(3.91)', 'Konstruktion einer Basiswechselmatrix', 5),
+(133, 'candidate', 'equation', 'equation_candidates', 91, 29, '(3.92)', 'Beispiel eines Basiswechsels', 5),
+(134, 'candidate', 'equation', 'equation_candidates', 92, 29, '(3.93)', 'Beispiel eines Basiswechsels', 5),
+(135, 'candidate', 'equation', 'equation_candidates', 93, 29, '(3.94)', 'Darstellung linearer Operatoren', 5),
+(136, 'candidate', 'equation', 'equation_candidates', 94, 29, '(3.95)', 'Invariante Eigenschaften', 5),
+(137, 'candidate', 'equation', 'equation_candidates', 95, 29, '(3.96)', 'Invariante Eigenschaften', 5),
+(138, 'candidate', 'equation', 'equation_candidates', 96, 30, '(3.97)', 'Definition 3.2.15: Determinante einer quadratischen Matrix', 5),
+(139, 'candidate', 'equation', 'equation_candidates', 97, 30, '(3.98)', 'Determinante einer $\\mathbf{2}\\mathbf{\\times}\\mathbf{2}$-Matrix', 5),
+(140, 'candidate', 'equation', 'equation_candidates', 98, 30, '(3.99)', 'Determinante einer $\\mathbf{2}\\mathbf{\\times}\\mathbf{2}$-Matrix', 5),
+(141, 'candidate', 'equation', 'equation_candidates', 99, 30, '(3.100)', 'Determinante einer $\\mathbf{3}\\mathbf{\\times}\\mathbf{3}$-Matrix', 5),
+(142, 'candidate', 'equation', 'equation_candidates', 100, 30, '(3.101)', 'Geometrische Bedeutung', 5),
+(143, 'candidate', 'equation', 'equation_candidates', 101, 30, '(3.102)', 'Geometrische Bedeutung', 5),
+(144, 'candidate', 'equation', 'equation_candidates', 102, 30, '(3.103)', 'Orientierung', 5),
+(145, 'candidate', 'equation', 'equation_candidates', 103, 30, '(3.104)', 'Orientierung', 5),
+(146, 'candidate', 'equation', 'equation_candidates', 104, 30, '(3.105)', 'Singuläre und reguläre Matrizen', 5),
+(147, 'candidate', 'equation', 'equation_candidates', 105, 30, '(3.106)', 'Beispiel einer singulären Transformation', 5),
+(148, 'candidate', 'equation', 'equation_candidates', 106, 30, '(3.107)', 'Zusammenhang mit linearer Unabhängigkeit', 5),
+(149, 'candidate', 'equation', 'equation_candidates', 107, 30, '(3.108)', 'Multiplikativität der Determinante', 5),
+(150, 'candidate', 'equation', 'equation_candidates', 108, 30, '(3.109)', 'Determinante der inversen Matrix', 5),
+(151, 'candidate', 'equation', 'equation_candidates', 109, 30, '(3.110)', 'Determinante und Basiswechsel', 5),
+(152, 'candidate', 'equation', 'equation_candidates', 110, 31, '(3.111)', 'Definition 3.2.16: Bild einer linearen Abbildung', 5),
+(153, 'candidate', 'equation', 'equation_candidates', 111, 31, '(3.112)', 'Definition 3.2.17: Kern einer linearen Abbildung', 5),
+(154, 'candidate', 'equation', 'equation_candidates', 112, 31, '(3.113)', 'Definition 3.2.18: Rang einer linearen Abbildung', 5),
+(155, 'candidate', 'equation', 'equation_candidates', 113, 31, '(3.114)', 'Rang einer Matrix', 5),
+(156, 'candidate', 'equation', 'equation_candidates', 114, 31, '(3.115)', 'Beispiel', 5),
+(157, 'candidate', 'equation', 'equation_candidates', 115, 31, '(3.116)', 'Voller Rang', 5),
+(158, 'candidate', 'equation', 'equation_candidates', 116, 31, '(3.117)', 'Voller Rang', 5),
+(159, 'candidate', 'equation', 'equation_candidates', 117, 31, '(3.118)', 'Rang-Nullitätssatz', 5),
+(160, 'candidate', 'equation', 'equation_candidates', 118, 31, '(3.119)', 'Beispiel zum Rang-Nullitätssatz', 5),
+(161, 'candidate', 'equation', 'equation_candidates', 119, 31, '(3.120)', 'Zusammenhang mit Injektivität und Surjektivität', 5),
+(162, 'candidate', 'equation', 'equation_candidates', 120, 31, '(3.121)', 'Zusammenhang mit Injektivität und Surjektivität', 5),
+(163, 'candidate', 'equation', 'equation_candidates', 121, 31, '(3.122)', 'Zusammenhang mit linearen Gleichungssystemen', 5),
+(164, 'candidate', 'equation', 'equation_candidates', 122, 31, '(3.123)', 'Zusammenhang mit linearen Gleichungssystemen', 5),
+(165, 'candidate', 'equation', 'equation_candidates', 123, 31, '(3.124)', 'Zusammenhang mit linearen Gleichungssystemen', 5),
+(166, 'candidate', 'equation', 'equation_candidates', 124, 31, '(3.125)', 'Zusammenhang mit der Determinante', 5),
+(167, 'candidate', 'equation', 'equation_candidates', 125, 32, '(3.126)', 'Definition 3.2.19: Eigenwert und Eigenvektor', 5),
+(168, 'candidate', 'equation', 'equation_candidates', 126, 32, '(3.127)', 'Umformung der Eigenwertgleichung', 5),
+(169, 'candidate', 'equation', 'equation_candidates', 127, 32, '(3.128)', 'Umformung der Eigenwertgleichung', 5),
+(170, 'candidate', 'equation', 'equation_candidates', 128, 32, '(3.129)', 'Charakteristische Gleichung', 5),
+(171, 'candidate', 'equation', 'equation_candidates', 129, 32, '(3.130)', 'Definition 3.2.20: Charakteristisches Polynom', 5),
+(172, 'candidate', 'equation', 'equation_candidates', 130, 32, '(3.131)', 'Definition 3.2.20: Charakteristisches Polynom', 5),
+(173, 'candidate', 'equation', 'equation_candidates', 131, 32, '(3.132)', 'Beispiel einer Diagonalmatrix', 5),
+(174, 'candidate', 'equation', 'equation_candidates', 132, 32, '(3.133)', 'Beispiel einer Diagonalmatrix', 5),
+(175, 'candidate', 'equation', 'equation_candidates', 133, 32, '(3.134)', 'Definition 3.2.21: Eigenraum', 5),
+(176, 'candidate', 'equation', 'equation_candidates', 134, 32, '(3.135)', 'Definition 3.2.21: Eigenraum', 5),
+(177, 'candidate', 'equation', 'equation_candidates', 135, 32, '(3.136)', 'Algebraische und geometrische Vielfachheit', 5),
+(178, 'candidate', 'equation', 'equation_candidates', 136, 32, '(3.137)', 'Algebraische und geometrische Vielfachheit', 5),
+(179, 'candidate', 'equation', 'equation_candidates', 137, 32, '(3.138)', 'Beispiel eines mehrfachen Eigenwerts', 5),
+(180, 'candidate', 'equation', 'equation_candidates', 138, 32, '(3.139)', 'Beispiel eines mehrfachen Eigenwerts', 5),
+(181, 'candidate', 'equation', 'equation_candidates', 139, 32, '(3.140)', 'Spur und Determinante', 5),
+(182, 'candidate', 'equation', 'equation_candidates', 140, 32, '(3.141)', 'Spur und Determinante', 5),
+(183, 'candidate', 'equation', 'equation_candidates', 141, 32, '(3.142)', 'Eigenwert null und Kern', 5),
+(184, 'candidate', 'equation', 'equation_candidates', 142, 32, '(3.143)', 'Eigenwert null und Kern', 5),
+(185, 'candidate', 'equation', 'equation_candidates', 143, 32, '(3.144)', 'Eigenwerte unter einem Basiswechsel', 5),
+(186, 'candidate', 'equation', 'equation_candidates', 144, 32, '(3.145)', 'Definition 3.2.22: Spektrum', 5),
+(187, 'candidate', 'equation', 'equation_candidates', 145, 32, '(3.146)', 'Methodologische Betrachtungen', 5),
+(188, 'candidate', 'equation', 'equation_candidates', 146, 33, '(3.147)', 'Definition 3.2.23: Diagonalisierbarkeit', 5),
+(189, 'candidate', 'equation', 'equation_candidates', 147, 33, '(3.148)', 'Definition 3.2.23: Diagonalisierbarkeit', 5),
+(190, 'candidate', 'equation', 'equation_candidates', 148, 33, '(3.149)', 'Definition 3.2.23: Diagonalisierbarkeit', 5),
+(191, 'candidate', 'equation', 'equation_candidates', 149, 33, '(3.150)', 'Zusammenhang zwischen Eigenvektoren und Diagonalmatrix', 5),
+(192, 'candidate', 'equation', 'equation_candidates', 150, 33, '(3.151)', 'Zusammenhang zwischen Eigenvektoren und Diagonalmatrix', 5),
+(193, 'candidate', 'equation', 'equation_candidates', 151, 33, '(3.152)', 'Voraussetzung der Diagonalisierbarkeit', 5),
+(194, 'candidate', 'equation', 'equation_candidates', 152, 33, '(3.153)', 'Voraussetzung der Diagonalisierbarkeit', 5),
+(195, 'candidate', 'equation', 'equation_candidates', 153, 33, '(3.154)', 'Algebraische und geometrische Vielfachheit', 5),
+(196, 'candidate', 'equation', 'equation_candidates', 154, 33, '(3.155)', 'Beispiel einer diagonalisierbaren Matrix', 5),
+(197, 'candidate', 'equation', 'equation_candidates', 155, 33, '(3.156)', 'Beispiel eines nichtdiagonalen Operators', 5),
+(198, 'candidate', 'equation', 'equation_candidates', 156, 33, '(3.157)', 'Beispiel eines nichtdiagonalen Operators', 5),
+(199, 'candidate', 'equation', 'equation_candidates', 157, 33, '(3.158)', 'Beispiel eines nichtdiagonalen Operators', 5),
+(200, 'candidate', 'equation', 'equation_candidates', 158, 33, '(3.159)', 'Beispiel eines nichtdiagonalen Operators', 5),
+(201, 'candidate', 'equation', 'equation_candidates', 159, 33, '(3.160)', 'Nicht diagonalisierbare Matrix', 5),
+(202, 'candidate', 'equation', 'equation_candidates', 160, 33, '(3.161)', 'Potenzen einer diagonalisierbaren Matrix', 5),
+(203, 'candidate', 'equation', 'equation_candidates', 161, 33, '(3.162)', 'Potenzen einer diagonalisierbaren Matrix', 5),
+(204, 'candidate', 'equation', 'equation_candidates', 162, 33, '(3.163)', 'Matrixfunktionen', 5),
+(205, 'candidate', 'equation', 'equation_candidates', 163, 33, '(3.164)', 'Matrixfunktionen', 5),
+(206, 'candidate', 'equation', 'equation_candidates', 164, 33, '(3.165)', 'Spektralzerlegung', 5),
+(207, 'candidate', 'equation', 'equation_candidates', 165, 33, '(3.166)', 'Spektralzerlegung', 5),
+(208, 'candidate', 'equation', 'equation_candidates', 166, 33, '(3.167)', 'Definition 3.2.24: Orthogonale Diagonalisierung', 5),
+(209, 'candidate', 'equation', 'equation_candidates', 167, 33, '(3.168)', 'Definition 3.2.24: Orthogonale Diagonalisierung', 5),
+(210, 'candidate', 'equation', 'equation_candidates', 168, 33, '(3.169)', 'Zerlegung in Eigenprojektoren', 5),
+(211, 'candidate', 'equation', 'equation_candidates', 169, 33, '(3.170)', 'Zerlegung in Eigenprojektoren', 5),
+(212, 'candidate', 'equation', 'equation_candidates', 170, 33, '(3.171)', 'Vollständigkeitsrelation', 5),
+(213, 'candidate', 'equation', 'equation_candidates', 171, 33, '(3.172)', 'Vollständigkeitsrelation', 5),
+(214, 'candidate', 'equation', 'equation_candidates', 172, 33, '(3.173)', 'Vollständigkeitsrelation', 5),
+(215, 'candidate', 'equation', 'equation_candidates', 173, 33, '(3.174)', 'Vollständigkeitsrelation', 5),
+(216, 'candidate', 'equation', 'equation_candidates', 174, 33, '(3.175)', 'Wirkung auf einen beliebigen Vektor', 5),
+(217, 'candidate', 'equation', 'equation_candidates', 175, 33, '(3.176)', 'Wirkung auf einen beliebigen Vektor', 5),
+(218, 'candidate', 'equation', 'equation_candidates', 176, 33, '(3.177)', 'Matrixfunktionen in Spektraldarstellung', 5),
+(219, 'candidate', 'equation', 'equation_candidates', 177, 33, '(3.178)', 'Matrixfunktionen in Spektraldarstellung', 5),
+(220, 'candidate', 'equation', 'equation_candidates', 178, 34, '(3.179)', 'Definition 3.2.25: Skalarprodukt', 5),
+(221, 'candidate', 'equation', 'equation_candidates', 179, 34, '(3.180)', 'Definition 3.2.25: Skalarprodukt', 5),
+(222, 'candidate', 'equation', 'equation_candidates', 180, 34, '(3.181)', 'Definition 3.2.25: Skalarprodukt', 5),
+(223, 'candidate', 'equation', 'equation_candidates', 181, 34, '(3.182)', 'Definition 3.2.25: Skalarprodukt', 5),
+(224, 'candidate', 'equation', 'equation_candidates', 182, 34, '(3.183)', 'Das euklidische Skalarprodukt', 5),
+(225, 'candidate', 'equation', 'equation_candidates', 183, 34, '(3.184)', 'Das euklidische Skalarprodukt', 5),
+(226, 'candidate', 'equation', 'equation_candidates', 184, 34, '(3.185)', 'Definition 3.2.26: Norm', 5),
+(227, 'candidate', 'equation', 'equation_candidates', 185, 34, '(3.186)', 'Definition 3.2.26: Norm', 5),
+(228, 'candidate', 'equation', 'equation_candidates', 186, 34, '(3.187)', 'Definition 3.2.26: Norm', 5),
+(229, 'candidate', 'equation', 'equation_candidates', 187, 34, '(3.188)', 'Definition 3.2.26: Norm', 5),
+(230, 'candidate', 'equation', 'equation_candidates', 188, 34, '(3.189)', 'Definition 3.2.26: Norm', 5),
+(231, 'candidate', 'equation', 'equation_candidates', 189, 34, '(3.190)', 'Definition 3.2.27: Abstand', 5),
+(232, 'candidate', 'equation', 'equation_candidates', 190, 34, '(3.191)', 'Definition 3.2.27: Abstand', 5),
+(233, 'candidate', 'equation', 'equation_candidates', 191, 34, '(3.192)', 'Cauchy-Schwarz-Ungleichung', 5),
+(234, 'candidate', 'equation', 'equation_candidates', 192, 34, '(3.193)', 'Cauchy-Schwarz-Ungleichung', 5),
+(235, 'candidate', 'equation', 'equation_candidates', 193, 34, '(3.194)', 'Definition 3.2.28: Winkel zwischen zwei Vektoren', 5),
+(236, 'candidate', 'equation', 'equation_candidates', 194, 34, '(3.195)', 'Definition 3.2.28: Winkel zwischen zwei Vektoren', 5),
+(237, 'candidate', 'equation', 'equation_candidates', 195, 34, '(3.196)', 'Definition 3.2.29: Orthogonalität', 5),
+(238, 'candidate', 'equation', 'equation_candidates', 196, 34, '(3.197)', 'Satz des Pythagoras im Skalarproduktraum', 5),
+(239, 'candidate', 'equation', 'equation_candidates', 197, 34, '(3.198)', 'Satz des Pythagoras im Skalarproduktraum', 5),
+(240, 'candidate', 'equation', 'equation_candidates', 198, 34, '(3.199)', 'Definition 3.2.30: Normierter Vektor', 5),
+(241, 'candidate', 'equation', 'equation_candidates', 199, 34, '(3.200)', 'Definition 3.2.30: Normierter Vektor', 5),
+(242, 'candidate', 'equation', 'equation_candidates', 200, 34, '(3.201)', 'Definition 3.2.31: Orthonormale Vektoren', 5),
+(243, 'candidate', 'equation', 'equation_candidates', 201, 34, '(3.202)', 'Definition 3.2.31: Orthonormale Vektoren', 5),
+(244, 'candidate', 'equation', 'equation_candidates', 202, 34, '(3.203)', 'Orthogonale Matrizen', 5),
+(245, 'candidate', 'equation', 'equation_candidates', 203, 34, '(3.204)', 'Orthogonale Matrizen', 5),
+(246, 'candidate', 'equation', 'equation_candidates', 204, 34, '(3.205)', 'Orthogonale Matrizen', 5),
+(247, 'candidate', 'equation', 'equation_candidates', 205, 34, '(3.206)', 'Orthogonale Matrizen', 5),
+(248, 'candidate', 'equation', 'equation_candidates', 206, 34, '(3.207)', 'Definition 3.2.32: Orthogonales Komplement', 5),
+(249, 'candidate', 'equation', 'equation_candidates', 207, 34, '(3.208)', 'Definition 3.2.32: Orthogonales Komplement', 5),
+(250, 'candidate', 'equation', 'equation_candidates', 208, 34, '(3.209)', 'Definition 3.2.32: Orthogonales Komplement', 5),
+(251, 'candidate', 'equation', 'equation_candidates', 209, 34, '(3.210)', 'Definition 3.2.33: Orthogonale Projektion auf einen Vektor', 5),
+(252, 'candidate', 'equation', 'equation_candidates', 210, 34, '(3.211)', 'Definition 3.2.33: Orthogonale Projektion auf einen Vektor', 5),
+(253, 'candidate', 'equation', 'equation_candidates', 211, 34, '(3.212)', 'Projektion auf einen Unterraum', 5),
+(254, 'candidate', 'equation', 'equation_candidates', 212, 34, '(3.213)', 'Projektion auf einen Unterraum', 5),
+(255, 'candidate', 'equation', 'equation_candidates', 213, 34, '(3.214)', 'Projektion auf einen Unterraum', 5),
+(256, 'candidate', 'equation', 'equation_candidates', 214, 34, '(3.215)', 'Projektion auf einen Unterraum', 5),
+(257, 'candidate', 'equation', 'equation_candidates', 215, 34, '(3.216)', 'Projektion auf einen Unterraum', 5),
+(258, 'candidate', 'equation', 'equation_candidates', 216, 34, '(3.217)', 'Orthogonale Zerlegung eines Vektors', 5),
+(259, 'candidate', 'equation', 'equation_candidates', 217, 34, '(3.218)', 'Orthogonale Zerlegung eines Vektors', 5),
+(260, 'candidate', 'equation', 'equation_candidates', 218, 34, '(3.219)', 'Gram-Schmidt-Orthogonalisierung', 5),
+(261, 'candidate', 'equation', 'equation_candidates', 219, 34, '(3.220)', 'Gram-Schmidt-Orthogonalisierung', 5),
+(262, 'candidate', 'equation', 'equation_candidates', 220, 34, '(3.221)', 'Gram-Schmidt-Orthogonalisierung', 5),
+(263, 'candidate', 'equation', 'equation_candidates', 221, 34, '(3.222)', 'Gram-Schmidt-Orthogonalisierung', 5),
+(264, 'candidate', 'equation', 'equation_candidates', 222, 34, '(3.223)', 'Gram-Schmidt-Orthogonalisierung', 5),
+(265, 'candidate', 'equation', 'equation_candidates', 223, 34, '(3.224)', 'Zusammenhang mit der Spektralzerlegung', 5),
+(266, 'candidate', 'equation', 'equation_candidates', 224, 34, '(3.225)', 'Zusammenhang mit der Spektralzerlegung', 5),
+(267, 'candidate', 'equation', 'equation_candidates', 225, 34, '(3.226)', '\\\\langle x,y\\\\rangle', 5),
+(268, 'candidate', 'equation', 'equation_candidates', 226, 34, '(3.227)', '\\\\langle x,y\\\\rangle', 5),
+(269, 'candidate', 'equation', 'equation_candidates', 227, 34, '(3.228)', '\\\\langle x,y\\\\rangle', 5),
+(270, 'candidate', 'equation', 'equation_candidates', 228, 34, '(3.229)', '\\\\langle x,y\\\\rangle', 5),
+(271, 'candidate', 'equation', 'equation_candidates', 229, 34, '(3.230)', '\\\\langle x,y\\\\rangle', 5),
+(272, 'candidate', 'equation', 'equation_candidates', 230, 34, '(3.231)', 'Ein allgemeineres Skalarprodukt', 5),
+(273, 'candidate', 'equation', 'equation_candidates', 231, 34, '(3.232)', 'Ein allgemeineres Skalarprodukt', 5),
+(274, 'candidate', 'equation', 'equation_candidates', 232, 34, '(3.233)', 'Methodologische Betrachtungen', 5),
+(275, 'candidate', 'equation', 'equation_candidates', 233, 34, '(3.234)', 'Didaktische Betrachtungen', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `repository_revisions`
+--
+
+CREATE TABLE `repository_revisions` (
+  `revision_id` bigint(20) UNSIGNED NOT NULL,
+  `revision_code` varchar(100) NOT NULL,
+  `revision_date` datetime NOT NULL,
+  `scope_type` enum('repository','chapter','section','source','equation','definition','statement','figure','table','symbol','acronym','axiom','assumption','proof','proposition') NOT NULL,
+  `scope_reference` varchar(255) DEFAULT NULL,
+  `version_label` varchar(100) NOT NULL,
+  `summary` text NOT NULL,
+  `created_by` varchar(255) DEFAULT 'Olaf Thiele / ChatGPT',
+  `parent_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `repository_revisions`
+--
+
+INSERT INTO `repository_revisions` (`revision_id`, `revision_code`, `revision_date`, `scope_type`, `scope_reference`, `version_label`, `summary`, `created_by`, `parent_revision_id`) VALUES
+(1, 'CH3.1-LIT-20260809', '2026-08-09 08:46:00', 'chapter', '3.1', '3.1-literaturbereinigt', 'Deduplizierte Literatur, korrigierte Erstnennungen, Source-Usage-Matrix und Abschnittsstruktur Kapitel 3.1. Gleichungen gemäß leerem equations-Bestand nicht erfunden.', 'Olaf Thiele / ChatGPT', NULL),
+(2, 'RKB32-NEW-BASELINE-2026-08-29', '2026-08-29 15:17:00', 'chapter', '3.2', 'source-baseline-1', 'Quellimport der aktuellen Fassung von Kapitel 3.2 als Staging-Bestand. Die kanonischen Register des 3.1-Repositories bleiben führend; noch nicht redaktionell freigegebene Definitionen, Satzkandidaten und Gleichungen werden getrennt als Kandidaten geführt.', 'Olaf Thiele / ChatGPT', 1),
+(3, 'RKB32-DEEP-RESEARCH-SOURCES-2026-08-29', '2026-08-29 16:00:00', 'chapter', '3.2', 'deep-research-sources-1', 'Deep-Research-Prüfung der Literaturverwendungen von Kapitel 3.2 mit abschnittsspezifischen Fundstellen, Belegparaphrasen, selektiven verifizierten Kurzzitaten und Auflösung der provisorischen Ziffern [10] und [13].', 'Olaf Thiele / ChatGPT', 2),
+(4, 'RKB32-CONFORM-31-2026-08-29', '2026-08-29 16:50:00', 'repository', '3.1->3.2', '3.2-conform-3.1', 'Konformitätsmigration: Der Repository-Stand Ende 3.1 bleibt vollständige Basisschicht. Kapitel 3.2 ergänzt die bestehenden Register, ohne Tabellen, IDs, Quellen oder Auditstrukturen aus 3.1 zu verwerfen.', 'Olaf Thiele / ChatGPT', 3),
+(5, 'RKB32-MATH-APPENDIX-PROFILE-2026-08-30', '2026-08-30 09:40:00', 'chapter', '3.2', 'math-appendix-profile-1', 'Einführung einer normalisierten Dokumentort-, Bedeutung- und Anforderungsstruktur für mathematische Objekte. Ziel: Kapitel 3.2 argumentativ straffen, ohne mathematische Inhalte zu verlieren; ausgelagerte Inhalte bleiben über Anlagenanker vollständig referenzierbar.', 'Olaf Thiele / ChatGPT', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `repository_validation_results`
+--
+
+CREATE TABLE `repository_validation_results` (
+  `validation_result_id` bigint(20) UNSIGNED NOT NULL,
+  `revision_id` bigint(20) UNSIGNED NOT NULL,
+  `validation_code` varchar(100) NOT NULL,
+  `validation_status` enum('passed','warning','failed') NOT NULL,
+  `expected_value` varchar(255) DEFAULT NULL,
+  `actual_value` varchar(255) DEFAULT NULL,
+  `validation_message` text NOT NULL,
+  `checked_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `repository_validation_results`
+--
+
+INSERT INTO `repository_validation_results` (`validation_result_id`, `revision_id`, `validation_code`, `validation_status`, `expected_value`, `actual_value`, `validation_message`, `checked_at`) VALUES
+(1, 2, 'K32-SOURCE-SECTIONS', 'passed', '13', '13', 'Quelltextabschnitte 3.2.0 bis 3.2.12 wurden erkannt.', '2026-08-30 09:09:14'),
+(2, 2, 'K32-DEFINITIONS', 'passed', '33', '33', 'Definitionen 3.2.1 bis 3.2.33 wurden als Quellbestand registriert.', '2026-08-30 09:09:14'),
+(3, 2, 'K32-EQUATIONS-ACTUAL', 'passed', '233', '233', 'Tatsächlich vorhandene bzw. aus direktem Formalkontext rekonstruierbare Gleichungsobjekte.', '2026-08-30 09:09:14'),
+(4, 2, 'K32-EQUATION-GAP', 'warning', 'keine Lücke', '3.73', 'Zwischen 3.72 und 3.74 fehlt die Nummer 3.73 vollständig.', '2026-08-30 09:09:14'),
+(5, 2, 'K32-WORDLATEX', 'failed', '1 pro Gleichung', '1 expliziter Word-LaTeX-Absatz', 'Quellfassung erfüllt die verbindliche Word-LaTeX-Synchronisierung nicht.', '2026-08-30 09:09:14'),
+(6, 2, 'K32-UNRESOLVED-CITATIONS', 'failed', '0', '10,13', 'Die Literaturzahlen [10] und [13] sind nicht eindeutig aufgelöst.', '2026-08-30 09:09:14'),
+(7, 2, 'K32-SCOPE-COMPLETENESS', 'failed', 'vollständiger in 3.2.0 angekündigter Scope', 'bis 3.2.12', '3.2.13 ist nur angekündigt; weitere in der Einleitung benannte mathematische Gebiete fehlen in der vorliegenden Datei.', '2026-08-30 09:09:14'),
+(8, 2, 'K32-DR-METADATA-79', 'warning', 'verified', 'conflict', '[79] ist inhaltlich belegt, aber die bibliographische Ausgabe ist noch zu klären: Google Books nennt Van Nostrand 1952, aktuelle Dissertation North-Holland 1952.', '2026-08-30 09:09:14'),
+(9, 4, 'K32-CONFORM-31-SECTIONS', 'passed', '20', '20', 'Alle 20 Abschnittsdatensätze aus dem Stand Ende 3.1 bleiben unverändert als Basisschicht erhalten.', '2026-08-30 09:09:14'),
+(10, 4, 'K32-CONFORM-31-SOURCES', 'passed', '70', '70', 'Alle 70 Quellen des Standes Ende 3.1 bleiben erhalten; neue 3.2-Quellen beginnen bei [71].', '2026-08-30 09:09:14'),
+(11, 4, 'K32-CONFORM-31-AUTHORS', 'passed', '73', '73', 'Alle 73 Autorenstammsätze des Standes Ende 3.1 bleiben erhalten; vorhandene Identitäten werden wiederverwendet.', '2026-08-30 09:09:14'),
+(12, 4, 'K32-CONFORM-31-USAGE', 'passed', '82', '82', 'Alle 82 source_usage-Datensätze des Standes Ende 3.1 bleiben erhalten; neue 3.2-Verwendungen beginnen mit usage_id 83.', '2026-08-30 09:09:14'),
+(13, 4, 'K32-CONFORM-32-CITATIONS', 'passed', '353', '353', 'Alle 353 importierten Zitationsvorkommen von Kapitel 3.2 sind gespeichert.', '2026-08-30 09:09:14'),
+(14, 4, 'K32-CONFORM-32-EVIDENCE', 'passed', '52', '52', 'Alle 52 abschnittsbezogenen Literaturverwendungen von 3.2 besitzen einen Deep-Research-Evidenzdatensatz.', '2026-08-30 09:09:14'),
+(15, 4, 'K32-CONFORM-CANONICAL-STAGING', 'passed', 'separate', 'separate', 'Ungeprüfte Quellfassungs-Definitionen, Satzkandidaten und Gleichungen bleiben in Kandidatentabellen und werden nicht als kanonische Registereinträge ausgegeben.', '2026-08-30 09:09:14'),
+(16, 5, 'RKB32-MATH-PROFILE-COUNT', 'passed', '275', '275', 'Alle 33 Definitionskandidaten, 9 Satzkandidaten und 233 Gleichungskandidaten besitzen ein Dokumentationsprofil.', '2026-08-30 09:09:15'),
+(17, 5, 'RKB32-MAIN-NO-DERIVATION-EXAMPLE', 'passed', '0', '0', 'Im Haupttext ist kein Objekt als reine Herleitung, Beweisschritt oder Beispiel klassifiziert.', '2026-08-30 09:09:15'),
+(18, 5, 'RKB32-APPENDIX-ANCHOR-COMPLETE', 'passed', '0', '0', 'Jedes ausgelagerte mathematische Objekt besitzt Anlagenmodul und eindeutigen Anlagenanker.', '2026-08-30 09:09:15'),
+(19, 5, 'RKB32-MAIN-REQUIREMENT-COMPLETE', 'passed', '0', '0', 'Jedes für den Haupttext vorgesehene Objekt besitzt eine downstream-Anforderung; derzeit auf Kapitel 3.3, da die verbindliche 3.3.x-Struktur in diesem Repository noch nicht vorliegt.', '2026-08-30 09:09:15'),
+(20, 5, 'RKB32-EQUATION-ROLE-COMPLETE', 'passed', '233', '233', 'Alle Gleichungskandidaten sind als canonical, derived, proof_step oder example klassifiziert.', '2026-08-30 09:09:15'),
+(21, 5, 'RKB32-NON-EQUATION-ROLE-NULL', 'passed', '0', '0', 'equation_role wird ausschließlich für Gleichungsobjekte verwendet.', '2026-08-30 09:09:15'),
+(22, 5, 'RKB32-REQUIREMENT-GRANULARITY', 'warning', '3.3.x', '3.3', 'Die downstream-Anforderungen sind vollständig vorhanden, aber bis zur verbindlichen Übernahme der Kapitel-3.3-Struktur nur auf Kapitel-Ebene 3.3 aufgelöst.', '2026-08-30 09:09:15');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `revision_issues`
+--
+
+CREATE TABLE `revision_issues` (
+  `issue_id` bigint(20) UNSIGNED NOT NULL,
+  `severity` enum('info','low','medium','high','critical') NOT NULL,
+  `issue_category` varchar(100) NOT NULL,
+  `object_reference` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
+  `required_action` longtext NOT NULL,
+  `issue_status` enum('open','in_progress','resolved','accepted') NOT NULL DEFAULT 'open',
+  `created_revision_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `revision_issues`
+--
+
+INSERT INTO `revision_issues` (`issue_id`, `severity`, `issue_category`, `object_reference`, `description`, `required_action`, `issue_status`, `created_revision_id`) VALUES
+(1, 'critical', 'equation', '3.2.3 / (3.49)', 'Die Formel Ax=y ist vorhanden, die sichtbare Gleichungsnummer (3.49) fehlt in der Quellfassung.', 'Bei der Neufassung Gleichung eindeutig setzen und Word-LaTeX unmittelbar nachführen.', 'open', 2),
+(2, 'critical', 'equation', '3.2.3 / (3.50)', 'Die Eigenwertgleichung ist vorhanden, die sichtbare Gleichungsnummer (3.50) fehlt; die Zuordnung ergibt sich nur aus dem Abschnittskontext.', 'Bei der Neufassung formal neu setzen und Nummer explizit bestätigen.', 'open', 2),
+(3, 'critical', 'equation', '3.2.6 / (3.73)', 'Zwischen (3.72) und (3.74) fehlt in der Quellfassung eine Gleichungsnummer vollständig; es wird keine Formel für (3.73) erfunden.', 'Im Rewrite entscheiden, ob neu nummeriert oder die Lücke dokumentiert geschlossen wird.', 'open', 2),
+(4, 'critical', 'equation', '3.2.11 / (3.173)', 'Die Projektorgleichung ist beschädigt; der Ausdruck endet in der Quellfassung bei lambda != und die rechte Vergleichsgröße fehlt.', 'Mathematisch gegen den Kontext und Literatur prüfen und im Rewrite korrigieren.', 'open', 2),
+(5, 'high', 'word_latex', 'Kapitel 3.2', 'Im gesamten DOCX ist nur ein expliziter Word-LaTeX-Absatz vorhanden, obwohl der Formelbestand 233 tatsächlich vorhandene nummerierte Gleichungen umfasst.', 'Bei jeder neu gesetzten Gleichung Word-LaTeX verpflichtend synchron pflegen.', 'open', 2),
+(6, 'high', 'citation', '3.2.3 ff. / [10]', 'Die Literaturzahl [10] wird in der Quellfassung wiederholt für lineare Algebra verwendet, ist aber im aktuellen Literaturblock nicht aufgelöst.', 'Nicht übernehmen; Quelle vor Neufassung bibliografisch identifizieren oder durch passende verifizierte Quelle ersetzen.', 'open', 2),
+(7, 'high', 'citation', '3.2.3 ff. / [13]', 'Die Literaturzahl [13] wird wiederholt bei Operatoren/Funktionalanalysis verwendet, ist im aktuellen Literaturblock nicht aufgelöst.', 'Nicht übernehmen; Quelle vor Neufassung bibliografisch identifizieren oder durch passende verifizierte Quelle ersetzen.', 'open', 2),
+(8, 'high', 'scope', '3.2.0 vs. Kapitelbestand', 'Die Einleitung kündigt Analysis, Topologie, Funktionalanalysis, Graphentheorie, Kategorientheorie und Metamathematik an; die vorliegende Datei endet nach 3.2.12 und kündigt 3.2.13 lediglich an.', 'Kapitelstruktur vor der Endfassung vollständig festlegen und angekündigte Gebiete entweder ausarbeiten oder den Scope der Einleitung anpassen.', 'open', 2),
+(9, 'high', 'editorial_artifact', '3.2.7', 'Im Dissertationstext steht ein Chat-/Arbeitsrest: „Du meinst im unmittelbaren Fortgang 3.2.7 …“.', 'Vollständig aus dem wissenschaftlichen Fließtext entfernen.', 'open', 2),
+(10, 'medium', 'editorial_artifact', '3.2.7–3.2.12', 'Mehrere Abschnitte enthalten Arbeitsvermerke „Fortsetzungsstand: …“.', 'Aus Dissertationstext entfernen; Fortsetzungsstand ausschließlich im Repository führen.', 'open', 2),
+(11, 'medium', 'editorial_artifact', '3.2.1 / 3.2.12', 'Repository- und Skriptanweisungen stehen im Dissertationstext, u. a. zur späteren Prüfung von Frege/Tarski und source_excerpt.', 'In Repository-Metadaten verschieben; im Fließtext nur wissenschaftliche Aussage belassen.', 'open', 2),
+(12, 'medium', 'formatting', '3.2.12', 'Mindestens eine Formel (Skalarprodukt) ist im DOCX als Überschrift formatiert.', 'Formatierung im Neusatz normalisieren; Formeln niemals als Kapitelüberschrift führen.', 'open', 2),
+(13, 'medium', 'definition_overlap', 'Definition 3.2.3 / 3.2.4', '„Funktion“ und „Mathematische Abbildung“ sind in der Quellfassung weitgehend doppelt definiert.', 'Im Rewrite terminologisch konsolidieren oder den unterschiedlichen Gebrauch ausdrücklich begründen.', 'open', 2),
+(14, 'medium', 'citation_style', '3.2.0', 'Die Einleitung enthält lange bibliografische Vollangaben im Fließtext statt einer knappen wissenschaftlichen Quellenführung.', 'Vollangaben in Literaturregister/DB führen und im Kapitel nur die für die Argumentation nötige Quellenangabe verwenden.', 'open', 2),
+(15, 'medium', 'requirement_granularity', 'chapter:3.2->3.3', 'Die Haupttextobjekte sind derzeit nachweisbar auf Kapitel 3.3 als Zielbereich gemappt; eine belastbare 3.3.x-Feinzuordnung ist in diesem Repository-Stand noch nicht vorhanden.', 'Nach Import bzw. Festlegung der verbindlichen Kapitel-3.3-Struktur jede 3.3-Anforderung auf die konkrete Zieluntersektion 3.3.x auflösen und required_for_section_id setzen.', 'open', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `section_change_log`
+--
+
+CREATE TABLE `section_change_log` (
+  `change_id` bigint(20) UNSIGNED NOT NULL,
+  `revision_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `change_type` enum('created','rewritten','edited','renumbered','source_added','source_reused','equation_added','equation_changed','definition_added','statement_added','proof_added','assumption_added','axiom_added','proposition_added','figure_added','table_added','symbol_added','acronym_added','status_changed','other') NOT NULL,
+  `object_type` varchar(100) DEFAULT NULL,
+  `object_reference` varchar(255) DEFAULT NULL,
+  `change_summary` text NOT NULL,
+  `previous_value` longtext DEFAULT NULL,
+  `new_value` longtext DEFAULT NULL,
+  `changed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `section_change_log`
+--
+
+INSERT INTO `section_change_log` (`change_id`, `revision_id`, `section_id`, `change_type`, `object_type`, `object_reference`, `change_summary`, `previous_value`, `new_value`, `changed_at`) VALUES
+(1, 2, 21, 'created', 'section', '3.2', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(2, 2, 22, 'created', 'section', '3.2.0', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(3, 2, 23, 'created', 'section', '3.2.1', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(4, 2, 24, 'created', 'section', '3.2.2', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(5, 2, 25, 'created', 'section', '3.2.3', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(6, 2, 26, 'created', 'section', '3.2.4', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(7, 2, 27, 'created', 'section', '3.2.5', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(8, 2, 28, 'created', 'section', '3.2.6', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(9, 2, 29, 'created', 'section', '3.2.7', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(10, 2, 30, 'created', 'section', '3.2.8', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(11, 2, 31, 'created', 'section', '3.2.9', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(12, 2, 32, 'created', 'section', '3.2.10', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(13, 2, 33, 'created', 'section', '3.2.11', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(14, 2, 34, 'created', 'section', '3.2.12', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(15, 2, 35, 'created', 'section', '3.2.13', 'Kapitel-3.2-Arbeitsabschnitt als Fortsetzung des 3.1-Repositories angelegt.', NULL, NULL, '2026-08-30 09:09:14'),
+(16, 2, 21, 'source_added', 'source', '[71]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(17, 2, 21, 'source_added', 'source', '[72]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(18, 2, 21, 'source_added', 'source', '[73]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(19, 2, 21, 'source_added', 'source', '[74]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(20, 2, 21, 'source_added', 'source', '[75]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(21, 2, 21, 'source_added', 'source', '[76]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(22, 2, 21, 'source_added', 'source', '[77]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(23, 2, 21, 'source_added', 'source', '[78]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(24, 2, 21, 'source_added', 'source', '[79]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(25, 2, 21, 'source_added', 'source', '[80]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(26, 2, 21, 'source_added', 'source', '[81]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(27, 2, 21, 'source_added', 'source', '[82]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(28, 2, 21, 'source_added', 'source', '[83]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14'),
+(29, 2, 21, 'source_added', 'source', '[84]', 'Neue Literaturquelle für Kapitel 3.2 im kanonischen sources-Register ergänzt.', NULL, NULL, '2026-08-30 09:09:14');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `section_versions`
+--
+
+CREATE TABLE `section_versions` (
+  `section_version_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `revision_id` bigint(20) UNSIGNED NOT NULL,
+  `version_kind` enum('source_import','rewrite','review','final') NOT NULL,
+  `body_markdown` longtext NOT NULL,
+  `checksum_sha256` char(64) DEFAULT NULL,
+  `notes` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `section_versions`
+--
+
+INSERT INTO `section_versions` (`section_version_id`, `section_id`, `revision_id`, `version_kind`, `body_markdown`, `checksum_sha256`, `notes`) VALUES
+(1, 22, 2, 'source_import', '## 3.2.0 Einleitung\n\nMit dem Abschluss von Kapitel 3.1 habe ich die erkenntnistheoretischen, wissenschaftstheoretischen und methodologischen Voraussetzungen geschaffen, auf denen ich die weitere Entwicklung des Funktionalen Raum-Zeit-Kohärenzsystems (FRZK) aufbaue. Dabei wurde deutlich, dass jede wissenschaftliche Theorie auf expliziten Voraussetzungen beruht und dass weder Begriffe noch mathematische Strukturen unabhängig von ihren jeweiligen Definitionsbedingungen verstanden werden können. Daraus ergibt sich für mich die Notwendigkeit, vor der Einführung eines eigenen mathematischen Formalismus zunächst diejenigen mathematischen Werkzeuge systematisch darzustellen, die in den Naturwissenschaften und in der Mathematik zur Beschreibung komplexer Strukturen verwendet werden. Damit bildet Kapitel 3.2 bewusst die mathematische Brücke zwischen der wissenschaftstheoretischen Grundlegung aus Kapitel 3.1 und der späteren FRZK-Axiomatik in Kapitel 3.3.\n\nDie mathematischen Disziplinen, die ich im Folgenden behandle, stellen keinen beliebigen Ausschnitt der Mathematik dar. Ich wähle sie aufgrund ihrer grundlegenden Bedeutung für die Beschreibung von Mengen, Relationen, Funktionen, Transformationen und strukturellen Zusammenhängen aus. Dabei unterscheide ich bewusst zwischen etablierter mathematischer Theorie und der späteren Eigenleistung dieser Arbeit. Kapitel 3.2 verfolgt daher nicht das Ziel, neue mathematische Aussagen zu entwickeln. Vielmehr möchte ich die Voraussetzungen, die Leistungsfähigkeit und ebenso die Grenzen derjenigen mathematischen Konzepte offenlegen, auf denen moderne wissenschaftliche Modellbildungen beruhen. Erst auf dieser Grundlage kann ich in Kapitel 3.3 eine eigenständige Axiomatik des FRZK entwickeln.\n\nDen Ausgangspunkt bildet die Mengenlehre, die eine gemeinsame Grundsprache für große Teile der modernen Mathematik bereitstellt. Paul R. Halmos stellt in *Naive Set Theory* die Begriffe Menge, Element, Teilmenge, Relation und Abbildung als grundlegende Bausteine der weiterführenden Mathematik dar \\[6\\]. Seine Darstellung ist für meinen Aufbau besonders geeignet, weil sie die elementaren Strukturen schrittweise entwickelt, ohne bereits eine bestimmte physikalische Interpretation vorauszusetzen.\n\nAn die Mengenlehre schließen sich die algebraischen Grundlagen an. Serge Lang: *Algebra*. Revised Third Edition. New York: Springer, 2002 \\[71\\]. Lang systematisiert Gruppen, Ringe, Körper, Moduln und lineare Abbildungen als allgemeine Strukturen mathematischer Verknüpfungen. Diese Strukturen benötige ich später, wenn ich funktionale Transformationen nicht nur sprachlich, sondern mathematisch präzise beschreiben will.\n\nFür die Analysis verwende ich Walter Rudin: *Principles of Mathematical Analysis*. Third Edition. New York: McGraw-Hill, 1976 \\[72\\]. Rudin entwickelt die Begriffe Konvergenz, Stetigkeit, Differenzierbarkeit und Integration auf der Grundlage bereits definierter Zahlen- und Funktionenräume. Für meinen Aufbau ist dabei nicht nur wichtig, was die Analysis leisten kann. Ebenso wichtig ist mir die Grenze ihrer Aussagekraft: Die Analysis untersucht Eigenschaften und Veränderungen innerhalb bereits mathematisch bestimmter Strukturen. Sie begründet nicht selbst, warum gerade diese Strukturen als Ausgangspunkt gewählt wurden.\n\nDie topologischen Grundlagen stütze ich auf James R. Munkres: *Topology*. Second Edition. Upper Saddle River, New Jersey: Prentice Hall, 2000 \\[73\\]. Munkres entwickelt topologische Räume, Zusammenhang, Kompaktheit und Trennungsaxiome unabhängig von der Notwendigkeit einer bereits vorgegebenen metrischen Geometrie. Für meine weitere Untersuchung ist insbesondere bedeutsam, dass ich damit mathematische Begriffe von Nähe, Zusammenhang und Stetigkeit untersuchen kann, ohne diese bereits mit einem bestimmten physikalischen Raum gleichsetzen zu müssen.\n\nFür die lineare Algebra verwende ich Gilbert Strang: *Introduction to Linear Algebra*. Fifth Edition. Wellesley, Massachusetts: Wellesley-Cambridge Press, 2016 \\[74\\]. Vektorräume, Matrizen, lineare Transformationen, Basen, Dimensionen sowie Eigenwerte und Eigenvektoren bilden später wesentliche mathematische Werkzeuge meiner Untersuchung. Auch hier halte ich die methodische Trennung ausdrücklich aufrecht. Ein mathematischer Vektorraum ist zunächst eine algebraische Struktur. Allein aus seiner mathematischen Definition folgt noch keine physikalische Interpretation als räumliche oder raumzeitliche Struktur.\n\nDarauf aufbauend verwende ich funktionalanalytische Konzepte. Erwin Kreyszig: *Introductory Functional Analysis with Applications*. New York: John Wiley & Sons, 1978 \\[75\\]. Michael Reed und Barry Simon: *Methods of Modern Mathematical Physics. Volume I: Functional Analysis*. Revised and Enlarged Edition. San Diego: Academic Press, 1980 \\[76\\]. Beide Werke behandeln normierte Räume, Hilberträume, lineare Funktionale, Operatoren und Spektren. Damit stellen sie mathematische Werkzeuge bereit, die ich später für die Beschreibung von Zustands- und Operatorräumen benötige. Auch aus diesen mathematischen Strukturen leite ich an dieser Stelle noch keine FRZK-spezifische physikalische Interpretation ab.\n\nFür diskrete relationale Strukturen verwende ich Reinhard Diestel: *Graph Theory*. Fifth Edition. Berlin und Heidelberg: Springer, 2017 \\[77\\]. Die Graphentheorie ermöglicht es mir, Elemente und ihre Verbindungen als diskrete mathematische Strukturen zu untersuchen. Gerade im Hinblick auf spätere relationale Beschreibungen ist dabei wesentlich, zwischen dem Vorhandensein einzelner Objekte und den zwischen ihnen definierten Verbindungen zu unterscheiden.\n\nEine noch abstraktere Beschreibung mathematischer Strukturen und ihrer Beziehungen erhalte ich durch die Kategorientheorie. Saunders Mac Lane: *Categories for the Working Mathematician*. Second Edition. New York: Springer, 1998 \\[78\\]. Kategorien und Morphismen ermöglichen es, mathematische Strukturen nicht ausschließlich anhand ihrer einzelnen Elemente, sondern auch anhand der zwischen ihnen bestehenden strukturerhaltenden Beziehungen zu untersuchen.\n\nDie formalen Grundlagen metamathematischer Aussagen ergänze ich durch Stephen C. Kleene: *Introduction to Metamathematics*. Amsterdam: North-Holland Publishing Company, 1952 \\[79\\]. Die mathematische Logik und die Untersuchung formaler Systeme sind für meinen weiteren Aufbau deshalb relevant, weil ich in Kapitel 3.3 von der Darstellung etablierter mathematischer Werkzeuge zur Formulierung eines eigenen Axiomensystems übergehe. Dafür muss eindeutig unterscheidbar bleiben, welche Aussagen Definitionen, welche Axiome, welche daraus abgeleiteten Aussagen und welche lediglich Interpretationen darstellen.\n\nAlle diese Quellen verwende ich ausschließlich als Referenzen für etablierte mathematische Strukturen. Ich setze ihre Aussagen nicht mit den späteren FRZK-Setzungen gleich. Gerade diese Unterscheidung ist für den wissenschaftlichen Aufbau meiner Arbeit entscheidend. Wenn ich beispielsweise später einen Vektorraum, einen Operator, eine Relation oder eine topologische Struktur innerhalb des FRZK verwende, ist der mathematische Begriff selbst noch keine Eigenleistung des FRZK. Die Eigenleistung kann erst dort beginnen, wo ich begründet festlege, welche dieser mathematischen Werkzeuge ich innerhalb des FRZK verwende, wie ich sie miteinander verknüpfe und welche zusätzlichen Axiome ich dafür einführe.\n\nDamit erfüllt Kapitel 3.2 für mich eine doppelte wissenschaftliche Funktion. Einerseits entwickle ich systematisch diejenigen mathematischen Werkzeuge, die ich für die späteren Herleitungen benötige. Andererseits untersuche ich zugleich deren Voraussetzungen und Grenzen. Gerade diese explizite Trennung zwischen etablierter Mathematik und eigener theoretischer Entwicklung bildet die Voraussetzung dafür, dass ich die in Kapitel 3.3 folgende FRZK-Axiomatik eindeutig als wissenschaftliche Eigenleistung kennzeichnen und von bereits vorhandener Mathematik unterscheiden kann.\n\n## Methodologische Betrachtungen\n\nMethodologisch bildet Abschnitt 3.2.0 für mich die Grenze zwischen zwei unterschiedlichen Arbeitsschritten. In Kapitel 3.1 habe ich untersucht, unter welchen erkenntnistheoretischen und wissenschaftstheoretischen Voraussetzungen eine eigenständige theoretische Konstruktion überhaupt formuliert werden kann. In Kapitel 3.2 beginne ich dagegen noch nicht mit dieser Konstruktion. Ich rekonstruiere zunächst die mathematischen Werkzeuge, die ich später dafür benötige.\n\nDiese Reihenfolge ist für meine Vorgehensweise wesentlich. Würde ich bereits in den mathematischen Grundlagen FRZK-spezifische Eigenschaften in etablierte Begriffe hineinlegen, wäre später nicht mehr eindeutig erkennbar, welche Aussagen aus vorhandener Mathematik stammen und welche Aussagen ich selbst als zusätzliche theoretische Setzungen einführe. Ich behandle deshalb Mengen, Funktionen, Vektorräume, Operatoren, topologische Räume und alle weiteren mathematischen Strukturen zunächst in ihrer etablierten Bedeutung.\n\nGleichzeitig bedeutet diese Trennung nicht, dass ich die mathematischen Werkzeuge unkritisch übernehme. Für meine Untersuchung interessiert mich bei jedem Werkzeug nicht nur seine mathematische Leistungsfähigkeit, sondern ebenso die Frage, welche Voraussetzungen es benötigt und welche Aussagen sich aus ihm gerade nicht ableiten lassen. Ein Vektorraum beispielsweise stellt eine algebraische Struktur bereit, erklärt aber noch nicht, warum ein physikalischer Zustandsraum diese Struktur besitzen soll. Eine Relation beschreibt mathematisch eine Verbindung, begründet aber noch keine physikalische Wechselwirkung. Ein Operator beschreibt eine Abbildung, erklärt aber allein noch keinen realen Prozess.\n\nGenau an diesen Grenzen entsteht später der Übergang zur FRZK-Axiomatik. Kapitel 3.2 soll deshalb nicht nachträglich eine Begründung des FRZK liefern. Es stellt vielmehr den mathematischen Werkzeugbestand bereit, anhand dessen ich in Kapitel 3.3 präzise angeben kann, welche zusätzlichen Voraussetzungen ich für das FRZK tatsächlich setzen muss.\n\n## Didaktische Betrachtungen\n\nDidaktisch beginne ich bewusst mit den elementaren mathematischen Strukturen und entwickle daraus schrittweise komplexere Begriffe. Diese Vorgehensweise entspricht meiner grundsätzlichen Art, mathematische und physikalische Zusammenhänge zu erschließen: Ich beginne mit dem einfachsten möglichen Ausgangspunkt und erweitere ihn erst dann, wenn die vorhandene Struktur für den nächsten Erklärungsschritt nicht mehr ausreicht.\n\nDadurch entsteht eine nachvollziehbare Entwicklung. Aus Mengen werden Beziehungen zwischen Elementen beschreibbar. Aus Relationen können eindeutige Abbildungen hervorgehen. Auf strukturierten Räumen lassen sich Transformationen und Operatoren definieren. Darauf können wiederum analytische, topologische und funktionalanalytische Strukturen aufgebaut werden. Ich möchte damit vermeiden, mathematische Begriffe lediglich als fertige Formeln oder Definitionen einzuführen, deren Zusammenhang untereinander verborgen bleibt.\n\nFür die spätere Entwicklung des FRZK ist dieser Aufbau besonders wichtig. Wenn ich in Kapitel 3.3 eigene Axiome formuliere, soll nachvollziehbar sein, welche mathematischen Werkzeuge bereits vorhanden sind und an welcher Stelle tatsächlich eine neue Setzung beginnt. Der Leser soll deshalb nicht nur erkennen können, **welches** mathematische Werkzeug ich verwende, sondern auch **warum** ich es benötige, welche Voraussetzungen es besitzt und wo seine Aussagekraft endet.\n\n## Ergebnis und Übergang\n\nMit Abschnitt 3.2.0 habe ich den methodischen Rahmen für die mathematischen Grundlagen festgelegt. Die verwendeten mathematischen Disziplinen behandle ich nicht als Bestandteile einer bereits vorausgesetzten FRZK-Theorie, sondern rekonstruiere sie zunächst als etablierte Werkzeuge. Ihre FRZK-spezifische Auswahl, Verbindung und Interpretation erfolgt erst auf der Grundlage der späteren Axiome.\n\nDer erste konkrete Schritt besteht deshalb darin, festzulegen, welche mathematischen Objekte gemeinsam betrachtet werden können und wie sich Beziehungen zwischen ihnen formal beschreiben lassen. Damit beginne ich in Abschnitt **3.2.1 mit Mengen, Elementen und elementaren Relationen**.', '100349ce9c258031ae1df43f242fc748dd73e3595f0cf3cbd0b937916e76c8b9', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.'),
+(2, 23, 2, 'source_import', '# 3.2.1 Mengen, Elemente und elementare Relationen\n\nNachdem ich in Abschnitt 3.2.0 die Aufgabe dieses Kapitels bestimmt und die verwendeten mathematischen Gebiete eingeordnet habe, beginne ich nun mit dem elementarsten formalen Schritt jeder mathematischen Modellbildung. Bevor ich Zustände, Beziehungen, Funktionen oder Transformationen beschreiben kann, muss ich zunächst festlegen, welche Objekte innerhalb einer Untersuchung überhaupt berücksichtigt werden sollen. Diese Festlegung erfolgt mit dem Begriff der Menge. Der ursprüngliche Abschnitt entwickelt diesen Aufbau von der elementaren Zugehörigkeit über Mengenoperationen bis zur binären Relation.\n\nDie Mengenlehre verwende ich als gemeinsame Grundsprache für die weitere mathematische Entwicklung. Zahlenbereiche, Vektorräume, Funktionenräume, topologische Räume und viele weitere Strukturen lassen sich mengentheoretisch beschreiben. Daraus darf ich jedoch nicht schließen, dass eine Menge bereits eine physikalische oder ontologische Wirklichkeit abbildet. Eine Menge ist zunächst eine formal bestimmte Zusammenfassung unterscheidbarer Elemente. Erst durch zusätzliche Definitionen und Interpretationen lege ich fest, welche wissenschaftliche Bedeutung diese Elemente innerhalb eines konkreten Modells besitzen.\n\nPaul R. Halmos führt Mengen, Elemente, Teilmengen, Vereinigungen, Schnittmengen, geordnete Paare und Abbildungen als elementare Bausteine einer systematischen mathematischen Sprache ein \\[6\\]. Seine Darstellung ist für meinen Aufbau besonders geeignet, weil sie die grundlegenden Operationen schrittweise entwickelt, ohne bereits eine bestimmte physikalische Interpretation vorauszusetzen. Zugleich macht Halmos deutlich, dass die naive Mengenlehre keine vollständige axiomatische Fundierung der Mengenlehre ersetzt. Für meine grundlegende Einführung mathematischer Modellstrukturen ist sie dennoch geeignet, solange ich ihre Voraussetzungen und Grenzen ausdrücklich benenne.\n\nFür die systematischere mengentheoretische Einordnung ergänze ich diese Grundlage durch Herbert B. Enderton: *Elements of Set Theory*. New York, San Francisco und London: Academic Press, 1977 \\[80\\]. Enderton entwickelt die elementare Mengenlehre aus formalen Voraussetzungen und behandelt unter anderem Relationen, Funktionen, natürliche Zahlen, Kardinalzahlen und Auswahlprinzipien.\n\nFür die weiterführende axiomatische Einordnung verwende ich außerdem Thomas Jech: *Set Theory. The Third Millennium Edition, Revised and Expanded*. Berlin und Heidelberg: Springer, 2003 \\[81\\]. Jech führt von den Axiomen der Mengenlehre über Ordinal- und Kardinalzahlen bis zu weiterführenden Ergebnissen der modernen Mengenlehre. Beide Werke erfüllen in meiner Untersuchung unterschiedliche Funktionen: Enderton nutze ich vor allem für die schrittweise begriffliche Grundlegung, während Jech die Einordnung in die axiomatische Mengenlehre und ihre weiterführenden Konsequenzen ermöglicht.\n\nIch übernehme aus diesen Darstellungen nicht die Annahme, dass jede wissenschaftlich relevante Struktur vollständig auf Mengen reduziert werden müsse. Michael D. Resnik diskutiert mathematische Strukturen unabhängig von einer unmittelbaren Identifikation mit bestimmten Einzelobjekten \\[67\\]. Stewart Shapiro entwickelt diesen strukturorientierten Zugang weiter und betont, dass mathematische Gegenstände wesentlich durch ihre Stellung innerhalb von Strukturen bestimmt werden können \\[68\\]. Für das FRZK ist diese Einschränkung bedeutsam. Ich verwende die Mengenlehre als formale Ausgangssprache, behaupte damit aber noch nicht, dass Mengen die letzte ontologische Grundlage von Raum, Zeit oder physikalischer Wirklichkeit darstellen.\n\n## Definition 3.2.1: Menge und Element\n\nUnter einer Menge $M$ verstehe ich zunächst eine formal bestimmte Zusammenfassung unterscheidbarer Objekte. Die zu $M$ gehörenden Objekte bezeichne ich als Elemente der Menge.\n\nDie Zugehörigkeit eines Objekts $x$ zu einer Menge $M$ schreibe ich als\n\n$x \\in \\, M$ (3.1)\n\nDabei ist $x$ das betrachtete Objekt und die Menge $M$, hinsichtlich derer ich die Zugehörigkeit prüfe.\n\nDie Nichtzugehörigkeit schreibe ich entsprechend als\n\n$x \\notin M$ (3.2)\n\nDie Aussagen (3.1) und (3.2) legen ausschließlich fest, ob ein Objekt innerhalb der betrachteten Menge geführt wird. Sie bestimmen weder seine Eigenschaften noch seine Beziehungen zu anderen Elementen. Diese Unterscheidung ist für meine weitere Entwicklung wesentlich. Die Aufnahme eines Zustands in eine Zustandsmenge bedeutet noch nicht, dass seine innere Struktur, seine Ursache oder seine funktionale Bedeutung bereits erklärt wäre.\n\nEine endliche Menge kann ich durch die Aufzählung ihrer Elemente angeben. Für drei Elemente $a$, $b$ und $c$ schreibe ich beispielsweise\n\n$M = \\text{\\{}a,b,c\\text{\\}}$ (3.3)\n\nDabei bezeichnet $M$ die betrachtete Menge; $a$, $b$ und $c$ sind ihre Elemente.\n\nDie Reihenfolge der Elemente ist für eine Menge nicht von Bedeutung. Ebenso verändert eine wiederholte Nennung eines Elements die Menge nicht. Es gilt daher\n\n$\\text{\\{}a,b,c\\text{\\}} = \\text{\\{}c,a,b\\text{\\}} = \\text{\\{}a,a,b,c\\text{\\}}$ (3.4)\n\nAn dieser Stelle wird bereits eine erste Grenze der Mengenbeschreibung sichtbar. Die Menge (3.3) enthält zwar die Elemente $a$, $b$ und $c$, sie enthält jedoch keine Information darüber, ob eines dieser Elemente zuerst oder zuletzt auftritt, ob ein Element gegenüber einem anderen hervorgehoben ist oder ob zwischen den Elementen eine bestimmte Wirkungsrichtung besteht. Eine Menge stellt damit zunächst eine Zusammenfassung bereit, aber noch keine Ordnung, Gewichtung oder Dynamik.\n\nNeben der Aufzählung kann ich eine Menge durch eine Eigenschaft ihrer Elemente bestimmen. Die allgemeine Form lautet\n\n$$M = \\text{\\{}x \\in U \\mid P(x)\\text{\\}}\\ (3.5)$$\n\nDabei ist $U$ die Grundmenge, aus der ich die Elemente auswähle. $P(x)$ bezeichnet eine Bedingung, die für jedes $x \\in U$ eindeutig erfüllt oder nicht erfüllt sein muss. Die Menge $M$ enthält genau diejenigen Elemente aus $U$, für die $P(x)$ gilt.\n\nIch halte die Grundmenge $U$ in (3.5) ausdrücklich fest, weil eine Auswahlbedingung niemals unabhängig von einem zugelassenen Ausgangsbereich wirkt. Wenn ich beispielsweise die Menge der geraden natürlichen Zahlen bestimme, muss zunächst feststehen, dass natürliche Zahlen betrachtet werden:\n\n$$G = \\text{\\{}n \\in \\mathbb{N} \\mid \\exists k \\in \\mathbb{N}:n = 2k\\text{\\}}\\ (3.6)$$\n\nDabei bezeichnet $G$ die Menge der geraden natürlichen Zahlen, $n$ das jeweils betrachtete Element und $k$ eine natürliche Zahl, durch die die Geradheit von $n$ ausgedrückt wird.\n\nDie Bedingung entscheidet innerhalb des Zahlenbereichs $\\mathbb{N}$, welche Elemente zu $G$ gehören. Würde ich einen anderen Grundbereich wählen, könnte dieselbe sprachliche Bedingung eine andere Menge bestimmen. Für meine weitere Modellbildung folgt daraus, dass die Festlegung eines zulässigen Objekt- oder Zustandsbereichs keine beiläufige Entscheidung ist. Sie bestimmt, welche Gegenstände innerhalb des Modells überhaupt auftreten können.\n\n## Teilmengen\n\nEine Menge $A$ heißt Teilmenge einer Menge $B$, wenn jedes Element von $A$ zugleich Element von $B$ ist:\n\n$$A \\subseteq B \\Longleftrightarrow \\forall x\\,(x \\in A \\Rightarrow x \\in B)\\ (3.7)$$\n\nDabei sind $A$ und $B$ Mengen und $x$ ein beliebiges betrachtetes Element.\n\nIch muss dabei zwischen der Elementrelation und der Teilmengenrelation unterscheiden. Die Aussage $x \\in A$ verknüpft ein Objekt mit einer Menge. Die Aussage $A \\subseteq B$ verknüpft dagegen zwei Mengen. Diese formale Unterscheidung erscheint zunächst einfach, wird jedoch später wesentlich, wenn verschiedene Ebenen mathematischer Objekte gleichzeitig betrachtet werden.\n\nEine echte Teilmenge liegt vor, wenn $A$ zwar Teilmenge von $B$, aber nicht mit $B$ identisch ist:\n\n$$A \\subset B \\Longleftrightarrow A \\subseteq B \\land A \\neq B\\ (3.8)$$\n\nIch verwende deshalb $A \\subseteq B$, wenn Gleichheit zugelassen ist, und $A \\subset B$, wenn Gleichheit ausdrücklich ausgeschlossen werden soll. Diese Unterscheidung behalte ich im weiteren Gleichungsapparat konsequent bei.\n\n## Gleichheit von Mengen\n\nZwei Mengen sind gleich, wenn sie genau dieselben Elemente enthalten:\n\n$$A = B \\Longleftrightarrow \\forall x\\,(x \\in A \\Leftrightarrow x \\in B)\\ (3.9)$$\n\nDiese Festlegung entspricht dem Extensionalitätsprinzip. Eine Menge wird demnach durch ihre Elemente bestimmt. Unterschiedliche Bezeichnungen oder unterschiedliche sprachliche Beschreibungen können dieselbe Menge erfassen, wenn sie zu genau demselben Elementbestand führen \\[80, 81\\].\n\nFür meine Untersuchung ist dabei wichtig, zwischen formaler Gleichheit und inhaltlicher Interpretation zu unterscheiden. Zwei Mengen können formal denselben Elementbestand besitzen und dennoch innerhalb unterschiedlicher wissenschaftlicher Modelle verschieden interpretiert werden. Gleichung (3.9) entscheidet ausschließlich über ihre mengentheoretische Gleichheit. Sie entscheidet nicht darüber, ob zwei Beschreibungen dieselbe Erklärung, denselben Messvorgang oder dieselbe physikalische Bedeutung besitzen.\n\n## Die leere Menge\n\nDie leere Menge enthält kein Element. Ich bezeichne sie mit $\\varnothing$ und definiere sie durch\n\n$$\\varnothing = \\text{\\{}x|\\ x \\neq x\\text{\\}}\\ (3.10)$$\n\nDabei bezeichnet $\\varnothing$ die leere Menge. Die Bedingung $x \\neq x$ kann für kein Objekt $x$ erfüllt sein und charakterisiert damit eine Menge ohne Elemente.\n\nBereits in Abschnitt 3.1.1 habe ich die leere Menge vom absoluten Nichts unterschieden. Diese Unterscheidung bleibt hier verbindlich. Die leere Menge ist ein definiertes mathematisches Objekt innerhalb einer bereits vorausgesetzten Sprache und Struktur \\[6\\]. Sie ist deshalb nicht die Abwesenheit jeder Voraussetzung, sondern eine Menge, für die festgelegt wurde, dass sie kein Element enthält.\n\nDie leere Menge ist Teilmenge jeder Menge:\n\n$$\\varnothing \\subseteq A\\ (3.11)$$\n\nDabei bezeichnet $A$ eine beliebige Menge.\n\nDiese Aussage folgt daraus, dass kein Element der leeren Menge existiert, das die Teilmengenbedingung verletzen könnte. Für die spätere Modellbildung bedeutet eine leere Menge zulässiger Zustände deshalb nicht, dass keine mathematische Struktur vorhanden wäre. Sie bedeutet lediglich, dass unter den festgelegten Bedingungen kein Element die verlangten Kriterien erfüllt.\n\n## Mengenoperationen\n\nAus bestehenden Mengen kann ich durch festgelegte Operationen weitere Mengen bilden. Die Vereinigung zweier Mengen $A$ und $B$ enthält alle Elemente, die mindestens einer der beiden Mengen angehören:\n\n$$A \\cup B = \\text{\\{}x|\\ x \\in A \\vee x \\in B\\text{\\}}\\ (3.12)$$\n\nDabei sind $A$ und $B$ die Ausgangsmengen und $x$ ein Element, das mindestens einer von beiden angehört.\n\nDie Schnittmenge enthält alle Elemente, die beiden Mengen gleichzeitig angehören:\n\n$$A \\cap B = \\text{\\{}x|\\ x \\in A \\land x \\in B\\text{\\}}\\ (3.13)$$\n\nDie Differenzmenge enthält alle Elemente von $A$, die nicht in $B$ enthalten sind:\n\n$$A \\smallsetminus B = \\text{\\{}x|\\ x \\in A \\land x \\notin B\\text{\\}}\\ (3.14)$$\n\nDiese Operationen verändern nicht die betrachteten Elemente selbst. Sie verändern die Bedingung, nach der Elemente zu einer neuen Menge zusammengefasst werden. Ich werde diese Unterscheidung später erneut benötigen: Eine veränderte Auswahl von Zuständen ist nicht dasselbe wie eine Transformation der Zustände. Mengenoperationen bestimmen zunächst nur, welche Elemente gemeinsam betrachtet werden.\n\nZwei Mengen heißen disjunkt, wenn sie kein gemeinsames Element besitzen:\n\n$$A \\cap B = \\varnothing\\ (3.15)$$\n\nAus der Disjunktheit folgt jedoch nicht, dass zwischen Elementen aus $A$ und Elementen aus $B$ keine Beziehungen bestehen können. Sie besagt ausschließlich, dass kein Element gleichzeitig beiden Mengen angehört. Damit zeigt sich erneut, dass Mengenzugehörigkeit und Beziehung nicht gleichgesetzt werden dürfen.\n\n## Potenzmenge\n\nDie Potenzmenge einer Menge $A$ enthält sämtliche Teilmengen von $A$:\n\n$$\\mathcal{P(}A) = \\text{\\{}B|\\ B \\subseteq A\\text{\\}}\\ (3.16)$$\n\nDabei bezeichnet 𝒫$(A)$ die Potenzmenge von $A$ und $B$ eine beliebige Teilmenge von $A$.\n\nFür $A = a,b$ ergibt sich beispielsweise\n\n$$\\mathcal{P}(A) = \\text{\\{}\\varnothing,\\text{\\{}a\\text{\\}},\\text{\\{}b\\text{\\}},\\text{\\{}a,b\\text{\\}\\}}\\ (3.17)$$\n\nBesitzt eine endliche Menge $A$ genau $n$ Elemente, enthält ihre Potenzmenge $2^{n}$ Elemente:\n\n$$|A| = n \\Rightarrow \\left| \\mathcal{P}A \\right| = 2^{n}\\ (3.18)$$\n\nDabei bezeichnet $|A|$ die Anzahl der Elemente von $A$, $n$ deren Anzahl und $\\left| \\mathcal{P(}A) \\right|$ die Anzahl der Teilmengen.\n\nDie Potenzmenge ist für meinen weiteren Aufbau wichtig, weil sie nicht einzelne Elemente, sondern alle möglichen Zusammenstellungen von Elementen erfasst. Bereits eine begrenzte Anzahl unterscheidbarer Zustände erzeugt damit eine wesentlich größere Anzahl möglicher Zustandsgruppen. Ich übernehme daraus noch keine Aussage über physikalische Realisierbarkeit. Die Potenzmenge beschreibt zunächst ausschließlich die formal möglichen Teilmengen.\n\n## Geordnete Paare und kartesisches Produkt\n\nEine Menge allein enthält keine Reihenfolge ihrer Elemente. Für die Beschreibung gerichteter Beziehungen benötige ich deshalb geordnete Paare. Bei einem geordneten Paar ist die Stellung der Komponenten wesentlich. Im Allgemeinen gilt\n\n$$(a,b) \\neq (b,a)\\quad\\quad\\text{für }a \\neq b\\ \\ (3.19)$$\n\nDabei bezeichnen $a$ und $b$ die beiden Komponenten des geordneten Paares.\n\nAus zwei Mengen $A$ und $B$ bilde ich das kartesische Produkt:\n\n$$A \\times B = \\text{\\{}(a,b)|\\ a \\in A \\land b \\in B\\text{\\}}\\ \\ (3.20)$$\n\nDabei ist $A \\times B$ die Menge aller geordneten Paare, deren erste Komponente aus $A$ und deren zweite Komponente aus $B$ stammt.\n\nDas kartesische Produkt enthält sämtliche formal möglichen geordneten Paarungen eines Elements aus $A$ mit einem Element aus $B$. Für endliche Mengen gilt\n\n$$|A \\times B| = |A| \\cdot |B|\\ (3.21)$$\n\nGleichung (3.20) erzeugt noch keine inhaltlich bestimmte Beziehung. Sie stellt lediglich die Gesamtheit aller möglichen Paarungen bereit. Welche dieser Paarungen innerhalb einer konkreten mathematischen Struktur tatsächlich als Beziehung zugelassen werden, wird erst durch eine Relation bestimmt.\n\n## Definition 3.2.2: Binäre Relation\n\nEine binäre Relation $R$ zwischen den Mengen $A$ und $B$ ist eine Teilmenge ihres kartesischen Produkts:\n\n$$R \\subseteq A \\times B\\ (3.22)$$\n\nDabei bezeichnet $R$ die Relation und $A \\times B$ die Menge aller formal möglichen geordneten Paare zwischen den beiden betrachteten Mengen.\n\nGilt $(a,b) \\in R$, schreibe ich auch\n\n$$aRb \\Longleftrightarrow (a,b) \\in R\\ (3.23)$$\n\nDabei bedeutet $aRb$, dass das Element $a$ bezüglich der Relation $R$ zum Element $b$ in Beziehung steht.\n\nDamit wird erstmals eine ausgewählte Verbindung zwischen Elementen formal beschrieben. Das kartesische Produkt enthält alle möglichen Paarungen; die Relation bestimmt, welche dieser Paarungen innerhalb der jeweiligen mathematischen Struktur tatsächlich berücksichtigt werden.\n\nDie formale Untersuchung von Relationen besitzt bereits in den logischen und mathematischen Arbeiten von Gottlob Frege und Alfred Tarski grundlegende Bedeutung. Ich nutze diese Arbeiten hier ausschließlich für den etablierten formallogischen Hintergrund der Relationsbeschreibung. Saunders Mac Lane hebt darüber hinaus hervor, dass mathematische Strukturen nicht nur durch ihre Objekte, sondern wesentlich auch durch die zwischen ihnen bestehenden Abbildungen und Beziehungen verständlich werden \\[78\\]. Die bereits im ursprünglichen Abschnitt enthaltenen Verweise auf Frege und Tarski werden beim zugehörigen Repository-Skript gegen den realen Quellenbestand geprüft und dort mit den tatsächlich gültigen Zitationsnummern synchronisiert.\n\nFür meine Untersuchung ist dies ein entscheidender Übergang. Eine Menge erfasst, welche Elemente betrachtet werden. Eine Relation erfasst zusätzlich, welche Elemente innerhalb einer gewählten Beschreibung miteinander verbunden sind.\n\nIch übernehme für das FRZK jedoch nicht jede beliebige mengentheoretisch mögliche Relation. Gleichung (3.22) beschreibt zunächst nur die formale Grundstruktur. Ob eine Relation symmetrisch, gerichtet, transitiv, reflexiv, funktional oder empirisch begründet ist, muss jeweils zusätzlich bestimmt werden. Ebenso folgt aus dem bloßen Bestehen einer Relation noch keine physikalische Wechselwirkung und keine kausale Verbindung.\n\n## Wissenschaftliche Einordnung\n\nMit den bisherigen Festlegungen habe ich die erste formale Ebene der mathematischen Modellbildung bestimmt. Eine Menge legt fest, welche Elemente gemeinsam betrachtet werden. Eine Teilmenge schränkt diesen Bereich ein. Mengenoperationen erzeugen neue Auswahlbereiche. Das kartesische Produkt stellt mögliche geordnete Paarungen bereit. Eine Relation wählt daraus bestimmte Verbindungen aus.\n\nDiese Schritte sind formal, aber nicht voraussetzungslos. Ich muss in jedem Modell entscheiden, welche Objekte als voneinander unterscheidbar gelten, welche Grundmenge zugelassen wird, nach welchen Bedingungen Teilmengen gebildet werden, welche Paarungen als Beziehungen gelten und welche inhaltliche Interpretation diese Beziehungen erhalten.\n\nGerade darin liegt für mich die Bedeutung der Mengenlehre. Sie liefert keine fertige Theorie von Raum und Zeit. Sie zwingt mich jedoch dazu, die zugelassenen Objekte und die zwischen ihnen möglichen Beziehungen ausdrücklich festzulegen. Damit verhindere ich, dass Zustände, Beziehungen oder Strukturen unbemerkt als bereits vorhanden vorausgesetzt werden.\n\nFür das FRZK werde ich deshalb später zwischen der formalen Existenz eines Elements, seiner Zugehörigkeit zu einem Zustandsbereich, seinen Beziehungen zu anderen Elementen und seiner funktionalen Wirksamkeit unterscheiden müssen. Diese Unterscheidungen bereite ich in Kapitel 3.2 mathematisch vor. Ihre FRZK-spezifische Festlegung erfolgt erst in Kapitel 3.3.\n\n## Methodologische Betrachtungen\n\nMethodologisch ist die Mengenlehre für meinen weiteren Aufbau deshalb bedeutsam, weil sie mich zwingt, bereits auf der elementarsten Ebene zwischen dem betrachteten Objektbereich und den über diesen Objektbereich getroffenen Aussagen zu unterscheiden. Die Wahl einer Grundmenge ist keine inhaltsneutrale Formalität. Sie entscheidet darüber, welche Objekte innerhalb eines Modells überhaupt vorkommen können.\n\nDasselbe gilt für Relationen. Aus der mathematischen Möglichkeit, zwei Elemente durch eine Relation miteinander zu verbinden, folgt noch nicht, dass zwischen diesen Elementen eine physikalische Wechselwirkung, eine zeitliche Abfolge oder eine kausale Beziehung besteht. Eine Relation beschreibt zunächst nur eine formal zugelassene Verbindung.\n\nFür die spätere FRZK-Konstruktion ergibt sich daraus eine klare methodische Grenze. Wenn ich dort Zustände, Beziehungen oder funktionale Kopplungen einführe, muss ich jeweils gesondert bestimmen, welche Menge den zulässigen Zustandsbereich bildet, welche Relationen definiert werden und welche zusätzliche wissenschaftliche Bedeutung diese Relationen besitzen. Die Mengenlehre stellt hierfür die formale Sprache bereit; sie liefert nicht die FRZK-spezifische Interpretation.\n\nDie Unterscheidung zwischen Element und Teilmenge, zwischen kartesischem Produkt und Relation sowie zwischen formaler Beziehung und physikalischer Interpretation behalte ich deshalb im weiteren Aufbau ausdrücklich bei.\n\n## Didaktische Betrachtungen\n\nDidaktisch ist dieser Abschnitt für mich ein gutes Beispiel dafür, weshalb ich mit möglichst einfachen mathematischen Strukturen beginne. Der Begriff der Menge erscheint zunächst elementar. Gerade deshalb lässt sich an ihm sehr deutlich zeigen, wie viele zusätzliche Festlegungen erforderlich werden, sobald aus einer bloßen Zusammenfassung von Objekten eine strukturierte Beschreibung entstehen soll.\n\nZunächst entscheide ich nur, ob ein Objekt zu einer Menge gehört oder nicht. Danach kann ich Teilmengen bilden und verschiedene Auswahlbedingungen miteinander verknüpfen. Erst mit geordneten Paaren entsteht eine Reihenfolge zwischen zwei Komponenten. Das kartesische Produkt stellt daraufhin alle formal möglichen Paarungen bereit, während eine Relation aus diesen Möglichkeiten bestimmte Verbindungen auswählt.\n\nDieser schrittweise Aufbau macht sichtbar, dass mathematische Struktur nicht in einem einzigen Schritt entsteht. Jede zusätzliche Aussageebene benötigt eine zusätzliche Definition. Genau dieses Vorgehen möchte ich später beim FRZK beibehalten: Ich möchte nicht mehrere Bedeutungen gleichzeitig in einen Begriff hineinlegen, sondern jede neue Struktur erst dann einführen, wenn deutlich geworden ist, weshalb die bisherige Struktur dafür nicht ausreicht.\n\nAuch die neue Gleichungsregel unterstützt diesen didaktischen Aufbau. Einzelne Größen, die lediglich Bestandteile einer Gleichung sind, führe ich nicht als scheinbar eigenständige Gleichungen. Stattdessen erläutere ich sie unmittelbar bei derjenigen mathematischen Aussage, zu der sie tatsächlich gehören. Dadurch bleibt die Gleichungsnummerierung auf mathematisch selbstständige Aussagen beschränkt.\n\n## Ergebnis und Übergang\n\nMit Abschnitt 3.2.1 habe ich die elementare mengentheoretische Grundlage für die weitere mathematische Entwicklung geschaffen. Ich habe festgelegt, wie Objekte zu Mengen gehören, wie Teilmengen und Mengenoperationen gebildet werden, wie geordnete Paare entstehen und wie aus dem kartesischen Produkt durch Auswahl bestimmter Paare eine binäre Relation hervorgeht.\n\nEine Relation nach Gleichung (3.22) kann einem Element mehrere Elemente, genau ein Element oder auch kein Element zuordnen. Für die weitere Entwicklung muss ich deshalb als Nächstes bestimmen, unter welchen Bedingungen eine Relation zu einer eindeutigen Abbildung beziehungsweise Funktion wird. Dies ist Gegenstand von Abschnitt **3.2.2 Funktionen und eindeutige Zuordnungen**.', 'b43f687880deca0d1e0097244d123483b93022d78311bffd4060a514dfc28177', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.');
+INSERT INTO `section_versions` (`section_version_id`, `section_id`, `revision_id`, `version_kind`, `body_markdown`, `checksum_sha256`, `notes`) VALUES
+(3, 24, 2, 'source_import', '# 3.2.2 Funktionen und eindeutige Zuordnungen\n\nIm vorhergehenden Abschnitt habe ich Mengen, kartesische Produkte und binäre Relationen eingeführt. Damit ist zunächst nur festgelegt, welche Elemente betrachtet werden und welche geordneten Paare zwischen zwei Mengen zugelassen sind. Eine allgemeine Relation kann einem Element mehrere andere Elemente zuordnen, genau ein Element oder auch kein Element. Für viele mathematische Beschreibungen reicht diese Offenheit nicht aus. Sobald ich einen Zustand, einen Wert oder ein Objekt eindeutig einem anderen Objekt zuordnen möchte, benötige ich den Begriff der Funktion.\n\nDie Funktion stellt für meine weitere Arbeit deshalb einen entscheidenden Schritt dar. Sie verbindet nicht nur Elemente miteinander, sondern legt eine eindeutige Zuordnungsvorschrift fest. Dabei muss ich sorgfältig zwischen der formalen Funktion, ihrer mathematischen Darstellung und ihrer späteren wissenschaftlichen Interpretation unterscheiden. Eine Funktion beschreibt zunächst, welches Element einem anderen Element zugeordnet wird. Sie erklärt noch nicht, warum diese Zuordnung besteht, ob sie kausal ist oder ob sie einen physikalischen Prozess beschreibt.\n\nSerge Lang behandelt Abbildungen als grundlegende Bestandteile algebraischer Strukturen und zeigt, dass viele mathematische Operationen als Abbildungen zwischen Mengen oder strukturierten Räumen verstanden werden können \\[71\\]. Walter Rudin verwendet Funktionen als zentrale Grundlage der Analysis und untersucht insbesondere deren Grenzverhalten, Stetigkeit und Differenzierbarkeit \\[72\\]. Herbert B. Enderton entwickelt Funktionen aus dem Relationsbegriff und beschreibt sie als besondere Relationen, die jedem Element ihres Definitionsbereichs genau ein Element des Zielbereichs zuordnen \\[80\\]. Diese drei Perspektiven ergänzen sich für meinen Aufbau: Enderton liefert mir die mengentheoretische Grundlage, Lang die strukturelle Einordnung und Rudin die analytische Weiterführung.\n\nFür die präzisere Untersuchung von Abbildungen zwischen algebraischen Strukturen verwende ich außerdem Paul R. Halmos: *Finite-Dimensional Vector Spaces*. New York: Springer, 1974 \\[82\\]. Halmos behandelt lineare Abbildungen, Operatoren und Vektorräume in einer Form, die ich später für die Entwicklung der linearen Algebra und der Operatorenräume benötige. Für die grundlegende Funktionentheorie ergänze ich diese Literatur durch Robert G. Bartle und Donald R. Sherbert: *Introduction to Real Analysis*. Fourth Edition. Hoboken, New Jersey: John Wiley & Sons, 2011 \\[83\\]. Bartle und Sherbert entwickeln Funktionen reeller Variablen, Grenzwerte, Stetigkeit und Ableitungen schrittweise aus den Grundlagen der reellen Zahlen und der Mengenlehre.\n\nIch übernehme aus dieser Literatur zunächst ausschließlich den etablierten mathematischen Funktionsbegriff. Die spätere FRZK-spezifische Frage, ob eine Funktion einen Zustand, eine Wirkung, eine Transformation oder eine funktionale Abhängigkeit beschreibt, entscheide ich an dieser Stelle noch nicht.\n\n## Definition 3.2.3: Funktion\n\nEine Funktion $f$ von einer Menge $A$ in eine Menge $B$ ist eine Relation, die jedem Element $a \\in A$ genau ein Element $b \\in B$ zuordnet. Ich fasse die Abbildung und ihre Eindeutigkeitsbedingung deshalb gemeinsam zusammen:\n\n$$f:A \\rightarrow B,\\quad\\quad\\forall a \\in A\\ \\exists!\\, b \\in B:\\ f(a) = b(3.24)$$\n\nDabei gilt:\n\n-   $f$ ist die Funktion,\n\n-   $A$ ist ihre Definitionsmenge beziehungsweise ihr Definitionsbereich,\n\n-   $B$ ist ihre Zielmenge,\n\n-   $a$ ist ein Element des Definitionsbereichs,\n\n-   $b = fa$ ist der $a$ eindeutig zugeordnete Funktionswert,\n\n-   $\\exists!$ bezeichnet die eindeutige Existenz.\n\nDamit fasse ich die im ursprünglichen Text noch getrennt nummerierten Ausdrücke für die Funktionsschreibweise, den Funktionswert und die Eindeutigkeit bewusst zu **einer** mathematischen Aussage zusammen. Die einzelnen darin auftretenden Größen erhalten keine eigenen Gleichungsnummern.\n\nGleichung (3.24) enthält zwei Anforderungen. Erstens muss zu jedem Element $a \\in A$ mindestens ein zugeordnetes Element $b \\in B$ existieren. Zweitens darf es für dasselbe Element $a$ nicht mehrere verschiedene Funktionswerte geben.\n\nDiese Bedingung ist für den Funktionsbegriff wesentlich. Eine Relation, die einem Element mehrere verschiedene Werte zuordnet, ist keine Funktion im hier verwendeten Sinn. Ebenso ist eine Zuordnung keine Funktion auf ganz $A$, wenn für einzelne Elemente aus $A$ kein Funktionswert bestimmt ist.\n\nMengentheoretisch kann ich eine Funktion als Teilmenge des kartesischen Produkts auffassen. Dabei müssen sowohl die Eindeutigkeit als auch die vollständige Erfassung des Definitionsbereichs gleichzeitig gelten:\n\n$$\\ (a,b\\_ 1) \\in \\begin{matrix}\nf \\subseteq A \\times B, \\\\\nf \\land (a,b_{2}) \\in f\\& \\Rightarrow b_{1} = b_{2}, \\\\\n\\forall a \\in A\\ \\&\\exists b \\in B:\\ (a,b) \\in f.\n\\end{matrix}(3.25)$$\n\nDabei sind $b_{1}$ und $b_{2}$ zwei mögliche Werte, die demselben Element $a$ zugeordnet sein könnten. Die zweite Zeile schließt aus, dass diese Werte verschieden sind. Die dritte Zeile stellt sicher, dass jedes Element des Definitionsbereichs tatsächlich in einem geordneten Paar der Funktion auftritt.\n\nErst die Verbindung dieser Bedingungen ergibt eine Funktion auf der gesamten Definitionsmenge $A$.\n\n## Definitionsmenge, Zielmenge und Bildmenge\n\nDie Zielmenge $B$ darf ich nicht mit der Bildmenge der Funktion verwechseln. Die Bildmenge enthält nur diejenigen Elemente aus $B$, die tatsächlich als Funktionswerte auftreten.\n\nIch definiere das Bild von $A$ unter $f$ durch\n\n$$f(A) = \\text{\\{}f(a) \\mid a \\in A\\text{\\}} \\subseteq B\\ (3.26)$$\n\nDabei ist $f(A)$ die Bildmenge der Funktion. Die Zielmenge $B$ kann also Elemente enthalten, die durch die betrachtete Funktion nicht erreicht werden.\n\nDiese Unterscheidung ist für meine weitere Modellbildung wesentlich. Ein mathematischer Zielraum kann mehr mögliche Werte enthalten, als ein bestimmter Zustand oder eine bestimmte Transformation tatsächlich erzeugt.\n\nFür eine Teilmenge $C \\subseteq A$ definiere ich entsprechend\n\n$$f(C) = \\text{\\{}f(c) \\mid c \\in C\\text{\\}}\\ (3.27)$$\n\nDabei ist $C$ ein eingeschränkter Teilbereich des Definitionsraums. Mit $f(C)$ kann ich untersuchen, welche Funktionswerte gerade aus diesem Teilbereich hervorgehen.\n\nFür eine Teilmenge $D \\subseteq B$ definiere ich das Urbild durch\n\n$$f^{- 1}(D) = \\text{\\{}a \\in A \\mid f(a) \\in D\\text{\\}}\\ (3.28)$$\n\nDabei bezeichnet $f^{- 1}D$ zunächst ausschließlich das Urbild der Menge $D$. Diese Schreibweise setzt **nicht** voraus, dass eine Umkehrfunktion existiert. Das Urbild einer Teilmenge ist für jede Funktion definiert, während eine Umkehrfunktion nur unter zusätzlichen Bedingungen existiert.\n\n## Injektive Funktionen\n\nEine Funktion $f:A \\rightarrow B$ heißt injektiv, wenn verschiedene Elemente aus $A$ verschiedene Funktionswerte besitzen. Formal kann ich dies in zwei äquivalenten Formen schreiben:\n\n$$\\forall a_{1},a_{2} \\in A:\\quad f\\left( a_{1} \\right) = f\\left( a_{2} \\right) \\Rightarrow a_{1} = a_{2}\\quad \\Longleftrightarrow \\quad a_{1} \\neq a_{2} \\Rightarrow f\\left( a_{1} \\right) \\neq f\\left( a_{2} \\right)\\ (3.29)$$\n\nDabei sind $a_{1}$ und $a_{2}$ beliebige Elemente des Definitionsbereichs.\n\nBei einer injektiven Funktion bleibt die Unterscheidbarkeit der Elemente des Definitionsbereichs in ihren Funktionswerten erhalten. Zwei verschiedene Eingangselemente werden nicht auf denselben Ausgangswert abgebildet.\n\nFür meine spätere Modellbildung ist dies von Bedeutung, weil eine nicht injektive Funktion Informationen zusammenführen kann. Wenn mehrere unterschiedliche Zustände denselben Funktionswert erhalten, kann ich aus dem Funktionswert allein nicht mehr eindeutig auf den ursprünglichen Zustand schließen.\n\n## Surjektive Funktionen\n\nEine Funktion $f:A \\rightarrow B$ heißt surjektiv, wenn jedes Element der Zielmenge durch mindestens ein Element der Definitionsmenge erreicht wird:\n\n$$\\forall b \\in B\\ \\exists a \\in A:\\ f(a) = b\\quad\\quad \\Longleftrightarrow \\quad\\quad f(A) = B\\ (3.30)$$\n\nDabei ist $b$ ein beliebiges Element der Zielmenge und $a$ mindestens ein Element des Definitionsbereichs, das auf $b$ abgebildet wird.\n\nSurjektivität bezieht sich ausdrücklich auf die gewählte Zielmenge. Dieselbe Zuordnung kann bezüglich einer kleineren Zielmenge surjektiv und bezüglich einer größeren Zielmenge nicht surjektiv sein. Damit zeigt sich erneut, dass die Eigenschaften einer Funktion nicht allein von ihrer Zuordnungsvorschrift, sondern auch von der Festlegung ihrer Definitions- und Zielmenge abhängen.\n\n## Bijektive Funktionen\n\nEine Funktion heißt bijektiv, wenn sie zugleich injektiv und surjektiv ist:\n\n$$f\\text{ bijektiv}\\quad \\Longleftrightarrow \\quad f\\text{ injektiv} \\land f\\text{ surjektiv}\\ (3.31)$$\n\nBei einer bijektiven Funktion ist jedem Element aus $A$ genau ein Element aus $B$ zugeordnet und jedes Element aus $B$ wird genau einmal erreicht. Dadurch besteht eine eindeutige Zuordnung in beiden Richtungen.\n\nFür eine bijektive Funktion existiert eine Umkehrfunktion, deren Abbildung und beide Umkehreigenschaften zusammengehören:\n\n$$\\begin{matrix}\nf^{- 1}:B \\rightarrow A, \\\\\nf^{- 1}(f(a)) = a,\\forall a \\in A,\\  \\\\\n{f(f}^{- 1}b = b,\\ \\forall b \\in B.\n\\end{matrix}\\ (3.32)$$\n\nDabei ist $f^{- 1}$ die Umkehrfunktion von f.\n\nDie Umkehrbarkeit einer Funktion ist für wissenschaftliche Modelle nicht selbstverständlich. Sobald eine Abbildung mehrere Zustände zusammenfasst oder bestimmte Informationen nicht erhält, kann sie nicht eindeutig zurückgeführt werden. Dies wird später bei Projektionen, Messvorgängen, Aggregationen und Operatoren eine wichtige Rolle spielen.\n\n## Identische Funktion\n\nFür eine Menge $A$ definiere ich die identische Funktion einschließlich ihrer Wirkung durch\n\n$$id_{A}:A \\rightarrow A,\\quad\\quad id_{A}(a) = a\\quad\\forall a \\in A\\ (3.33)$$\n\nDabei ist $id_{A}$ die identische Funktion auf $A$.\n\nDie identische Funktion verändert kein Element. Sie ist dennoch eine mathematisch bestimmte Abbildung. Dies ist später deshalb bedeutsam, weil auch das Ausbleiben einer Veränderung innerhalb eines Operatoren- oder Transformationssystems formal dargestellt werden muss.\n\n## Verkettung von Funktionen\n\nSeien $f:A \\rightarrow B$ und $g:B \\rightarrow C$. Diese beiden Abbildungen sind die Voraussetzungen für ihre Verkettung und benötigen deshalb **keine eigenen Gleichungsnummern**.\n\nDie Verkettung von $f$ und $g$ definiere ich gemeinsam mit ihrer Wirkung durch\n\n$$g \\circ f:A \\rightarrow C,\\quad\\quad(g \\circ f)(a) = g\\left( f(a) \\right)\\ (3.34)$$\n\nDabei wird zuerst $f$ auf $a$ angewendet. Anschließend wird $g$ auf den dadurch erhaltenen Wert $f(a)$ angewendet.\n\nDie Reihenfolge der Funktionen ist wesentlich. Im Allgemeinen gilt\n\n$$g \\circ f \\neq f \\circ g\\ (3.35)$$\n\nDie Verkettung ist jedoch assoziativ. Für eine weitere Funktion $h:C \\rightarrow D$ gilt\n\n$$h \\circ (g \\circ f) = (h \\circ g) \\circ f\\ (3.36)$$\n\nDabei ist $h$ eine weitere mit $g$ verkettbare Funktion.\n\nDiese Eigenschaft erlaubt es mir, längere Abbildungsfolgen eindeutig zusammenzufassen. Für das spätere FRZK ist dies besonders wichtig, weil funktionale Entwicklungen nicht durch eine einzelne Abbildung, sondern durch aufeinanderfolgende Operatoren beschrieben werden können. Daraus folgt jedoch noch keine Aussage darüber, ob eine mathematische Verkettung zugleich einer zeitlichen, kausalen oder physikalischen Reihenfolge entspricht.\n\n## Funktionen mit mehreren Eingangsgrößen\n\nEine Funktion kann nicht nur ein einzelnes Element, sondern auch ein geordnetes Tupel als Argument besitzen. Für zwei Mengen $A$ und $B$ kann ich eine solche Funktion einschließlich ihres Funktionswertes durch\n\n$$f:A \\times B \\rightarrow C,\\quad\\quad f(a,b) = c \\in C,\\quad a \\in A,\\ b \\in B\\ (3.37)$$\n\nDabei sind $a$ und $b$ die beiden Eingangsgrößen und $c$ der daraus eindeutig bestimmte Funktionswert.\n\nDamit kann ein Funktionswert von mehreren Eingangsgrößen abhängen. Die mathematische Funktion legt lediglich fest, wie das geordnete Eingangspaar einem Ausgangswert zugeordnet wird. Sie entscheidet noch nicht, ob beide Eingangsgrößen unabhängig sind, ob eine von ihnen die andere beeinflusst oder ob beide aus einem gemeinsamen Zusammenhang hervorgehen.\n\nAllgemein beschreibe ich eine Funktion von $n$ Eingangsgrößen einschließlich ihres Arguments und ihres Funktionswertes durch\n\n$$\\begin{matrix}\nf:A_{1} \\times A_{2} \\times \\cdots \\times A_{n} \\rightarrow B, \\\\\n\\left( a_{1},a_{2},\\ldots,a_{n} \\right) \\in A_{1} \\times A_{2} \\times \\cdots \\times A_{n}, \\\\\nf\\left( a_{1},a_{2},\\ldots,a_{n} \\right) \\in B.\n\\end{matrix}\\ (3.38)$$\n\nDabei sind $A_{1},\\ldots,A_{n}$ die jeweiligen Eingangsbereiche und $B$ die Zielmenge.\n\nDiese Mehrstellenfunktionen bilden später die Grundlage dafür, Zustände nicht nur durch eine einzelne Größe, sondern durch mehrere gleichzeitig berücksichtigte Komponenten zu beschreiben.\n\n## Funktionsfamilien und parametrisierte Funktionen\n\nNeben einzelnen Funktionen kann ich ganze Familien von Funktionen betrachten. Sei $\\Theta$ eine Parametermenge. Dann kann ich eine parametrisierte Funktionsfamilie einschließlich ihrer einzelnen Mitglieder durch\n\n$$\\text{\\{}f_{\\theta} \\mid \\theta \\in \\Theta\\text{\\}},\\quad\\quad f_{\\theta}:A \\rightarrow B\\quad\\forall\\theta \\in \\ (3.39)$$\n\nDabei bezeichnet $\\theta$ einen Parameter aus der Parametermenge $\\Theta$, während $f_{\\theta}$ die zu diesem Parameter gehörende konkrete Funktion bezeichnet.\n\nDer Parameter $\\theta$ kann beispielsweise unterschiedliche Modellannahmen, Anfangsbedingungen oder Verfahrensvarianten kennzeichnen. Eine solche Parametrisierung verändert nicht automatisch die Definitions- und Zielmenge, wohl aber die Zuordnungsvorschrift.\n\nIch verwende den Parameterbegriff hier zunächst rein mathematisch. Erst später muss ich jeweils bestimmen, ob ein Parameter gemessen, geschätzt, frei gewählt oder aus anderen Größen hergeleitet wird.\n\n## Partielle Funktionen\n\nIn manchen Anwendungen ist eine Zuordnung nicht für jedes Element einer vorausgesetzten Grundmenge definiert. Dann liegt keine totale Funktion auf dieser gesamten Menge vor. Stattdessen kann eine Teilmenge $D \\subseteq A$ als tatsächlicher Definitionsbereich verwendet werden:\n\n$$f:D \\rightarrow B,\\quad\\quad D \\subseteq A\\ (3.40)$$\n\nDabei ist $A$ der größere betrachtete Grundbereich und $D$ der tatsächliche Definitionsbereich der Funktion.\n\nEine solche Funktion bezeichne ich im Verhältnis zur größeren Menge $A$ als partielle Funktion. Die Unterscheidung zwischen totalen und partiellen Funktionen ist später wichtig, wenn ein mathematischer Operator nur für bestimmte Zustände oder Parameterwerte definiert ist.\n\nIch werde deshalb bei jeder späteren Funktion ausdrücklich angeben müssen, ob sie auf dem gesamten vorgesehenen Zustandsraum oder nur auf einem zulässigen Teilbereich definiert ist.\n\n## Wissenschaftliche Einordnung\n\nMit dem Funktionsbegriff erweitere ich die bloße Beziehung zwischen Elementen um eine Eindeutigkeitsbedingung. Eine Funktion legt fest, welchem Wert oder Zustand ein gegebenes Eingangselement zugeordnet wird. Ihre mathematische Aussagekraft hängt jedoch von mehreren Entscheidungen ab:\n\n1.  der Wahl der Definitionsmenge,\n\n2.  der Wahl der Zielmenge,\n\n3.  der Zuordnungsvorschrift,\n\n4.  der Frage nach Injektivität und Surjektivität,\n\n5.  der möglichen Umkehrbarkeit,\n\n6.  und dem Bereich, in dem die Funktion tatsächlich definiert ist.\n\nDiese Festlegungen darf ich nicht nachträglich als bloße Schreibkonventionen behandeln. Sie bestimmen, welche Informationen erhalten bleiben, welche Zustände erreichbar sind und ob eine Zuordnung rückgängig gemacht werden kann.\n\nFür das FRZK ist besonders wichtig, dass ich eine mathematische Funktion nicht automatisch mit einer physikalischen Ursache gleichsetze. Als einfachstes Beispiel kann ich schreiben $y = fx.\n$\n\nDabei ist $x$ das Argument und $y$ der ihm zugeordnete Funktionswert. Die Schreibweise besagt zunächst nur, dass $y$ durch die Funktion $f$ dem Wert $x$ zugeordnet wird. Sie besagt nicht, dass $x$ die physikalische Ursache von $y$ ist.\n\nEbenso folgt aus der Existenz einer Funktion noch keine zeitliche Reihenfolge. Eine Abhängigkeit, eine Zuordnung, eine Transformation und eine Kausalrelation muss ich begrifflich voneinander trennen.\n\nDiese Unterscheidung ist für meine spätere Konstruktion grundlegend. Ich benötige Funktionen, um Zustände und Größen eindeutig zuzuordnen. Für die Beschreibung von Veränderungen reicht eine statische Zuordnung jedoch noch nicht aus. Im nächsten Abschnitt muss ich deshalb untersuchen, unter welchen Bedingungen Funktionen als Transformationen wirken und wie mathematische Operationen auf strukturierten Räumen dargestellt werden können.\n\n## Methodologische Betrachtungen\n\nMethodologisch stellt der Übergang von der Relation zur Funktion für mich einen wesentlichen Präzisierungsschritt dar. Eine Relation legt zunächst nur fest, welche geordneten Paare zu einer betrachteten Struktur gehören. Eine Funktion fügt dieser allgemeinen Beziehung die Forderungen der Existenz und Eindeutigkeit hinzu. Damit kann ich erstmals eindeutig bestimmen, welcher Ausgangswert welchem Zielwert zugeordnet wird.\n\nGerade diese Eindeutigkeit darf ich jedoch nicht mit einer physikalischen Determination gleichsetzen. Aus der mathematischen Aussage $y = f(x)$ folgt nicht, dass $x$ die Ursache von $y$ ist. Ebenso folgt aus einer mathematischen Verkettung $g \\circ f$ nicht ohne zusätzliche Festlegung, dass $f$ zeitlich vor $g$ wirkt. Die Funktion beschrei\n\nbt eine Zuordnungsstruktur. Kausalität, Zeitrichtung und physikalische Wirkung benötigen zusätzliche theoretische Voraussetzungen.\n\nVon besonderer methodischer Bedeutung sind für mich außerdem Injektivität, Surjektivität und Bijektivität. Diese Eigenschaften bestimmen, welche Information durch eine Funktion erhalten bleibt und welche Zielzustände erreichbar sind. Eine nicht injektive Funktion kann verschiedene Ausgangszustände in einem gemeinsamen Funktionswert zusammenführen. Eine nicht surjektive Funktion erreicht dagegen nicht den gesamten vorgegebenen Zielraum. Eine bijektive Funktion ermöglicht schließlich eine eindeutige Umkehrung.\n\nFür die spätere FRZK-Konstruktion muss ich deshalb bei jeder verwendeten Funktion nicht nur ihre Zuordnungsvorschrift angeben, sondern auch ihren Definitionsbereich, ihre Zielmenge, ihre Bildmenge und gegebenenfalls ihre Umkehrbarkeit bestimmen. Erst dadurch wird eindeutig, welche mathematischen Informationen eine Abbildung erhält, zusammenführt oder ausschließt.\n\n## Didaktische Betrachtungen\n\nDidaktisch entwickelt sich der Funktionsbegriff für mich unmittelbar aus der Grenze des Relationsbegriffs. Nachdem eine Relation zunächst beliebige Verbindungen zwischen Elementen zulässt, stelle ich nun die zusätzliche Frage, was geschieht, wenn ich jedem Eingang eindeutig genau einen Ausgang zuordnen möchte. Dadurch entsteht die Funktion nicht als isolierter neuer Begriff, sondern als nachvollziehbare Einschränkung einer bereits bekannten Struktur.\n\nBesonders wichtig ist mir dabei die getrennte Betrachtung von Definitionsmenge, Zielmenge und Bildmenge. Diese drei Begriffe werden leicht miteinander verwechselt. Ich unterscheide deshalb bewusst zwischen den Werten, die als Eingaben zugelassen sind, den Werten, die grundsätzlich als Ausgaben zugelassen wären, und den Werten, die durch die konkrete Funktion tatsächlich erreicht werden.\n\nDasselbe schrittweise Vorgehen verwende ich bei Injektivität, Surjektivität und Bijektivität. Zuerst frage ich, ob unterschiedliche Eingänge unterscheidbar bleiben. Danach untersuche ich, ob der gesamte Zielbereich erreicht wird. Erst aus beiden Bedingungen gemeinsam entsteht die Bijektivität und damit die Möglichkeit einer eindeutigen Umkehrfunktion.\n\nAuch bei der Gleichungsdarstellung halte ich jetzt die funktional zusammengehörenden Aussagen zusammen. Die Definition einer Funktion, die Eindeutigkeitsbedingung und die Erläuterung ihrer Größen bilden beispielsweise eine gemeinsame mathematische Einheit. Ebenso werden die Signatur einer Umkehrfunktion und ihre beiden Umkehreigenschaften nicht künstlich auf drei verschiedene Gleichungsnummern verteilt.\n\nDadurch reduziert sich die Gleichungsnummerierung dieses Abschnitts gegenüber dem Original deutlich: Aus den bisherigen Nummern **(3.24) bis (3.58)** werden nach der Bereinigung die echten, eigenständigen Gleichungen **(3.24) bis (3.40)**. Der fachliche Inhalt bleibt dabei vollständig erhalten; entfernt werden ausschließlich künstliche Nummern für mathematisch zusammengehörende Bestandteile und ein bloßes Demonstrationsbeispiel.\n\n## Ergebnis und Übergang\n\nMit Abschnitt 3.2.2 habe ich den allgemeinen Relationsbegriff um die Eindeutigkeitsforderung erweitert und damit den mathematischen Funktionsbegriff eingeführt. Ich habe Definitionsmenge, Zielmenge und Bildmenge voneinander unterschieden und Injektivität, Surjektivität, Bijektivität, Umkehrbarkeit, Identität, Verkettung, Mehrstellenfunktionen, parametrisierte Funktionsfamilien und partielle Funktionen eingeordnet.\n\nDamit steht nun fest, wie ich Elemente eindeutig auf andere Elemente abbilden kann. Noch ist jedoch nicht bestimmt, welche zusätzlichen Strukturen eine solche Abbildung erhalten soll und wie ich Transformationen innerhalb strukturierter mathematischer Räume beschreiben kann.\n\nGenau dieser Übergang führt zu Abschnitt **3.2.3 Abbildungen, Operatoren und mathematische Transformationen**.', 'fbd65a437c36e4d343c9a2ae8468b4586bf5c6fce7e8eb4eb2a95360021d83d4', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.'),
+(4, 25, 2, 'source_import', '# 3.2.3 Abbildungen, Operatoren und mathematische Transformationen\n\nIm vorhergehenden Abschnitt habe ich Funktionen als eindeutige Zuordnungen zwischen Mengen eingeführt. Damit ist festgelegt, wie Elemente mathematisch miteinander verknüpft werden können. Für die weitere Entwicklung der linearen Algebra genügt diese Beschreibung jedoch nicht. Sobald ich untersuchen möchte, wie sich Zustände innerhalb eines mathematischen Raumes verändern, muss ich Abbildungen betrachten, die zusätzlich die algebraische Struktur des jeweiligen Raumes berücksichtigen. Die lineare Algebra bezeichnet solche strukturerhaltenden Abbildungen als lineare Abbildungen oder -- bei gleichem Definitions- und Zielraum -- als Operatoren \\[71, 82\\]. Der Originalabschnitt entwickelt genau diesen Übergang vom allgemeinen Abbildungsbegriff über Linearität und Operatorverkettung bis zu Matrixdarstellung und Eigenwertproblem.\n\nDiese begriffliche Erweiterung ist für den weiteren Aufbau meiner Arbeit notwendig. Der allgemeine Funktionsbegriff beschreibt zunächst lediglich eine eindeutige Zuordnung. Erst zusätzliche mathematische Eigenschaften legen fest, welche Strukturen unter einer Abbildung erhalten bleiben und welche verändert werden dürfen. Dadurch entsteht die Grundlage für lineare Transformationen, Matrizen und später auch für Operatorräume \\[71, 82, 13\\].\n\nIch verwende in diesem Abschnitt ausschließlich die in der mathematischen Literatur etablierten Begriffe. Aussagen darüber, welche Operatoren später innerhalb des Funktionalen Raum-Zeit-Kohärenzsystems verwendet werden, treffe ich bewusst noch nicht. Diese Modellentscheidungen erfolgen erst im Rahmen der axiomatischen Entwicklung in Kapitel 3.3.\n\n## Definition 3.2.4: Mathematische Abbildung\n\nSeien $X$ und $Y$ Mengen. Eine Abbildung $T$ ordnet jedem Element $x \\in X$ genau ein Element $y \\in Y$ zu. Ich fasse die Abbildungsvorschrift und ihre Wirkung deshalb unmittelbar zusammen:\n\n$$T:X \\rightarrow Y,\\quad\\quad T(x) = y,\\quad x \\in X,\\ y \\in Y\\ (3.41)$$\n\nDabei gilt:\n\n-   $T$ bezeichnet die Abbildung,\n\n-   $X$ ist der Definitionsbereich,\n\n-   $Y$ ist der Zielbereich,\n\n-   $x$ ist ein Element aus $X$,\n\n-   $y = T(x)$ ist das $x$ zugeordnete Element aus $Y$.\n\nDamit besitzt eine Abbildung dieselbe grundlegende Eindeutigkeitsforderung wie eine Funktion. In der mathematischen Literatur werden beide Begriffe häufig synonym verwendet, wobei der Begriff *Abbildung* insbesondere dann verwendet wird, wenn die Wirkung auf mathematische Strukturen untersucht wird \\[71, 80, 82\\].\n\nDie Abbildung selbst enthält zunächst keine Aussage darüber, ob geometrische, algebraische oder analytische Eigenschaften erhalten bleiben. Solche Eigenschaften ergeben sich erst aus zusätzlichen Bedingungen an die Abbildung \\[71, 82\\].\n\n## Strukturerhaltende Abbildungen\n\nBesitzen Definitions- und Zielmenge zusätzliche algebraische Strukturen, kann ich untersuchen, ob diese unter der Abbildung erhalten bleiben. Für Vektorräume betrifft dies insbesondere die Addition von Vektoren und die Multiplikation mit Skalaren. Abbildungen, welche diese Operationen respektieren, bilden den Gegenstand der linearen Algebra \\[71, 82, 10\\].\n\nEine lineare Abbildung muss sowohl die Addition als auch die Skalarmultiplikation erhalten. Anstatt diese beiden Bestandteile künstlich als voneinander unabhängige Gleichungen zu nummerieren, fasse ich die beiden zusammengehörenden Linearitätsbedingungen gemeinsam\n\n$$\\begin{matrix}\n\\begin{matrix}\nT(x + y) = T(x) + T(y), \\\\\nT(\\lambda x)\\& = \\lambda T(x),\n\\end{matrix} & x,y \\in V,\\ \\lambda \\in K\n\\end{matrix}\\ (3.42)$$\n\nDabei gilt:\n\n-   $x$ und $y$ sind Vektoren,\n\n-   $\\lambda$ ist ein Skalar aus dem zugrunde liegenden Körper $K$,\n\n-   die erste Zeile beschreibt die Additivität,\n\n-   die zweite Zeile beschreibt die Homogenität.\n\nErst wenn beide Bedingungen erfüllt sind, handelt es sich um eine lineare Abbildung. Beide Bedingungen bilden gemeinsam die mathematische Definition der Linearität \\[71, 82, 10\\]. Im Original wurden Additivität und Homogenität getrennt als Gleichungen (3.61) und (3.62) geführt; fachlich gehören sie jedoch unmittelbar zusammen.\n\n## Definition 3.2.5: Linearer Operator\n\nSind Definitions- und Zielraum identisch, spreche ich von einem linearen Operator. Formal schreibe ich\n\n$$T:V \\rightarrow V\\ (3.43)$$\n\nDabei bezeichnet $V$ den Vektorraum, auf dessen Elementen der Operator $T$ wirkt.\n\nEin Operator wirkt somit innerhalb desselben Vektorraums. Er erzeugt keinen neuen mathematischen Raum, sondern verändert ausschließlich Elemente eines bereits festgelegten Zustandsraums. Diese Definition wird in der linearen Algebra ebenso verwendet wie in der Funktionalanalysis \\[82, 13\\].\n\nDie Bezeichnung *Operator* beschreibt dabei keine besondere Rechenvorschrift. Sie charakterisiert zunächst die Tatsache, dass Definitions- und Zielraum identisch sind \\[82, 13\\].\n\n## Verkettung von Operatoren\n\nOperatoren können nacheinander ausgeführt werden. Seien $A$ und $B$ zwei Operatoren auf demselben Vektorraum $V$. Ihre Voraussetzungen, ihre Verkettung und deren Wirkung gehören zu einer gemeinsamen mathematischen Struktur und werden deshalb nicht mehr auf mehrere Gleichungsnummern verteilt:\n\n$$\\begin{matrix}\nA\\&:V \\rightarrow V, \\\\\nV \\rightarrow V, \\\\\n\\begin{matrix}\nA\\&:V \\rightarrow V, \\\\\nx\\& = B(A(x))\n\\end{matrix}\n\\end{matrix}\\ (3.44)$$\n\nDabei wird zuerst $A$ auf den Vektor $x$ angewendet und anschließend $B$ auf das Ergebnis $A(x)$.\n\nDie Reihenfolge der Anwendung besitzt im Allgemeinen Bedeutung. Deshalb gilt\n\n$$B \\circ A \\neq A \\circ B\\ (3.45)$$\n\nOperatoren bilden somit im Allgemeinen keine kommutative Struktur. Ihre Verkettung ist dagegen assoziativ, sodass ich längere Operatorfolgen eindeutig zusammenfassen kann \\[71, 82, 13\\]. Der ursprüngliche Abschnitt führte die beiden Operatorsignaturen, die Verkettung und deren Wirkung noch als vier eigenständige Gleichungen (3.64)--(3.67); diese künstliche Aufspaltung wird hier beseitigt.\n\n## Identitätsoperator\n\nJeder Vektorraum besitzt einen Identitätsoperator. Seine Abbildungsvorschrift und seine Wirkung gehören unmittelbar zusammen:\n\n$$I:V \\rightarrow V,\\quad\\quad I(x) = x\\quad\\forall x \\in V\\ (3.46)$$\n\nDabei ist $I$ der Identitätsoperator auf $V$.\n\nDer Identitätsoperator verändert keinen Vektor und bildet das neutrale Element bezüglich der Operatorverkettung \\[82, 13\\]. Deshalb gilt für jeden passenden Operator $T$\n\n$$I \\circ T = T \\circ I = T\\ (3.47)$$\n\nDiese Eigenschaft entspricht der Rolle eines neutralen Elements in algebraischen Strukturen \\[71, 82\\].\n\n## Inverse Operatoren\n\nEin Operator $T$ heißt invertierbar, wenn ein inverser Operator $T^{- 1}$ existiert. Die Existenz des inversen Operators und seine beiden charakteristischen Beziehungen stellen eine einzige mathematische Bedingungsstruktur dar:\n\n$$\\begin{matrix}\nT^{- 1}:V \\rightarrow V, \\\\\n\\begin{matrix}\nT^{- 1} \\circ T = I \\\\\nT \\circ T^{- 1} = I\n\\end{matrix}\n\\end{matrix}\\ (3.48)$$\n\nDabei bezeichnet $T^{- 1}$ den inversen Operator und $I$ den Identitätsoperator auf $V$.\n\nInvertierbare Operatoren ermöglichen eine eindeutige Rückführung transformierter Zustände auf ihren Ausgangszustand. Existiert eine solche Umkehrung nicht, können verschiedene Zustände auf denselben Zielzustand abgebildet werden beziehungsweise bei der Transformation Informationen für eine eindeutige Rekonstruktion verloren gehen \\[82, 13\\]. Im Original wurden $T^{- 1}$ und die beiden Inversenbedingungen getrennt als Gleichungen (3.72)--(3.74) geführt; dies wird hier als zusammengehörende mathematische Aussage behandelt.\n\n## Matrixdarstellung linearer Operatoren\n\nFür endlichdimensionale Vektorräume kann jeder lineare Operator bezüglich einer gewählten Basis durch eine Matrix dargestellt werden. Die Matrix beschreibt dabei nicht den Operator selbst, sondern dessen Darstellung relativ zu einer konkreten Basis. Ändert sich die Basis, so ändert sich im Allgemeinen auch die Matrixdarstellung, während der zugrunde liegende Operator unverändert bleibt \\[10, 82\\].\n\nIst $A$ die Matrixdarstellung eines Operators und $x$ der Koordinatenvektor eines Zustands, so gilt\n\n$Ax = y$\n\nDabei gilt:\n\n-   $A$ ist die Matrixdarstellung des Operators,\n\n-   $x$ ist der Koordinatenvektor des Ausgangszustands,\n\n-   $y$ ist der Koordinatenvektor des transformierten Zustands.\n\nDie Größen $A$, $x$ und $y$ erhalten ausdrücklich **keine eigenen Gleichungsnummern**, weil sie Bestandteile der Gleichung (3.49) sind.\n\nDie Matrixmultiplikation beschreibt damit die Wirkung des Operators auf den dargestellten Vektor. Die geometrische oder physikalische Interpretation dieser Wirkung hängt jedoch vom jeweiligen Anwendungsgebiet ab und folgt nicht aus der Matrixdarstellung selbst \\[10, 82\\].\n\n## Eigenwerte und Eigenvektoren\n\nEin Eigenvektor eines Operators ist ein von Null verschiedener Vektor, dessen Richtungslinie unter der Wirkung des Operators erhalten bleibt. Der Operator verändert ihn lediglich durch Multiplikation mit einem Skalar, dem zugehörigen Eigenwert \\[10, 82\\].\n\nFormal gilt\n\n$$Ax = \\lambda x,\\quad\\quad x \\neq 0$$\n\nDabei gilt:\n\n-   $A$ ist die Matrixdarstellung beziehungsweise der betrachtete lineare Operator,\n\n-   $x$ ist ein von Null verschiedener Eigenvektor,\n\n-   $\\lambda$ ist der zu $x$ gehörende Eigenwert.\n\nAuch hier werden $A$, $x$ und $\\lambda$ nicht als einzelne Gleichungen geführt. Sie besitzen ihre Bedeutung ausschließlich innerhalb der Eigenwertgleichung.\n\nEigenwerte und Eigenvektoren bilden einen zentralen Bestandteil der linearen Algebra, weil sie wesentliche Eigenschaften eines Operators unmittelbar beschreiben und zahlreiche Berechnungen vereinfachen. Sie spielen unter anderem bei Stabilitätsuntersuchungen, Spektralzerlegungen und Differentialgleichungen eine grundlegende Rolle \\[10, 82, 13\\]. Der Originalabschnitt endet mit genau dieser Einführung des Eigenwertproblems.\n\n## Wissenschaftliche Einordnung\n\nMit den in diesem Abschnitt eingeführten Begriffen erweitere ich den mathematischen Apparat gegenüber dem allgemeinen Funktionsbegriff wesentlich. Funktionen beschreiben eindeutige Zuordnungen zwischen Mengen. Lineare Abbildungen erhalten zusätzlich algebraische Strukturen. Operatoren wirken innerhalb eines gemeinsamen Vektorraums, und Matrizen stellen diese Operatoren bezüglich einer gewählten Basis dar. Eigenwerte und Eigenvektoren charakterisieren schließlich besondere Wirkungsrichtungen eines Operators \\[10, 71, 82, 13\\].\n\nDie in diesem Abschnitt verwendeten Begriffe entsprechen vollständig der etablierten mathematischen Literatur. Die Übertragung dieser mathematischen Konzepte auf funktionale Zustandsräume des FRZK erfolgt bewusst erst nach der mathematischen Grundlegung und stellt eine eigenständige Modellentscheidung meiner Arbeit dar.\n\n## Methodologische Betrachtungen\n\nMethodologisch ist für mich in diesem Abschnitt vor allem die Trennung zwischen einer mathematischen Abbildung und ihrer Interpretation entscheidend. Aus der Tatsache, dass ein Operator einen Vektor in einen anderen Vektor überführt, folgt noch nicht, dass damit bereits ein physikalischer Prozess beschrieben wird. Ebenso ist eine Matrix zunächst nur die Darstellung eines Operators bezüglich einer gewählten Basis. Die physikalische oder FRZK-spezifische Bedeutung muss zusätzlich begründet werden.\n\nBesonders wichtig ist für mich außerdem die Unterscheidung zwischen dem Operator und seiner Matrixdarstellung. Ein Wechsel der Basis kann die Matrix verändern, ohne dass sich der zugrunde liegende Operator verändert. Damit muss ich auch in der späteren FRZK-Konstruktion darauf achten, mathematische Strukturen nicht mit ihrer jeweiligen Darstellung gleichzusetzen.\n\nDasselbe gilt für Eigenwerte und Eigenvektoren. Sie sind zunächst etablierte mathematische Eigenschaften linearer Operatoren. Eine spätere Interpretation als ausgezeichnete funktionale Zustandsrichtungen oder als besondere dynamische Eigenschaften des FRZK wäre eine zusätzliche theoretische Setzung und folgt nicht aus der linearen Algebra selbst.\n\n## Didaktische Betrachtungen\n\nDidaktisch entwickle ich den Operatorbegriff bewusst aus dem bereits eingeführten Funktionsbegriff. Zunächst kenne ich eine eindeutige Zuordnung zwischen zwei Mengen. Anschließend fordere ich, dass diese Zuordnung bestimmte algebraische Strukturen erhält. Erst danach beschränke ich Definitions- und Zielraum auf denselben Vektorraum und gelange so zum Operator.\n\nAuf diese Weise entsteht der Begriff nicht isoliert. Ich kann schrittweise nachvollziehen, welche zusätzliche Bedingung jeweils hinzukommt: Eindeutigkeit bei der Funktion, Strukturerhaltung bei der linearen Abbildung und gleicher Definitions- und Zielraum beim Operator.\n\nDie Bereinigung der Gleichungsnummerierung unterstützt genau diese Darstellung. Im ursprünglichen Abschnitt wurden die Gleichungen **(3.59) bis (3.76)** geführt. Darunter befanden sich mehrere Ausdrücke, die lediglich Voraussetzungen oder Bestandteile derselben mathematischen Aussage darstellten, beispielsweise die getrennten Operatorsignaturen $A:V \\rightarrow V$ und $B:V \\rightarrow V$, das isolierte Symbol $T^{- 1}$ oder die getrennte Angabe des Identitätsoperators und seiner Wirkung.\n\nNach der verbindlichen Gleichungsregel bleiben deshalb in diesem Abschnitt die **zehn eigenständigen mathematischen Aussagen (3.41) bis (3.50)**. Der fachliche Inhalt des Originals bleibt vollständig erhalten; lediglich seine mathematisch zusammengehörenden Bestandteile werden nicht mehr künstlich auf mehrere Gleichungsnummern verteilt.\n\n## Ergebnis und Übergang\n\nMit Abschnitt 3.2.3 habe ich den allgemeinen Funktionsbegriff um strukturerhaltende Abbildungen erweitert. Ich habe die Linearität über Additivität und Homogenität bestimmt, den linearen Operator als Abbildung eines Vektorraums in sich selbst eingeführt und anschließend Verkettung, Identität, Invertierbarkeit, Matrixdarstellung sowie die grundlegende Eigenwertgleichung beschrieben.\n\nDamit ist nun bestimmt, **wie** mathematische Transformationen auf Elementen eines strukturierten Raums wirken können. Noch fehlt jedoch die genaue Bestimmung des Raums selbst, auf dessen Elementen diese Operatoren wirken.\n\nIm folgenden Abschnitt untersuche ich deshalb den Vektorraum als mathematische Struktur für Zustände. Damit führt der Aufbau weiter zu **3.2.4 Vektorräume als mathematische Zustandsräume**.', '18bf8340f3e847adb7fc9aca89add27504c42f2b8bc189b5ba36bacf2cc7d727', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.');
+INSERT INTO `section_versions` (`section_version_id`, `section_id`, `revision_id`, `version_kind`, `body_markdown`, `checksum_sha256`, `notes`) VALUES
+(5, 26, 2, 'source_import', '# 3.2.4 Vektorräume als mathematische Zustandsräume\n\nNachdem ich im vorhergehenden Abschnitt lineare Abbildungen und Operatoren eingeführt habe, muss ich nun den mathematischen Raum genauer bestimmen, auf dessen Elementen solche Operatoren wirken. Die lineare Algebra beschreibt einen solchen Raum durch den Begriff des Vektorraums. Dabei wird eine Menge von Elementen mit einer inneren Addition und einer äußeren Skalarmultiplikation verbunden \\[71, 74, 82\\]. Der ursprüngliche Abschnitt entwickelt hierzu die Vektorraumdefinition, die Vektorraumaxiome, Nullvektor und additives Inverses, die Eigenschaften der Skalarmultiplikation, Untervektorräume sowie elementare Beispiele.\n\nDer Vektorraumbegriff löst die mathematische Beschreibung von einer ausschließlich geometrischen Vorstellung des Vektors. Vektoren können gerichtete Größen im zwei- oder dreidimensionalen Raum darstellen. Sie können jedoch ebenso Funktionen, Zahlenfolgen, Matrizen oder andere mathematische Objekte sein, sofern die Vektorraumaxiome erfüllt sind \\[71, 82\\].\n\nFür den Aufbau des Funktionalen Raum-Zeit-Kohärenzsystems übernehme ich zunächst ausschließlich diese etablierte algebraische Struktur. Die spätere Interpretation der Elemente eines solchen Raumes als funktionale Zustände ist eine eigene Modellentscheidung meiner Arbeit. Sie folgt nicht bereits aus der klassischen Definition eines Vektorraums.\n\n## Definition 3.2.6: Vektorraum\n\nSei $K$ ein Körper. Unter einem Vektorraum $V$ über $K$ verstehe ich eine nichtleere Menge, auf der eine Vektoraddition und eine Skalarmultiplikation definiert sind, die gemeinsam die Vektorraumaxiome erfüllen \\[71, 82\\].\n\nDie beiden grundlegenden Operationen fasse ich gemeinsam zusammen:\n\n$$\\begin{matrix}\n + :V \\times V \\rightarrow V,\\ (x,y) \\mapsto x + y, \\\\\n \\cdot K \\times V \\rightarrow V,(\\lambda,x) \\mapsto \\lambda x.\n\\end{matrix}\\ (3.51)$$\n\nDabei gilt:\n\n-   $V$ ist der Vektorraum,\n\n-   $K$ ist der zugrunde liegende Körper,\n\n-   $x,y \\in V$ sind Vektoren,\n\n-   $\\lambda \\in K$ ist ein Skalar,\n\n-   $+$bezeichnet die Vektoraddition,\n\n-   $\\cdot$ bezeichnet die Skalarmultiplikation.\n\nDie beiden Operationen sind abgeschlossen. Die Summe zweier Vektoren und das Produkt eines zulässigen Skalars mit einem Vektor müssen daher wieder Elemente desselben Vektorraums sein \\[71, 74, 82\\].\n\n## Reelle Vektorräume\n\nDer Körper $K$ bestimmt, welche Skalare für die Skalarmultiplikation zulässig sind. In der linearen Algebra werden insbesondere Vektorräume über den reellen und den komplexen Zahlen untersucht \\[71, 82\\].\n\nFür die weitere mathematische Entwicklung meiner Arbeit beschränke ich mich zunächst auf reelle Vektorräume und setze daher\n\n$$K = R\\ (3.52)$$\n\nDamit stammen die zunächst verwendeten Skalare aus den reellen Zahlen. Diese Festlegung ist keine allgemeine Eigenschaft eines Vektorraums, sondern eine methodische Entscheidung meiner Arbeit. Ich treffe sie, weil die zunächst betrachteten Zustandsgrößen reellwertig beschrieben werden sollen.\n\n## Axiome der Vektoraddition\n\nFür alle $x,y,z \\in V$ muss die Vektoraddition abgeschlossen sein:\n\n$$x + y \\in V\\ (3.53)$$\n\nDie Abgeschlossenheit stellt sicher, dass die Addition den betrachteten Vektorraum nicht verlässt \\[71, 82\\].\n\nDie Vektoraddition ist assoziativ:\n\n$$(x + y) + z = x + (y + z)\\ (3.54)$$\n\nDadurch kann ich Summen mehrerer Vektoren unabhängig von ihrer Klammerung auswerten \\[71, 74, 82\\].\n\nDie Vektoraddition ist außerdem kommutativ:\n\n$$x + y = y + x\\ (3.55)$$\n\nDamit hängt die Summe zweier Vektoren nicht von ihrer Reihenfolge ab \\[71, 82\\].\n\n## Definition 3.2.7: Nullvektor\n\nIn jedem Vektorraum existiert ein eindeutig bestimmtes neutrales Element bezüglich der Addition. Ich bezeichne dieses Element als Nullvektor $0_{V}$. Seine Zugehörigkeit zum Raum und seine neutrale Wirkung fasse ich zusammen:\n\n$$0_{V} \\in V,\\quad\\quad x + 0_{V} = 0_{V} + x = x\\quad\\forall x \\in V\\ (3.56)$$\n\nDer Index $V$ verdeutlicht, dass der Nullvektor ein Element des jeweiligen Vektorraums ist. Ich darf ihn deshalb nicht ohne weitere Begründung mit dem skalaren Nullelement des Körpers gleichsetzen \\[71, 82\\].\n\nIn Koordinatenräumen wird der Nullvektor durch einen Koordinatenvektor dargestellt, dessen sämtliche Komponenten gleich null sind. Für den zweidimensionalen reellen Koordinatenraum gilt beispielsweise\n\n$$0_{R^{\\mathbb{2}}} = \\begin{pmatrix}\n\\begin{matrix}\n0 \\\\\n0\n\\end{matrix}\n\\end{pmatrix}\\ (3.57)$$\n\nDer Nullvektor besitzt bezüglich der Addition eine neutrale Wirkung. Lineare Abbildungen bilden den Nullvektor des Definitionsraums auf den Nullvektor des Zielraums ab \\[71, 74, 82\\].\n\n## Additives Inverses\n\nZu jedem Vektor $x \\in V$ existiert ein additives Inverses $- x \\in V$, sodass\n\n$$x + ( - x) = ( - x) + x = 0_{V}\\ (3.58)$$\n\nDas additive Inverse ermöglicht mir, die Vektorsubtraktion auf die bereits definierte Addition zurückzuführen \\[71, 74\\]:\n\n$$x - y ≔ x + ( - y)\\ (3.59)$$\n\nDamit benötige ich für die Subtraktion keine eigenständige neue Vektorraumoperation.\n\n## Axiome der Skalarmultiplikation\n\nFür $\\lambda,\\mu \\in K$ und $x,y \\in V$ muss zunächst die Abgeschlossenheit gelten:\n\n$$\\lambda x \\in V\\ (3.60)$$\n\nDie Multiplikation eines Vektors mit einem zulässigen Skalar erzeugt damit erneut einen Vektor desselben Raumes \\[71, 82\\].\n\nDie Skalarmultiplikation ist mit der Multiplikation im Körper verträglich:\n\n$$(\\lambda\\mu)x = \\lambda(\\mu x)\\ (3.61)$$\n\nDadurch kann ich mehrere aufeinanderfolgende Skalierungen zusammenfassen \\[71, 74, 82\\].\n\nDas multiplikative Einselement des Körpers wirkt neutral:\n\n$$1_{K}x = x\\ (3.62)$$\n\nDie Multiplikation mit dem skalaren Einselement verändert den Vektor somit nicht \\[71, 82\\].\n\nDie Skalarmultiplikation ist distributiv bezüglich der Vektoraddition:\n\n$$\\lambda(x + y) = \\lambda x + \\lambda y\\ (3.63)$$\n\nSie ist ebenfalls distributiv bezüglich der Addition im Skalarkörper:\n\n$$(\\lambda + \\mu)x = \\lambda x + \\mu x\\ (3.64)$$\n\nDiese beiden Distributivgesetze verbinden die innere Addition des Vektorraums mit den Operationen des zugrunde liegenden Körpers \\[71, 74, 82\\]. Der Originalabschnitt führt genau diese Vektorraumaxiome einzeln aus.\n\n## Multiplikation eines Vektors mit null\n\nAus den Vektorraumaxiomen folgt, dass die Multiplikation eines Vektors mit dem skalaren Nullelement stets den Nullvektor ergibt \\[71, 82\\]:\n\n$$0_{K}x = 0_{V}\\quad\\forall x \\in V\\ (3.65)$$\n\nDiese Aussage ist keine zusätzliche Vektorraumdefinition, sondern lässt sich aus den bereits eingeführten Axiomen herleiten. Ich beginne mit\\\n$${0_{K}x\\& = (0_{K} + 0_{K})x\n}{= 0_{K}x + 0_{K}x,}$$\n\nund addiere anschließend das additive Inverse von $0_{K}x$ auf beiden Seiten. Daraus folgt unmittelbar Gleichung (3.65). Die einzelnen Zwischenstufen dieser Herleitung erhalten bewusst **keine zusätzlichen Gleichungsnummern**, weil sie Bestandteile derselben Herleitung sind. Im Original waren diese Rechenschritte noch auf mehrere Gleichungen verteilt.\n\nDas algebraische Ergebnis ist damit eindeutig bestimmt. Der Nullvektor enthält innerhalb der klassischen Vektorraumstruktur jedoch keine Information darüber, aus welcher Richtung oder von welchem ursprünglichen Vektor er durch Multiplikation mit null hervorgegangen ist \\[71, 74, 82\\].\n\nFür das FRZK ist diese Grenze später von besonderer Bedeutung. Sollte ich dort zusätzlich zum algebraischen Resultat eine Richtungs- oder Herkunftsinformation erhalten wollen, wäre dies **keine Eigenschaft des klassischen Vektorraums**, sondern eine eigenständige Erweiterung des FRZK.\n\n## Multiplikation des Nullvektors mit einem Skalar\n\nEbenso folgt aus den Vektorraumaxiomen für jeden Skalar $\\lambda \\in K$\n\n$$\\lambda 0_{V} = 0_{V}\\ (3.66)$$\n\nAuch diese Aussage lässt sich aus der Distributivität herleiten. Da $0_{V} = 0_{V} + 0_{V},\\ $gilt\\\n$\\lambda 0_{V}\\lambda\\left( 0_{V} + 0_{V} \\right) = \\lambda 0_{V} + \\lambda_{V}.$\n\nNach Addition des additiven Inversen folgt Gleichung (3.66). Auch hier werden die einzelnen Herleitungsschritte nicht künstlich als eigenständige Gleichungen nummeriert. Der ursprüngliche Abschnitt führte diese Schritte noch getrennt.\n\nDer Nullvektor bleibt damit unter jeder Skalarmultiplikation invariant \\[71, 82\\].\n\n## Definition 3.2.8: Untervektorraum\n\nEine Teilmenge $U \\subseteq V$ heißt Untervektorraum von $V$, wenn sie mit den aus $V$ übernommenen Operationen selbst einen Vektorraum bildet \\[71, 74, 82\\].\n\nFür eine nichtleere Teilmenge genügt es zu prüfen, ob sie unter Vektoraddition und Skalarmultiplikation abgeschlossen ist. Ich fasse diese Bedingungen zusammen:\n\n$$\\begin{matrix}\nx,y \\in U \\Rightarrow x + y \\in U, \\\\\n\\lambda \\in K,\\ x \\in U \\Rightarrow \\lambda x \\in U.\n\\end{matrix}\\ (3.67)$$\n\nDabei gilt:\n\n-   $U$ ist die betrachtete Teilmenge,\n\n-   $V$ ist der übergeordnete Vektorraum,\n\n-   $x,y$ sind Vektoren aus $U$,\n\n-   $\\lambda$ ist ein Skalar aus $K$.\n\nAus diesen Bedingungen folgt insbesondere, dass jeder Untervektorraum den Nullvektor des übergeordneten Vektorraums enthält \\[71, 74, 82\\]. Im Original wurden Teilmengenbedingung, Additionsabschluss und Abschluss unter Skalarmultiplikation auf drei einzelne Gleichungsnummern verteilt; mathematisch bilden sie hier eine gemeinsame Untervektorraumbedingung.\n\n## Beispiele für Vektorräume\n\nEin grundlegendes Beispiel bildet der reelle Koordinatenraum\n\n$$\\mathbb{R}^{n} = \\left\\{ \\begin{pmatrix}\nx_{1} \\\\\n \\vdots \\\\\nx_{n}\n\\end{pmatrix} \\middle| x_{1},\\ldots,x_{n} \\in \\mathbb{R} \\right\\}\\ (3.68)$$\n\nMit komponentenweiser Addition und reeller Skalarmultiplikation bildet $\\mathbb{R}^{n}$ einen Vektorraum über $\\mathbb{R}$ \\[71, 74, 82\\].\n\nFür $n = 2$ besitzt ein Vektor beispielsweise die Form $x = \\begin{pmatrix}\nx_{1\\backslash}x_{2}\n\\end{pmatrix}^{T},$ und für (n=3) $x = \\begin{pmatrix}\nx_{1\\backslash}x_{2\\backslash}x_{3}\n\\end{pmatrix}^{T}.$\n\nDie Komponenten eines Koordinatenvektors hängen von der gewählten Basis ab. Der mathematische Vektor als Element des Vektorraums ist deshalb von seiner konkreten Koordinatendarstellung zu unterscheiden \\[71, 74, 82\\].\n\nAuch die Menge aller reellen $m \\times n$-Matrizen\n\n$$\\mathbb{R}^{m \\times n}\\ (3.69)$$\n\nbildet mit der gewöhnlichen Matrizenaddition und der Skalarmultiplikation einen reellen Vektorraum \\[71, 74\\].\n\nEbenso können geeignete Mengen reellwertiger Funktionen als Vektorräume aufgefasst werden, sofern Addition und Skalarmultiplikation punktweise definiert sind und die jeweilige Funktionenklasse unter diesen Operationen abgeschlossen bleibt \\[71, 76, 82\\].\n\nDamit zeigt sich, dass der Vektorraumbegriff nicht an geometrische Pfeile oder an einen dreidimensionalen Anschauungsraum gebunden ist. Entscheidend sind ausschließlich die algebraischen Operationen und die Erfüllung der Vektorraumaxiome.\n\n## Wissenschaftliche Einordnung\n\nDer Vektorraum stellt für mich eine abstrakte algebraische Struktur dar, durch die sehr unterschiedliche mathematische Objekte einheitlich behandelt werden können. Entscheidend ist nicht die konkrete Gestalt seiner Elemente, sondern die Erfüllung der Vektorraumaxiome \\[71, 82\\].\n\nDurch die Einführung des Vektorraums kann ich anschließend lineare Kombinationen, Spannräume, lineare Unabhängigkeit, Basen und Dimensionen präzise definieren. Diese Begriffe benötige ich wiederum, um Zustände durch Koordinaten darzustellen und lineare Operatoren durch Matrizen zu beschreiben \\[71, 74, 82\\].\n\nFür das FRZK bildet ein Vektorraum zunächst lediglich den mathematischen Rahmen eines möglichen Zustandsraums. Die klassische Vektorraumdefinition entscheidet nicht darüber, welche Komponenten ein funktionaler Zustand besitzt, wie ich diese Komponenten physikalisch oder funktional interpretiere oder ob zusätzliche Informationen über Richtung, Herkunft oder Kohärenz erhalten bleiben.\n\nDiese Festlegungen muss ich als eigenständige Konstruktionen des FRZK ausdrücklich von der übernommenen linearen Algebra trennen.\n\n## Methodologische Betrachtungen\n\nMethodologisch ist für mich besonders wichtig, dass der Begriff des Vektorraums keine konkrete physikalische Interpretation seiner Elemente voraussetzt. Dieselben Vektorraumaxiome können für Koordinatenvektoren, Matrizen, Funktionen oder andere mathematische Objekte gelten \\[71, 74, 82\\].\n\nDamit darf ich aus der Tatsache, dass ein späterer FRZK-Zustandsraum als Vektorraum modelliert wird, noch nicht ableiten, dass seine Elemente räumliche Vektoren im geometrischen Sinn sein müssen. Die Vektorraumstruktur legt lediglich fest, welche algebraischen Operationen möglich sind und welche Axiome diese Operationen erfüllen.\n\nBesonders deutlich wird diese methodische Grenze an der Multiplikation mit dem skalaren Nullelement. Die klassische lineare Algebra liefert eindeutig $0_{K}x = 0_{V}.$\n\nDamit ist das algebraische Resultat vollständig bestimmt. Informationen darüber, aus welchem Vektor $x$ dieses Resultat hervorgegangen ist oder welche Richtung $x$ zuvor besaß, gehören nicht mehr zur Information des Nullvektors. Wenn ich im FRZK eine solche Information zusätzlich erhalten möchte, muss ich sie durch eine zusätzliche Struktur oder ein eigenes Axiom einführen. Ich darf sie nicht nachträglich der klassischen Vektorraumstruktur zuschreiben.\n\nDasselbe gilt für die Wahl von $\\mathbb{R}$ als Skalarkörper. Sie ist eine methodische Festlegung meiner Arbeit und keine mathematische Notwendigkeit. Ein Vektorraum könnte ebenso über einem anderen geeigneten Körper definiert werden.\n\n## Didaktische Betrachtungen\n\nDidaktisch entwickle ich den Vektorraum aus zwei bereits bekannten Operationstypen. Zunächst kenne ich aus den vorhergehenden Abschnitten Funktionen und Abbildungen. Nun betrachte ich zwei spezielle Abbildungen: die Addition zweier Vektoren und die Multiplikation eines Vektors mit einem Skalar. Erst die gemeinsam geltenden Axiome machen aus der zugrunde liegenden Menge einen Vektorraum.\n\nDiese Reihenfolge macht für mich sichtbar, dass ein Vektorraum nicht einfach „eine Menge von Vektoren\" ist. Entscheidend ist vielmehr die Struktur, die durch die beiden Operationen und ihre Axiome entsteht.\n\nAuch die Unterscheidung zwischen der skalaren Null $0_{K}$ und dem Nullvektor $0_{V}$ ist didaktisch bedeutsam. Beide können in konkreten Koordinatendarstellungen ähnlich aussehen, besitzen jedoch unterschiedliche mathematische Rollen. Die skalare Null ist ein Element des Körpers, während der Nullvektor ein Element des Vektorraums ist.\n\nDie neue Gleichungsregel reduziert auch in diesem Abschnitt die künstliche Nummerierung erheblich. Der ursprüngliche Text führte die Gleichungen **(3.77) bis (3.112)** und nummerierte dabei unter anderem einzelne Mengenangaben, Variablenvoraussetzungen und mehrere Zwischenschritte derselben Herleitung separat.\n\nNach der Bereinigung bleiben die eigenständigen mathematischen Aussagen **(3.51) bis (3.69)**. Der fachliche Inhalt bleibt vollständig erhalten; lediglich mathematisch zusammengehörende Voraussetzungen, Größen und Herleitungsschritte werden nicht mehr als eigenständige Gleichungen behandelt.\n\n## Ergebnis und Übergang\n\nMit Abschnitt 3.2.4 habe ich den Vektorraum als abstrakte algebraische Struktur eingeführt. Ich habe die Vektoraddition und Skalarmultiplikation, ihre Axiome, den Nullvektor, additive Inverse, die Wirkung der skalaren Null, Untervektorräume sowie grundlegende Beispiele beschrieben.\n\nDamit ist nun der mathematische Raum bestimmt, in dem lineare Operationen ausgeführt werden können. Noch ist jedoch nicht geklärt, wie sich aus gegebenen Vektoren weitere Vektoren erzeugen lassen und welche Teile eines Vektorraums durch eine Menge von Vektoren aufgespannt werden.\n\nIm nächsten Abschnitt untersuche ich deshalb **3.2.5 Linearkombinationen, Spannräume und Erzeugendensysteme**.', '67c942eb037a318d4ca603bdcaffb77a7a0c0e41c0c95aa08330a9077390a40f', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.'),
+(6, 27, 2, 'source_import', '# 3.2.5 Linearkombinationen, Spannräume und Erzeugendensysteme\n\nMit der Definition des Vektorraums habe ich die beiden grundlegenden Operationen der linearen Algebra eingeführt. Daraus ergibt sich unmittelbar die Frage, welche Vektoren ich aus bereits bekannten Vektoren konstruieren kann. Die lineare Algebra beantwortet diese Frage mit dem Begriff der Linearkombination. Er beschreibt, wie durch Skalarmultiplikation und anschließende Addition aus vorhandenen Vektoren weitere Vektoren entstehen \\[71, 74, 82\\]. Genau auf diesem Aufbau basiert auch der ursprüngliche Abschnitt 3.2.5.\n\nDie Linearkombination besitzt eine zentrale Bedeutung, weil nahezu alle unmittelbar folgenden Begriffe der linearen Algebra auf ihr aufbauen. Dazu gehören insbesondere Spannräume, Erzeugendensysteme, lineare Unabhängigkeit, Basen und Dimensionen. Ohne den Begriff der Linearkombination kann ich weder bestimmen, welche Vektoren sich aus einer gegebenen Vektormenge erzeugen lassen, noch welche Vektoren für die vollständige Beschreibung eines Vektorraums tatsächlich erforderlich sind \\[71, 74, 82\\].\n\nFür den weiteren Aufbau des Funktionalen Raum-Zeit-Kohärenzsystems übernehme ich zunächst ausschließlich die klassische mathematische Definition. Eine funktionale Interpretation der Kombination einzelner Zustandskomponenten erfolgt erst nach Abschluss dieser mathematischen Grundlegung. Damit bleibt auch in diesem Abschnitt die Trennung zwischen etablierter linearer Algebra und späterer FRZK-Eigenleistung erhalten.\n\n## Definition 3.2.9: Linearkombination\n\nSeien $v_{1},v_{2},\\ldots,v_{n} \\in V\\ $Vektoren eines Vektorraums $V$ und $\\lambda_{1},\\lambda_{2},\\ldots,\\lambda_{n} \\in K$ Skalare des zugrunde liegenden Körpers $K$.\n\nDann heißt der Ausdruck\n\n$$v = \\lambda_{1}v_{1} + \\lambda_{2}v_{2} + \\cdots + \\lambda_{n}v_{n} = \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}}\\ (3.70)$$\n\neine Linearkombination der Vektoren $v_{1},\\ldots,v_{n}$.\n\nDabei gilt:\n\n-   $v_{1},\\ldots,v_{n}$ sind die Vektoren, aus denen die Kombination gebildet wird,\n\n-   $\\lambda_{1},\\ldots,\\lambda_{n}$ sind die zugehörigen Skalare,\n\n-   $K$ ist der Skalarkörper,\n\n-   $v$ ist der durch die Linearkombination erzeugte Vektor.\n\nJede solche Linearkombination ist aufgrund der Vektorraumaxiome wiederum ein Element desselben Vektorraums \\[71, 82\\]. Die ältere Repository-Fassung beschreibt die Linearkombination entsprechend als Summe $\\lambda_{1}v_{1} + \\cdots + \\lambda_{n}v_{n}$.\n\nDie Skalare bestimmen den jeweiligen Beitrag der einzelnen Vektoren zur resultierenden Linearkombination. Verändere ich einen oder mehrere dieser Skalare, erhalte ich im Allgemeinen einen anderen Vektor \\[71, 74\\].\n\nDabei ist wichtig, dass eine Linearkombination keine neue mathematische Operation neben Addition und Skalarmultiplikation einführt. Sie setzt ausschließlich die beiden bereits definierten Vektorraumoperationen miteinander zusammen. Gerade dadurch zeigt sich, wie aus den elementaren Axiomen des Vektorraums weiterführende Strukturen entstehen.\n\n## Beispiel\n\nZur Veranschaulichung betrachte ich im $\\mathbb{R}^{2}$ die beiden Vektoren\n\n$$v_{1} = \\begin{pmatrix}\n1\\backslash 0\n\\end{pmatrix},\\quad\\quad v_{2} = \\begin{pmatrix}\n0\\backslash 1\n\\end{pmatrix}.\n$$\n\nWähle ich beispielsweise die Skalare $2$ und $3$, ergibt sich\n\n$$2v_{1} + 3v_{2} = 2\\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} + 3\\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix} = \\begin{pmatrix}\n2 \\\\\n3\n\\end{pmatrix}$$\n\nDieses Beispiel zeigt, wie aus gegebenen Vektoren durch geeignete Wahl der Skalare ein weiterer Vektor desselben Vektorraums entsteht. Der resultierende Vektor muss im Allgemeinen mit keinem der Ausgangsvektoren übereinstimmen \\[74, 82\\]. Der Originalabschnitt enthält genau diesen didaktischen Schritt von zwei gegebenen Vektoren zu einer konkreten Linearkombination.\n\nDie entscheidende Frage lautet nun nicht mehr nur, **einen** Vektor durch eine Linearkombination zu erzeugen. Ich kann vielmehr untersuchen, welche Gesamtheit von Vektoren entsteht, wenn sämtliche zulässigen Skalare berücksichtigt werden.\n\n## Definition 3.2.10: Spannraum\n\nDie Gesamtheit aller Linearkombinationen einer gegebenen Vektormenge bezeichnet deren Spannraum \\[71, 82\\].\n\nFür $v_{1},\\ldots,v_{n} \\in V$ definiere ich\n\n$$\\text{span}\\left( v_{1},\\ldots,v_{n} \\right) = \\left\\{ \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} \\middle| \\lambda_{1},\\ldots,\\lambda_{n} \\in K \\right\\}\\ (3.71)$$\n\nDabei bezeichnet $\\text{span}\\left( v_{1},\\ldots,v_{n} \\right)$ die Menge aller Vektoren, die ich aus $v_{1},\\ldots,v_{n}$ durch Linearkombinationen erzeugen kann.\n\nIm älteren Repository ist derselbe Begriff als Menge aller Summen $\\sum_{i = 1}^{n}{\\lambda_{i}v_{i}}$ erfasst.\n\nIm Originalabschnitt wurden zunächst eine kürzere Spannschreibweise und anschließend deren Mengendarstellung getrennt nummeriert. Beide Ausdrücke bezeichnen jedoch **denselben mathematischen Gegenstand**. Ich führe sie deshalb hier in Gleichung (3.71) zu einer einzigen Definition zusammen.\n\nDer Spannraum ist nicht lediglich eine beliebige Teilmenge des Vektorraums. Er ist selbst ein Untervektorraum von $V$ und zugleich der kleinste Untervektorraum, der alle betrachteten Vektoren $v_{1},\\ldots,v_{n}$ enthält \\[71, 82\\].\n\nDas Wort *kleinste* ist dabei wesentlich. Jeder Untervektorraum, der sämtliche Vektoren $v_{1},\\ldots,v_{n}$ enthält, muss aufgrund seiner Abgeschlossenheit auch sämtliche Linearkombinationen dieser Vektoren enthalten. Damit muss er auch den gesamten Spannraum enthalten.\n\nDer Spannraum beschreibt somit genau denjenigen Teil des Vektorraums, den ich mit den vorgegebenen Vektoren erreichen kann.\n\n## Erzeugendensysteme\n\nEine Menge von Vektoren heißt Erzeugendensystem eines Vektorraums $V$, wenn ihr Spannraum den gesamten Vektorraum ergibt \\[71, 74, 82\\].\n\nFür die Vektoren $v_{1},\\ldots,v_{n}$ gilt daher\n\n$$V = \\text{span}\\left( v_{1},\\ldots,v_{n} \\right)\\ (3.72)$$\n\nDann kann ich jeden Vektor $v \\in V$ als Linearkombination der Vektoren des Erzeugendensystems schreiben \\[71, 82\\]. Der ursprüngliche Abschnitt verwendet genau diese Bedingung zur Definition eines Erzeugendensystems.\n\nDas bedeutet nicht, dass die Darstellung eines Vektors durch ein Erzeugendensystem eindeutig sein muss. Enthält das Erzeugendensystem mehr Vektoren als für die Erzeugung des Raums erforderlich sind, kann derselbe Vektor durch unterschiedliche Linearkombinationen dargestellt werden \\[71, 74\\].\n\nEbenso ist ein Erzeugendensystem selbst nicht eindeutig. Unterschiedliche Mengen von Vektoren können denselben Vektorraum aufspannen. Entscheidend ist ausschließlich, dass aus den jeweiligen Vektoren durch Linearkombination sämtliche Elemente des betrachteten Raums erzeugt werden können.\n\n## Minimale Erzeugendensysteme\n\nEnthält ein Erzeugendensystem einen Vektor, der bereits als Linearkombination der übrigen Vektoren dargestellt werden kann, trägt dieser Vektor nichts zusätzlich zum Spannraum bei. Ich kann ihn entfernen, ohne den erzeugten Raum zu verändern \\[71, 74, 82\\].\n\nDamit kann ich ein Erzeugendensystem schrittweise verkleinern, solange redundante Vektoren vorhanden sind. Ein minimales Erzeugendensystem besitzt keine solchen entbehrlichen Vektoren mehr.\n\nAn diesem Punkt entsteht unmittelbar die nächste mathematische Frage: Woran erkenne ich formal, ob ein Vektor durch die übrigen Vektoren erzeugt werden kann?\n\nDie Antwort darauf liefert der Begriff der **linearen Unabhängigkeit**. Ein minimales Erzeugendensystem führt damit unmittelbar zum Basisbegriff, der im folgenden Abschnitt systematisch entwickelt wird. Genau diesen Übergang stellt auch der ursprüngliche Abschnitt her.\n\n## Wissenschaftliche Einordnung\n\nDie Linearkombination bildet eine der grundlegenden Konstruktionen innerhalb eines Vektorraums. Aus ihr entstehen Spannräume, Erzeugendensysteme, Basen und schließlich Koordinatendarstellungen. Damit bildet sie den Ausgangspunkt für einen großen Teil der strukturellen Untersuchungen der linearen Algebra \\[71, 74, 82\\].\n\nFür meine weitere Arbeit ist besonders wichtig, dass eine Linearkombination zwischen den bereits vorhandenen Vektoren und dem durch ihre Kombination entstehenden Vektor unterscheidet. Der erzeugte Vektor ist zwar vollständig durch die verwendeten Ausgangsvektoren und Skalare bestimmt, er stellt jedoch ein eigenes Element des Vektorraums dar.\n\nDer Spannraum erweitert diese Betrachtung von einem einzelnen erzeugten Vektor auf die Gesamtheit aller erzeugbaren Vektoren. Damit kann ich mathematisch präzise beantworten, welcher Bereich eines Zustandsraums durch eine gegebene Menge von Ausgangselementen erreichbar ist.\n\nFür das Funktionale Raum-Zeit-Kohärenzsystem besitzt dieser Begriff eine besondere Bedeutung. Funktionale Zustände sollen später nicht ausschließlich isoliert betrachtet werden, sondern können aus mehreren Zustandskomponenten aufgebaut werden. Die mathematische Grundlage dafür stellt zunächst ausschließlich die klassische Theorie der Linearkombinationen bereit. Welche funktionale Bedeutung einzelne Komponenten, ihre Skalierung und ihre Kombination im FRZK besitzen, folgt daraus jedoch noch nicht. Der Originaltext trennt diese spätere funktionale Interpretation ebenfalls ausdrücklich von der klassischen linearen Algebra.\n\n## Methodologische Betrachtungen\n\nMethodologisch zeigt sich in diesem Abschnitt besonders deutlich die Grenze zwischen mathematischer Erzeugbarkeit und wissenschaftlicher Interpretation.\n\nWenn\n\n$$v = \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}}$$\n\ngilt, ist damit mathematisch eindeutig beschrieben, wie der Vektor $v$ aus den Vektoren $v_{i}$ konstruiert wird. Daraus folgt jedoch noch nicht, welche physikalische oder funktionale Bedeutung die einzelnen Beiträge besitzen.\n\nInsbesondere darf ich die Koeffizienten $\\lambda_{i}$ nicht ohne zusätzliche Begründung als physikalische Gewichte, Wahrscheinlichkeiten, Intensitäten oder Wirkungsstärken interpretieren. In der linearen Algebra sind sie zunächst ausschließlich Skalare des zugrunde liegenden Körpers.\n\nEbenso beschreibt der Spannraum mathematisch, welche Vektoren aus einer Vektormenge erzeugt werden können. Daraus folgt nicht automatisch, dass alle diese Vektoren innerhalb eines physikalischen Modells tatsächlich realisiert werden können. Mathematische Erzeugbarkeit und physikalische Realisierbarkeit sind unterschiedliche Aussagen.\n\nFür das FRZK muss ich später deshalb ausdrücklich festlegen, welche Zustandskomponenten miteinander kombiniert werden dürfen, welche Koeffizienten zulässig sind und ob zusätzliche Bedingungen die mathematisch mögliche Menge der Linearkombinationen einschränken.\n\nDiese Einschränkungen wären dann FRZK-spezifische Modellbedingungen. Sie gehören nicht zur klassischen Definition des Spannraums.\n\n## Didaktische Betrachtungen\n\nDidaktisch entwickelt sich dieser Abschnitt unmittelbar aus den Vektorraumaxiomen.\n\nZunächst habe ich zwei Operationen zur Verfügung:\n\n-   Vektoren können addiert werden,\n\n-   Vektoren können mit Skalaren multipliziert werden.\n\nDie Linearkombination verbindet genau diese beiden Operationen. Dadurch kann ich aus mehreren vorhandenen Vektoren einen weiteren Vektor erzeugen.\n\nAnschließend erweitere ich die Frage:\n\nNicht mehr nur\n\n**„Welchen Vektor erhalte ich aus einer bestimmten Wahl der Skalare?\"**\n\nsondern\n\n**„Welche Vektoren kann ich überhaupt aus diesen Ausgangsvektoren erzeugen?\"**\n\nDie Antwort ist der Spannraum.\n\nDanach folgt die nächste Erweiterung:\n\n**„Erzeugt dieser Spannraum bereits den gesamten Vektorraum?\"**\n\nIst dies der Fall, bilden die Ausgangsvektoren ein Erzeugendensystem.\n\nDamit entsteht eine klare begriffliche Kette:\\\n$$\\text{Vektoren} \\longrightarrow \\text{Linearkombinationen} \\longrightarrow \\text{Spannraum} \\longrightarrow \\text{Erzeugendensystem}.$$\n\nDiese Darstellung dient nur der didaktischen Zusammenfassung. Die Gleichungsbereinigung ist in diesem Abschnitt besonders deutlich. Im Original wurden die mathematischen Angaben als Gleichungen **(3.113) bis (3.120)** geführt. Dazu gehörten jedoch auch reine Voraussetzungen wie die Zugehörigkeit der $v_{i}$ zum Vektorraum und der $\\lambda_{i}$ zum Skalarkörper sowie eine zweite Schreibweise desselben Spannraums.\n\nNach der verbindlichen Regel bleiben deshalb nur vier eigenständige mathematische Aussagen:\n\n-   **(3.69)** Linearkombination,\n\n-   **(3.70)** konkretes Beispiel,\n\n-   **(3.71)** Spannraum,\n\n-   **(3.72)** Erzeugendensystem.\n\nDer vollständige fachliche Inhalt bleibt erhalten. Lediglich mathematisch unselbstständige Voraussetzungen und alternative Schreibweisen werden nicht mehr künstlich als eigene Gleichungen gezählt.\n\n## Ergebnis und Übergang\n\nMit Abschnitt 3.2.5 habe ich beschrieben, wie ich aus vorhandenen Vektoren durch Addition und Skalarmultiplikation weitere Vektoren erzeugen kann. Die Linearkombination bildet dabei die elementare Konstruktion. Der Spannraum erfasst die Gesamtheit aller auf diese Weise erzeugbaren Vektoren, und ein Erzeugendensystem liegt vor, wenn dieser Spannraum den gesamten Vektorraum umfasst.\n\nDamit ist jedoch noch nicht geklärt, ob alle Vektoren eines Erzeugendensystems tatsächlich erforderlich sind. Ein Erzeugendensystem kann redundante Vektoren enthalten, die bereits aus den übrigen Vektoren hervorgehen.\n\nIm nächsten Abschnitt untersuche ich daher, wann Vektoren voneinander unabhängig sind und unter welchen Bedingungen ein Erzeugendensystem zugleich eine Basis bildet. Damit führt der Aufbau unmittelbar zu **3.2.6 Lineare Unabhängigkeit, Basis und Dimension**.', '1c2f7225b3636f943f2efc3afa3b9cca8675bb6d7dbafd3dd4bac3a515278a89', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.'),
+(7, 28, 2, 'source_import', '# 3.2.6 Lineare Unabhängigkeit, Basis und Dimension\n\nMit dem Spannraum kann ich bestimmen, welche Vektoren sich aus einer gegebenen Vektormenge durch Linearkombinationen erzeugen lassen. Damit ist jedoch noch nicht geklärt, ob alle verwendeten Vektoren tatsächlich erforderlich sind. Enthält eine Vektormenge einen Vektor, der bereits durch die übrigen Vektoren erzeugt werden kann, ist dieser für die Erzeugung des Spannraums redundant. Die lineare Algebra erfasst diesen Unterschied durch die Begriffe der linearen Unabhängigkeit und linearen Abhängigkeit \\[71, 74, 82\\].\n\nDiese Unterscheidung führt unmittelbar zum Basisbegriff. Eine Basis soll einerseits den gesamten Vektorraum erzeugen, andererseits aber keine überflüssigen Vektoren enthalten. Sie ist deshalb ein linear unabhängiges Erzeugendensystem. Die Anzahl der Vektoren einer Basis bestimmt bei endlichdimensionalen Vektorräumen schließlich deren Dimension \\[71, 74, 82\\].\n\nFür meine weitere Entwicklung ist diese Struktur besonders wichtig. Sobald ich einen mathematischen Zustandsraum durch Komponenten beschreiben möchte, muss ich wissen, ob diese Komponenten voneinander unabhängig sind, ob sie den gesamten Raum erfassen und wie viele unabhängige Richtungen für seine Beschreibung erforderlich sind. Die mathematischen Begriffe liefern hierfür zunächst ausschließlich die formale Grundlage. Die Auswahl und Interpretation funktionaler Basisrichtungen innerhalb des FRZK erfolgt erst auf dieser Grundlage.\n\n## Definition 3.2.11: Lineare Unabhängigkeit\n\nSeien $v_{1},\\ldots,v_{n} \\in V$ Vektoren eines Vektorraums $V$ über einem Körper $K$.\n\nDie Vektoren $v_{1},\\ldots,v_{n}$ heißen linear unabhängig, wenn die Gleichung\n\n$$\\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} = 0_{V}\\quad \\Longrightarrow \\quad\\lambda_{1} = \\lambda_{2} = \\cdots = \\lambda_{n} = 0_{K}\\ (3.74)$$\n\nfür $\\lambda_{1},\\ldots,\\lambda_{n} \\in K$ gilt.\n\nDabei bezeichnet\n\n-   $v_{1},\\ldots,v_{n}$ die untersuchten Vektoren,\n\n-   $\\lambda_{1},\\ldots,\\lambda_{n}$ die zugehörigen Skalare,\n\n-   $0_{V}$ den Nullvektor des Vektorraums,\n\n-   $0_{K}$ das additive Nullelement des Skalarkörpers.\n\nDie Aussage bedeutet, dass ausschließlich die triviale Linearkombination den Nullvektor erzeugt. Es gibt also keine nichttriviale Kombination der betrachteten Vektoren, deren Ergebnis $0_{V}$ ist \\[71, 74, 82\\].\n\nDamit besitzt keiner der Vektoren eine Erzeugungsinformation, die bereits vollständig in den übrigen Vektoren enthalten wäre.\n\n## Definition 3.2.12: Lineare Abhängigkeit\n\nEine Vektormenge $v_{1},\\ldots,v_{n}$ heißt linear abhängig, wenn Skalare existieren, die nicht sämtlich null sind und dennoch den Nullvektor erzeugen:\n\n$$\\exists\\,\\lambda_{1},\\ldots,\\lambda_{n} \\in K:\\quad\\quad\\left( \\sum_{i = 1}^{n}{\\lambda_{i}v_{i}} = 0_{V} \\right) \\land \\left( \\exists j:\\lambda_{j} \\neq 0_{K} \\right)(3.75)$$\n\nDie lineare Abhängigkeit ist damit genau das Gegenstück zur linearen Unabhängigkeit \\[71, 74, 82\\].\n\nIst beispielsweise $\\lambda_{j} \\neq 0_{K}$, kann ich Gleichung (3.75) nach $v_{j}$ auflösen:\n\n$$v_{j} = - \\frac{1}{\\lambda_{j}}\\sum_{i = 1\\backslash\\backslash i \\neq j}^{n}{\\lambda_{i}v_{i}}\\ (3.76)$$\n\nDamit wird unmittelbar sichtbar, was lineare Abhängigkeit bedeutet: Mindestens ein Vektor kann vollständig als Linearkombination der übrigen dargestellt werden. Dieser Vektor erweitert den erzeugten Spannraum nicht.\n\n## Beispiel für lineare Abhängigkeit\n\nIch betrachte im zweidimensionalen reellen Vektorraum\n\n$$v_{1} = \\begin{pmatrix}\n1 \\\\\n2\n\\end{pmatrix},\\quad\\quad v_{2} = \\begin{pmatrix}\n2 \\\\\n4\n\\end{pmatrix}.\n$$Diese Vektoren erfüllen\\\n$$v_{2} = 2v_{1}\\quad\\quad \\Longleftrightarrow \\quad\\quad 2v_{1} - v_{2} = 0_{R^{\\mathbb{2}}}\\ (3.77)$$\n\nDie Koeffizienten $2$ und $- 1$ sind nicht beide null. Deshalb bilden $v_{1}$ und $v_{2}$ eine linear abhängige Vektormenge.\n\nGeometrisch liegen beide Vektoren auf derselben Ursprungsgeraden. Der zweite Vektor eröffnet deshalb keine zusätzliche unabhängige Richtung.\n\n## Beispiel für lineare Unabhängigkeit\n\nNun betrachte ich\\\n$$v_{1} = \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix},\\quad\\quad v_{2} = \\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix}.$$\n\nAus\n\n$$\\lambda_{1}\\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} + \\lambda_{2}\\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix} = \\begin{pmatrix}\n0 \\\\\n0\n\\end{pmatrix}\\quad \\Longrightarrow \\quad\\lambda_{1} = \\lambda_{2} = 0\\ (3.78)$$\n\nfolgt unmittelbar, dass die beiden Vektoren linear unabhängig sind \\[71, 74\\].\n\nKeiner der beiden Vektoren lässt sich aus dem anderen erzeugen. Beide liefern deshalb jeweils eine eigenständige Richtung des zweidimensionalen Vektorraums.\n\n## Definition 3.2.13: Basis\n\nEine geordnete Vektormenge\\\n$$B = \\left( b_{1},\\ldots,b_{n} \\right)$$\n\nbezeichne ich als Basis eines Vektorraums $V$, wenn zwei Bedingungen gleichzeitig erfüllt sind:\n\n$$\\begin{matrix}\nV = \\text{span}\\left( b_{1},\\ldots,b_{n} \\right), \\\\\n\\text{∑}_{i = 1}^{n}\\lambda_{i}b_{i} = 0_{V} \\Longrightarrow \\lambda_{1} = \\cdots = \\lambda_{n} = 0_{K}.\n\\end{matrix}\\ (3.79)$$\n\nDie erste Bedingung verlangt, dass die Basis den gesamten Vektorraum erzeugt. Die zweite Bedingung verlangt lineare Unabhängigkeit.\n\nEine Basis ist damit ein vollständiges, aber nicht redundantes Erzeugungssystem \\[71, 74, 82\\].\n\nGerade die Verbindung dieser beiden Eigenschaften ist entscheidend. Ein lediglich linear unabhängiges System muss nicht den gesamten Raum erzeugen. Ein Erzeugendensystem kann dagegen redundante Vektoren enthalten. Erst die Basis erfüllt beide Anforderungen gleichzeitig.\n\n## Eindeutige Darstellung bezüglich einer Basis\n\nIst $B = \\left( b_{1},\\ldots,b_{n} \\right)$ eine Basis von $V$, dann besitzt jeder Vektor $v \\in V$ eine eindeutig bestimmte Darstellung\n\n$$v = \\sum_{i = 1}^{n}{\\lambda_{i}b_{i}}\\ (3.80)$$\n\nDie Koeffizienten $\\lambda_{1},\\ldots,\\lambda_{n}$ heißen die Koordinaten des Vektors $v$ bezüglich der Basis $B$ \\[71, 74, 82\\].\n\nDie Eindeutigkeit folgt unmittelbar aus der linearen Unabhängigkeit der Basisvektoren. Angenommen, für denselben Vektor existierten zwei unterschiedliche Darstellungen,\n\n$$v\\sum_{i = 1}^{n}{\\lambda_{i}b_{i\\sum_{i = 1}^{n}{\\mu_{i}b_{i}}}}.\n$$\n\nDann folgt nach Subtraktion\\\n$$\\sum_{i = 1}^{n}{\\left( \\lambda_{i} - \\mu_{i} \\right)b_{i}}0_{V}.$$\n\nDa die Basisvektoren linear unabhängig sind, muss für jedes $i$\\\n$$\\lambda_{i} - \\mu_{i} = 0$$\n\ngelten. Also ist $\\lambda_{i} = \\mu_{i}$ für alle $i$.\n\nDiese Zwischenstufen gehören zu einer gemeinsamen Herleitung und erhalten deshalb keine zusätzlichen Gleichungsnummern.\n\n## Standardbasis des reellen Koordinatenraums\n\nFür den reellen Koordinatenraum $\\mathbb{R}^{n}$ verwende ich die Standardbasis\n\n$$E_{n} = \\left( e_{1},\\ldots,e_{n} \\right),\\quad\\quad e_{i} = \\begin{pmatrix}\n0 \\\\\n \\vdots \\\\\n1 \\\\\n \\vdots \\\\\n0\n\\end{pmatrix}\\ (3.81)$$\n\nwobei beim Vektor $e_{i}$ genau die $i$-te Komponente den Wert $1$ besitzt und alle übrigen Komponenten gleich $0$ sind \\[71, 74\\].\n\nFür $\\mathbb{R}^{2}$ ergibt sich damit unmittelbar\n\n$$e_{1} = \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix},\\quad\\quad e_{2} = \\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix}.\n$$Diese konkrete Ausprägung ist ein Beispiel der allgemeinen Definition (3.81). Jeder Vektor\\\n$$v = \\begin{pmatrix}\nv_{1} \\\\\n \\vdots \\\\\nv_{n}\n\\end{pmatrix}$$\n\nbesitzt bezüglich dieser Basis die Darstellung\n\n$$v = v_{1}e_{1} + \\cdots + v_{n}e_{n} = \\sum_{i = 1}^{n}v_{i}e_{i}\\ (3.82)$$\n\nDie Komponenten $v_{1},\\ldots,v_{n}$ sind damit genau die Koordinaten des Vektors bezüglich der Standardbasis.\n\n## Vektor und Koordinatendarstellung\n\nIch muss den mathematischen Vektor von seiner Koordinatendarstellung unterscheiden. Der Vektor ist ein Element des Vektorraums. Ein Koordinatenvektor beschreibt dieses Element dagegen bezüglich einer konkret gewählten Basis \\[71, 74, 82\\].\n\nFür eine Basis\\\n$$B = \\left( b_{1},\\ldots,b_{n} \\right)$$\n\nund\\\n$$v = \\sum_{i = 1}^{n}{\\lambda_{i}b_{i}}$$\n\ndefiniere ich den zugehörigen Koordinatenvektor durch\n\n$$\\lbrack v\\rbrack_{B} = \\begin{pmatrix}\n\\lambda_{1} \\\\\n\\lambda_{2} \\\\\n \\vdots \\\\\n\\lambda_{n}\n\\end{pmatrix}\\ (3.83)$$\n\nDabei bezeichnet $\\lbrack v\\rbrack_{B}$ die Koordinatendarstellung des Vektors $v$ bezüglich der Basis $B$.\n\nÄndere ich die Basis, ändern sich im Allgemeinen die Koordinaten. Der Vektor selbst bleibt jedoch unverändert. Diese Unterscheidung ist für die weitere Arbeit wesentlich, weil mathematische Eigenschaften eines Zustands nicht mit den Zahlen verwechselt werden dürfen, durch die dieser Zustand in einer bestimmten Darstellung beschrieben wird.\n\n## Definition 3.2.14: Dimension\n\nBesitzt ein Vektorraum $V$ eine endliche Basis mit $n$ Elementen, dann bezeichne ich $V$ als endlichdimensional und definiere\n\n$$\\dim(V) = n\\ (3.84)$$\n\nAlle Basen desselben endlichdimensionalen Vektorraums besitzen dieselbe Anzahl von Elementen. Dadurch ist die Dimension unabhängig davon, welche konkrete Basis ich zur Darstellung verwende \\[71, 74, 82\\].\n\nFür den reellen Koordinatenraum folgt\n\n$$\\dim\\left( \\mathbb{R}^{n} \\right) = n\\ (3.85)$$\n\nDamit gilt insbesondere\\\n$$\\dim\\left( \\mathbb{R}^{2} \\right) = 2,\\quad\\quad\\dim\\left( \\mathbb{R}^{3} \\right) = 3.$$\n\nDiese beiden Aussagen sind unmittelbare Spezialfälle von Gleichung (3.85). Die Dimension beschreibt damit die Anzahl unabhängiger Basisrichtungen, die erforderlich ist, um den gesamten Vektorraum zu erzeugen.\n\n## Basiserweiterung und Basisreduktion\n\nEine linear unabhängige Menge in einem endlichdimensionalen Vektorraum kann zu einer Basis ergänzt werden. Fehlen noch Richtungen zur Erzeugung des gesamten Raumes, können geeignete weitere Vektoren hinzugefügt werden, bis der gesamte Raum aufgespannt wird \\[71, 74, 82\\].\n\nUmgekehrt kann ich aus einem endlichen Erzeugendensystem eine Basis gewinnen, indem ich schrittweise redundante Vektoren entferne. Sobald ein Vektor bereits als Linearkombination der übrigen Vektoren darstellbar ist, kann ich ihn entfernen, ohne den Spannraum zu verändern.\n\nDadurch ergeben sich zwei grundlegende Grenzen:\n\nEin Erzeugendensystem eines $n$-dimensionalen Vektorraums, das mehr als $n$ Vektoren enthält, ist notwendigerweise linear abhängig. Umgekehrt kann eine linear unabhängige Vektormenge in diesem Raum höchstens $n$ Elemente enthalten \\[71, 74, 82\\].\n\nBasis und Dimension verbinden damit drei zunächst getrennte Fragen:\n\n-   Welche Vektoren kann ich erzeugen?\n\n-   Welche Vektoren sind dafür wirklich erforderlich?\n\n-   Wie viele unabhängige Richtungen besitzt der betrachtete Raum?\n\n## Wissenschaftliche Einordnung\n\nDie lineare Unabhängigkeit ermöglicht mir, Redundanz innerhalb einer mathematischen Zustandsbeschreibung eindeutig zu erkennen. Zwei formal verschiedene Vektoren liefern nicht zwangsläufig zwei unabhängige Informationen. Ist einer aus dem anderen oder aus mehreren anderen Vektoren erzeugbar, erweitert er den Spannraum nicht.\n\nEine Basis liefert deshalb eine minimale und zugleich vollständige Beschreibung eines endlichdimensionalen Vektorraums. Ihre Vektoren reichen aus, um jedes Element des Raums darzustellen, ohne dass einer dieser Vektoren für die Erzeugung des Raums entbehrlich wäre.\n\nDie Dimension abstrahiert noch einen Schritt weiter. Sie hängt nicht von der konkreten Wahl der Basis ab, sondern beschreibt eine Eigenschaft des Vektorraums selbst. Unterschiedliche Basen können aus völlig verschiedenen Vektoren bestehen und dennoch dieselbe Anzahl von Elementen besitzen.\n\nFür das FRZK ist diese Trennung wesentlich. Wenn ich später funktionale Zustände durch mehrere Komponenten beschreibe, kann ich nicht allein aus der Anzahl verwendeter Größen auf die tatsächliche Dimension des Zustandsraums schließen. Zunächst muss gezeigt werden, dass die verwendeten Richtungen tatsächlich linear unabhängig sind und gemeinsam den vorgesehenen Raum erzeugen.\n\n## Methodologische Betrachtungen\n\nMethodologisch liefert mir der Basisbegriff ein wichtiges Kriterium gegen unnötige Modellkomplexität. Eine zusätzliche mathematische Größe erhöht die Dimension eines Modells nicht automatisch. Wenn sie aus bereits vorhandenen Größen linear erzeugt werden kann, ist sie innerhalb der betrachteten linearen Struktur redundant.\n\nUmgekehrt darf ich eine geringe Anzahl von Modellgrößen nicht allein deshalb als ausreichend betrachten, weil sich mit ihnen viele Zustände formulieren lassen. Entscheidend ist, ob ihr Spannraum tatsächlich den vollständigen vorgesehenen Zustandsraum erfasst.\n\nDamit muss ich bei jeder späteren Wahl funktionaler Basisgrößen zwei voneinander unabhängige Nachweise führen:\n\n1.  Die Größen müssen den benötigten Zustandsraum erzeugen.\n\n2.  Sie müssen untereinander linear unabhängig sein.\n\nErst dann kann ich sie mathematisch als Basis auffassen.\n\nAuch die Dimension darf nicht nachträglich aus einer gewünschten Anzahl von Modellvariablen festgelegt werden. Sie ergibt sich aus der Struktur des tatsächlich definierten Vektorraums. Wenn das FRZK später eine bestimmte Dimension erhält, muss diese aus der Konstruktion des Zustandsraums hervorgehen und darf nicht lediglich als bequeme Zahl vorausgesetzt werden.\n\n## Didaktische Betrachtungen\n\nFür mich lässt sich der Zusammenhang besonders einfach durch die Frage nach überflüssigen Richtungen verstehen.\n\nBeginne ich mit einem Erzeugendensystem, kann ich nacheinander prüfen, ob einzelne Vektoren durch die übrigen Vektoren dargestellt werden können. Ist dies möglich, entferne ich den betreffenden Vektor. Der Spannraum bleibt dabei unverändert.\n\nIch wiederhole diesen Vorgang so lange, bis kein Vektor mehr entfernt werden kann, ohne den erzeugten Raum zu verkleinern. Das verbleibende System ist linear unabhängig und erzeugt weiterhin den gesamten Raum. Damit habe ich eine Basis erhalten.\n\nDer Zusammenhang lässt sich daher als begriffliche Entwicklung zusammenfassen:\\\n$$\\text{Linearkombination} \\longrightarrow \\text{Spannraum} \\longrightarrow \\text{Erzeugendensystem} \\longrightarrow \\text{lineare Unabhängigkeit} \\longrightarrow \\text{Basis} \\longrightarrow \\text{Dimension}.$$\n\nDiese Darstellung dient der Übersicht und wird nicht als eigenständige Gleichung nummeriert.\n\nEbenso wichtig ist für mich die Trennung zwischen Vektor und Koordinatenvektor. Ein Wechsel der Basis verändert die Zahlen, mit denen ein Vektor beschrieben wird, nicht aber den Vektor selbst. Dadurch entsteht unmittelbar die nächste Frage: Wie lassen sich die Koordinaten desselben Vektors systematisch von einer Basis in eine andere überführen?\n\n## Ergebnis und Übergang\n\nMit linearer Unabhängigkeit, Basis und Dimension kann ich nun bestimmen, welche Vektoren innerhalb eines Erzeugungssystems redundant sind, welche minimale Vektormenge den gesamten Raum beschreibt und wie viele unabhängige Richtungen dieser Raum besitzt.\n\nJeder Vektor eines endlichdimensionalen Vektorraums kann bezüglich einer Basis eindeutig durch Koordinaten dargestellt werden. Diese Koordinaten sind jedoch von der gewählten Basis abhängig.\n\nDamit ist die Grundlage für den nächsten Schritt gelegt. In **3.2.7 Basiswechsel und Koordinatentransformationen** untersuche ich, wie sich die Koordinaten eines unveränderten Vektors beim Wechsel der Basis verändern und wie die zugehörigen Transformationsmatrizen konstruiert werden.\n\nDu meinst im unmittelbaren Fortgang **3.2.7**. Ich gebe den Abschnitt jetzt vollständig direkt im Chat aus. Die Regel ist gespeichert: Abschnittsausgaben erfolgen grundsätzlich vollständig im Chat.', '4f582f4a4df5b2caa711144499b68ad4476644161f7491d87fdc50a922a7dae0', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.');
+INSERT INTO `section_versions` (`section_version_id`, `section_id`, `revision_id`, `version_kind`, `body_markdown`, `checksum_sha256`, `notes`) VALUES
+(8, 29, 2, 'source_import', '# 3.2.7 Basiswechsel und Koordinatentransformationen\n\nMit einer Basis kann ich jeden Vektor eines endlichdimensionalen Vektorraums eindeutig durch Koordinaten beschreiben. Diese Koordinaten gehören jedoch nicht zum Vektor selbst. Sie entstehen erst dadurch, dass ich eine bestimmte Basis für seine Darstellung auswähle. Wähle ich eine andere Basis desselben Vektorraums, können sich sämtliche Koordinaten ändern, obwohl der mathematische Vektor unverändert bleibt \\[71, 74, 82\\].\n\nDiese Unterscheidung zwischen einem mathematischen Objekt und seiner Darstellung ist für meine weitere Entwicklung grundlegend. Der Vektorraum und seine Elemente existieren innerhalb der mathematischen Struktur unabhängig davon, mit welchen Koordinaten ich sie beschreibe. Eine Basis stellt deshalb zunächst ein Bezugssystem für die Darstellung bereit. Ein Basiswechsel verändert dieses Bezugssystem, nicht aber den dargestellten Vektor.\n\nDasselbe gilt für lineare Operatoren. Ein Operator ist als Abbildung zwischen Vektoren definiert. Seine Matrixdarstellung hängt dagegen von der verwendeten Basis ab. Damit muss ich bei jeder späteren mathematischen Beschreibung sorgfältig zwischen einer Struktur und ihrer konkreten Darstellung unterscheiden \\[71, 74, 82\\].\n\nFür das Funktionale Raum-Zeit-Kohärenzsystem ist diese Trennung besonders wichtig. Wenn ich funktionale Zustände später als abstrakte mathematische Objekte beschreibe, dürfen ihre grundlegenden Eigenschaften nicht davon abhängen, welche Koordinatendarstellung ich für eine Berechnung wähle. Die Basis soll die mathematische Beschreibung ermöglichen, aber nicht den beschriebenen Zustand selbst erzeugen.\n\n## Darstellung eines Vektors bezüglich einer Basis\n\nSei $B = \\left( b_{1},\\ldots,b_{n} \\right)$ eine Basis eines endlichdimensionalen Vektorraums $V$. Für jeden Vektor $v \\in V$ existieren eindeutig bestimmte Skalare $\\lambda_{1},\\ldots,\\lambda_{n}$, sodass\n\n$$v = \\sum_{i = 1}^{n}{\\lambda_{i}b_{i}}\\ (3.86)$$\n\nDabei gilt:\n\n-   $B$ ist die gewählte Basis,\n\n-   $b_{1},\\ldots,b_{n}$ sind ihre Basisvektoren,\n\n-   $v$ ist der dargestellte Vektor,\n\n-   $\\lambda_{1},\\ldots,\\lambda_{n}$ sind seine Koordinaten bezüglich $B$.\n\nDie Eindeutigkeit dieser Skalare folgt aus der linearen Unabhängigkeit der Basisvektoren \\[71, 74, 82\\].\n\nDie Koordinaten fasse ich zum Koordinatenvektor zusammen:\n\n$$\\lbrack v\\rbrack_{B} = \\begin{pmatrix}\n\\lambda_{1} \\\\\n\\lambda_{2} \\\\\n \\vdots \\\\\n\\lambda_{n}\n\\end{pmatrix}\\ (3.87)$$\n\nDer Ausdruck $\\lbrack v\\rbrack_{B}$ bezeichnet damit ausdrücklich nicht den Vektor $v$ selbst, sondern seine Darstellung bezüglich der Basis $B$.\n\nDiese Unterscheidung ist mathematisch wesentlich. Derselbe abstrakte Vektor kann durch unterschiedliche Zahlenfolgen beschrieben werden, wenn ich unterschiedliche Basen verwende.\n\n## Zwei verschiedene Basen\n\nIch betrachte nun zwei Basen desselben $n$-dimensionalen Vektorraums,\\\n$$B = \\left( b_{1},\\ldots,b_{n} \\right)\\quad\\quad\\text{und}\\quad\\quad C = \\left( c_{1},\\ldots,c_{n} \\right).$$\n\nDiese Angaben legen lediglich die beiden verwendeten Basen fest und erhalten deshalb keine eigenen Gleichungsnummern.\n\nDerselbe Vektor $v \\in V$ besitzt bezüglich dieser Basen zwei Koordinatendarstellungen. Ich fasse sie gemeinsam zusammen:\n\n$$\\lbrack v\\rbrack_{B} = \\begin{pmatrix}\n\\lambda_{1} \\\\\n \\vdots \\\\\n\\lambda_{n}\n\\end{pmatrix},\\quad\\quad\\lbrack v\\rbrack_{C} = \\begin{pmatrix}\n\\mu_{1} \\\\\n \\vdots \\\\\n\\mu_{n}\n\\end{pmatrix}\\ (3.88)$$\n\nDie Zahlen $\\lambda_{i}$ und $\\mu_{i}$ können voneinander verschieden sein. Trotzdem beschreiben beide Koordinatenvektoren denselben Vektor $v$ \\[71, 82\\].\n\nIch muss deshalb unterscheiden zwischen einer Veränderung des mathematischen Vektors und einer Veränderung seiner Koordinatendarstellung. Ein Basiswechsel bewirkt ausschließlich den zweiten Fall.\n\n## Basiswechselmatrix\n\nZwischen den Koordinaten bezüglich zweier Basen existiert eine eindeutig bestimmte invertierbare lineare Transformation \\[71, 74, 82\\].\n\nIch bezeichne mit $P_{B \\rightarrow C}$ die Matrix, welche Koordinaten bezüglich $B$ in Koordinaten bezüglich $C$ überführt. Das Symbol selbst stellt lediglich die Bezeichnung dieser Matrix dar und erhält keine eigene Gleichungsnummer.\n\nDie eigentliche Koordinatentransformation lautet\n\n$$\\lbrack v\\rbrack_{C} = P_{B \\rightarrow C}\\lbrack v\\rbrack_{B}\\ (3.89)$$\n\nDabei gilt:\n\n-   $\\lbrack v\\rbrack_{B}$ ist die Koordinatendarstellung vor dem Basiswechsel,\n\n-   $\\lbrack v\\rbrack_{C}$ ist die Koordinatendarstellung nach dem Basiswechsel,\n\n-   $P_{B \\rightarrow C}$ ist die zugehörige Basiswechselmatrix.\n\nDie Matrix $P_{B \\rightarrow C}$ wirkt also auf den Koordinatenvektor und nicht auf den abstrakten Vektor $v$ selbst.\n\nDa sowohl $B$ als auch $C$ Basen desselben Vektorraums sind, ist die Basiswechselmatrix invertierbar. Hin- und Rücktransformation fasse ich deshalb gemeinsam zusammen:\n\n$$\\begin{matrix}\nP_{C \\rightarrow B} = P_{B \\rightarrow C}^{- 1} \\\\\n\\lbrack v\\rbrack_{B} = P_{C \\rightarrow B}\\lbrack v\\rbrack_{C}.\n\\end{matrix}\\ (3.90)$$\n\nDamit kann ich jede Koordinatentransformation eindeutig rückgängig machen \\[71, 74, 82\\].\n\nDer Basiswechsel enthält deshalb keinen Informationsverlust. Ich ändere lediglich die Darstellung desselben mathematischen Objekts.\n\n## Konstruktion einer Basiswechselmatrix\n\nDie Basiswechselmatrix kann aus den Koordinaten der Basisvektoren konstruiert werden.\n\nWill ich beispielsweise Koordinaten bezüglich einer Basis $C$ in Koordinaten bezüglich einer Basis $B$ überführen, stelle ich jeden Basisvektor von $C$ bezüglich $B$ dar:\\\n$$\\mathbf{c}_{\\mathbf{j}\\sum_{\\mathbf{i = 1}}^{\\mathbf{n}}\\mathbf{p}_{\\mathbf{ij}}}\\mathbf{b}_{\\mathbf{i}}\\mathbf{.}$$\n\nDiese Beziehung dient hier der Konstruktion und benötigt keine zusätzliche Gleichungsnummer.\n\nDie zugehörigen Koordinatenvektoren $\\left\\lbrack c_{j} \\right\\rbrack_{B}$ bilden die Spalten der Basiswechselmatrix. Damit gilt\n\n$$P_{C \\rightarrow B} = \\begin{pmatrix}\n\\left\\lbrack c_{1} \\right\\rbrack_{B} & \\left\\lbrack c_{2} \\right\\rbrack_{B} & \\cdots & \\left\\lbrack c_{n} \\right\\rbrack_{B}\n\\end{pmatrix}\\ (3.91)$$\n\nDamit besitzt jede Spalte der Matrix eine unmittelbar nachvollziehbare Bedeutung: Sie beschreibt einen Basisvektor der Basis $C$ in den Koordinaten der Basis $B$ \\[71, 74, 82\\].\n\n## Beispiel eines Basiswechsels\n\nIch betrachte den zweidimensionalen Raum $\\mathbb{R}^{2}$. Als erste Basis verwende ich die Standardbasis\\\n$$B = \\left( \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix},\\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix} \\right).$$\n\nAls zweite Basis wähle ich\\\n$$C = \\left( \\begin{pmatrix}\n1 \\\\\n1\n\\end{pmatrix},\\begin{pmatrix}\n1 \\\\\n - 1\n\\end{pmatrix} \\right).$$\n\nBeide Angaben legen lediglich die für das Beispiel verwendeten Basen fest. Da $B$ die Standardbasis ist, entsprechen die Koordinaten der beiden $C$-Basisvektoren bezüglich $B$ unmittelbar ihren Komponenten. Die Basiswechselmatrix von $C$ nach $B$ ist somit\n\n$$P_{C \\rightarrow B} = \\begin{pmatrix}\n1 & 1 \\\\\n1 & - 1\n\\end{pmatrix}\\ (3.92)$$\n\nDie beiden Spalten sind genau die Koordinatendarstellungen der beiden $C$-Basisvektoren bezüglich der Basis $B$.\n\nDie inverse Matrix liefert die Koordinatentransformation in Gegenrichtung:\n\n$$P_{B \\rightarrow C} = P_{C \\rightarrow B}^{- 1} = \\frac{1}{2}\\begin{pmatrix}\n1 & 1 \\\\\n1 & - 1\n\\end{pmatrix}\\ (3.93)$$\n\nDamit kann ich einen beliebigen Koordinatenvektor eindeutig zwischen beiden Basen umrechnen.\n\n## Darstellung linearer Operatoren\n\nDie Basisabhängigkeit betrifft nicht nur Vektorkoordinaten, sondern auch die Matrixdarstellung linearer Operatoren.\n\nSei $T:V \\rightarrow V$ ein linearer Operator. Ich bezeichne seine Matrixdarstellung bezüglich der Basis $B$ mit $A_{B}$ und bezüglich der Basis $C$ mit $A_{C}$.\n\nDie Bezeichnungen $T:V \\rightarrow V$, $A_{B}$ und $A_{C}$ sind Voraussetzungen beziehungsweise verwendete Größen und erhalten deshalb keine eigenen Gleichungsnummern.\n\nZwischen beiden Matrixdarstellungen gilt\n\n$$A_{C} = P_{B \\rightarrow C}A_{B}P_{C \\rightarrow B}\\ (3.94)$$\n\nMit\\\n$$P_{C \\rightarrow B} = P_{B \\rightarrow C}^{- 1}$$\n\nkann ich dieselbe Beziehung auch schreiben als\\\n$$A_{C} = P_{B \\rightarrow C}A_{B}P_{B \\rightarrow C}^{- 1}.$$\n\nDiese zweite Darstellung ist keine neue mathematische Aussage und erhält deshalb keine eigene Gleichungsnummer.\n\nGleichung (3.94) ist eine Ähnlichkeitstransformation. Die Matrizen $A_{B}$ und $A_{C}$ können unterschiedliche Einträge besitzen, stellen aber denselben linearen Operator bezüglich unterschiedlicher Basen dar \\[71, 74, 82\\].\n\nDamit wird die Unterscheidung zwischen Operator und Matrixdarstellung besonders deutlich. Der Operator beschreibt die mathematische Wirkung. Die Matrix beschreibt diese Wirkung bezüglich einer bestimmten Basis.\n\n## Invariante Eigenschaften\n\nWenn zwei Matrizen denselben linearen Operator in unterschiedlichen Basen darstellen, ändern sich zwar ihre einzelnen Matrixelemente, bestimmte strukturelle Eigenschaften bleiben jedoch erhalten.\n\nZu diesen unter Ähnlichkeit erhaltenen Eigenschaften gehören insbesondere Rang, Determinante, Spur, charakteristisches Polynom, Eigenwerte und Spektrum \\[71, 74, 82\\].\n\nDie Dimension gehört dagegen unmittelbar zum zugrunde liegenden Vektorraum und ist daher unabhängig von der Basiswahl.\n\nFür die Determinante gilt beispielsweise\n\n$$\\det\\left( A_{C} \\right) = \\det\\left( A_{B} \\right)\\ (3.95)$$\n\nDie Gleichheit folgt aus der Multiplikativität der Determinante und der Invertierbarkeit der Basiswechselmatrix.\n\nAus Gleichung (3.94) folgt\\\n$$\\det\\left( A_{C} \\right) = \\det\\left( P_{B \\rightarrow C} \\right)\\det\\left( A_{B} \\right)\\det\\left( P_{B \\rightarrow C}^{- 1} \\right).$$\n\nDa\n\n$$\\mathbf{de}\\mathbf{t}{\\left( \\mathbf{P}_{\\mathbf{B \\rightarrow C}}^{\\mathbf{- 1}} \\right)\\mathbf{=}}\\frac{\\mathbf{1}}{\\mathbf{de}\\mathbf{t}\\left( \\mathbf{P}_{\\mathbf{B \\rightarrow C}} \\right)}\\mathbf{,}\n$$heben sich die beiden Faktoren gegenseitig auf. Diese Rechenschritte bilden eine Herleitung von Gleichung (3.95) und erhalten deshalb keine eigenen Gleichungsnummern.\n\nEbenso bleibt das Spektrum erhalten:\n\n$$\\sigma\\left( A_{B} \\right) = \\sigma\\left( A_{C} \\right)\\ (3.96)$$\n\nDabei bezeichnet $\\sigma(A)$ das Spektrum der Matrix beziehungsweise des dargestellten Operators \\[71, 76, 82\\].\n\nDamit kann eine Größe basisabhängig dargestellt sein, während bestimmte Eigenschaften der durch sie beschriebenen mathematischen Struktur basisunabhängig bleiben.\n\n## Darstellung und mathematisches Objekt\n\nDer Basiswechsel macht für mich einen grundlegenden Unterschied sichtbar: Ein mathematisches Objekt ist nicht mit seinen Koordinaten identisch.\n\nEin Vektor $v$ bleibt derselbe Vektor, wenn ich von $\\lbrack v\\rbrack_{B}$ zu $\\lbrack v\\rbrack_{C}$ wechsle. Ebenso bleibt ein Operator $T$ derselbe Operator, obwohl seine Matrixdarstellung von $A_{B}$ zu $A_{C}$ wechseln kann.\n\nDamit hängt eine mathematische Aussage über ein abstraktes Objekt nicht von einer bestimmten Koordinatenwahl ab, sofern die Aussage tatsächlich eine intrinsische Eigenschaft dieses Objekts beschreibt \\[71, 74, 82\\].\n\nEine einzelne Matrixkomponente besitzt dagegen im Allgemeinen keine solche Invarianz. Sie kann sich bereits durch die Wahl einer anderen Basis verändern.\n\nIch muss deshalb unterscheiden zwischen Eigenschaften des Zustands, Eigenschaften seiner Koordinatendarstellung, Eigenschaften eines Operators und Eigenschaften seiner Matrixdarstellung. Diese Ebenen dürfen nicht miteinander verwechselt werden.\n\n## Wissenschaftliche Einordnung\n\nDer Basiswechsel ermöglicht es mir, verschiedene mathematische Darstellungen desselben Zustands miteinander zu verbinden. Die Koordinatentransformation verändert weder den Vektorraum noch den Vektor. Sie verändert ausschließlich die Zahlen, durch die ich diesen Vektor bezüglich einer Basis beschreibe.\n\nDasselbe Prinzip gilt für lineare Operatoren. Ihre Matrixdarstellung kann sich bei einem Basiswechsel erheblich verändern. Dennoch bleiben mathematisch invariante Eigenschaften des Operators erhalten.\n\nDiese Unterscheidung ist für die weitere Konstruktion des FRZK wesentlich. Wenn ein funktionaler Zustand später durch einen Vektor beschrieben wird, darf ich seine mathematische Existenz nicht mit einer bestimmten Koordinatenliste identifizieren. Eine konkrete Koordinatendarstellung ist eine Beschreibung dieses Zustands unter einer gewählten Basis.\n\nDamit kann ich unterschiedliche Darstellungen desselben funktionalen Zustands zulassen, ohne dadurch verschiedene Zustände postulieren zu müssen.\n\nGleichzeitig entsteht ein wichtiges Prüfkriterium: Eigenschaften, die als grundlegende Eigenschaften eines funktionalen Zustands verstanden werden sollen, müssen daraufhin untersucht werden, ob sie bei zulässigen Darstellungswechseln erhalten bleiben. Eine Größe, die sich ausschließlich durch einen Basiswechsel verändert, beschreibt zunächst eine Eigenschaft der Darstellung und nicht ohne Weiteres eine intrinsische Eigenschaft des Zustands.\n\n## Methodologische Betrachtungen\n\nMethodologisch zwingt mich der Basiswechsel zu einer konsequenten Trennung zwischen Struktur und Darstellung.\n\nWenn ich einen Vektor durch $\\lbrack v\\rbrack_{B}$ darstelle, habe ich bereits eine Basis gewählt. Die daraus entstehenden Koordinaten sind deshalb nicht voraussetzungslos. Sie hängen von meiner Darstellungsentscheidung ab.\n\nDas bedeutet auch, dass die numerischen Werte einzelner Komponenten nicht ohne Angabe ihrer Basis vollständig interpretiert werden können. Derselbe mathematische Zustand kann in einer anderen Basis andere Komponenten besitzen.\n\nFür das FRZK folgt daraus, dass eine spätere funktionale Zustandsgröße nicht allein deshalb fundamental sein kann, weil sie als einzelne Koordinate in einer bestimmten Darstellung auftritt. Ich muss unterscheiden, ob die betreffende Größe tatsächlich eine basisunabhängige Eigenschaft beschreibt oder lediglich Bestandteil einer gewählten Koordinatendarstellung ist.\n\nGleichzeitig darf ich Basisunabhängigkeit nicht mit vollständiger Unabhängigkeit von mathematischen Voraussetzungen gleichsetzen. Auch ein abstrakter Vektor ist innerhalb eines definierten Vektorraums bestimmt. Der Basiswechsel beseitigt also nicht die zugrunde liegende mathematische Struktur. Er zeigt lediglich, welche Teile der Beschreibung von der gewählten Darstellung abhängen.\n\n## Didaktische Betrachtungen\n\nFür mich lässt sich ein Basiswechsel am einfachsten verstehen, wenn ich Vektor und Koordinaten zunächst bewusst voneinander trenne.\n\nIch beginne mit einem festen Vektor $v$. Danach wähle ich eine Basis $B$ und bestimme $\\lbrack v\\rbrack_{B}$. Anschließend wähle ich eine zweite Basis $C$ und bestimme $\\lbrack v\\rbrack_{C}$.\n\nDamit habe ich nicht zwei Vektoren erzeugt. Ich habe einen Vektor auf zwei verschiedene Arten beschrieben.\n\nDie Basiswechselmatrix beantwortet anschließend genau die Frage, wie ich die Koordinaten umrechnen muss, damit beide Darstellungen weiterhin denselben Vektor beschreiben.\n\nDer Zusammenhang lässt sich übersichtlich schreiben als\\\n$$\\lbrack v\\rbrack_{B}; \\longleftrightarrow ;v; \\longleftrightarrow ;\\lbrack v\\rbrack_{C}.$$\n\nDiese Darstellung dient ausschließlich der begrifflichen Veranschaulichung und erhält keine Gleichungsnummer.\n\nDasselbe Bild kann ich auf Operatoren übertragen:\\\n$$A_{B}; \\longleftrightarrow ;T; \\longleftrightarrow ;A_{C}.$$\n\nAuch hier stehen links und rechts unterschiedliche Darstellungen, während in der Mitte dasselbe mathematische Objekt steht.\n\nDadurch wird verständlich, warum die Matrixelemente basisabhängig sein können, während beispielsweise Eigenwerte oder Determinante unter einer Ähnlichkeitstransformation erhalten bleiben.\n\n## Ergebnis und Übergang\n\nMit dem Basiswechsel kann ich Koordinaten desselben Vektors zwischen unterschiedlichen Basen transformieren. Die Basiswechselmatrix ist invertierbar und ermöglicht deshalb eine eindeutige Hin- und Rücktransformation.\n\nFür lineare Operatoren führt derselbe Zusammenhang zur Ähnlichkeitstransformation ihrer Matrixdarstellungen. Dabei ändern sich die konkreten Matrixelemente, während wesentliche strukturelle Eigenschaften erhalten bleiben.\n\nDamit habe ich die mathematische Trennung zwischen abstraktem Objekt und konkreter Darstellung weiter präzisiert. Im nächsten Schritt untersuche ich eine dieser invarianten Größen genauer. Die Determinante liefert eine skalare Kennzahl dafür, wie eine lineare Transformation Orientierung und Volumen verändert und ob die Transformation invertierbar sein kann.\n\nDer folgende Abschnitt behandelt deshalb **3.2.8 Determinanten, Orientierung und Volumenänderung**.\n\n**Fortsetzungsstand:** Die letzte Gleichung ist **(3.96)**. Abschnitt **3.2.8 beginnt mit (3.97)**.', '871fe5ed6019807ce8286589b7ec1aac3b880e9c669244a761f0e10b14a3cc1a', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.'),
+(9, 30, 2, 'source_import', '# 3.2.8 Determinanten, Orientierung und Volumenänderung\n\nNachdem ich lineare Operatoren durch Matrizen beschrieben und die Abhängigkeit ihrer Matrixdarstellung von der gewählten Basis untersucht habe, benötige ich nun eine Größe, mit der ich die geometrische Wirkung einer linearen Transformation quantitativ erfassen kann. Für quadratische Matrizen übernimmt die Determinante diese Funktion. Sie beschreibt gleichzeitig, ob eine lineare Transformation Flächen beziehungsweise Volumina vergrößert oder verkleinert, ob sie die Orientierung erhält oder umkehrt und ob durch die Transformation eine Dimension verloren geht \\[71, 74, 82\\].\n\nDie Determinante ist damit nicht lediglich eine Rechenvorschrift für Matrixelemente. Sie ordnet einer quadratischen Matrix einen einzelnen Skalar zu, in dem mehrere strukturelle Eigenschaften der dargestellten linearen Transformation zusammenlaufen. Da ähnliche Matrizen dieselbe Determinante besitzen, hängt diese Kennzahl nicht von der konkreten Basisdarstellung des Operators ab \\[71, 74, 82\\].\n\nFür das Funktionale Raum-Zeit-Kohärenzsystem verwende ich die Determinante zunächst ausschließlich in dieser etablierten mathematischen Bedeutung. Eine spätere Interpretation als Maß einer funktionalen Zustandsraumveränderung oder einer Kohärenzänderung würde zusätzliche Modellannahmen voraussetzen. Eine solche Interpretation darf deshalb nicht aus der mathematischen Determinante selbst abgeleitet werden.\n\n## Definition 3.2.15: Determinante einer quadratischen Matrix\n\nFür eine quadratische reelle Matrix $A \\in \\mathbb{R}^{n \\times n}$ bezeichne ich die Determinante mit $\\det(A)$ beziehungsweise $|A|$. Formal fasse ich sie als Abbildung\n\n$$\\det:\\mathbb{R}^{n \\times n} \\longrightarrow \\mathbb{R},\\quad\\quad A \\longmapsto \\det(A)\\ (3.97)$$\n\nDabei gilt:\n\n-   $A$ ist eine quadratische $n \\times n$-Matrix,\n\n-   $\\mathbb{R}^{n \\times n}$ ist der Raum der reellen quadratischen Matrizen der Ordnung $n$,\n\n-   $\\det(A)$ ist der der Matrix eindeutig zugeordnete reelle Skalar,\n\n-   $n$ bezeichnet die Dimension des zugrunde liegenden endlichdimensionalen Raumes.\n\nDie Determinante ist ausschließlich für quadratische Matrizen definiert. Für nichtquadratische Matrizen kann ich deshalb nicht in derselben Weise von einer Determinante sprechen \\[71, 74, 82\\].\n\n## Determinante einer $\\mathbf{2}\\mathbf{\\times}\\mathbf{2}$-Matrix\n\nFür\\\n$$A = \\begin{pmatrix}\na & b \\\\\nc & d\n\\end{pmatrix}$$\n\ngilt\n\n$$\\det(A) = ad - bc\\ (3.98)$$\n\nDie Determinante ergibt sich hier aus der Differenz des Produkts der Hauptdiagonale und des Produkts der Nebendiagonale \\[71, 74\\].\n\nDie Elemente $a,b,c,d$ sind lediglich die Komponenten der Matrix $A$ und werden deshalb nicht als eigene Gleichungen geführt.\n\nBetrachte ich beispielsweise\\\n$$A = \\begin{pmatrix}\n2 & 0 \\\\\n0 & 3\n\\end{pmatrix},$$\n\nso ergibt sich unmittelbar\n\n$$\\det(A) = 2 \\cdot 3 - 0 \\cdot 0 = 6\\ (3.99)$$\n\nDie durch diese Matrix dargestellte lineare Transformation vergrößert Flächeninhalte damit um den Faktor $6$ \\[74, 82\\]. Das entspricht unmittelbar der anschaulichen Wirkung der Matrix: Eine Richtung wird mit dem Faktor $2$, die andere mit dem Faktor $3$ skaliert. Der resultierende Flächenfaktor ist das Produkt beider Skalierungen.\n\n## Determinante einer $\\mathbf{3}\\mathbf{\\times}\\mathbf{3}$-Matrix\n\nFür\\\n$$A = \\begin{pmatrix}\na_{11} & a_{11} & a_{11} \\\\\na_{21} & a_{22} & a_{23} \\\\\na_{31} & a_{32} & a_{33}\n\\end{pmatrix}$$\n\nkann ich die Determinante beispielsweise nach der ersten Zeile entwickeln:\n\n$$\\det(A) = a_{11}\\left| \\begin{matrix}\na_{22} & a_{23} \\\\\na_{32} & a_{33}\n\\end{matrix} \\right| - a_{12}\\left| \\begin{matrix}\na_{21} & a_{2311} \\\\\na_{31} & a_{33}\n\\end{matrix} \\right| + a_{13}\\left| \\begin{matrix}\na_{1121} & a_{22} \\\\\na_{31} & a_{32}\n\\end{matrix} \\right|\\ (3.100)$$\n\nDiese Form entspricht der Laplace-Entwicklung nach der ersten Zeile. Grundsätzlich kann die Entwicklung nach jeder beliebigen Zeile oder Spalte erfolgen \\[71, 74, 82\\].\n\nDie einzelnen Minoren sind Bestandteile der Determinantenberechnung und erhalten keine eigenen Gleichungsnummern.\n\n## Geometrische Bedeutung\n\nDie Determinante beschreibt den orientierten Skalierungsfaktor einer linearen Transformation. Ihr Betrag gibt an, wie stark Flächen oder Volumina durch die Transformation skaliert werden \\[71, 74, 82\\].\n\nSei $A \\in \\mathbb{R}^{n \\times n}$ und\\\n$$T_{A}:\\mathbb{R}^{n} \\rightarrow \\mathbb{R}^{n},\\quad\\quad x \\mapsto Ax$$\n\ndie durch $A$ dargestellte lineare Transformation. Für eine geeignete messbare Teilmenge $M \\subseteq \\mathbb{R}^{n}$ gilt\n\n$$vol(T_{A}(M)) = |\\ det(A)|\\, vol(M)\\ (3.101)$$\n\nDabei bezeichnet\n\n-   $M$ die betrachtete Teilmenge,\n\n-   $T_{A}(M)$ deren Bild unter der Transformation,\n\n-   $\\text{vol}\\text{(}M)$ das $n$-dimensionale Volumen,\n\n-   $\\left| \\det(A) \\right|$ den Volumenskalierungsfaktor.\n\nIm zweidimensionalen Raum entspricht dieses Volumen dem Flächeninhalt. Im dreidimensionalen Raum entspricht es dem gewöhnlichen Volumen.\n\nDaraus ergeben sich unmittelbar drei Fälle:\n\n$$\\left\\{ \\begin{matrix}\n|\\ det(A)| > 1 \\Rightarrow Vergrößerung \\\\\n0 < |\\ det(A)| < 1 \\Rightarrow Verkleinerung \\\\\n|\\ det(A)| = 1 \\Rightarrow Volumenerhaltung.\n\\end{matrix} \\right.\\ \\ (3.102)$$\n\nDiese drei Aussagen gehören sachlich zusammen und werden deshalb in einer einzigen Gleichung zusammengefasst.\n\n## Orientierung\n\nDer Betrag der Determinante beschreibt die Größenänderung. Das Vorzeichen enthält eine zusätzliche Information: Es zeigt an, ob die Orientierung einer linearen Transformation erhalten bleibt oder umgekehrt wird \\[71, 74, 82\\].\n\nDabei gilt\n\n$$\\left\\{ \\begin{aligned}\ndet(A) > 0 & \\Rightarrow Orientierung\\ bleibt\\ erhalten \\\\\ndet(A) < 0 & \\Rightarrow \"\\{ Orientierung\\ wird\\ umgekehrt.\n\\end{aligned} \\right.\\ \\ (3.103)$$\n\nEine typische orientierungsumkehrende Transformation ist eine Spiegelung.\n\nFür die Spiegelung an der $y$-Achse kann ich beispielsweise die Matrix\\\n$$S = \\begin{pmatrix}\n - 1 & 0 \\\\\n0 & 1\n\\end{pmatrix}$$\n\nverwenden. Für sie gilt\n\n$$\\det(S) = - 1\\ (3.104)$$\n\nDer Betrag der Determinante ist $1$. Flächeninhalte bleiben somit erhalten. Das negative Vorzeichen zeigt jedoch, dass die Orientierung umgekehrt wird \\[74, 82\\].\n\nDamit muss ich Betrag und Vorzeichen der Determinante auseinanderhalten. Zwei Transformationen können denselben Flächenskalierungsfaktor besitzen und sich dennoch hinsichtlich ihrer Orientierung unterscheiden.\n\n## Singuläre und reguläre Matrizen\n\nBesonders wichtig ist der Fall einer verschwindenden Determinante. Für eine quadratische Matrix gilt die grundlegende Äquivalenz\n\n$$\\det(A) = 0\\quad \\Longleftrightarrow \\quad A\\,\\text{ist singulär}\\quad \\Longleftrightarrow \\quad A^{- 1}\\,\\text{existiert nicht}\\ (3.105)$$\n\nEntsprechend gilt bei einer regulären beziehungsweise invertierbaren Matrix\\\n$$\\det(A) \\neq 0\\quad \\Longleftrightarrow \\quad A\\,\\text{ist invertierbar}.$$\n\nDiese zweite Formulierung ist die Negation beziehungsweise Umkehrung derselben strukturellen Aussage und erhält deshalb keine weitere Gleichungsnummer.\n\nEine Determinante von null besitzt zugleich eine geometrische Bedeutung. Der $n$-dimensionale Raum wird durch die Transformation auf eine Struktur geringerer Dimension abgebildet. Im zweidimensionalen Fall kann eine Fläche beispielsweise auf eine Gerade zusammenfallen. Im dreidimensionalen Fall kann ein Volumen auf eine Ebene oder sogar eine Gerade reduziert werden \\[71, 74, 82\\].\n\nDamit verschwindet das $n$-dimensionale Volumen vollständig.\n\n## Beispiel einer singulären Transformation\n\nIch betrachte\\\n$$A = \\begin{pmatrix}\n1 & 2 \\\\\n2 & 4\n\\end{pmatrix}.$$\n\nDie zweite Spalte ist das Doppelte der ersten Spalte. Die beiden Spalten sind also linear abhängig.\n\nFür die Determinante ergibt sich\n\n$$\\det(A) = 1 \\cdot 4 - 2 \\cdot 2 = 0\\ (3.106)$$\n\nDie Transformation kann deshalb keine zweidimensionale Fläche auf eine andere zweidimensionale Fläche mit positivem Flächeninhalt abbilden. Sämtliche Bildvektoren liegen auf einer einzigen Geraden.\n\nHier treffen mehrere zuvor eingeführte Begriffe unmittelbar zusammen: lineare Abhängigkeit, fehlende Invertierbarkeit und verschwindende Determinante beschreiben unterschiedliche Aspekte derselben strukturellen Eigenschaft.\n\n## Zusammenhang mit linearer Unabhängigkeit\n\nFür eine quadratische Matrix\\\n$$A = \\begin{pmatrix}\n| & | & | \\\\\na_{1} & \\cdots & a_{n} \\\\\n| & | & |\n\\end{pmatrix}$$\n\nmit Spaltenvektoren $a_{1},\\ldots,a_{n}$ sind mehrere Aussagen äquivalent:\n\n$$\\det(A) \\neq 0\\quad \\Longleftrightarrow \\quad a_{1},\\ldots,a_{n}\\,\\text{sind linear unabhängig}\\quad \\Longleftrightarrow \\quad\\text{rank}(A) = n\\quad \\Longleftrightarrow \\quad A^{- 1}\\,\\text{existiert}\\ (3.107)$$\n\nDiese Äquivalenz verbindet mehrere Betrachtungsebenen \\[71, 74, 82\\]:\n\n-   geometrisch verschwindet kein $n$-dimensionales Volumen,\n\n-   algebraisch bleiben die Spaltenvektoren unabhängig,\n\n-   die Matrix besitzt vollen Rang,\n\n-   die zugehörige Transformation ist invertierbar.\n\nDamit ist die Determinante nicht nur eine geometrische Kennzahl, sondern zugleich ein Kriterium für die algebraische Regularität einer quadratischen Matrix. Die entsprechende Verbindung von Determinante, linearer Unabhängigkeit und Invertierbarkeit wird in der zugrunde liegenden mathematischen Darstellung ausdrücklich hervorgehoben.\n\n## Multiplikativität der Determinante\n\nFür zwei quadratische Matrizen $A,B \\in \\mathbb{R}^{n \\times n}$ gilt\n\n$$\\det(AB) = \\det(A)\\det(B)\\ (3.108)$$\n\nDamit multiplizieren sich auch die orientierten Volumenskalierungsfaktoren aufeinanderfolgender linearer Transformationen \\[71, 74, 82\\].\n\nWenn eine erste Transformation ein Volumen beispielsweise um den Faktor $2$ und eine zweite um den Faktor $3$ verändert, verändert ihre Verkettung das Volumen um den Faktor $6$.\n\nDas Vorzeichen wird dabei ebenfalls multipliziert. Zwei orientierungsumkehrende Transformationen führen deshalb gemeinsam wieder zu einer orientierungserhaltenden Transformation.\n\n## Determinante der inversen Matrix\n\nIst $A$ invertierbar, gilt\\\n$$AA^{- 1} = I.$$\n\nDa für die Einheitsmatrix $\\det(I) = 1$ gilt, folgt mit der Multiplikativität\n\n$$\\det\\left( A^{- 1} \\right) = \\frac{1}{\\det(A)}\\ (3.109)$$\n\nDie inverse Transformation hebt damit die Volumenskalierung der ursprünglichen Transformation exakt wieder auf \\[71, 74\\].\n\nHat eine Transformation beispielsweise den Skalierungsfaktor $4$, besitzt ihre inverse Transformation den Skalierungsfaktor $1\\text{/}4$.\n\nAuch hier werden die Voraussetzungen und Zwischenschritte der Herleitung nicht als eigene Gleichungen nummeriert.\n\n## Determinante und Basiswechsel\n\nDie Matrixdarstellung eines linearen Operators hängt von der verwendeten Basis ab. Sei\\\n$$\\mathbf{A}_{\\mathbf{C}}{\\mathbf{=}\\mathbf{P}}_{\\mathbf{B} \\rightarrow \\mathbf{C}}\\mathbf{A}_{\\mathbf{B}}\\mathbf{P}_{\\mathbf{B} \\rightarrow \\mathbf{C}}^{- \\mathbf{1}}$$\n\ndie Darstellung desselben Operators in zwei verschiedenen Basen.\n\nUnter Anwendung der Multiplikativität der Determinante erhalte ich\n\n$$\\begin{matrix}\ndet(A_{C})\\& = \\ det(P_{B \\rightarrow C}^{- 1}) \\\\\n = det(P_{B \\rightarrow C})\\ det(A_{B})\\ det(P_{B \\rightarrow C}^{- 1}) \\\\\n = det(A_{B})\n\\end{matrix}\\ (3.110)$$\n\nDer letzte Schritt folgt daraus, dass\\\n$$det{\\left( P_{B \\rightarrow C}^{- 1} \\right) =}\\frac{1}{det\\left( P_{B \\rightarrow C} \\right)}.$$\n\nDiese Beziehung ist Bestandteil der Herleitung von Gleichung (3.110) und erhält keine eigene Nummer.\n\nDamit ist die Determinante zwar formal an einer Matrix berechenbar, ihr Wert ist bei Matrixdarstellungen desselben Operators unter einem Basiswechsel invariant \\[71, 74, 82\\].\n\nIch kann deshalb die Determinante als Eigenschaft des zugrunde liegenden linearen Operators auffassen und nicht lediglich als Eigenschaft einer zufällig gewählten Matrixdarstellung.\n\n## Wissenschaftliche Einordnung\n\nDie Determinante verbindet mehrere grundlegende Strukturen der linearen Algebra miteinander. Sie enthält eine geometrische, eine algebraische und eine operatorentheoretische Aussage zugleich.\n\nGeometrisch beschreibt ihr Betrag die Skalierung von Flächen und Volumina. Ihr Vorzeichen erfasst die Orientierung. Algebraisch entscheidet eine verschwindende beziehungsweise nicht verschwindende Determinante über lineare Unabhängigkeit, vollen Rang und Invertierbarkeit. Über die Multiplikativität verbindet sie außerdem die Wirkung aufeinanderfolgender Transformationen.\n\nGerade diese Verbindung macht die Determinante für meine weitere mathematische Entwicklung wichtig. Ein einzelner Skalar enthält Informationen darüber, ob eine Transformation Raumdimension erhält, ob sie eine Umkehrung erlaubt und wie sie das Volumenelement verändert.\n\nDabei muss ich jedoch beachten, dass die Determinante ausschließlich für quadratische Matrizen definiert ist. Sie stellt deshalb kein allgemeines Maß für beliebige lineare Abbildungen zwischen Vektorräumen unterschiedlicher Dimension dar. Sobald Definitions- und Zielraum unterschiedliche Dimensionen besitzen, benötige ich allgemeinere Strukturbegriffe.\n\nFür das FRZK bedeutet dies, dass ich die Determinante später nur dort verwenden darf, wo tatsächlich ein geeigneter endlichdimensionaler Operator eines Raumes in sich vorliegt. Eine funktionale Interpretation ihrer Größe oder ihres Vorzeichens müsste darüber hinaus eigens definiert und begründet werden.\n\n## Methodologische Betrachtungen\n\nMethodologisch zeigt die Determinante besonders deutlich, dass ein und dieselbe mathematische Größe verschiedene Interpretationsschichten besitzen kann.\n\nDie algebraische Definition bestimmt zunächst einen Skalar. Aus den Eigenschaften dieses Skalars folgen anschließend geometrische Aussagen über Volumenskalierung und Orientierung sowie strukturelle Aussagen über Invertierbarkeit und lineare Unabhängigkeit.\n\nDiese Ebenen darf ich nicht umkehren. Insbesondere darf ich nicht aus einer später gewünschten physikalischen Bedeutung eine veränderte mathematische Definition der Determinante ableiten.\n\nFür meine weitere Modellbildung bedeutet das außerdem, dass eine Determinante von null nicht allgemein mit „keiner Wirkung\" gleichgesetzt werden darf. Eine singuläre Transformation kann sehr wohl eine mathematische Wirkung besitzen. Sie verliert jedoch mindestens eine unabhängige Richtung und ist deshalb nicht vollständig invertierbar.\n\nEbenso bedeutet $|\\ det(A)| = 1$ nicht, dass die Transformation identisch ist. Eine Rotation, Spiegelung oder andere volumenbewahrende Transformation kann den Zustand erheblich verändern und dennoch denselben Volumenbetrag erhalten.\n\nIch muss daher drei Aussagen voneinander trennen:\n\n-   Volumenerhaltung,\n\n-   Orientierungserhaltung,\n\n-   Identität der Transformation.\n\nSie sind mathematisch nicht gleichbedeutend.\n\nGerade diese Trennung ist für ein späteres funktionales Modell wichtig. Ein Operator kann eine globale Größe erhalten und gleichzeitig den Zustand innerhalb des Zustandsraums verändern.\n\n## Didaktische Betrachtungen\n\nDidaktisch lässt sich die Determinante für mich am anschaulichsten aus der Wirkung auf Basisvektoren verstehen.\n\nIm zweidimensionalen Raum spannen zwei unabhängige Basisvektoren ein Parallelogramm auf. Der Betrag der Determinante beschreibt, wie sich dessen Fläche durch eine lineare Transformation verändert.\n\nIst\\\n$$|\\ det(A)| = 2,$$\n\nso besitzt das transformierte Parallelogramm die doppelte Fläche.\n\nIst\\\n$$|\\ det(A)| = \\frac{1}{2},$$\n\nso besitzt es die halbe Fläche.\n\nIst\\\n$$\\det(A) = 0,$$\n\nso besitzt das transformierte Parallelogramm überhaupt keinen zweidimensionalen Flächeninhalt mehr. Seine beiden Spannrichtungen sind linear abhängig geworden, sodass die Fläche auf eine Gerade zusammenfällt.\n\nDiese Ausdrücke dienen hier lediglich der Veranschaulichung der drei Fälle und erhalten keine eigenen Gleichungsnummern.\n\nDas Vorzeichen ergänzt diese geometrische Betrachtung. Ein negatives Vorzeichen bedeutet nicht, dass ein „negatives Volumen\" im gewöhnlichen geometrischen Sinn entsteht. Es kennzeichnet vielmehr eine Umkehrung der Orientierung.\n\nDamit kann ich mir die Determinante als Kombination zweier Informationen vorstellen:\\\n$$\\det(A)\\quad \\longleftrightarrow \\quad\\text{Orientierung} + \\text{Volumenskalierung}..$$\n\nAuch diese Darstellung dient ausschließlich der begrifflichen Übersicht und ist keine nummerierte Gleichung.\n\nBesonders hilfreich ist für mich außerdem der Zusammenhang\\\n$$\\det(A) \\neq 0\\quad \\Longleftrightarrow \\quad\\text{keine unabhängige Richtung geht vollständig verloren}.$$\n\nDamit wird unmittelbar verständlich, warum eine nicht verschwindende Determinante mit Invertierbarkeit verbunden ist. Wenn keine Dimension verloren geht, kann die Transformation im endlichdimensionalen quadratischen Fall eindeutig zurückgeführt werden.\n\n## Ergebnis und Übergang\n\nMit der Determinante kann ich nun die Wirkung einer quadratischen linearen Transformation in einem einzigen Skalar charakterisieren. Ihr Betrag beschreibt die Veränderung von Flächen beziehungsweise Volumina, ihr Vorzeichen die Orientierung und ihr Verschwinden den Verlust mindestens einer unabhängigen Raumrichtung.\n\nDarüber hinaus verbindet die Determinante lineare Unabhängigkeit, vollen Rang und Invertierbarkeit. Ihre Multiplikativität beschreibt die Skalierungswirkung zusammengesetzter Transformationen, und ihre Invarianz unter Ähnlichkeit zeigt, dass sie nicht von einer speziellen Basisdarstellung des Operators abhängt. Diese Zusammenhänge bilden den Kern des Determinantenabschnitts.\n\nDie Determinante besitzt jedoch eine wesentliche Einschränkung: Sie ist nur für quadratische Matrizen definiert. Für eine allgemeine lineare Abbildung benötige ich deshalb Begriffe, mit denen ich unabhängig von der Gleichheit der Dimensionen von Definitions- und Zielraum bestimmen kann, welche Zustände erreicht werden, welche Richtungen vollständig verschwinden und wie viele unabhängige Richtungen tatsächlich übertragen werden.\n\nDer folgende Abschnitt behandelt daher **3.2.9 Rang, Kern und Bild linearer Abbildungen**.\n\n**Fortsetzungsstand:** Abschnitt 3.2.8 endet mit Gleichung **(3.110)**. Abschnitt **3.2.9 beginnt mit (3.111)**.', 'c086ae2917eb97361058b9cb6d676897d90b1e57a6514e29b6974d3beab1dedb', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.');
+INSERT INTO `section_versions` (`section_version_id`, `section_id`, `revision_id`, `version_kind`, `body_markdown`, `checksum_sha256`, `notes`) VALUES
+(10, 31, 2, 'source_import', '# 3.2.9 Rang, Kern und Bild linearer Abbildungen\n\nDie Determinante liefert mir für quadratische Matrizen ein Kriterium dafür, ob eine lineare Transformation invertierbar ist. Lineare Abbildungen müssen jedoch weder durch quadratische Matrizen dargestellt werden noch zwischen Vektorräumen gleicher Dimension wirken. Für diese allgemeinere Situation benötige ich Begriffe, die unabhängig von der Quadratform einer Matrix beschreiben, welche Richtungen durch eine Abbildung erreicht werden, welche vollständig verschwinden und wie viele unabhängige Richtungen tatsächlich übertragen werden. Genau diese Aufgaben übernehmen Bild, Kern und Rang \\[71, 74, 82\\].\n\nDer Rang gibt an, wie viele linear unabhängige Richtungen im Bild einer linearen Abbildung vorhanden sind. Der Kern enthält dagegen diejenigen Vektoren des Definitionsraums, die auf den Nullvektor des Zielraums abgebildet werden. Das Bild umfasst sämtliche Vektoren, die durch die Abbildung tatsächlich erreicht werden können. Zusammen ermöglichen mir diese drei Begriffe eine strukturelle Beschreibung linearer Abbildungen, die über die bloße Betrachtung einzelner Matrixelemente hinausgeht \\[71, 74, 82\\].\n\nFür das Funktionale Raum-Zeit-Kohärenzsystem verwende ich diese Begriffe zunächst ausschließlich in ihrer etablierten mathematischen Bedeutung. Insbesondere darf ich einen nichttrivialen Kern noch nicht mit einem physikalischen oder funktionalen Informationsverlust gleichsetzen. Eine solche Interpretation setzt voraus, dass der betreffende Zustandsraum und die Bedeutung seiner Richtungen zuvor ausdrücklich definiert wurden.\n\n## Definition 3.2.16: Bild einer linearen Abbildung\n\nSeien $V$ und $W$ Vektorräume und $T:V \\rightarrow W$ eine lineare Abbildung.\n\nDiese Angabe legt Definitions- und Zielraum sowie die verwendete Abbildung fest. Sie ist eine Voraussetzung der folgenden Definition und erhält deshalb keine eigene Gleichungsnummer.\n\nDas Bild von $T$ definiere ich durch\n\n$$\\text{Bild}(T) = \\left\\{ T(v) \\in W \\middle| v \\in V \\right\\}\\ (3.111)$$\n\nDabei bezeichnet\n\n-   $T$ die lineare Abbildung,\n\n-   $V$ ihren Definitionsraum,\n\n-   $W$ ihren Zielraum,\n\n-   $v$ einen Vektor aus $V$,\n\n-   $T(v)$ den zugehörigen Bildvektor.\n\nDas Bild enthält damit genau diejenigen Vektoren des Zielraums, die durch Anwendung von $T$ auf mindestens einen Vektor des Definitionsraums tatsächlich entstehen können \\[71, 74, 82\\].\n\nIm Allgemeinen muss das Bild nicht mit dem gesamten Zielraum übereinstimmen. Es gilt lediglich$\\ \\text{Bild}(T) \\subseteq W.\\ $Diese Inklusion ist eine unmittelbare Eigenschaft der Definition und erhält keine eigene Gleichungsnummer.\n\nDa $T$ linear ist, bildet $\\text{Bild}T$ selbst einen Untervektorraum von $W$. Sind zwei Vektoren $w_{1},w_{2} \\in \\text{Bild}T$, so existieren $v_{1},v_{2} \\in V$ mit $T\\left( v_{1} \\right) = w_{1}$ und $T\\left( v_{2} \\right) = w_{2}$. Für Skalare $\\lambda,\\mu$ folgt aus der Linearität\n\n$$\\lambda w_{1} + \\mu w_{2} = T\\left( \\lambda v_{1} + \\mu v_{2} \\right) \\in \\text{Bild}(T).$$\n\nDieser Ausdruck gehört zur Begründung der Untervektorraumeigenschaft und wird nicht als zusätzliche Gleichung nummeriert.\n\nDas Bild beschreibt damit den tatsächlich erreichbaren Teil des Zielraums.\n\n## Definition 3.2.17: Kern einer linearen Abbildung\n\nDer Kern derselben linearen Abbildung $T:V \\rightarrow W$ besteht aus allen Vektoren des Definitionsraums, die auf den Nullvektor des Zielraums abgebildet werden:\n\n$$\\ker(T) = \\left\\{ v \\in V \\middle| T(v) = 0_{W} \\right\\}\\ (3.112)$$\n\nDabei ist $0_{W}$ der Nullvektor des Zielraums $W$.\n\nDer Kern beantwortet damit eine andere Frage als das Bild. Beim Bild frage ich, welche Ausgangszustände erreichbar sind. Beim Kern frage ich, welche Eingangsvektoren durch die Abbildung vollständig auf denselben Nullvektor zusammengeführt werden \\[71, 74, 82\\].\n\nAuch der Kern ist ein Untervektorraum, diesmal des Definitionsraums $V$. Für $v_{1},v_{2} \\in \\ker(T)$ und Skalare (\\\\lambda,\\\\mu) gilt nämlich\\\n$$\\mathbf{T}\\left( \\mathbf{\\lambda}\\mathbf{v}_{\\mathbf{1}}\\mathbf{+}\\mathbf{\\mu}\\mathbf{v}_{\\mathbf{2}} \\right)\\mathbf{=}\\mathbf{\\lambda}\\mathbf{T}\\left( \\mathbf{v}_{\\mathbf{1}} \\right)\\mathbf{+}\\mathbf{\\mu}\\mathbf{T}\\left( \\mathbf{v}_{\\mathbf{2}} \\right)\\mathbf{0}_{\\mathbf{W}}\\mathbf{.}$$\n\nDamit ist auch jede Linearkombination zweier Kernvektoren wieder ein Element des Kerns. Diese Herleitung erhält keine eigene Gleichungsnummer.\n\nDer Nullvektor $0_{V}$ gehört immer zum Kern, weil jede lineare Abbildung den Nullvektor auf den Nullvektor abbildet.\n\nBesitzt eine lineare Abbildung nur den trivialen Kern $\\ker(T) = 0_{V},$ so werden keine zwei verschiedenen Vektoren allein aufgrund einer nichttrivialen Kernrichtung miteinander identifiziert. Für lineare Abbildungen entspricht dies der Injektivität.\n\n## Definition 3.2.18: Rang einer linearen Abbildung\n\nDen Rang einer linearen Abbildung definiere ich als Dimension ihres Bildes:\n\n$$\\text{rang}(T) = \\dim\\left( \\text{Bild}(T) \\right)\\ (3.113)$$\n\nDer Rang gibt damit die Anzahl linear unabhängiger Richtungen an, die im Bildraum tatsächlich vorhanden sind \\[71, 74, 82\\].\n\nIst $A$ eine Darstellungsmatrix der linearen Abbildung, schreibe ich entsprechend $\\text{rang}A$. Diese Schreibweise bezeichnet denselben strukturellen Begriff auf der Ebene der Matrixdarstellung und benötigt keine zusätzliche Gleichungsnummer.\n\nDer Rang darf dabei nicht mit der Anzahl der Spalten oder Zeilen einer Matrix verwechselt werden. Entscheidend ist nicht, wie viele Vektoren formal vorhanden sind, sondern wie viele davon linear unabhängig sind.\n\n## Rang einer Matrix\n\nFür eine Matrix $A \\in \\mathbb{R}^{m \\times n}$ spannen die Spaltenvektoren einen Unterraum von $\\mathbb{R}^{m}$ auf. Die Dimension dieses Spaltenraums ist der Rang der Matrix.\n\nEbenso kann ich den von den Zeilenvektoren aufgespannten Raum betrachten. Ein grundlegendes Ergebnis der linearen Algebra besagt, dass Zeilenrang und Spaltenrang übereinstimmen \\[71, 74\\].\n\nDaher gilt\n\n$$\\text{rang}(A) = \\dim\\left( \\text{Spaltenraum}(A) \\right) = \\dim\\left( \\text{Zeilenraum}(A) \\right)\\ (3.114)$$\n\nDamit ist der Rang unabhängig davon, ob ich ihn über die linear unabhängigen Spalten oder über die linear unabhängigen Zeilen bestimme.\n\nFür eine $m \\times n$-Matrix gilt allgemein\\\n$$0 \\leq \\text{rang}(A) \\leq \\min(m,n).$$\n\nDiese Abschätzung folgt unmittelbar aus den Dimensionen von Zeilen- und Spaltenraum und erhält keine eigene Gleichungsnummer.\n\n## Beispiel\n\nIch betrachte die Matrix\\\n$$A = \\begin{pmatrix}\n1 & 2 \\\\\n2 & 4\n\\end{pmatrix}.$$\n\nDie Matrixangabe selbst legt lediglich das Beispiel fest und erhält keine eigene Gleichungsnummer.\n\nDie zweite Spalte ist das Doppelte der ersten:\n\n$$\\begin{pmatrix}\n2 \\\\\n4\n\\end{pmatrix} = 2\\begin{pmatrix}\n1 \\\\\n2\n\\end{pmatrix}$$\n\nAuch dieser Rechenschritt dient nur dem Nachweis der linearen Abhängigkeit und benötigt keine eigene Gleichungsnummer.\n\nDamit existiert nur eine unabhängige Spaltenrichtung. Folglich gilt\n\n$$\\text{rang}(A) = 1\\ (3.115)$$\n\nObwohl die Matrix zwei Spalten besitzt, enthält ihr Bild also nur eine linear unabhängige Richtung \\[74, 82\\].\n\nGeometrisch bedeutet dies, dass die durch $A$ beschriebene Abbildung den zweidimensionalen Definitionsraum nicht auf einen zweidimensionalen Bildraum abbildet. Das Bild liegt vielmehr auf einer eindimensionalen Geraden.\n\n## Voller Rang\n\nFür eine Matrix $A \\in \\mathbb{R}^{m \\times n}$ ist der größtmögliche Rang durch $\\min(m,n)$ bestimmt.\n\nIch bezeichne eine Matrix als Matrix vollen Ranges, wenn\n\n$$\\text{rang}(A) = \\min(m,n)\\ (3.116)$$\n\nFür eine quadratische Matrix $A \\in \\mathbb{R}^{n \\times n}$ vereinfacht sich diese Bedingung zu $\\text{rang}(A) = n.$\n\nDiese Form ist ein Spezialfall von Gleichung (3.116) und erhält keine eigene Nummer.\n\nFür quadratische Matrizen ist voller Rang äquivalent zu einer nicht verschwindenden Determinante und damit zur Invertierbarkeit \\[71, 74, 82\\].\n\nEs gilt also\n\n$$\\text{rang}(A) = n\\quad \\Longleftrightarrow \\quad\\det(A) \\neq 0\\quad \\Longleftrightarrow \\quad A^{- 1}\\,\\text{existiert}\\ (3.117)$$\n\nDamit beschreiben Rang, Determinante und Invertierbarkeit dieselbe Regularität einer quadratischen Matrix aus unterschiedlichen mathematischen Perspektiven.\n\n## Rang-Nullitätssatz\n\nZwischen Bild und Kern besteht ein grundlegender Dimensionszusammenhang.\n\nSei $T:V \\rightarrow W$ eine lineare Abbildung mit endlichdimensionalem Definitionsraum $V$.\n\nDann gilt\n\n$$\\dim(V) = \\dim\\left( \\ker(T) \\right) + \\text{rang}(T)\\ (3.118)$$\n\nDiese Beziehung wird als **Dimensionssatz** oder **Rang-Nullitätssatz** bezeichnet \\[71, 74, 82\\].\n\nDie Größe $dim!\\left( \\ker(T) \\right)$ wird auch als Nullität der linearen Abbildung bezeichnet.\n\nGleichung (3.118) zeigt, dass sich die Dimension des Definitionsraums in zwei Teile zerlegen lässt:\n\n-   Richtungen, die im Kern liegen,\n\n-   Richtungen, die unabhängig zum Bild beitragen.\n\nDabei muss ich die Formulierung „Richtungen gehen verloren\" methodisch vorsichtig verwenden. Mathematisch bedeutet eine Kernrichtung zunächst nur, dass sie von $T$ auf (0_W) abgebildet wird. Ob dies in einer wissenschaftlichen Anwendung tatsächlich als Informationsverlust oder physikalischer Verlust zu deuten ist, hängt von der Interpretation des Modells ab.\n\n## Beispiel zum Rang-Nullitätssatz\n\nFür die bereits betrachtete lineare Abbildung mit\n\n$$A = \\begin{pmatrix}\n1 & 2 \\\\\n2 & 4\n\\end{pmatrix}.$$\n\ngilt nach Gleichung (3.115) $\\text{rang}(A) = 1.$ Der Definitionsraum ist $\\mathbb{R}^{2}$ und besitzt daher Dimension $2$.\n\nSetze ich diese Werte in den Rang-Nullitätssatz ein, erhalte ich\n\n$$2 = \\dim\\left( \\ker(A) \\right) + 1\\quad \\Longrightarrow \\quad\\dim\\left( \\ker(A) \\right) = 1\\ (3.119)$$\n\nEine der beiden unabhängigen Richtungen des Definitionsraums trägt somit zum Bild bei, während eine unabhängige Richtung im Kern liegt \\[74, 82\\].\n\nFür die konkrete Matrix kann ich den Kern auch direkt bestimmen. Aus\n\n$$A\\begin{pmatrix}\nx_{1} \\\\\nx_{2}\n\\end{pmatrix} = \\begin{pmatrix}\n0 \\\\\n0\n\\end{pmatrix}$$\n\nfolgt die Bedingung\\\n$$x_{1} + 2x_{2} = 0.$$\n\nDamit kann ich beispielsweise $x_{2} = t$ setzen und erhalte $x_{1} = - 2t$. Der Kern wird somit von einem einzigen Vektor aufgespannt. Auch diese Rechnung bestätigt die Kerndimension $1$.\n\n## Zusammenhang mit Injektivität und Surjektivität\n\nKern und Bild ermöglichen mir außerdem eine präzise Charakterisierung von Injektivität und Surjektivität.\n\nEine lineare Abbildung $T:V \\rightarrow W$ ist genau dann injektiv, wenn ihr Kern trivial ist:\n\n$$T\\,\\text{injektiv}\\quad \\Longleftrightarrow \\quad\\ker(T) = \\text{\\{}0_{V}\\text{\\}}\\ (3.120)$$\n\nDenn liegen zwei Vektoren $v_{1},v_{2}$ auf demselben Bildvektor, so gilt\\\n$$T\\left( v_{1} \\right) = T\\left( v_{2} \\right)\\quad \\Longrightarrow \\backslash quadT\\left( v_{1} - v_{2} \\right) = 0_{W}.$$\n\nIst der Kern trivial, folgt daraus $v_{1} - v_{2} = 0_{V}$ und damit $v_{1} = v_{2}$.\n\nSurjektivität wird dagegen durch das Bild charakterisiert:\n\n$$T\\,\\text{surjektiv}\\quad \\Longleftrightarrow \\quad\\text{Bild}(T) = W\\ (3.121)$$\n\nDamit sind Injektivität und Surjektivität unmittelbar mit Kern und Bild verbunden.\n\nFür einen linearen Operator auf einem endlichdimensionalen Vektorraum gleicher Dimension fallen bei vollem Rang schließlich Injektivität, Surjektivität und Invertierbarkeit zusammen.\n\n## Zusammenhang mit linearen Gleichungssystemen\n\nAuch die Lösbarkeit linearer Gleichungssysteme kann ich mit Rang und Bild beschreiben.\n\nFür $Ax = b$ existiert genau dann mindestens eine Lösung, wenn $b$ im Bild der durch $A$ dargestellten linearen Abbildung liegt:\n\n$$Ax = b\\,\\text{ist lösbar}\\quad \\Longleftrightarrow \\quad b \\in \\text{Bild}(A)\\ (3.122)$$\n\nFür die praktische Rangprüfung kann diese Bedingung mit der erweiterten Matrix $\\left( A \\middle| b \\right)$ formuliert werden:\n\n$$Ax = b\\,\\text{ist lösbar}\\quad \\Longleftrightarrow \\quad\\text{rang}(A) = \\text{rang}\\left( A \\middle| b \\right)\\ (3.123)$$\n\nIst das System lösbar und besitzt $A$ vollen Spaltenrang, ist die Lösung eindeutig. Besitzt der Kern dagegen positive Dimension, können zu einer vorhandenen Lösung weitere Lösungen durch Addition von Kernvektoren erzeugt werden \\[71, 74\\]. Die Bedeutung des Rangs für lineare Gleichungssysteme ist damit unmittelbar mit Kern und Bild verknüpft.\n\nIst $x_{0}$ eine konkrete Lösung von $Ax = b$, dann besitzen sämtliche Lösungen die Form\n\n$$x = x_{0} + z,\\quad\\quad z \\in \\ker(A)\\ (3.124)$$\n\nDer Kern beschreibt damit genau die Freiheit, die nach Festlegung eines bestimmten Bildvektors $b$ innerhalb der Lösungsmenge verbleibt.\n\n## Zusammenhang mit der Determinante\n\nFür quadratische Matrizen kann ich die Beziehungen aus Rang, Kern und Determinante zu einer gemeinsamen Äquivalenz zusammenführen:\n\n$$\\det(A) \\neq 0\\quad \\Longleftrightarrow \\quad\\text{rang}(A) = n\\quad \\Longleftrightarrow \\quad\\ker(A) = \\text{\\{}0\\text{\\}}\\quad \\Longleftrightarrow \\quad A\\,\\text{ist invertierbar}\\ (3.125)$$\n\nDamit beschreiben vier Begriffe dieselbe strukturelle Eigenschaft aus unterschiedlichen Blickwinkeln \\[71, 74, 82\\].\n\nDie Determinante liefert ein skalares Kriterium.\n\nDer Rang beschreibt die Dimension des Bildes.\n\nDer Kern zeigt, ob nichttriviale Richtungen auf null abgebildet werden.\n\nDie Invertierbarkeit beschreibt, ob die Transformation eindeutig rückgängig gemacht werden kann.\n\nGerade diese Verbindung zeigt, warum Rang, Kern und Bild die Determinante nicht ersetzen, sondern deren Aussage auf allgemeinere lineare Abbildungen erweitern.\n\n## Wissenschaftliche Einordnung\n\nMit Bild, Kern und Rang kann ich lineare Abbildungen unabhängig davon untersuchen, ob ihre Darstellungsmatrix quadratisch ist. Damit erhalte ich eine allgemeinere Beschreibung als mit der Determinante allein. Das Bild bestimmt den tatsächlich erreichbaren Teil des Zielraums, der Kern die auf den Nullvektor abgebildeten Richtungen und der Rang die Dimension des erreichbaren Unterraums \\[71, 74, 82\\].\n\nDer Rang ist deshalb keine bloße Eigenschaft der Größe einer Matrix. Eine große Matrix kann einen sehr kleinen Rang besitzen, wenn ihre Zeilen oder Spalten stark voneinander abhängig sind. Umgekehrt kann eine kleinere Matrix ihren maximal möglichen Rang vollständig erreichen.\n\nFür das FRZK ist diese Unterscheidung später von besonderer Bedeutung. Ein funktionaler Operator könnte formal auf einem hochdimensionalen Zustandsraum wirken und dennoch nur einen wesentlich kleineren effektiven Bildraum erzeugen. Ebenso könnten bestimmte Zustandsrichtungen im Kern liegen und damit unter dem betrachteten Operator denselben Nullzustand erzeugen.\n\nAus dieser mathematischen Möglichkeit folgt jedoch noch keine physikalische Aussage darüber, dass Information „vernichtet\" wird. Ein nichttrivialer Kern ist zunächst eine Eigenschaft der Abbildung. Erst die spätere Interpretation der Vektoren und Operatoren entscheidet, welche wissenschaftliche Bedeutung diese Eigenschaft besitzt.\n\n## Methodologische Betrachtungen\n\nMethodologisch muss ich bei Rang, Kern und Bild besonders sorgfältig zwischen mathematischer Struktur und interpretativer Sprache unterscheiden.\n\nDer Begriff des Bildes beschreibt mathematisch die Menge der erreichbaren Vektoren. Daraus darf ich nicht ohne zusätzliche Annahmen schließen, dass diese Vektoren physikalisch realisierbare Zustände darstellen. Der mathematische Zielraum und der physikalisch zulässige Zustandsraum müssen nicht identisch sein.\n\nEbenso bedeutet ein nichttrivialer Kern zunächst nur, dass verschiedene Vektoren unter derselben linearen Abbildung denselben Nullvektor erzeugen können. Daraus folgt mathematisch, dass die Abbildung nicht injektiv ist. Ob dies als Informationsverlust, Zustandsverlust oder Nichtbeobachtbarkeit interpretiert werden darf, muss für das jeweilige Modell gesondert begründet werden.\n\nAuch der Rang verlangt eine präzise Interpretation. Ein Rang von $r$ bedeutet, dass das Bild $r$-dimensional ist. Er sagt nicht automatisch, dass genau $r$ physikalische Freiheitsgrade vorhanden sind. Dazu müsste zunächst gezeigt werden, dass die mathematischen Basisrichtungen tatsächlich unabhängigen physikalischen Freiheitsgraden entsprechen.\n\nFür die spätere FRZK-Konstruktion ergibt sich damit ein klares methodisches Prüfschema: Bei jedem funktionalen Operator muss ich zunächst mathematisch bestimmen, welcher Definitionsraum vorausgesetzt wird, welcher Zielraum verwendet wird, wie sein Kern aussieht, welchen Bildraum er erzeugt und welchen Rang er besitzt. Erst anschließend darf eine funktionale Interpretation dieser Eigenschaften erfolgen.\n\n## Didaktische Betrachtungen\n\nFür mich lässt sich der Zusammenhang von Kern, Bild und Rang besonders einfach verstehen, wenn ich eine lineare Abbildung als Filter zwischen zwei Vektorräumen auffasse.\n\nAm Eingang steht der Definitionsraum $V$.\n\nEin Teil seiner Richtungen kann durch die Abbildung so verändert werden, dass im Zielraum unabhängige Richtungen entstehen. Diese Richtungen bilden das Bild.\n\nAndere Richtungen können auf den Nullvektor abgebildet werden. Diese liegen im Kern.\n\nDer Rang zählt die unabhängigen Richtungen, die im Bild vorhanden sind.\n\nDer Rang-Nullitätssatz verbindet beide Seiten:\\\n$$\\underset{\\text{Ausgangsrichtungen}}{\\overset{\\mathbf{di}\\mathbf{m}\\left( \\mathbf{V} \\right)}{︸}}\\mathbf{=}\\underset{\\mathbf{Kernrichtungen}}{\\overset{\\mathbf{di}\\mathbf{m}\\left( \\mathbf{ke}\\mathbf{r}\\mathbf{T} \\right)}{︸}}\\mathbf{+}\\underset{\\text{Bildrichtungen}}{\\overset{\\mathbf{rang}\\left( \\mathbf{T} \\right)}{︸}}\\mathbf{.}$$\n\nDiese Darstellung dient der didaktischen Veranschaulichung von Gleichung (3.118) und erhält keine zusätzliche Gleichungsnummer.\n\nFür eine zweidimensionale Abbildung mit Rang $1$ kann ich mir die Situation daher so vorstellen: Von zwei unabhängigen Ausgangsrichtungen trägt eine unabhängige Richtung zum Bild bei, während eine unabhängige Richtung im Kern liegt.\n\nDer Zusammenhang lässt sich ebenso als begriffliche Kette darstellen:\\\n$$Definitionsraum \\longrightarrow \\left\\{ \\begin{array}{r}\nKern \\\\\nBild\n\\end{array} \\right.\\  \\longrightarrow Rang.$$\n\nAuch diese Übersicht ist keine eigenständige mathematische Gleichung.\n\nBesonders wichtig ist für mich die folgende Unterscheidung:\n\n**Die Anzahl der Matrixspalten ist nicht der Rang.**\n\nDer Rang zählt nicht vorhandene Spalten, sondern unabhängige Richtungen. Genau dadurch wird er zu einer strukturellen Kennzahl.\n\n## Ergebnis und Übergang\n\nMit Bild, Kern und Rang kann ich nun allgemeine lineare Abbildungen danach untersuchen, welche Teile des Zielraums sie tatsächlich erreichen, welche Richtungen des Definitionsraums auf den Nullvektor abgebildet werden und wie viele unabhängige Richtungen im Bild verbleiben.\n\nDer Rang-Nullitätssatz verbindet diese Größen unmittelbar mit der Dimension des Definitionsraums. Für quadratische Matrizen fügt sich diese Beschreibung nahtlos in die bereits eingeführten Kriterien der Determinante und Invertierbarkeit ein. Für nichtquadratische Matrizen bleiben Rang, Kern und Bild dagegen auch dann definiert, wenn eine Determinante nicht zur Verfügung steht. Genau darin liegt ihre allgemeinere Bedeutung. Der fachliche Umfang von Bild, Kern, Rang, vollem Rang, Dimensionssatz, linearen Gleichungssystemen und Determinantenbezug entspricht dem für 3.2.9 vorgesehenen Aufbau.\n\nMit dem Rang weiß ich nun, wie viele unabhängige Richtungen eine lineare Abbildung tatsächlich erzeugt. Damit ist jedoch noch nicht beschrieben, ob einzelne Richtungen unter einem linearen Operator lediglich skaliert werden, ohne ihre Richtung zu verändern. Diese Frage führt unmittelbar zu Eigenwerten und Eigenvektoren.\n\nDer folgende Abschnitt behandelt deshalb **3.2.10 Eigenwerte, Eigenvektoren und Eigenräume**.\n\n**Fortsetzungsstand:** Abschnitt 3.2.9 endet mit Gleichung **(3.125)**. Abschnitt **3.2.10 beginnt mit (3.126)**.', 'd1ab99f8b90ac42b1439008160241b1b869aca04fedd7ab10517a026b6208c14', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.'),
+(11, 32, 2, 'source_import', '# 3.2.10 Eigenwerte, Eigenvektoren und Eigenräume\n\nNachdem ich lineare Abbildungen über Bild, Kern und Rang danach beschrieben habe, welche Richtungen erhalten, erreicht oder vollständig auf den Nullvektor abgebildet werden, interessiert mich nun eine andere strukturelle Eigenschaft linearer Operatoren: Gibt es Richtungen, deren Orientierung unter der Transformation erhalten bleibt und die lediglich skaliert werden?\n\nGenau diese Richtungen werden durch Eigenvektoren beschrieben. Der zugehörige Skalierungsfaktor ist der Eigenwert. Beide Begriffe gehören zu den zentralen Werkzeugen der linearen Algebra, weil sie komplexe lineare Transformationen auf besonders einfache Wirkungen entlang bestimmter Richtungen zurückführen \\[71, 74, 82\\].\n\nFür das Funktionale Raum-Zeit-Kohärenzsystem ist diese Struktur später deshalb interessant, weil Eigenrichtungen mathematisch ausgezeichnete Richtungen eines Operators darstellen. Daraus darf ich allerdings noch keine physikalische Bedeutung ableiten. Ob eine Eigenrichtung beispielsweise einen bevorzugten funktionalen Zustand, einen stabilen Modus oder eine beobachtbare Struktur beschreibt, muss erst aus dem später definierten Modell folgen.\n\n## Definition 3.2.19: Eigenwert und Eigenvektor\n\nSei $A \\in \\mathbb{R}^{n \\times n}$ eine quadratische Matrix.\n\nEin von null verschiedener Vektor $v \\in \\mathbb{R}^{n}$ heißt Eigenvektor von $A$, wenn ein Skalar $\\lambda \\in \\mathbb{R}$ existiert, sodass\n\n$$Av = \\lambda v,\\quad\\quad v \\neq 0\\ (3.126)$$\n\nDabei bezeichnet\n\n-   $A$ die betrachtete quadratische Matrix,\n\n-   $v$ den Eigenvektor,\n\n-   $\\lambda$ den zugehörigen Eigenwert.\n\nDie Gleichung sagt aus, dass die Transformation $A$ den Eigenvektor nicht in eine neue unabhängige Richtung dreht. Sie verändert lediglich seine Länge und gegebenenfalls seine Orientierung \\[71, 74, 82\\].\n\nFür $\\lambda > 0$ bleibt die Orientierung der Eigenrichtung erhalten. Für $\\lambda < 0$ wird sie umgekehrt. Für $\\lambda = 0$ wird der Eigenvektor auf den Nullvektor abgebildet.\n\nDer Nullvektor selbst wird ausdrücklich nicht als Eigenvektor zugelassen, weil $A0 = 0$ für jede lineare Transformation gilt und damit keine ausgezeichnete Richtung charakterisieren würde.\n\n## Umformung der Eigenwertgleichung\n\nAus Gleichung (3.126) folgt $Av - \\lambda v = 0.$\n\nDa $\\lambda v = \\lambda Iv$ gilt, kann ich die Eigenwertgleichung schreiben als\n\n$$(A - \\lambda I)v = 0\\ (3.127)$$\n\nDabei bezeichnet $I$ die Einheitsmatrix der Ordnung $n$.\n\nDiese Darstellung zeigt unmittelbar, dass ein Eigenvektor ein nichttriviales Element des Kerns von $A - \\lambda I$ sein muss.\n\nEs gilt also\n\n$$v \\in \\ker(A - \\lambda I),\\quad\\quad v \\neq 0\\ (3.128)$$\n\nDamit verbinde ich den Eigenwertbegriff unmittelbar mit dem zuvor eingeführten Kern einer linearen Abbildung.\n\n## Charakteristische Gleichung\n\nDamit Gleichung (3.127) eine nichttriviale Lösung besitzt, darf die Matrix $A - \\lambda I$ nicht invertierbar sein.\n\nFür quadratische Matrizen ist dies äquivalent zu einer verschwindenden Determinante:\n\n$$\\det(A - \\lambda I) = 0\\ (3.129)$$\n\nDiese Gleichung heißt charakteristische Gleichung der Matrix $A$ \\[71, 74, 82\\].\n\nDamit kann ich Eigenwerte bestimmen, ohne zunächst einen Eigenvektor zu kennen. Ich suche diejenigen Werte von $\\lambda$, für die $A - \\lambda I$ singulär wird.\n\n## Definition 3.2.20: Charakteristisches Polynom\n\nDas charakteristische Polynom einer Matrix $A \\in \\mathbb{R}^{n \\times n}$ definiere ich durch\n\n$$p_{A}(\\lambda) = \\det(A - \\lambda I)\\ (3.130)$$\n\nDie Eigenwerte von $A$ sind genau die Nullstellen dieses Polynoms:\n\n$$p_{A}(\\lambda) = 0\\ (3.131)$$\n\nDa $p_{A}$ ein Polynom vom Grad $n$ ist, besitzt eine $n \\times n$-Matrix über den komplexen Zahlen unter Berücksichtigung algebraischer Vielfachheiten genau $n$ Eigenwerte. Über den reellen Zahlen müssen dagegen nicht alle Nullstellen reell sein.\n\nDamit ist wichtig: Eine reelle Matrix besitzt nicht notwendigerweise ausschließlich reelle Eigenwerte.\n\n## Beispiel einer Diagonalmatrix\n\nIch betrachte\\\n$$A = \\begin{pmatrix}\n2 & 0 \\\\\n0 & 3\n\\end{pmatrix}.$$\n\nFür das charakteristische Polynom ergibt sich\n\n$$p_{A}(\\lambda) = \\ det\\begin{pmatrix}\n2 - \\lambda & 0 \\\\\n0 & 3 - \\lambda\n\\end{pmatrix} = (2 - \\lambda)(3 - \\lambda).\\ (3.132)$$\n\nDie Nullstellen sind\n\n$$\\lambda_{1} = 2,\\quad\\quad\\lambda_{2} = 3\\ (3.133)$$\n\nDamit besitzt die Matrix zwei verschiedene Eigenwerte.\n\nFür $\\lambda_{1} = 2$ gilt\\\n$$\\mathbf{A}\\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} = 2\\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix},$$\n\nund für $\\lambda_{2} = 3$\n\n$$\\mathbf{A}\\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix} = 3\\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix},$$\n\nDiese beiden Rechnungen bestätigen die Eigenvektoren der Standardbasis, erhalten aber keine zusätzlichen Gleichungsnummern, weil sie lediglich die Aussage von Gleichung (3.126) für das konkrete Beispiel prüfen.\n\nGeometrisch bedeutet dies, dass die $x$-Richtung mit dem Faktor $2$ und die $y$-Richtung mit dem Faktor $3$ skaliert wird.\n\n## Definition 3.2.21: Eigenraum\n\nZu einem Eigenwert $\\lambda$ definiere ich den Eigenraum durch\n\n$$E_{\\lambda} = \\ker(A - \\lambda I)\\ (3.134)$$\n\nDer Eigenraum enthält damit den Nullvektor und sämtliche Eigenvektoren, die zum Eigenwert $\\lambda$ gehören \\[71, 74, 82\\].\n\nDie Eigenvektoren eines Eigenwerts bilden also zusammen mit dem Nullvektor einen Untervektorraum.\n\nFür das vorherige Beispiel gilt beispielsweise\n\n$$E_{2} = \\text{span}\\left\\{ \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} \\right\\},\\quad\\quad E_{3} = \\text{span}\\left\\{ \\begin{pmatrix}\n0 \\\\\n1\n\\end{pmatrix} \\right\\}\\ (3.135)$$\n\nJeder von null verschiedene Vektor aus $E_{2}$ bleibt unter $A$ auf derselben Geraden und wird mit $2$ skaliert. Entsprechend werden die Vektoren aus $E_{3}$ mit $3$ skaliert.\n\n## Algebraische und geometrische Vielfachheit\n\nBesitzt ein Eigenwert $\\lambda$ im charakteristischen Polynom die Vielfachheit $m$, bezeichne ich diese als algebraische Vielfachheit.\n\nDie Dimension des zugehörigen Eigenraums bezeichne ich als geometrische Vielfachheit:\n\n$$m_{g}(\\lambda) = \\dim\\left( E_{\\lambda} \\right)\\ (3.136)$$\n\nZwischen geometrischer und algebraischer Vielfachheit gilt\n\n$$1 \\leq m_{g}(\\lambda) \\leq m_{a}(\\lambda)\\ (3.137)$$\n\nDabei bezeichnet $m_{a}(\\lambda)$ die algebraische Vielfachheit des Eigenwerts.\n\nDiese Unterscheidung ist wesentlich, weil ein mehrfacher Eigenwert nicht automatisch genügend viele linear unabhängige Eigenvektoren besitzt.\n\n## Beispiel eines mehrfachen Eigenwerts\n\nIch betrachte\\\n$$A = \\begin{pmatrix}\n2 & 1 \\\\\n0 & 2\n\\end{pmatrix}.$$\n\nDas charakteristische Polynom lautet\n\n$$p_{A}(\\lambda) = (2 - \\lambda)^{2}\\ (3.138)$$\n\nDamit besitzt die Matrix nur den Eigenwert $\\lambda = 2$, allerdings mit algebraischer Vielfachheit $2$.\n\nFür den Eigenraum löse ich $(A - 2I)v = 0.\\ $Es ergibt sich\\\nA-2I=$\\begin{pmatrix}\n0 & 1 \\\\\n0 & 0\n\\end{pmatrix}.$ Daraus folgt $v_{2} = 0$, während $v_{1}$ frei gewählt werden kann.\n\nDer Eigenraum ist somit eindimensional:\n\n$$E_{2} = \\text{span}\\left\\{ \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} \\right\\}\\ (3.139)$$\n\nDamit gilt in diesem Beispiel\\\n$$m_{a}(2) = 2,\\quad\\quad m_{g}(2) = 1.$$\n\nDiese Werte erläutern Gleichungen (3.136) und (3.137) und werden deshalb nicht separat nummeriert.\n\nDie Matrix besitzt also nicht genügend unabhängige Eigenvektoren, um eine Basis des gesamten zweidimensionalen Raums zu bilden.\n\n## Eigenvektoren zu verschiedenen Eigenwerten\n\nEin grundlegendes Ergebnis lautet: Eigenvektoren zu paarweise verschiedenen Eigenwerten sind linear unabhängig \\[71, 74, 82\\].\n\nSind $\\lambda_{1},\\ldots,\\lambda_{k}$ paarweise verschiedene Eigenwerte und $v_{1},\\ldots,v_{k}$ zugehörige Eigenvektoren, dann sind $v_{1},\\ldots,v_{k}$ linear unabhängig.\n\nDiese Aussage ist strukturell wichtig, weil sie eine direkte Verbindung zwischen der Anzahl verschiedener Eigenwerte und der Möglichkeit einer Eigenvektorbasis herstellt.\n\nInsbesondere besitzt eine $n \\times n$-Matrix mit $n$ paarweise verschiedenen Eigenwerten automatisch $n$ linear unabhängige Eigenvektoren.\n\n## Spur und Determinante\n\nDie Eigenwerte einer Matrix stehen in engem Zusammenhang mit Determinante und Spur.\n\nFür eine $n \\times n$-Matrix mit Eigenwerten $\\lambda_{1},\\ldots,\\lambda_{n}$, gezählt mit ihren algebraischen Vielfachheiten, gilt\n\n$$\\det(A) = \\prod_{i = 1}^{n}\\lambda_{i}\\ (3.140)$$\n\nDie Determinante ist damit das Produkt aller Eigenwerte \\[71, 74, 82\\].\n\nEbenso gilt für die Spur\n\n$$\\text{tr}(A) = \\sum_{i = 1}^{n}\\lambda_{i}\\ (3.141)$$\n\nDie Spur ist die Summe der Diagonalelemente einer Matrix. Gleichung (3.141) zeigt, dass sie gleichzeitig der Summe der Eigenwerte entspricht.\n\nDaraus folgt unmittelbar: Besitzt eine Matrix einen Eigenwert $\\lambda = 0$, so verschwindet ihr Determinantenprodukt und die Matrix ist singulär.\n\nDamit verbinden sich Eigenwertstruktur, Determinante und Invertierbarkeit erneut zu derselben algebraischen Struktur.\n\n## Eigenwert null und Kern\n\nFür $\\lambda = 0$ wird die Eigenwertgleichung $Av = 0.$ Damit ist ein von null verschiedener Vektor genau dann Eigenvektor zum Eigenwert $0$, wenn er im Kern von $A$ liegt.\n\nEs gilt deshalb\n\n$$0\\,\\text{ist Eigenwert von }A\\quad \\Longleftrightarrow \\quad\\ker(A) \\neq \\text{\\{}0\\text{\\}}\\ (3.142)$$\n\nFür quadratische Matrizen folgt daraus außerdem\n\n$$0\\,\\text{ist Eigenwert}\\quad \\Longleftrightarrow \\quad\\det(A) = 0\\quad \\Longleftrightarrow \\quad A\\,\\text{ist nicht invertierbar}\\ (3.143)$$\n\nDamit treffen Eigenwerttheorie, Kern, Determinante und Invertierbarkeit unmittelbar zusammen.\n\n## Eigenwerte unter einem Basiswechsel\n\nDie Matrixdarstellung eines linearen Operators hängt von der gewählten Basis ab. Seine Eigenwerte dagegen bleiben unter einem Basiswechsel erhalten.\n\nSind\\\n$$A_{C} = P^{- 1}A_{B}P$$\n\nzwei ähnliche Matrixdarstellungen desselben Operators, dann besitzen sie dasselbe charakteristische Polynom:\n\n$$p_{A_{C}}(\\lambda) = p_{A_{B}}(\\lambda)\\ (3.144)$$\n\nDamit besitzen beide Matrizen dieselben Eigenwerte.\n\nDie konkrete Koordinatendarstellung der Eigenvektoren ändert sich dagegen mit der Basis. Der zugrunde liegende Eigenvektor als Element des Vektorraums bleibt derselbe mathematische Vektor.\n\nDiese Unterscheidung entspricht genau der bereits eingeführten Trennung zwischen mathematischem Objekt und Koordinatendarstellung.\n\n## Spektrum einer Matrix\n\nDie Gesamtheit aller Eigenwerte einer endlichdimensionalen Matrix fasse ich im Spektrum zusammen.\n\n## Definition 3.2.22: Spektrum\n\nFür eine quadratische Matrix $A$ definiere ich\n\n$$\\sigma(A) = \\left\\{ \\lambda \\middle| \\det(A - \\lambda I) = 0 \\right\\}\\ (3.145)$$\n\nDas Spektrum enthält damit sämtliche Eigenwerte der Matrix.\n\nIm endlichdimensionalen Fall ist diese Beschreibung unmittelbar mit dem charakteristischen Polynom verbunden. In allgemeineren funktionalanalytischen Räumen wird der Spektralbegriff umfassender und kann auch Werte enthalten, die nicht zu gewöhnlichen Eigenvektoren gehören. Diese Erweiterung benötige ich an dieser Stelle noch nicht.\n\n## Wissenschaftliche Einordnung\n\nEigenwerte und Eigenvektoren ermöglichen mir eine strukturelle Analyse linearer Operatoren, die über Rang, Kern und Determinante hinausgeht.\n\nDer Rang sagt mir, wie viele unabhängige Richtungen im Bild verbleiben. Der Kern zeigt, welche Richtungen auf den Nullvektor abgebildet werden. Die Eigenwertanalyse identifiziert dagegen diejenigen Richtungen, die unter dem Operator ihre Richtung beibehalten und lediglich skaliert werden.\n\nEin Eigenvektor ist deshalb keine beliebige Koordinatenrichtung. Er ist durch den Operator selbst ausgezeichnet.\n\nDer zugehörige Eigenwert beschreibt die Wirkung des Operators entlang dieser Richtung:\n\n-   $|\\lambda| > 1$ bedeutet Verstärkung,\n\n-   $0 < |\\lambda| < 1$ bedeutet Abschwächung,\n\n-   $\\lambda = 1$ bedeutet unveränderte Skalierung,\n\n-   $\\lambda = - 1$ bedeutet betragsmäßige Erhaltung bei Richtungsumkehr,\n\n-   $\\lambda = 0$ bedeutet Abbildung auf den Nullvektor.\n\nDiese Aussagen sind zunächst ausschließlich linear-algebraisch zu verstehen.\n\nFür das FRZK kann die Eigenwertanalyse später eine wichtige Rolle spielen, wenn funktionale Operatoren untersucht werden. Eine Eigenrichtung könnte dann beispielsweise mathematisch eine Richtung darstellen, in der sich ein Zustand unter einer Transformation ausschließlich skaliert. Ob dies jedoch als stabiler Modus, bevorzugte Struktur oder physikalisch ausgezeichnete Zustandsrichtung interpretiert werden darf, muss aus den späteren Axiomen und Definitionen folgen.\n\n## Methodologische Betrachtungen\n\nMethodologisch ist besonders wichtig, Eigenwert und Eigenvektor nicht unabhängig voneinander zu interpretieren.\n\nEin Eigenwert besitzt seine Bedeutung immer bezüglich eines Operators und eines zugehörigen Eigenraums. Die Zahl $\\lambda$ allein beschreibt noch keinen Zustand. Sie beschreibt die Wirkung des Operators auf bestimmte Richtungen.\n\nEbenso darf ich einen großen Eigenwert nicht automatisch als „wichtiger\" interpretieren als einen kleinen Eigenwert. Mathematisch bedeutet ein größerer Betrag lediglich eine stärkere Skalierung bei einmaliger Anwendung des Operators.\n\nErst bei wiederholter Anwendung entsteht ein dynamischer Zusammenhang. Für einen Eigenvektor $v$ gilt beispielsweise\n\n$$A^{k}v = \\lambda^{k}v\\ (3.146)$$\n\nDamit wird sichtbar, warum der Betrag des Eigenwerts bei iterierten linearen Prozessen eine besondere Bedeutung erhält:\n\n-   $|\\lambda| < 1$ führt entlang der Eigenrichtung gegen null,\n\n-   $|\\lambda| > 1$ führt zu wachsendem Betrag,\n\n-   $|\\lambda| = 1$ erhält den Betrag entlang der Eigenrichtung.\n\nDiese dynamische Interpretation setzt allerdings voraus, dass tatsächlich wiederholte Anwendungen desselben Operators betrachtet werden.\n\nFür das FRZK darf ich deshalb Eigenwerte erst dann dynamisch interpretieren, wenn ein entsprechender Evolutions- oder Übergangsoperator definiert wurde. Ohne einen solchen Operator wäre eine Aussage über Wachstum, Zerfall oder Stabilität methodisch unbegründet.\n\n## Didaktische Betrachtungen\n\nFür mich lässt sich der Eigenwertbegriff besonders anschaulich verstehen, wenn ich mir zunächst eine allgemeine lineare Transformation in der Ebene vorstelle.\n\nEin beliebiger Vektor kann durch die Transformation gleichzeitig gedreht, gestreckt und in seiner Orientierung verändert werden.\n\nEin Eigenvektor ist dagegen eine besondere Richtung, bei der die Transformation wesentlich einfacher wirkt: $v \\longmapsto \\lambda v.$ Diese Darstellung dient nur der begrifflichen Veranschaulichung.\n\nDer Vektor bleibt auf derselben Ursprungsgeraden. Nur sein Betrag und gegebenenfalls seine Richtung auf dieser Geraden verändern sich.\n\nDamit kann ich Eigenwerte geometrisch lesen:\n\n-   $\\lambda = 2$: doppelte Länge,\n\n-   $\\lambda = \\frac{1}{2}$: halbe Länge,\n\n-   $\\lambda = - 1$: gleiche Länge, entgegengesetzte Richtung,\n\n-   $\\lambda = 0$: Zusammenfallen im Nullvektor.\n\nAuch diese Beispiele sind Erläuterungen der Eigenwertgleichung und keine zusätzlichen Gleichungen.\n\nBesonders hilfreich ist für mich außerdem die folgende Kette:\n\n$$Av = \\lambda v\\quad \\Longrightarrow \\quad(A - \\lambda I)v = 0\\quad \\Longrightarrow \\quad\\det(A - \\lambda I) = 0.$$\n\nSie beschreibt den Weg von der geometrischen Eigenvektoridee zur rechnerischen Bestimmung der Eigenwerte. Da sie lediglich die bereits nummerierten Gleichungen (3.126), (3.127) und (3.129) zusammenfasst, erhält sie keine weitere Nummer.\n\nDamit lässt sich der praktische Ablauf klar strukturieren:\n\n1.  Ich bilde $A - \\lambda I$.\n\n2.  Ich bestimme $\\det(A - \\lambda I)$.\n\n3.  Ich löse die charakteristische Gleichung.\n\n4.  Für jeden Eigenwert bestimme ich den Kern von $A - \\lambda I$.\n\n5.  Dieser Kern liefert den zugehörigen Eigenraum.\n\nSo werden Eigenwerte und Eigenvektoren nicht zu isolierten Rechenverfahren, sondern ergeben sich unmittelbar aus Determinante und Kern.\n\n## Ergebnis und Übergang\n\nMit Eigenwerten, Eigenvektoren und Eigenräumen kann ich nun diejenigen Richtungen eines linearen Operators identifizieren, die unter seiner Wirkung erhalten bleiben und lediglich skaliert werden.\n\nDas charakteristische Polynom liefert die Eigenwerte, während die Kerne der Matrizen $A - \\lambda I$ die zugehörigen Eigenräume bestimmen. Algebraische und geometrische Vielfachheit zeigen, ob zu mehrfach auftretenden Eigenwerten genügend unabhängige Eigenvektoren vorhanden sind.\n\nEigenwerte verbinden sich außerdem unmittelbar mit Determinante, Spur, Kern und Invertierbarkeit. Ihr Produkt ergibt die Determinante, ihre Summe die Spur und der Eigenwert null kennzeichnet im quadratischen endlichdimensionalen Fall eine singuläre Matrix.\n\nDamit entsteht die nächste zentrale Frage: Unter welchen Bedingungen kann ich eine Basis ausschließlich aus Eigenvektoren bilden und dadurch die Matrixdarstellung eines Operators auf eine Diagonalmatrix vereinfachen?\n\nDer folgende Abschnitt behandelt deshalb **3.2.11 Diagonalisierung und Spektralzerlegung**.\n\n**Fortsetzungsstand:** Abschnitt 3.2.10 endet mit Gleichung **(3.146)**. Abschnitt **3.2.11 beginnt mit (3.147)**.', 'aece817ccd17b2e42495906556a3772a891c2ebe49023ff099525baad879f88b', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.');
+INSERT INTO `section_versions` (`section_version_id`, `section_id`, `revision_id`, `version_kind`, `body_markdown`, `checksum_sha256`, `notes`) VALUES
+(12, 33, 2, 'source_import', '# 3.2.11 Diagonalisierung und Spektralzerlegung\n\nMit Eigenwerten und Eigenvektoren kann ich diejenigen Richtungen eines linearen Operators bestimmen, die unter seiner Wirkung lediglich skaliert werden. Der nächste Schritt besteht darin zu prüfen, ob sich aus diesen ausgezeichneten Richtungen eine vollständige Basis des betrachteten Vektorraums bilden lässt. Ist das möglich, kann ich die Matrixdarstellung des Operators durch einen geeigneten Basiswechsel auf eine Diagonalmatrix zurückführen. Genau darin liegt die Idee der Diagonalisierung \\[74\\]. Strang behandelt diesen Zusammenhang ausdrücklich in Kapitel 6, insbesondere in §6.2 „Diagonalizing a Matrix\".\n\nDie Bedeutung dieser Umformung liegt für mich nicht darin, dass ein anderer Operator entsteht. Wie beim allgemeinen Basiswechsel bleibt der lineare Operator selbst unverändert. Lediglich seine Matrixdarstellung wird in einer besonders geeigneten Basis wesentlich einfacher. Wenn diese Basis aus Eigenvektoren besteht, wirkt der Operator entlang jeder Basisrichtung nur noch durch Multiplikation mit dem zugehörigen Eigenwert \\[74\\].\n\nFür das Funktionale Raum-Zeit-Kohärenzsystem ist diese Struktur später deshalb interessant, weil sie komplexe lineare Kopplungen in voneinander getrennte Eigenrichtungen zerlegen kann. Eine solche Zerlegung darf jedoch zunächst nur mathematisch verstanden werden. Ob einzelne Eigenrichtungen später eigenständige funktionale Modi oder physikalisch interpretierbare Zustandsanteile darstellen, muss aus dem Modell selbst begründet werden.\n\n## Definition 3.2.23: Diagonalisierbarkeit\n\nEine quadratische Matrix\\\n$$A \\in \\mathbb{R}^{n \\times n}$$\n\nheißt diagonalisierbar, wenn eine invertierbare Matrix $P$ und eine Diagonalmatrix $D$ existieren, sodass\n\n$$A = PDP^{- 1}\\ (3.147)$$\n\nDabei gilt:\n\n-   $A$ ist die ursprüngliche Matrixdarstellung,\n\n-   $P$ ist die Basiswechselmatrix,\n\n-   $D$ ist die Diagonalmatrix,\n\n-   $P^{- 1}$ ist die inverse Basiswechselmatrix.\n\nDie Spalten von $P$ werden dabei aus linear unabhängigen Eigenvektoren von $A$ gebildet. Die zugehörigen Eigenwerte stehen in derselben Reihenfolge auf der Hauptdiagonale von $D$ \\[74\\].\n\nSchreibe ich die Eigenvektoren als $v_{1},\\ldots,v_{n}$, dann hat $P$ die Form\n\n$$P = \\begin{pmatrix}\nv_{1} & v_{2} & \\cdots & v_{n}\n\\end{pmatrix}\\ (3.148)$$\n\nDie zugehörige Diagonalmatrix lautet\n\n$$D = \\begin{pmatrix}\n\\lambda_{1} & 0 & \\cdots & 0 \\\\\n0 & \\lambda_{2} & \\cdots & 0 \\\\\n \\vdots & \\vdots & \\ddots & \\vdots \\\\\n0 & 0 & \\cdots & \\lambda_{n}\n\\end{pmatrix}\\ (3.149)$$\n\nDabei gehört $\\lambda_{i}$ jeweils zum Eigenvektor $v_{i}$.\n\n## Zusammenhang zwischen Eigenvektoren und Diagonalmatrix\n\nFür jeden Eigenvektor gilt\\\n$$Av_{i} = \\lambda_{i}v_{i}.$$\n\nFasse ich alle Eigenvektoren spaltenweise in $P$ zusammen, kann ich diese einzelnen Beziehungen gleichzeitig schreiben als\n\n$$AP = PD\\ (3.150)$$\n\nDiese Gleichung enthält spaltenweise genau die einzelnen Eigenwertgleichungen\n\n$$Av_{i} = \\lambda_{i}v_{i}.\n$$\n\nDiese Einzelbeziehungen sind Bestandteile von Gleichung (3.150) und erhalten deshalb keine zusätzlichen Gleichungsnummern.\n\nDa $P$ invertierbar ist, folgt aus Gleichung (3.150)$\n$$$A = PDP^{- 1}.$$\n\nDamit erhalte ich wieder Gleichung (3.147).\n\nAlternativ kann ich nach $D$ auflösen:\n\n$$D = P^{- 1}AP\\ (3.151)$$\n\nGleichung (3.151) zeigt besonders deutlich, dass die Diagonalisierung ein spezieller Basiswechsel ist. Die Matrix $D$ beschreibt denselben linearen Operator in einer Basis aus Eigenvektoren.\n\n## Voraussetzung der Diagonalisierbarkeit\n\nEine $n \\times n$-Matrix ist genau dann diagonalisierbar, wenn sie $n$ linear unabhängige Eigenvektoren besitzt \\[74\\]. Das offizielle MIT-Material formuliert die Diagonalisierung entsprechend über eine Matrix aus unabhängigen Eigenvektoren.\n\nDamit gilt\n\n$$A\\,\\text{diagonalisierbar}\\quad \\Longleftrightarrow \\quad A\\,\\text{besitzt }n\\text{ linear unabhängige Eigenvektoren}\\ (3.152)$$\n\nDie Anzahl der Eigenwerte allein genügt dafür nicht. Entscheidend ist die Anzahl der **linear unabhängigen Eigenvektoren**.\n\nBesitzt eine $n \\times n$-Matrix $n$ paarweise verschiedene Eigenwerte, so besitzt sie automatisch $n$ linear unabhängige Eigenvektoren und ist damit diagonalisierbar \\[74\\].\n\nDaraus folgt die hinreichende Bedingung\n\n$$\\lambda_{1},\\ldots,\\lambda_{n}\\,\\text{paarweise verschieden}\\quad \\Longrightarrow \\quad A\\,\\text{diagonalisierbar}\\ (3.153)$$\n\nDie Umkehrung gilt jedoch nicht. Eine Matrix kann auch bei mehrfachen Eigenwerten diagonalisierbar sein, sofern die zugehörigen Eigenräume zusammen genügend unabhängige Eigenvektoren liefern.\n\n## Algebraische und geometrische Vielfachheit\n\nFür einen Eigenwert $\\lambda$ hatte ich bereits zwischen algebraischer und geometrischer Vielfachheit unterschieden.\n\nFür die Diagonalisierbarkeit muss für jeden Eigenwert gelten, dass seine geometrische Vielfachheit seiner algebraischen Vielfachheit entspricht und die Summe der Eigenraumdimensionen $n$ ergibt.\n\nDamit kann ich die Bedingung schreiben als\n\n$$A\\,\\text{diagonalisierbar}\\quad \\Longleftrightarrow \\quad\\sum_{\\lambda \\in \\sigma(A)}^{}{\\dim\\left( E_{\\lambda} \\right)} = n\\ (3.154)$$\n\nDabei bezeichnet\n\n-   $\\sigma(A)$ das Spektrum von $A$,\n\n-   $E_{\\lambda}$ den Eigenraum zum Eigenwert $\\lambda$,\n\n-   $\\dim\\left( E_{\\lambda} \\right)$ dessen Dimension.\n\nDamit wird die Diagonalisierbarkeit zu einer Aussage darüber, ob die Eigenräume zusammen den gesamten Vektorraum aufspannen.\n\n## Beispiel einer diagonalisierbaren Matrix\n\nIch betrachte erneut\\\n$$A = \\begin{pmatrix}\n2 & 0 \\\\\n0 & 3\n\\end{pmatrix}.$$\n\nDiese Matrix ist bereits diagonal. Ihre Eigenvektoren können als Standardbasisvektoren gewählt werden.\n\nDamit gilt\n\n$$P = \\begin{pmatrix}\n1 & 0 \\\\\n0 & 1\n\\end{pmatrix},\\quad\\quad D = \\begin{pmatrix}\n2 & 0 \\\\\n0 & 3\n\\end{pmatrix}.\n$$Diese beiden Matrixangaben dienen nur der Beschreibung des Beispiels und erhalten keine eigenen Gleichungsnummern.\n\nMit (P=I) folgt unmittelbar\n\n$$P^{- 1}AP = A = D\\ (3.155)$$\n\nDieses triviale Beispiel zeigt, dass eine Diagonalmatrix bereits bezüglich der Standardbasis in einer Eigenvektorbasis dargestellt ist.\n\nInteressanter wird die Diagonalisierung, wenn die ursprüngliche Matrix nicht diagonal ist.\n\n## Beispiel eines nichtdiagonalen Operators\n\nIch betrachte\n\n$$A = \\begin{pmatrix}\n4 & 1 \\\\\n2 & 3\n\\end{pmatrix}.\n$$Das charakteristische Polynom ergibt\n\n$$p_{A}(\\lambda) = \\det\\begin{pmatrix}\n4 - \\lambda & 1 \\\\\n2 & 3 - \\lambda\n\\end{pmatrix} = (4 - \\lambda)(3 - \\lambda) - 2 = \\lambda^{2} - 7\\lambda + 10.\\ (3.156)$$\n\nDamit gilt\n\n$$p_{A}(\\lambda) = (\\lambda - 5)(\\lambda - 2),$$\n\nworaus die Eigenwerte\n\n$$\\lambda_{1} = 5,\\quad\\quad\\lambda_{2} = 2\\ (3.157)$$\n\nDa beide Eigenwerte verschieden sind, existieren zwei linear unabhängige Eigenvektoren.\n\nFür $\\lambda_{1} = 5$ kann ich beispielsweise\n\n$$v_{1} = \\begin{pmatrix}\n1 \\\\\n1\n\\end{pmatrix}\n$$wählen.\n\nFür $\\lambda_{2} = 2$ kann ich beispielsweise\\\n$$v_{2} = \\begin{pmatrix}\n1 \\\\\n\\text{-}2\n\\end{pmatrix}$$\n\nwählen.\n\nDie einzelnen Vektorangaben sind Bestandteile der Konstruktion und erhalten keine eigenen Gleichungsnummern.\n\nDamit bilde ich\n\n$$P = \\begin{pmatrix}\n1 & 1 \\\\\n1 & - 2\n\\end{pmatrix},\\quad\\quad D = \\begin{pmatrix}\n5 & 0 \\\\\n0 & 2\n\\end{pmatrix}\\ (3.158)$$\n\nDie Diagonalisierungsbeziehung lautet dann\n\n$$P^{- 1}AP = D\\ (3.159)$$\n\nDamit wird die ursprünglich gekoppelte Matrixdarstellung in der Eigenvektorbasis auf zwei voneinander unabhängige Skalierungen reduziert.\n\n## Nicht diagonalisierbare Matrix\n\nNicht jede Matrix besitzt genügend unabhängige Eigenvektoren.\n\nIch betrachte\\\n$$A = \\begin{pmatrix}\n2 & 1 \\\\\n0 & 2\n\\end{pmatrix}.$$\n\nFür diese Matrix hatte ich bereits festgestellt, dass\\\n$$p_{A}(\\lambda) = (2 - \\lambda)^{2}.$$\n\nDer einzige Eigenwert ist daher $\\lambda = 2$ mit algebraischer Vielfachheit $2$.\n\nDer zugehörige Eigenraum ist jedoch nur eindimensional:\n\n$$E_{2} = span\\left\\{ \\begin{pmatrix}\n1 \\\\\n0\n\\end{pmatrix} \\right\\}.$$\n\nDamit existiert nur ein linear unabhängiger Eigenvektor. Die Bedingung aus Gleichung (3.152) ist nicht erfüllt.\n\nFolglich gilt\n\n$$A\\,\\text{ist nicht diagonalisierbar}\\ (3.160)$$\n\nDieses Beispiel zeigt, warum die algebraische Vielfachheit eines Eigenwerts allein nicht genügt. Entscheidend ist, ob sein Eigenraum genügend unabhängige Richtungen bereitstellt.\n\n## Potenzen einer diagonalisierbaren Matrix\n\nEine wesentliche praktische Stärke der Diagonalisierung zeigt sich bei Matrixpotenzen.\n\nIst\\\n$$A = PDP^{- 1},$$\n\nso gilt\\\n$$A^{2} = PDP^{- 1}PDP^{- 1}.$$\n\nDa $P^{- 1}P = I$, bleiben nur $P$, $D^{2}$ und $P^{- 1}$ übrig.\n\nAllgemein folgt\n\n$$A^{k} = PD^{k}P^{- 1}\\ (3.161)$$\n\nDie Potenz einer Diagonalmatrix ist besonders einfach:\n\n$$D^{k} = \\begin{pmatrix}\n\\lambda_{1}^{k} & 0 & \\cdots & 0 \\\\\n0 & \\lambda_{2}^{k} & \\cdots & 0 \\\\\n \\vdots & \\vdots & \\ddots & \\vdots \\\\\n0 & 0 & \\cdots & \\lambda_{n}^{k}\n\\end{pmatrix}\\ (3.162)$$\n\nDamit reduziert sich die wiederholte Anwendung eines linearen Operators auf die Potenzierung seiner Eigenwerte. Dieser Zusammenhang ist ein zentraler Grund dafür, warum Diagonalisierung bei iterierten linearen Prozessen so nützlich ist \\[74\\].\n\n## Matrixfunktionen\n\nDie gleiche Struktur lässt sich auf Funktionen einer diagonalisierbaren Matrix übertragen.\n\nIst eine Funktion $f$ für die Eigenwerte von $A$ definiert, kann ich schreiben\n\n$$f(A) = P\\, f(D)\\, P^{- 1}\\ (3.163)$$\n\nDabei gilt\n\n$$f(D) = \\begin{pmatrix}\nf\\left( \\lambda_{1} \\right) & 0 & \\cdots & 0 \\\\\n0 & f\\left( \\lambda_{2} \\right) & \\cdots & 0 \\\\\n \\vdots & \\vdots & \\ddots & \\vdots \\\\\n0 & 0 & \\cdots & f\\left( \\lambda_{n} \\right)\n\\end{pmatrix}\\ (3.164)$$\n\nDamit kann ich beispielsweise Matrixpotenzen, Matrixexponentialfunktionen oder andere geeignete Funktionen auf die einzelnen Eigenwerte zurückführen.\n\n## Spektralzerlegung\n\nEine besonders starke Form der Diagonalisierung tritt bei reellen symmetrischen Matrizen auf. Strang behandelt symmetrische Matrizen unmittelbar in §6.4 und verweist dort ausdrücklich auf den Spektralsatz. Die offiziellen Lösungen bestätigen, dass die Eigenvektoren symmetrischer Matrizen orthogonal gewählt werden können. \\[74\\]\n\nFür eine reelle symmetrische Matrix\\\n$$A = A^{T}$$\n\nexistiert eine orthogonale Matrix $Q$, deren Spalten aus orthonormalen Eigenvektoren bestehen, sodass\n\n$$A = Q\\Lambda Q^{T}\\ (3.165)$$\n\nDabei gilt:\n\n-   $Q$ enthält orthonormale Eigenvektoren,\n\n-   $Q^{T} = Q^{- 1}$,\n\n-   $\\Lambda$ ist die Diagonalmatrix der reellen Eigenwerte.\n\nDiese Aussage ist die endlichdimensionale Form des **Spektralsatzes für reelle symmetrische Matrizen** \\[74\\].\n\nDie Orthogonalität bedeutet\n\n$$Q^{T}Q = QQ^{T} = I\\ (3.166)$$\n\nDamit ist die inverse Eigenvektormatrix besonders einfach:\\\n$$Q^{- 1} = Q^{T}.$$\n\nDiese Beziehung ist bereits Bestandteil von Gleichung (3.166) und wird deshalb nicht erneut nummeriert.\n\n## Definition 3.2.24: Orthogonale Diagonalisierung\n\nEine reelle Matrix $A$ heißt orthogonal diagonalisierbar, wenn eine orthogonale Matrix $Q$ und eine Diagonalmatrix $\\Lambda$ existieren, sodass\n\n$$Q^{T}AQ = \\Lambda\\ (3.167)$$\n\nFür reelle Matrizen gilt der grundlegende Zusammenhang\n\n$$A\\,\\text{orthogonal diagonalisierbar}\\quad \\Longleftrightarrow \\quad A = A^{T}\\ (3.168)$$\n\nDamit besitzt jede reelle symmetrische Matrix eine orthonormale Eigenvektorbasis und ausschließlich reelle Eigenwerte \\[74\\].\n\n## Zerlegung in Eigenprojektoren\n\nSind $q_{1},\\ldots,q_{n}$ orthonormale Eigenvektoren einer reellen symmetrischen Matrix mit Eigenwerten $\\lambda_{1},\\ldots,\\lambda_{n}$, kann ich Gleichung (3.165) als Summe schreiben:\n\n$$A = \\sum_{i = 1}^{n}{\\lambda_{i}q_{i}q_{i}^{T}}\\ (3.169)$$\n\nDer Ausdruck\\\n$$q_{i}q_{i}^{T}$$\n\nist die orthogonale Projektion auf die eindimensionale Eigenrichtung von $q_{i}$.\n\nDamit kann ich den Operator in einzelne spektrale Beiträge zerlegen. Jeder Beitrag besteht aus einer Projektion auf einen Eigenraum und der anschließenden Skalierung mit dem entsprechenden Eigenwert.\n\nBesitzt ein Eigenwert einen mehrdimensionalen Eigenraum, kann ich die zu diesem Eigenwert gehörenden Projektoren zusammenfassen. Dann erhält die Spektralzerlegung allgemein die Form\n\n$$A = \\sum_{\\lambda \\in \\sigma(A)}^{}{\\lambda P_{\\lambda}}\\ (3.170)$$\n\nDabei bezeichnet $P_{\\lambda}$ den orthogonalen Projektor auf den Eigenraum $E_{\\lambda}$.\n\nDiese Form zeigt für mich besonders klar, was eine Spektralzerlegung mathematisch leistet: Der Operator wird in voneinander unabhängige Beiträge seiner Eigenräume zerlegt.\n\n## Vollständigkeitsrelation\n\nDa die orthonormalen Eigenvektoren einer symmetrischen Matrix eine Basis des gesamten Vektorraums bilden, gilt für die zugehörigen eindimensionalen Projektoren\n\n$$\\sum_{i = 1}^{n}q_{i}q_{i}^{T} = I\\ (3.171)$$\n\nIn der zusammengefassten Eigenraumdarstellung entspricht dies\n\n$$\\sum_{\\lambda \\in \\sigma(A)}^{}P_{\\lambda} = I\\ (3.172)$$\n\nDamit zerlegen die Eigenräume den gesamten Vektorraum vollständig.\n\nFür unterschiedliche Eigenwerte sind die zugehörigen Projektoren orthogonal:\n\n$$P_{\\lambda}P_{\\mu} = 0\\quad\\quad\\text{für }\\lambda \\neq$$\n\nFür denselben Eigenraum gilt dagegen die Projektoreigenschaft\n\n$$P_{\\lambda}^{2} = P_{\\lambda}\\ (3.174)$$\n\nDamit sind die einzelnen spektralen Teilräume gegenseitig getrennt und gemeinsam vollständig.\n\n## Wirkung auf einen beliebigen Vektor\n\nSei $x \\in \\mathbb{R}^{n}$. Bezüglich einer orthonormalen Eigenbasis kann ich $x$ zerlegen als\n\n$$x = \\sum_{i = 1}^{n}\\left( q_{i}^{T}x \\right)\\, q_{i}\\ (3.175)$$\n\nDabei ist $q_{i}^{T}x$ die Koordinate von $x$ entlang der Eigenrichtung $q_{i}$.\n\nWende ich $A$ auf diesen Vektor an, erhalte ich\n\n$$Ax = \\sum_{i = 1}^{n}{\\lambda_{i}\\left( q_{i}^{T}x \\right)}\\, q_{i}\\ (3.176)$$\n\nDamit wirkt der Operator auf jede Eigenkomponente unabhängig. Es entstehen keine Kopplungsterme zwischen unterschiedlichen Eigenrichtungen.\n\nGerade diese Entkopplung macht die Spektralzerlegung mathematisch so leistungsfähig.\n\n## Matrixfunktionen in Spektraldarstellung\n\nFür eine reelle symmetrische Matrix kann ich eine geeignete Funktion $f(A)$ unmittelbar spektral schreiben:\n\n$$f(A) = \\sum_{i = 1}^{n}{f\\left( \\lambda_{i} \\right)}\\, q_{i}q_{i}^{T}\\ (3.177)$$\n\nIn der Eigenraumdarstellung gilt entsprechend\n\n$$f(A) = \\sum_{\\lambda \\in \\sigma(A)}^{}{f(\\lambda)P_{\\lambda}}\\ (3.178)$$\n\nDamit kann ich die Wirkung komplexerer Matrixfunktionen vollständig auf die Eigenwerte und Eigenprojektoren zurückführen.\n\n## Wissenschaftliche Einordnung\n\nDie Diagonalisierung zeigt mir, dass eine kompliziert erscheinende Matrixdarstellung nicht notwendigerweise einer komplizierten intrinsischen Struktur des Operators entspricht. Ein großer Teil der sichtbaren Kopplung zwischen Matrixkomponenten kann lediglich daraus entstehen, dass ich keine an den Operator angepasste Basis verwende.\n\nExistiert eine vollständige Eigenvektorbasis, kann ich den Operator in dieser Basis diagonal darstellen. Dann wirkt er auf jede Eigenrichtung unabhängig durch Multiplikation mit einem einzigen Eigenwert \\[74\\].\n\nFür symmetrische Matrizen ist die Situation noch stärker strukturiert. Ihre Eigenvektoren können orthonormal gewählt werden und ihre Eigenwerte sind reell. Dadurch entsteht eine orthogonale Spektralzerlegung des gesamten Raums \\[74\\].\n\nFür das FRZK eröffnet dies später die Möglichkeit, einen linearen funktionalen Operator gegebenenfalls in voneinander unabhängige Eigenmoden zu zerlegen. Eine solche Zerlegung wäre mathematisch besonders transparent, weil jede Eigenkomponente separat untersucht werden könnte.\n\nDabei darf ich jedoch nicht voraussetzen, dass ein späterer FRZK-Operator tatsächlich symmetrisch, selbstadjungiert oder überhaupt diagonalisierbar ist. Diese Eigenschaften müssten aus seinen Definitionen oder Axiomen folgen.\n\n## Methodologische Betrachtungen\n\nMethodologisch ist die Diagonalisierung ein besonders gutes Beispiel dafür, warum ich Darstellung und Struktur auseinanderhalten muss.\n\nEine nichtdiagonale Matrix kann erhebliche Kopplungen zwischen ihren Komponenten zeigen. Nach einem Basiswechsel kann derselbe Operator jedoch diagonal erscheinen. Daraus folgt, dass einzelne Nebendiagonalelemente im Allgemeinen keine basisunabhängigen Eigenschaften des Operators darstellen.\n\nEine Diagonalmatrix besitzt daher nicht notwendigerweise einen „einfacheren Operator\". Sie besitzt lediglich eine Darstellung, in der die intrinsischen Eigenrichtungen direkt als Koordinatenachsen gewählt wurden.\n\nFür das FRZK folgt daraus, dass eine später auftretende Kopplungsmatrix nicht allein aufgrund ihrer sichtbaren Matrixelemente interpretiert werden darf. Zunächst muss ich untersuchen, ob sich diese Kopplungen durch einen Basiswechsel entfernen lassen.\n\nSind sie durch Diagonalisierung vollständig eliminierbar, dann beschreiben die Nebendiagonalelemente primär die gewählte Darstellung.\n\nSind sie dagegen aufgrund fehlender Diagonalisierbarkeit nicht vollständig eliminierbar, besitzt die mathematische Struktur eine andere Qualität.\n\nAuch die Spektralzerlegung darf ich nicht automatisch auf jeden Operator übertragen. Die besonders einfache orthogonale Zerlegung\\\n$$A = \\sum_{\\lambda}^{}{\\lambda P_{\\lambda}}$$\n\nsetzt im hier behandelten reellen endlichdimensionalen Fall insbesondere eine symmetrische Matrix voraus. Für allgemeinere Operatoren gelten andere Voraussetzungen und gegebenenfalls komplexere Spektralstrukturen.\n\n## Didaktische Betrachtungen\n\nFür mich lässt sich die Diagonalisierung am einfachsten als Suche nach einem besseren Koordinatensystem verstehen.\n\nIn einer beliebigen Basis kann eine Matrix beispielsweise so aussehen:\\\n$$A = \\begin{pmatrix}\na & b \\\\\nc & d\n\\end{pmatrix}.$$\n\nDie Nebendiagonalelemente $b$ und $c$ zeigen, dass die beiden gewählten Koordinatenrichtungen miteinander gekoppelt sind.\n\nFinde ich jedoch zwei unabhängige Eigenvektoren, kann ich diese als neue Achsen wählen. In dieser Basis lautet die Darstellung\\\n$$D = \\begin{pmatrix}\n\\lambda_{1} & 0 \\\\\n0 & \\lambda_{2}\n\\end{pmatrix}.$$\n\nBeide Matrixangaben dienen hier nur der Veranschaulichung und erhalten keine Gleichungsnummern.\n\nDamit habe ich den Operator nicht verändert. Ich habe lediglich Achsen gewählt, die bereits an seine natürliche Wirkung angepasst sind.\n\nFür mich entspricht das geometrisch der Frage:\n\n**Welche Richtungen werden durch die Transformation nicht miteinander vermischt?**\n\nDie Antwort liefern die Eigenvektoren.\n\nDie zugehörigen Eigenwerte beantworten anschließend die Frage:\n\n**Wie stark wirkt die Transformation entlang jeder dieser Richtungen?**\n\nDamit lässt sich der gesamte Zusammenhang in einer begrifflichen Kette darstellen:\\\n$$\\text{Operator} \\longrightarrow \\text{Eigenwerte und Eigenvektoren} \\longrightarrow \\text{Eigenbasis} \\longrightarrow \\text{Diagonalmatrix}.$$\n\nDiese Darstellung dient ausschließlich der Übersicht und erhält keine Gleichungsnummer.\n\nBei einer symmetrischen Matrix kommt eine weitere Eigenschaft hinzu: Die Eigenrichtungen können senkrecht zueinander gewählt werden. Dadurch entsteht eine orthonormale Eigenbasis.\n\nDas macht die Spektralzerlegung besonders anschaulich. Jeder Vektor wird zunächst in seine Eigenkomponenten zerlegt, jede dieser Komponenten wird mit ihrem Eigenwert skaliert und anschließend werden die Ergebnisse wieder zusammengesetzt.\n\n## Ergebnis und Übergang\n\nMit der Diagonalisierung kann ich einen linearen Operator dann auf eine Diagonalmatrix zurückführen, wenn genügend linear unabhängige Eigenvektoren vorhanden sind. Die Spalten der Basiswechselmatrix bestehen aus diesen Eigenvektoren, während die zugehörigen Eigenwerte die Diagonaleinträge bilden.\n\nDadurch werden Matrixpotenzen und geeignete Matrixfunktionen erheblich vereinfacht. Statt die vollständige Matrix wiederholt zu multiplizieren, kann ich die entsprechenden Operationen auf die einzelnen Eigenwerte anwenden.\n\nFür reelle symmetrische Matrizen liefert der Spektralsatz eine noch stärkere Struktur: Es existiert eine orthonormale Eigenbasis, sodass der Operator orthogonal diagonalisiert und als Summe seiner Eigenprojektoren dargestellt werden kann \\[74\\].\n\nDamit habe ich eine mathematische Zerlegung erhalten, bei der voneinander unabhängige Richtungen separat behandelt werden können. Im nächsten Schritt muss ich jedoch untersuchen, wie sich geometrische Begriffe wie Länge, Winkel, Orthogonalität und Projektion formal definieren lassen. Diese Strukturen sind insbesondere notwendig, um die Orthogonalität der Eigenvektoren und die Projektoren der Spektralzerlegung mathematisch vollständig einzuordnen.\n\nDer folgende Abschnitt behandelt deshalb **3.2.12 Skalarprodukt, Norm und Orthogonalität**.\n\n**Fortsetzungsstand:** Abschnitt 3.2.11 endet mit Gleichung **(3.178)**. Abschnitt **3.2.12 beginnt mit (3.179)**.', '2d6f60e4489f21fffd98ca5ba52927fcbed4993a21351843b77f4a3c04e7f9f5', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.'),
+(13, 34, 2, 'source_import', '# 3.2.12 Skalarprodukt, Norm und Orthogonalität\n\nMit der Diagonalisierung und der Spektralzerlegung habe ich im vorhergehenden Abschnitt gesehen, dass bestimmte Richtungen eines Vektorraums gegenüber einem linearen Operator ausgezeichnet sein können. Bei reellen symmetrischen Matrizen kann ich diese Eigenrichtungen sogar orthogonal beziehungsweise orthonormal wählen. Damit tauchen jedoch Begriffe auf, die sich aus der reinen Vektorraumstruktur noch nicht ergeben: Länge, Abstand, Winkel und Orthogonalität.\n\nEin Vektorraum legt zunächst nur fest, wie ich Vektoren addiere und mit Skalaren multipliziere. Daraus folgt noch nicht, wie lang ein Vektor ist oder ob zwei Vektoren senkrecht aufeinander stehen. Für diese zusätzliche geometrische Struktur benötige ich ein Skalarprodukt.\n\nAls zentrale Literaturgrundlage verwende ich hierfür **Gilbert Strang: *Introduction to Linear Algebra*. 5th Edition. Wellesley, Massachusetts: Wellesley-Cambridge Press, 2016 \\[74\\]**. Strang behandelt Längen und Skalarprodukte bereits in §1.2 und führt die darauf aufbauenden Begriffe der Orthogonalität, Projektion und orthonormalen Basen systematisch in Kapitel 4 weiter.\n\nErgänzend ziehe ich **Stephen H. Friedberg, Arnold J. Insel und Lawrence E. Spence: *Linear Algebra*. 5th Edition. Pearson, 2018 \\[84\\]** heran. Dort bilden Skalarprodukte und Normen den Ausgangspunkt von Kapitel 6 „Inner Product Spaces\"; anschließend folgen Gram-Schmidt, orthogonale Komplemente, orthogonale Projektionen und der Spektralsatz.\n\nFür das Funktionale Raum-Zeit-Kohärenzsystem ist diese Unterscheidung später wesentlich. Wenn ich einen Zustand durch einen Vektor beschreibe, folgt daraus allein noch nicht, dass zwischen zwei Zuständen ein geometrisch oder physikalisch interpretierbarer Abstand oder Winkel existiert. Eine solche Interpretation benötigt eine zusätzliche mathematische Struktur. Ich werde deshalb die geometrischen Begriffe zunächst ausschließlich mathematisch entwickeln und ihnen an dieser Stelle noch keine FRZK-spezifische physikalische Bedeutung zuschreiben.\n\n## Definition 3.2.25: Skalarprodukt\n\nSei (V) ein reeller Vektorraum. Ein Skalarprodukt ist eine Abbildung\n\n$$\\left\\langle \\cdot , \\cdot \\right\\rangle:V \\times V\\mathbb{\\longrightarrow R,\\quad\\quad}(x,y) \\longmapsto \\left\\langle x,y \\right\\rangle.\\ (3.179)$$\n\nDabei sind\n\n-   \\(V\\) der betrachtete reelle Vektorraum,\n\n-   (x,y\\\\in V) zwei Vektoren,\n\n-   (\\\\langle x,y\\\\rangle) der durch das Skalarprodukt erzeugte reelle Skalar.\n\nDamit eine solche Abbildung ein Skalarprodukt ist, muss sie bestimmte Eigenschaften erfüllen. Für alle (x,y,z\\\\in V) und alle (\\\\alpha,\\\\beta\\\\inℝ) fordere ich zunächst Linearität:\n\n$$\\langle\\alpha x + \\beta y,z\\rangle = \\alpha\\langle x,z\\rangle + \\beta\\langle y,z\\rangle\\ (3.180)$$\n\nAußerdem fordere ich Symmetrie:\n\n$$\\langle x,y\\rangle = \\langle y,x\\rangle\\ (3.181)$$\n\nSchließlich muss das Skalarprodukt positiv definit sein:\n\n$$\\left\\langle x,x \\right\\rangle \\geq 0,\\quad\\quad\\left\\langle x,x \\right\\rangle = 0 \\Longleftrightarrow x = 0\\ (3.182)$$\n\nDiese Eigenschaften bilden gemeinsam die mathematische Grundlage dafür, aus dem Skalarprodukt geometrische Größen abzuleiten \\[84\\]. Kapitel 6.1 von Friedberg, Insel und Spence ist ausdrücklich den „Inner Products and Norms\" gewidmet.\n\n## Das euklidische Skalarprodukt\n\nIm Raum (ℝ\\^{n}) ist das Standardbeispiel das euklidische Skalarprodukt. Für\\\n$$x = \\begin{pmatrix}\nx_{1} \\\\\n\\text{⋮} \\\\\nx_{n}\n\\end{pmatrix},\\quad\\quad y = \\begin{pmatrix}\ny_{1} \\\\\n\\text{⋮} \\\\\ny_{n}\n\\end{pmatrix}$$\n\ndefiniere ich\n\n$$\\left\\langle x,y \\right\\rangle = x^{T}y = \\sum_{i = 1}^{n}{x_{i}y_{i}}\\ (3.183)$$\n\nDie vorangestellten Darstellungen von (x) und (y) sind lediglich die Definition der in Gleichung (3.183) verwendeten Größen. Sie erhalten deshalb bewusst **keine eigenen Gleichungsnummern**.\n\nFür zwei Vektoren des (ℝ\\^{2}),\\\n$$x = \\begin{pmatrix}\nx_{1} \\\\\nx_{2}\n\\end{pmatrix},\\quad\\quad y = \\begin{pmatrix}\ny_{1} \\\\\ny_{2}\n\\end{pmatrix},\n$$wird Gleichung (3.183) zu\n\n$$\\left\\langle x,y \\right\\rangle = x_{1}y_{1} + x_{2}y_{2}\\ (3.184)$$\n\nStrang behandelt genau diesen Zusammenhang zwischen Vektorlänge und Skalarprodukt bereits in §1.2 „Lengths and Dot Products\" \\[74\\].\n\n## Definition 3.2.26: Norm\n\nAus einem Skalarprodukt kann ich unmittelbar die Länge eines Vektors ableiten. Die vom Skalarprodukt induzierte Norm definiere ich durch\n\n$$\\text{|}x\\text{|} = \\sqrt{\\left\\langle x,x \\right\\rangle}\\ (3.185)$$\n\nDabei bezeichnet\n\n-   \\(x\\) den betrachteten Vektor,\n\n-   (\\\\langle x,x\\\\rangle) sein Skalarprodukt mit sich selbst,\n\n-   (\\|x\\|) seine durch das Skalarprodukt induzierte Norm.\n\nFür das euklidische Skalarprodukt folgt daraus\n\n$$\\text{|}x\\text{|} = \\sqrt{x_{1}^{2} + x_{2}^{2} + \\cdots + x_{n}^{2}}\\ (3.186)$$\n\nDamit verallgemeinere ich unmittelbar den Satz des Pythagoras auf den (n)-dimensionalen euklidischen Raum. Diese Definition der Norm aus dem Skalarprodukt ist Standardbestandteil der Theorie der Skalarprodukträume \\[84\\].\n\nEine Norm erfüllt insbesondere\n\n**Word-LaTeX:**\n\n$$\\text{|}x\\text{|} \\geq 0,\\quad\\quad\\text{|}x\\text{|} = 0 \\Longleftrightarrow x = 0\\ (3.187)$$\n\nFür die Multiplikation eines Vektors mit einem Skalar gilt\n\n$$\\text{|}\\alpha x\\text{|} = |\\alpha|\\,\\text{|}x\\text{|}\\ (3.188)$$\n\nAußerdem gilt die Dreiecksungleichung\n\n$$\\text{|}x + y\\text{|} \\leq \\text{|}x\\text{|} + \\text{|}y\\text{|}\\ (3.189)$$\n\nDamit besitzt die Norm genau diejenigen Eigenschaften, die ich von einem mathematischen Längenbegriff erwarte.\n\n## Definition 3.2.27: Abstand\n\nSobald eine Norm gegeben ist, kann ich auch einen Abstand zwischen zwei Vektoren definieren:\n\n$$d(x,y) = \\text{|}x - y\\text{|}\\ (3.190)$$\n\nDabei sind\n\n-   \\(x\\) und (y) die beiden betrachteten Vektoren,\n\n-   (x-y) ihr Differenzvektor,\n\n-   (d(x,y)) der durch die Norm bestimmte Abstand.\n\nDiese Definition macht eine für die spätere Verwendung wichtige Trennung sichtbar:\n\n**Vektorraum, Skalarprodukt, Norm und Abstand sind nicht dasselbe.**\n\nVielmehr entsteht eine strukturelle Kette:\n\n$$\\text{Skalarprodukt} \\longrightarrow \\text{Norm} \\longrightarrow \\text{Abstand}\\ (3.191)$$\n\nDiese Abhängigkeit ist für meine weitere Argumentation wichtig. Einen Abstand darf ich später nicht allein deshalb voraussetzen, weil ich Zustände als Vektoren darstelle.\n\n## Cauchy-Schwarz-Ungleichung\n\nZwischen Skalarprodukt und Norm besteht ein grundlegender Zusammenhang. Für alle (x,y\\\\in V) gilt\n\n$$\\left| \\left\\langle x,y \\right\\rangle \\right| \\leq \\text{|}x\\text{|}\\,\\text{|}y\\text{|}\\ (3.192)$$\n\nDiese Cauchy-Schwarz-Ungleichung begrenzt den Betrag des Skalarprodukts durch das Produkt der beiden Vektorlängen. Sie ist insbesondere notwendig, um aus einem Skalarprodukt einen Winkelbegriff konsistent abzuleiten.\n\nFür (x\\\\neq0) und (y\\\\neq0) folgt nämlich\n\n$$- 1 \\leq \\frac{\\left\\langle x,y \\right\\rangle}{\\text{|}x\\text{|}\\,\\text{|}y\\text{|}} \\leq 1\\ (3.193)$$\n\nDamit liegt der Quotient im Definitionsbereich der inversen Kosinusfunktion.\n\n## Definition 3.2.28: Winkel zwischen zwei Vektoren\n\nFür zwei von null verschiedene Vektoren (x) und (y) definiere ich den Winkel (\\\\theta) durch\n\n$$\\cos\\theta = \\frac{\\left\\langle x,y \\right\\rangle}{\\text{|}x\\text{|}\\,\\text{|}y\\text{|}}\\ (3.194)$$\n\nDabei gilt\n\n-   (x,y\\\\neq0),\n\n-   (\\\\theta) ist der Winkel zwischen beiden Vektoren,\n\n-   (\\\\langle x,y\\\\rangle) beschreibt ihre skalare Beziehung,\n\n-   (\\|x\\|) und (\\|y\\|) normieren diese Beziehung auf die Längen der beiden Vektoren.\n\nFür normierte Vektoren mit $|x| = |y| = 1$ vereinfacht sich Gleichung (3.194) zu\n\n$$cos\\theta = \\langle x,y\\rangle\\ (3.195)$$\n\n## Definition 3.2.29: Orthogonalität\n\nZwei Vektoren (x,y\\\\in V) heißen orthogonal, wenn ihr Skalarprodukt null ist:\n\n$$x\\bot y\\quad \\Longleftrightarrow \\quad\\left\\langle x,y \\right\\rangle = 0\\ (3.196)$$\n\nFür zwei von null verschiedene Vektoren bedeutet dies nach Gleichung (3.194), dass\\\n$$\\cos\\theta = 0,$$\n\nalso ein rechter Winkel vorliegt.\n\nStrang entwickelt Orthogonalität, Projektionen und orthogonale Basen zusammenhängend in Kapitel 4 \\[74\\]. Friedberg, Insel und Spence behandeln dieselbe Struktur in Kapitel 6 über Skalarprodukträume und orthogonale Komplemente \\[84\\].\n\n## Satz des Pythagoras im Skalarproduktraum\n\nSind (x) und (y) orthogonal, gilt\n\n$$\\text{|}x + y\\text{|}^{2} = \\text{|}x\\text{|}^{2} + \\text{|}y\\text{|}^{2}\\ (3.197)$$\n\nDas kann ich unmittelbar aus dem Skalarprodukt herleiten:\n\n$$\\begin{matrix}\n\\text{|}x + y\\text{|}^{2} = \\langle x + y,x + y\\rangle \\\\\n = \\langle x,x\\rangle + 2\\langle x,y\\rangle + \\langle y,y\\rangle \\\\\n = \\text{|}x\\text{|}^{2} + \\text{|}y\\text{|}^{2}.\n\\end{matrix}\\ (3.198)$$\n\nIm letzten Schritt verwende ich (\\\\langle x,y\\\\rangle=0).\n\nDamit ist der Satz des Pythagoras keine isolierte geometrische Besonderheit des zweidimensionalen Raums, sondern eine unmittelbare Folge der Orthogonalität in einem Skalarproduktraum.\n\n## Definition 3.2.30: Normierter Vektor\n\nEin Vektor (x) heißt normiert, wenn\n\n$$\\text{|}x\\text{|} = 1\\ (3.199)$$\n\nFür jeden Vektor (x\\\\neq0) kann ich durch Division durch seine Norm einen normierten Vektor erzeugen:\n\n$$\\widehat{x} = \\frac{x}{\\text{|}x\\text{|}}\\ (3.200)$$\n\nDabei bezeichnet\n\n-   \\(x\\) den ursprünglichen Vektor,\n\n-   (\\|x\\|) seine Norm,\n\n-   (\\\\hat{x}) den normierten Vektor mit derselben Richtung.\n\nDie Normierung verändert also die Richtung nicht. Sie entfernt lediglich die ursprüngliche Länge des Vektors.\n\n## Definition 3.2.31: Orthonormale Vektoren\n\nEine Menge von Vektoren\n\n$$q_{1},\\ldots,q_{m}$$\n\nheißt orthonormal, wenn die Vektoren paarweise orthogonal und jeweils normiert sind. Beides kann ich kompakt durch\n\n$$\\left\\langle q_{i},q_{j} \\right\\rangle = \\delta_{ij}\\ (3.201)$$\n\nausdrücken.\n\nDabei ist (δ\\_{ij}) das Kronecker-Delta mit den beiden Fällen\n\n-   (δ\\_{ij}=1) für (i=j),\n\n-   (δ\\_{ij}=0) für (i\\\\neq j).\n\nDie beiden Werte sind lediglich die Definition der in Gleichung (3.201) verwendeten Größe (δ\\_{ij}) und werden deshalb nicht als eigenständige nummerierte Gleichungen geführt.\n\nFür eine orthonormale Basis (q_1,\\\\ldots,q_n) kann ich jeden Vektor (x\\\\in V) eindeutig darstellen als\n\n$$x = \\sum_{i = 1}^{n}{\\left\\langle q_{i},x \\right\\rangle q_{i}}\\ (3.202)$$\n\nDie Koordinate des Vektors entlang der Basisrichtung (q_i) ist damit unmittelbar sein Skalarprodukt mit (q_i).\n\nDiese Eigenschaft erklärt rückwirkend die in Abschnitt 3.2.11 verwendete Darstellung eines Vektors in einer orthonormalen Eigenbasis.\n\n## Orthogonale Matrizen\n\nFasse ich eine orthonormale Basis spaltenweise in einer Matrix (Q) zusammen, dann gilt\n\n$$Q^{T}Q = I\\ (3.203)$$\n\nDamit folgt\n\n$$Q^{- 1} = Q^{T}\\ (3.204)$$\n\nEine solche Matrix heißt orthogonal.\n\nOrthogonale Transformationen erhalten das euklidische Skalarprodukt:\n\n$$\\langle Qx,Qy\\rangle = \\langle x,y\\rangle\\ (3.205)$$\n\nDaraus folgt unmittelbar die Erhaltung der Norm:\n\n$$\\text{|}Qx\\text{|} = \\text{|}x\\text{|}\\ (3.206)$$\n\nDamit erhalten orthogonale Transformationen Längen und Winkel. Sie verändern also die Koordinatendarstellung, nicht jedoch die durch das euklidische Skalarprodukt bestimmte Geometrie.\n\nDiese Eigenschaft ist der Grund dafür, warum die orthogonale Diagonalisierung aus Abschnitt 3.2.11 mathematisch stärker ist als ein beliebiger Basiswechsel.\n\n## Definition 3.2.32: Orthogonales Komplement\n\nSei (U\\\\subseteq V) ein Unterraum. Das orthogonale Komplement von (U) definiere ich als\n\n$$U^{\\bot} = \\left\\{ x \\in V\\mid\\left\\langle x,u \\right\\rangle = 0\\text{ für alle }u \\in U \\right\\}\\ (3.207)$$\n\nDabei bezeichnet\n\n-   \\(U\\) den ursprünglichen Unterraum,\n\n-   (U\\^\\\\perp) sein orthogonales Komplement,\n\n-   \\(u\\) einen beliebigen Vektor aus (U),\n\n-   \\(x\\) einen Vektor, der zu jedem Vektor aus (U) orthogonal ist.\n\nIm endlichdimensionalen reellen Skalarproduktraum kann ich den gesamten Raum in den Unterraum und sein orthogonales Komplement zerlegen:\n\n$$V = U \\oplus U^{\\bot}\\ (3.208)$$\n\nDamit besitzt jeder Vektor (x\\\\in V) eine eindeutige Zerlegung\n\n$$x = u + u_{\\bot},\\quad\\quad u \\in U,\\quad u_{\\bot} \\in U^{\\bot}\\ (3.209)$$\n\nDie Zerlegung in einen Anteil innerhalb eines Unterraums und einen dazu orthogonalen Anteil bildet die Grundlage der orthogonalen Projektion. Friedberg, Insel und Spence führen orthogonale Komplemente und den Gram-Schmidt-Prozess gemeinsam in §6.2 sowie orthogonale Projektionen in §6.6 \\[84\\].\n\n## Definition 3.2.33: Orthogonale Projektion auf einen Vektor\n\nSei (u\\\\neq0). Die orthogonale Projektion eines Vektors (x) auf die von (u) aufgespannte Richtung ist\n\n$$proj_{u}(x) = \\frac{\\left\\langle x,u \\right\\rangle}{\\left\\langle u,u \\right\\rangle}u\\ (3.210)$$\n\nDabei sind\n\n-   \\(x\\) der zu projizierende Vektor,\n\n-   (u\\\\neq0) die Projektionsrichtung,\n\n-   (\\\\langle x,u\\\\rangle/\\\\langle u,u\\\\rangle) der skalare Projektionsfaktor,\n\n-   (\\\\text{proj}\\_{u}(x)) der auf (u) liegende Anteil von (x).\n\nIst (u) bereits normiert, also (\\|u\\|=1), vereinfacht sich die Projektion zu\n\n$$\\text{proj}_{u}(x) = \\left\\langle x,u \\right\\rangle u\\ (3.211)$$\n\nStrang behandelt Projektionen ausdrücklich in §4.2 \\[74\\].\n\n## Projektion auf einen Unterraum\n\nBesitzt ein Unterraum (U) eine orthonormale Basis $q_{1},\\ldots,q_{m},$ dann kann ich die orthogonale Projektion eines Vektors (x) auf (U) als Summe seiner Projektionen auf die einzelnen Basisrichtungen schreiben:\n\n$$P_{U}x = \\sum_{i = 1}^{m}{\\left\\langle q_{i},x \\right\\rangle q_{i}}\\ (3.212)$$\n\nDabei bezeichnet (P_U) den orthogonalen Projektionsoperator auf (U).\n\nSchreibe ich die orthonormalen Basisvektoren als Spalten einer Matrix (Q), dann gilt\n\n$$P_{U} = QQ^{T}\\ (3.213)$$\n\nDamit kann ich die Projektion eines Vektors auch schreiben als\n\n$$P_{U}x = QQ^{T}x\\ (3.214)$$\n\nDer Projektionsoperator besitzt zwei charakteristische Eigenschaften:\n\n$$P_{U}^{2} = P_{U}\\ (3.215)$$\n\nund\n\n$$P_{U}^{T} = P_{U}\\ (3.216)$$\n\nDie erste Eigenschaft bedeutet, dass eine erneute Projektion eines bereits projizierten Vektors nichts mehr verändert. Die zweite Eigenschaft zeigt, dass der orthogonale Projektor im reellen euklidischen Raum symmetrisch ist.\n\n## Orthogonale Zerlegung eines Vektors\n\nMit dem Projektionsoperator kann ich Gleichung (3.209) präzisieren:\n\n$$x = P_{U}x + \\left( I - P_{U} \\right)x\\ (3.217)$$\n\nDabei gilt\n\n-   (P_Ux\\\\in U),\n\n-   ((I-P_U)x\\\\in U\\^\\\\perp).\n\nDiese beiden Angaben beschreiben die Bestandteile von Gleichung (3.217) und werden nicht als zusätzliche Gleichungen nummeriert.\n\nAußerdem sind beide Komponenten orthogonal:\n\n$$\\left\\langle P_{U}x,\\left( I - P_{U} \\right)x \\right\\rangle = 0\\ (3.218)$$\n\nDamit zerlege ich einen beliebigen Vektor eindeutig in einen Anteil innerhalb des Unterraums und einen dazu senkrechten Rest.\n\n## Gram-Schmidt-Orthogonalisierung\n\nEine beliebige linear unabhängige Basis ist im Allgemeinen nicht orthogonal. Ich kann sie jedoch systematisch in eine orthonormale Basis desselben Unterraums überführen. Dieses Verfahren ist die Gram-Schmidt-Orthogonalisierung \\[74, 84\\]. Strang behandelt sie ausdrücklich in §4.4, Friedberg, Insel und Spence in §6.2.\n\nSeien $v_{1},\\ldots,v_{m}$ linear unabhängige Vektoren.\n\nIch beginne mit\n\n$$u_{1} = v_{1}\\ (3.219)$$\n\nFür den zweiten Vektor entferne ich aus (v_2) den Anteil in Richtung von (u_1):\n\n$$u_{2} = v_{2} - \\frac{\\left\\langle v_{2},u_{1} \\right\\rangle}{\\left\\langle u_{1},u_{1} \\right\\rangle}u_{1}\\ (3.220)$$\n\nAllgemein erhalte ich\n\n$$u_{k} = v_{k} - \\sum_{j = 1}^{k - 1}{\\frac{\\left\\langle v_{k},u_{j} \\right\\rangle}{\\left\\langle u_{j},u_{j} \\right\\rangle}u_{j}}\\ (3.221)$$\n\nDie so erzeugten Vektoren (u_1,\\\\ldots,u_m) sind paarweise orthogonal.\n\nDurch anschließende Normierung\n\n$$q_{k} = \\frac{u_{k}}{\\text{|}u_{k}\\text{|}}\\ (3.222)$$\n\nerhalte ich eine orthonormale Basis (q_1,\\\\ldots,q_m).\n\nDabei bleibt der aufgespannte Unterraum erhalten:\n\n$$\\text{span}\\text{\\{}v_{1},\\ldots,v_{m}\\text{\\}} = \\text{span}\\text{\\{}q_{1},\\ldots,q_{m}\\text{\\}}\\ (3.223)$$\n\nDas Verfahren verändert damit nicht den betrachteten Unterraum. Es ersetzt lediglich eine beliebige linear unabhängige Basis durch eine geometrisch günstigere orthonormale Basis.\n\n## Zusammenhang mit der Spektralzerlegung\n\nDamit kann ich nun die in Abschnitt 3.2.11 verwendete Spektralzerlegung mathematisch genauer verstehen.\n\nBesitzt eine reelle symmetrische Matrix (A) eine orthonormale Eigenbasis (q_1,\\\\ldots,q_n), dann gilt für jeden Vektor (x)\n\n$$x = \\sum_{i = 1}^{n}{\\left\\langle q_{i},x \\right\\rangle q_{i}}\\ (3.224)$$\n\nWegen der Eigenwertbeziehung (Aq_i=\\\\lambda_iq_i) folgt\n\n$$Ax = \\sum_{i = 1}^{n}{\\lambda_{i}\\left\\langle q_{i},x \\right\\rangle q_{i}}\\ (3.225)$$\n\nDamit wird sichtbar, dass die Spektralzerlegung auf drei mathematischen Strukturen beruht:\n\n-   der Zerlegung eines Vektors in orthogonale Komponenten,\n\n-   der Projektion auf die Eigenrichtungen,\n\n-   der Skalierung jeder Komponente mit ihrem Eigenwert.\n\nDie in Abschnitt 3.2.11 verwendeten Projektoren (q_iq_i\\^T) erhalten damit ebenfalls eine unmittelbare geometrische Bedeutung: Sie projizieren einen Vektor auf die jeweilige eindimensionale Eigenrichtung.\n\n## Beispiel im (ℝ\\^{2})\n\nIch betrachte die beiden Vektoren\\\n$$x = \\begin{pmatrix}\n3 \\\\\n4\n\\end{pmatrix},\\quad\\quad y = \\begin{pmatrix}\n - 4 \\\\\n3\n\\end{pmatrix}.$$\n\nDiese Angaben definieren lediglich die im Beispiel verwendeten Vektoren und erhalten keine eigenen Gleichungsnummern.\n\nDas Skalarprodukt ergibt\n\n# \\\\langle x,y\\\\rangle\n\n$$\\left\\langle x,y \\right\\rangle = 3( - 4) + 4(3) = 0\\ (3.226)$$\n\nDamit gilt\n\n$$x\\bot y\\ (3.227)$$\n\nDie Norm von (x) ist\n\n$$\\text{|}x\\text{|} = \\sqrt{3^{2} + 4^{2}} = 5\\ (3.228)$$\n\nFür (y) erhalte ich ebenfalls\n\n$$\\text{|}y\\text{|} = \\sqrt{( - 4)^{2} + 3^{2}} = 5\\ (3.229)$$\n\nDie normierten Vektoren lauten damit gemeinsam\n\n$$\\widehat{x} = \\begin{pmatrix}\n3\\text{/}5 \\\\\n4\\text{/}5\n\\end{pmatrix},\\quad\\quad\\widehat{y} = \\begin{pmatrix}\n - 4\\text{/}5 \\\\\n3\\text{/}5\n\\end{pmatrix}\\ (3.230)$$\n\nDamit bilden (\\\\hat{x}) und (\\\\hat{y}) eine orthonormale Basis des (ℝ\\^{2}).\n\n## Ein allgemeineres Skalarprodukt\n\nDie euklidische Form (x\\^Ty) ist nicht die einzige Möglichkeit, auf (ℝ\\^{n}) ein Skalarprodukt einzuführen.\n\nSei (G) eine reelle symmetrische positiv definite Matrix. Dann kann ich definieren\n\n$$\\left\\langle x,y \\right\\rangle_{G} = x^{T}Gy\\ (3.231)$$\n\nDabei sind\n\n-   \\(G\\) die Matrix, die das Skalarprodukt bestimmt,\n\n-   \\(x\\) und (y) die betrachteten Vektoren,\n\n-   (\\\\langle x,y\\\\rangle_G) das durch (G) definierte Skalarprodukt.\n\nDie zugehörige Norm lautet\n\n$$\\text{|}x\\text{|}_{G} = \\sqrt{x^{T}Gx}\\ (3.232)$$\n\nDamit wird ein für die spätere Theorie entscheidender Punkt sichtbar:\n\n**Die geometrische Struktur hängt von der Wahl des Skalarprodukts ab.**\n\nZwei Vektoren können bezüglich eines Skalarprodukts orthogonal sein und bezüglich eines anderen nicht. Ebenso können sich ihre Normen ändern.\n\nGenau deshalb darf ich in einer späteren FRZK-Struktur das euklidische Skalarprodukt nicht stillschweigend voraussetzen. Sollte das FRZK eine eigene geometrische oder funktionale Struktur benötigen, muss die entsprechende bilineare Form beziehungsweise Metrik ausdrücklich definiert oder aus den Axiomen hergeleitet werden.\n\n## Methodologische Betrachtungen\n\nMethodologisch ist für mich die Trennung zwischen algebraischer und geometrischer Struktur in diesem Abschnitt besonders wichtig.\n\nEin Vektorraum allein besitzt keine natürliche Länge. Er besitzt auch keinen natürlichen Winkel und keine natürliche Orthogonalität. Diese Begriffe entstehen erst, wenn ich zusätzliche Struktur einführe.\n\nDamit ergibt sich eine Hierarchie:\n\n$$\\text{Vektorraum} \\longrightarrow \\text{Skalarproduktraum} \\longrightarrow \\text{Norm} \\longrightarrow \\text{Abstand und Winkel}\\ (3.233)$$\n\nDiese Hierarchie verhindert einen später problematischen Schluss: Aus einer Vektordarstellung darf ich nicht automatisch auf eine physikalische Geometrie schließen.\n\nDasselbe gilt für Orthogonalität. Die Aussage $\\left\\langle x,y \\right\\rangle = 0$ ist immer relativ zu dem verwendeten Skalarprodukt zu verstehen. Ändere ich das Skalarprodukt, kann sich auch ändern, welche Vektoren orthogonal sind.\n\nFür das FRZK bedeutet dies, dass eine später verwendete Aussage wie „zwei Zustände sind orthogonal\" nur dann mathematisch vollständig ist, wenn zuvor geklärt wurde, bezüglich welcher inneren Struktur diese Orthogonalität gilt.\n\nEbenso muss ich zwischen Norm und physikalischer Größe unterscheiden. Eine mathematische Norm ist zunächst lediglich eine Abbildung, die bestimmte Axiome erfüllt. Ob sie später beispielsweise einen räumlichen Abstand, eine Zustandsabweichung, eine Kohärenzdifferenz oder eine andere physikalische Größe beschreibt, kann nicht aus dem Begriff „Norm\" selbst abgeleitet werden.\n\nDiese methodologische Zurückhaltung ist für den Aufbau des FRZK notwendig. Ich möchte mathematische Werkzeuge bereitstellen, ohne ihnen vorzeitig eine physikalische Bedeutung zuzuschreiben.\n\n## Didaktische Betrachtungen\n\nFür mich lässt sich das Skalarprodukt zunächst sehr anschaulich über zwei Fragen verstehen:\n\n**Wie lang ist ein Vektor?** und **Wie stark zeigen zwei Vektoren in dieselbe Richtung?**\n\nDie erste Frage führt zur Norm. Die zweite führt zum Skalarprodukt.\n\nSind zwei Vektoren gleichgerichtet, ist ihr normiertes Skalarprodukt positiv. Sind sie entgegengesetzt gerichtet, ist es negativ. Stehen sie senkrecht aufeinander, verschwindet das Skalarprodukt.\n\nDadurch kann ich mir $\\left\\langle x,y \\right\\rangle = 0$ zunächst als algebraischen Test für einen rechten Winkel vorstellen.\n\nNoch wichtiger ist für mich die Projektion. Wenn ich einen Vektor (x) auf eine Richtung (u) projiziere, frage ich:\n\n**Welcher Anteil von (x) liegt tatsächlich in Richtung (u)?**\n\nDas Skalarprodukt liefert genau den dafür benötigten skalaren Anteil.\n\nBei einer orthonormalen Basis wird diese Vorstellung besonders einfach. Jeder Vektor lässt sich in voneinander unabhängige senkrechte Komponenten zerlegen. Das Skalarprodukt mit einem Basisvektor liefert unmittelbar die zugehörige Koordinate.\n\nDamit ergibt sich für mich die anschauliche Kette\n\n$$\\text{Skalarprodukt} \\longrightarrow \\text{Länge und Winkel} \\longrightarrow \\text{Orthogonalität} \\longrightarrow \\text{Projektion} \\longrightarrow \\text{orthonormale Zerlegung}\\ (3.234)$$\n\nDie Gram-Schmidt-Orthogonalisierung zeigt schließlich, dass ich eine ungünstige, schiefwinklige Basis nicht einfach hinnehmen muss. Solange die Ausgangsvektoren linear unabhängig sind, kann ich aus ihnen schrittweise eine orthonormale Basis desselben Unterraums konstruieren \\[74, 84\\].\n\nFür mich ist das auch geometrisch verständlich: Von jedem neuen Basisvektor ziehe ich diejenigen Anteile ab, die bereits in den zuvor erzeugten Richtungen enthalten sind. Übrig bleibt genau der neue, zu allen vorherigen Richtungen orthogonale Anteil. Anschließend normiere ich ihn.\n\n## Ergebnis und Übergang\n\nMit dem Skalarprodukt habe ich den bisher rein algebraisch behandelten Vektorräumen eine zusätzliche geometrische Struktur gegeben. Aus dem Skalarprodukt konnte ich Norm, Abstand und Winkel ableiten. Orthogonalität lässt sich durch das Verschwinden des Skalarprodukts charakterisieren, und orthonormale Basen ermöglichen eine besonders einfache Zerlegung von Vektoren \\[74, 84\\].\n\nMit orthogonalen Projektionen kann ich einen Vektor eindeutig in einen Anteil innerhalb eines Unterraums und einen dazu orthogonalen Anteil zerlegen. Die Gram-Schmidt-Orthogonalisierung erlaubt mir wiederum, aus jeder linear unabhängigen endlichen Vektormenge eine orthonormale Basis ihres aufgespannten Unterraums zu erzeugen \\[74, 84\\].\n\nDamit ist zugleich die geometrische Grundlage der zuvor behandelten orthogonalen Spektralzerlegung präzisiert. Die dort auftretenden Eigenprojektoren sind keine bloßen formalen Matrixprodukte, sondern orthogonale Projektionsoperatoren auf die entsprechenden Eigenrichtungen beziehungsweise Eigenräume.\n\nFür die weitere mathematische Grundlage reicht es jedoch nicht aus, nur endlichdimensionale euklidische Räume zu betrachten. Für funktionale Beschreibungen muss ich den Begriff des Skalarproduktraums auf Räume von Funktionen übertragen. Dadurch gelange ich zu Hilberträumen und damit zu einer Struktur, in der Funktionen selbst als Vektoren behandelt, normiert, auf Orthogonalität untersucht und bezüglich geeigneter Basissysteme zerlegt werden können.\n\nDer folgende Abschnitt behandelt deshalb **3.2.13 Funktionenräume, (L\\^2)-Strukturen und Hilberträume**.\n\n**Fortsetzungsstand:** Abschnitt **3.2.12 endet mit Gleichung (3.234)**. Abschnitt **3.2.13 beginnt mit Gleichung (3.235)**.\n\nFür das folgende Repository-Skript sind damit **\\[74\\]** und die neue Literaturstelle **\\[84\\]** zu erfassen. Für \\[74\\] sind insbesondere §1.2, §4.2 und §4.4 als verifizierte source_usage-Bereiche verfügbar; für \\[84\\] sind §6.1, §6.2 und §6.6 durch das reale Inhaltsverzeichnis verifiziert. Wo der konkrete Quellentext nicht zugänglich verifiziert wurde, darf im SQL **kein erfundener source_excerpt** eingetragen werden.\n\n#', 'f7abce15dbeac24328ad7c46813ee8e9160c88d42ba22a6a121b66d3b06e4d88', 'Unveränderter Markdown-Extrakt der Quellfassung; redaktionelle Artefakte bleiben hier bewusst erhalten.');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `sources`
+--
+
+CREATE TABLE `sources` (
+  `source_id` bigint(20) UNSIGNED NOT NULL,
+  `citation_number` int(10) UNSIGNED DEFAULT NULL,
+  `source_key` varchar(150) NOT NULL,
+  `source_type` enum('journal_article','book','book_chapter','conference_paper','thesis','report','standard','website','historical_work','edited_volume','other') NOT NULL,
+  `title` varchar(1000) NOT NULL,
+  `subtitle` varchar(1000) DEFAULT NULL,
+  `year_original` smallint(6) DEFAULT NULL,
+  `year_edition` smallint(6) DEFAULT NULL,
+  `journal` varchar(500) DEFAULT NULL,
+  `publisher` varchar(500) DEFAULT NULL,
+  `place` varchar(255) DEFAULT NULL,
+  `volume` varchar(100) DEFAULT NULL,
+  `issue` varchar(100) DEFAULT NULL,
+  `pages` varchar(100) DEFAULT NULL,
+  `edition` varchar(100) DEFAULT NULL,
+  `doi` varchar(255) DEFAULT NULL,
+  `isbn` varchar(100) DEFAULT NULL,
+  `url` varchar(1500) DEFAULT NULL,
+  `language_code` char(2) DEFAULT 'de',
+  `priority` tinyint(3) UNSIGNED NOT NULL DEFAULT 3,
+  `evidence_type` enum('primary','secondary','review','textbook','historical','reference') NOT NULL DEFAULT 'secondary',
+  `frzk_relevance` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `verification_status` enum('imported','partially_verified','verified','needs_review') NOT NULL DEFAULT 'imported',
+  `first_citation_section_code` varchar(50) DEFAULT NULL,
+  `first_citation_note` text DEFAULT NULL,
+  `full_citation_text` text NOT NULL,
+  `short_citation_text` varchar(500) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `sources`
+--
+
+INSERT INTO `sources` (`source_id`, `citation_number`, `source_key`, `source_type`, `title`, `subtitle`, `year_original`, `year_edition`, `journal`, `publisher`, `place`, `volume`, `issue`, `pages`, `edition`, `doi`, `isbn`, `url`, `language_code`, `priority`, `evidence_type`, `frzk_relevance`, `verification_status`, `first_citation_section_code`, `first_citation_note`, `full_citation_text`, `short_citation_text`, `notes`, `created_revision_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'ch31-001-isaac-newton-philosophiae-naturalis-principia-ma', 'historical_work', 'Philosophiae Naturalis Principia Mathematica', NULL, NULL, 1687, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.0', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Isaac Newton: Philosophiae Naturalis Principia Mathematica. London: Joseph Streater, 1687, insbesondere Scholium zu den Definitionen', 'Isaac Newton: Philosophiae Naturalis Principia Mathematica', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(2, 2, 'ch31-002-albert-einstein-die-grundlage-der-allgemeinen-relat', 'journal_article', 'Die Grundlage der allgemeinen Relativitätstheorie', NULL, NULL, 1916, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.0', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Albert Einstein: „Die Grundlage der allgemeinen Relativitätstheorie“. In: Annalen der Physik, Band 49, 1916, S. 769–822', 'Albert Einstein: Die Grundlage der allgemeinen Relativitätstheorie', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(3, 3, 'ch31-003-carlo-rovelli-quantum-gravity', 'book', 'Quantum Gravity', NULL, NULL, 2004, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.0', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Carlo Rovelli: Quantum Gravity. Cambridge: Cambridge University Press, 2004', 'Carlo Rovelli: Quantum Gravity', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(4, 4, 'ch31-004-parmenides-die-fragmente-der-vorsokratiker', 'book', 'Die Fragmente der Vorsokratiker', NULL, NULL, 1951, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.1', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Parmenides: Die Fragmente der Vorsokratiker, griechisch und deutsch herausgegeben von Hermann Diels, bearbeitet von Walther Kranz, Band 1, 6. Auflage, Berlin: Weidmann, 1951, Fragmente 28 B2, B3 und B6', 'Parmenides: Die Fragmente der Vorsokratiker', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(5, 5, 'ch31-005-steven-weinberg-the-quantum-theory-of-fields-volume', 'book', 'The Quantum Theory of Fields, Volume I: Foundations', NULL, NULL, 1995, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.1', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Steven Weinberg: The Quantum Theory of Fields, Volume I: Foundations, Cambridge: Cambridge University Press, 1995, insbesondere Kapitel 2 und 5', 'Steven Weinberg: The Quantum Theory of Fields, Volume I: Foundations', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(6, 6, 'ch31-006-paul-r-halmos-naive-set-theory', 'book', 'Naive Set Theory', NULL, NULL, 1974, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.1', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Paul R. Halmos: Naive Set Theory, New York: Springer-Verlag, 1974, insbesondere S. 1–12', 'Paul R. Halmos: Naive Set Theory', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(7, 7, 'ch31-007-platon-sophistes-in-platon-werke-in-acht-b', 'book', 'Sophistes, in: Platon. Werke in acht Bänden', NULL, NULL, 1990, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Platon: Sophistes, in: Platon. Werke in acht Bänden, griechisch und deutsch, herausgegeben von Gunther Eigler, Band 6, Darmstadt: Wissenschaftliche Buchgesellschaft, 1990, insbesondere 254d–259d', 'Platon: Sophistes, in: Platon. Werke in acht Bänden', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(8, 8, 'ch31-008-aristoteles-physikvorlesung', 'book', 'Physikvorlesung', NULL, NULL, 1987, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Aristoteles: Physikvorlesung, übersetzt von Hans Günter Zekl, Hamburg: Felix Meiner Verlag, 1987, Bücher IV und VI', 'Aristoteles: Physikvorlesung', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(9, 9, 'ch31-009-plotin-schriften', 'book', 'Schriften', NULL, NULL, 1960, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Plotin: Schriften, griechisch-deutsch, übersetzt von Richard Harder, Neubearbeitung mit griechischem Lesetext und Anmerkungen fortgeführt von Rudolf Beutler und Willy Theiler, Bände I–V, Hamburg: Felix Meiner Verlag, 1956–1960, insbesondere Enneaden V.1 und V.2', 'Plotin: Schriften', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(10, 10, 'ch31-010-nikolaus-von-kues-de-docta-ignorantia-die-belehrte-un', 'book', 'De docta ignorantia – Die belehrte Unwissenheit', NULL, NULL, 1994, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Nikolaus von Kues: De docta ignorantia – Die belehrte Unwissenheit, lateinisch-deutsch, übersetzt und herausgegeben von Paul Wilpert, Hamburg: Felix Meiner Verlag, 1994', 'Nikolaus von Kues: De docta ignorantia – Die belehrte Unwissenheit', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(11, 11, 'ch31-011-baruch-de-spinoza-ethik-in-geometrischer-ordnung-darg', 'book', 'Ethik in geometrischer Ordnung dargestellt', NULL, NULL, 2015, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Baruch de Spinoza: Ethik in geometrischer Ordnung dargestellt, lateinisch-deutsch, übersetzt und herausgegeben von Wolfgang Bartuschat, Hamburg: Felix Meiner Verlag, 2015', 'Baruch de Spinoza: Ethik in geometrischer Ordnung dargestellt', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(12, 12, 'ch31-012-gottfried-wilhelm-leibniz-the-leibnizclarke-correspondence', 'book', 'The Leibniz–Clarke Correspondence', NULL, NULL, 1956, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Gottfried Wilhelm Leibniz; Samuel Clarke: The Leibniz–Clarke Correspondence, herausgegeben von H. G. Alexander, Manchester: Manchester University Press, 1956, insbesondere Leibniz’ drittes bis fünftes Schreiben', 'Gottfried Wilhelm Leibniz; Samuel Clarke: The Leibniz–Clarke Correspondence', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:45', '2026-08-09 08:05:45'),
+(13, 13, 'ch31-013-immanuel-kant-kritik-der-reinen-vernunft', 'book', 'Kritik der reinen Vernunft', NULL, NULL, 1998, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Immanuel Kant: Kritik der reinen Vernunft, herausgegeben von Jens Timmermann, Hamburg: Felix Meiner Verlag, 1998, insbesondere A19/B33–A49/B73', 'Immanuel Kant: Kritik der reinen Vernunft', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(14, 14, 'ch31-014-georg-wilhelm-friedrich-hegel-wissenschaft-der-logik-i-werke-band', 'book', 'Wissenschaft der Logik I, Werke, Band 5', NULL, NULL, 1986, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Georg Wilhelm Friedrich Hegel: Wissenschaft der Logik I, Werke, Band 5, Frankfurt am Main: Suhrkamp, 1986, insbesondere „Sein“, „Nichts“ und „Werden“', 'Georg Wilhelm Friedrich Hegel: Wissenschaft der Logik I, Werke, Band 5', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(15, 15, 'ch31-015-bertrand-russell-the-principles-of-mathematics', 'book', 'The Principles of Mathematics', NULL, NULL, 1903, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Bertrand Russell: The Principles of Mathematics, Cambridge: Cambridge University Press, 1903', 'Bertrand Russell: The Principles of Mathematics', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(16, 16, 'ch31-016-alfred-north-whitehead-process-and-reality-an-essay-in-cos', 'book', 'Process and Reality. An Essay in Cosmology, corrected edition', NULL, NULL, 1978, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Alfred North Whitehead: Process and Reality. An Essay in Cosmology, corrected edition, herausgegeben von David Ray Griffin und Donald W. Sherburne, New York: Free Press, 1978', 'Alfred North Whitehead: Process and Reality. An Essay in Cosmology, corrected edition', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(17, 17, 'ch31-017-edmund-husserl-zur-phanomenologie-des-inneren-zeit', 'book', 'Zur Phänomenologie des inneren Zeitbewusstseins (1893–1917), Husserliana, Band X', NULL, NULL, 1966, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Edmund Husserl: Zur Phänomenologie des inneren Zeitbewusstseins (1893–1917), Husserliana, Band X, herausgegeben von Rudolf Boehm, Den Haag: Martinus Nijhoff, 1966', 'Edmund Husserl: Zur Phänomenologie des inneren Zeitbewusstseins (1893–1917), Husserliana, Band X', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(18, 18, 'ch31-018-ernst-cassirer-substanzbegriff-und-funktionsbegrif', 'book', 'Substanzbegriff und Funktionsbegriff. Untersuchungen über die Grundfragen der Erkenntniskritik', NULL, NULL, 1910, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Ernst Cassirer: Substanzbegriff und Funktionsbegriff. Untersuchungen über die Grundfragen der Erkenntniskritik, Berlin: Bruno Cassirer, 1910', 'Ernst Cassirer: Substanzbegriff und Funktionsbegriff. Untersuchungen über die Grundfragen der Erkenntniskritik', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(19, 19, 'ch31-019-martin-heidegger-sein-und-zeit-19-auflage', 'book', 'Sein und Zeit, 19. Auflage', NULL, NULL, 2006, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Martin Heidegger: Sein und Zeit, 19. Auflage, Tübingen: Max Niemeyer Verlag, 2006, insbesondere §§ 65–71', 'Martin Heidegger: Sein und Zeit, 19. Auflage', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(20, 20, 'ch31-020-ludwig-wittgenstein-tractatus-logico-philosophicus', 'book', 'Tractatus logico-philosophicus', NULL, NULL, 1963, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Ludwig Wittgenstein: Tractatus logico-philosophicus, Frankfurt am Main: Suhrkamp, 1963', 'Ludwig Wittgenstein: Tractatus logico-philosophicus', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(21, 21, 'ch31-021-ludwig-wittgenstein-philosophische-untersuchungen', 'book', 'Philosophische Untersuchungen', NULL, NULL, 2003, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Ludwig Wittgenstein: Philosophische Untersuchungen, Frankfurt am Main: Suhrkamp, 2003', 'Ludwig Wittgenstein: Philosophische Untersuchungen', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(22, 22, 'ch31-022-rudolf-carnap-der-logische-aufbau-der-welt', 'book', 'Der logische Aufbau der Welt', NULL, NULL, 1928, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Rudolf Carnap: Der logische Aufbau der Welt, Hamburg: Felix Meiner Verlag, 1998, Erstveröffentlichung 1928', 'Rudolf Carnap: Der logische Aufbau der Welt', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(23, 23, 'ch31-023-george-spencer-brown-laws-of-form', 'book', 'Laws of Form', NULL, NULL, 1969, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'George Spencer-Brown: Laws of Form, London: George Allen & Unwin, 1969', 'George Spencer-Brown: Laws of Form', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(24, 24, 'ch31-024-luciano-floridi-the-philosophy-of-information', 'book', 'The Philosophy of Information', NULL, NULL, 2011, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Luciano Floridi: The Philosophy of Information, Oxford: Oxford University Press, 2011', 'Luciano Floridi: The Philosophy of Information', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(25, 25, 'ch31-025-michel-bitbol-reflective-metaphysics-understandin', 'book', 'Reflective Metaphysics. Understanding Quantum Mechanics from a Kantian Standpoint', NULL, NULL, 2021, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.2', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Michel Bitbol: Reflective Metaphysics. Understanding Quantum Mechanics from a Kantian Standpoint, Cham: Springer, 2021', 'Michel Bitbol: Reflective Metaphysics. Understanding Quantum Mechanics from a Kantian Standpoint', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(26, 26, 'ch31-026-ernst-mach-die-mechanik-in-ihrer-entwicklung-h', 'historical_work', 'Die Mechanik in ihrer Entwicklung historisch-kritisch dargestellt', NULL, NULL, 1883, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Ernst Mach: Die Mechanik in ihrer Entwicklung historisch-kritisch dargestellt. Leipzig: F. A. Brockhaus, 1883', 'Ernst Mach: Die Mechanik in ihrer Entwicklung historisch-kritisch dargestellt', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(27, 27, 'ch31-027-albert-einstein-zur-elektrodynamik-bewegter-korper', 'journal_article', 'Zur Elektrodynamik bewegter Körper', NULL, NULL, 1905, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Albert Einstein: „Zur Elektrodynamik bewegter Körper“. In: Annalen der Physik, Band 17, 1905, S. 891–921', 'Albert Einstein: Zur Elektrodynamik bewegter Körper', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(28, 28, 'ch31-028-hermann-minkowski-raum-und-zeit', 'book', 'Raum und Zeit', NULL, NULL, 1909, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Hermann Minkowski: Raum und Zeit. Leipzig: B. G. Teubner, 1909', 'Hermann Minkowski: Raum und Zeit', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(29, 29, 'ch31-029-hermann-weyl-raum-zeit-materie-vorlesungen-uber-', 'book', 'Raum – Zeit – Materie. Vorlesungen über allgemeine Relativitätstheorie. 5. Auflage', NULL, NULL, 1923, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Hermann Weyl: Raum – Zeit – Materie. Vorlesungen über allgemeine Relativitätstheorie. 5. Auflage, Berlin: Springer, 1923', 'Hermann Weyl: Raum – Zeit – Materie. Vorlesungen über allgemeine Relativitätstheorie. 5. Auflage', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(30, 30, 'ch31-030-robert-m-wald-general-relativity', 'book', 'General Relativity', NULL, NULL, 1984, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Robert M. Wald: General Relativity. Chicago: University of Chicago Press, 1984', 'Robert M. Wald: General Relativity', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(31, 31, 'ch31-031-stephen-w-hawking-the-large-scale-structure-of-space-', 'book', 'The Large Scale Structure of Space-Time', NULL, NULL, 1973, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Stephen W. Hawking; George F. R. Ellis: The Large Scale Structure of Space-Time. Cambridge: Cambridge University Press, 1973', 'Stephen W. Hawking; George F. R. Ellis: The Large Scale Structure of Space-Time', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(32, 32, 'ch31-032-john-von-neumann-mathematische-grundlagen-der-quante', 'book', 'Mathematische Grundlagen der Quantenmechanik', NULL, NULL, 1932, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'John von Neumann: Mathematische Grundlagen der Quantenmechanik. Berlin: Julius Springer, 1932', 'John von Neumann: Mathematische Grundlagen der Quantenmechanik', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(33, 33, 'ch31-033-paul-a-m-dirac-the-principles-of-quantum-mechanics', 'book', 'The Principles of Quantum Mechanics', NULL, NULL, 1930, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Paul A. M. Dirac: The Principles of Quantum Mechanics. Oxford: Clarendon Press, 1930', 'Paul A. M. Dirac: The Principles of Quantum Mechanics', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(34, 34, 'ch31-034-bryce-s-dewitt-quantum-theory-of-gravity-i-the-can', 'journal_article', 'Quantum Theory of Gravity. I. The Canonical Theory', NULL, NULL, 1967, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Bryce S. DeWitt: „Quantum Theory of Gravity. I. The Canonical Theory“. In: Physical Review, Band 160, 1967, S. 1113–1148', 'Bryce S. DeWitt: Quantum Theory of Gravity. I. The Canonical Theory', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(35, 35, 'ch31-035-claus-kiefer-quantum-gravity-3-auflage', 'book', 'Quantum Gravity. 3. Auflage', NULL, NULL, 2012, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Claus Kiefer: Quantum Gravity. 3. Auflage, Oxford: Oxford University Press, 2012', 'Claus Kiefer: Quantum Gravity. 3. Auflage', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(36, 36, 'ch31-036-luca-bombelli-space-time-as-a-causal-set', 'journal_article', 'Space-Time as a Causal Set', NULL, NULL, 1987, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Luca Bombelli; Joohan Lee; David Meyer; Rafael D. Sorkin: „Space-Time as a Causal Set“. In: Physical Review Letters, Band 59, 1987, S. 521–524', 'Luca Bombelli; Joohan Lee; David Meyer; Rafael D. Sorkin: Space-Time as a Causal Set', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(37, 37, 'ch31-037-ted-jacobson-thermodynamics-of-spacetime-the-ein', 'journal_article', 'Thermodynamics of Spacetime: The Einstein Equation of State', NULL, NULL, 1995, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Ted Jacobson: „Thermodynamics of Spacetime: The Einstein Equation of State“. In: Physical Review Letters, Band 75, 1995, S. 1260–1263', 'Ted Jacobson: Thermodynamics of Spacetime: The Einstein Equation of State', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(38, 38, 'ch31-038-shinsei-ryu-holographic-derivation-of-entanglem', 'journal_article', 'Holographic Derivation of Entanglement Entropy from AdS/CFT', NULL, NULL, 2006, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Shinsei Ryu; Tadashi Takayanagi: „Holographic Derivation of Entanglement Entropy from AdS/CFT“. In: Physical Review Letters, Band 96, 2006, Artikel 181602', 'Shinsei Ryu; Tadashi Takayanagi: Holographic Derivation of Entanglement Entropy from AdS/CFT', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(39, 39, 'ch31-039-mark-van-raamsdonk-building-up-spacetime-with-quantum-', 'journal_article', 'Building up Spacetime with Quantum Entanglement', NULL, NULL, 2010, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Mark Van Raamsdonk: „Building up Spacetime with Quantum Entanglement“. In: General Relativity and Gravitation, Band 42, 2010, S. 2323–2329', 'Mark Van Raamsdonk: Building up Spacetime with Quantum Entanglement', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(40, 40, 'ch31-040-erik-verlinde-on-the-origin-of-gravity-and-the-la', 'journal_article', 'On the Origin of Gravity and the Laws of Newton', NULL, NULL, 2011, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.3', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Erik Verlinde: „On the Origin of Gravity and the Laws of Newton“. In: Journal of High Energy Physics, Ausgabe 04, 2011, Artikel 029', 'Erik Verlinde: On the Origin of Gravity and the Laws of Newton', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(41, 41, 'ch31-041-hermann-von-helmholtz-handbuch-der-physiologischen-optik', 'historical_work', 'Handbuch der physiologischen Optik', NULL, NULL, 1867, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Hermann von Helmholtz: Handbuch der physiologischen Optik. Leipzig: Leopold Voss, 1867', 'Hermann von Helmholtz: Handbuch der physiologischen Optik', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(42, 42, 'ch31-042-norwood-russell-hanson-patterns-of-discovery-an-inquiry-in', 'book', 'Patterns of Discovery. An Inquiry into the Conceptual Foundations of Science', NULL, NULL, 1958, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Norwood Russell Hanson: Patterns of Discovery. An Inquiry into the Conceptual Foundations of Science. Cambridge: Cambridge University Press, 1958', 'Norwood Russell Hanson: Patterns of Discovery. An Inquiry into the Conceptual Foundations of Science', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(43, 43, 'ch31-043-thomas-s-kuhn-the-structure-of-scientific-revolut', 'book', 'The Structure of Scientific Revolutions', NULL, NULL, 1962, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Thomas S. Kuhn: The Structure of Scientific Revolutions. Chicago: University of Chicago Press, 1962', 'Thomas S. Kuhn: The Structure of Scientific Revolutions', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(44, 44, 'ch31-044-karl-r-popper-logik-der-forschung-zur-erkenntnist', 'book', 'Logik der Forschung. Zur Erkenntnistheorie der modernen Naturwissenschaft', NULL, NULL, 1935, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Karl R. Popper: Logik der Forschung. Zur Erkenntnistheorie der modernen Naturwissenschaft. Wien: Julius Springer, 1935', 'Karl R. Popper: Logik der Forschung. Zur Erkenntnistheorie der modernen Naturwissenschaft', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(45, 45, 'ch31-045-imre-lakatos-falsification-and-the-methodology-o', 'journal_article', 'Falsification and the Methodology of Scientific Research Programmes', NULL, NULL, 1970, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Imre Lakatos: Falsification and the Methodology of Scientific Research Programmes. In: Imre Lakatos; Alan Musgrave (Hrsg.): Criticism and the Growth of Knowledge. Cambridge: Cambridge University Press, 1970, S. 91–196', 'Imre Lakatos: Falsification and the Methodology of Scientific Research Programmes', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(46, 46, 'ch31-046-willard-van-orman-quine-two-dogmas-of-empiricism', 'journal_article', 'Two Dogmas of Empiricism', NULL, NULL, 1951, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Willard Van Orman Quine: Two Dogmas of Empiricism. In: The Philosophical Review, Bd. 60, 1951, S. 20–43', 'Willard Van Orman Quine: Two Dogmas of Empiricism', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(47, 47, 'ch31-047-pierre-duhem-la-theorie-physique-son-objet-et-sa', 'book', 'La théorie physique. Son objet et sa structure', NULL, NULL, 1906, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Pierre Duhem: La théorie physique. Son objet et sa structure. Paris: Chevalier & Rivière, 1906', 'Pierre Duhem: La théorie physique. Son objet et sa structure', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(48, 48, 'ch31-048-bas-c-van-fraassen-the-scientific-image', 'book', 'The Scientific Image', NULL, NULL, 1980, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Bas C. van Fraassen: The Scientific Image. Oxford: Clarendon Press, 1980', 'Bas C. van Fraassen: The Scientific Image', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(49, 49, 'ch31-049-john-worrall-structural-realism-the-best-of-both', 'journal_article', 'Structural Realism: The Best of Both Worlds?', NULL, NULL, 1989, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'John Worrall: Structural Realism: The Best of Both Worlds?. In: Dialectica, Bd. 43, 1989, S. 99–124', 'John Worrall: Structural Realism: The Best of Both Worlds?', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(50, 50, 'ch31-050-james-ladyman-what-is-structural-realism', 'journal_article', 'What is Structural Realism?', NULL, NULL, 1998, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'James Ladyman: What is Structural Realism?. In: Studies in History and Philosophy of Science, Bd. 29, 1998, S. 409–424', 'James Ladyman: What is Structural Realism?', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(51, 51, 'ch31-051-steven-french-remodelling-structural-realism-quan', 'journal_article', 'Remodelling Structural Realism: Quantum Physics and the Metaphysics of Structure', NULL, NULL, 2003, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Steven French; James Ladyman: Remodelling Structural Realism: Quantum Physics and the Metaphysics of Structure. In: Synthese, Bd. 136, 2003, S. 31–56', 'Steven French; James Ladyman: Remodelling Structural Realism: Quantum Physics and the Metaphysics of Structure', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:46', '2026-08-09 08:05:46'),
+(52, 52, 'ch31-052-mary-b-hesse-models-and-analogies-in-science', 'book', 'Models and Analogies in Science', NULL, NULL, 1963, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Mary B. Hesse: Models and Analogies in Science. London: Sheed and Ward, 1963', 'Mary B. Hesse: Models and Analogies in Science', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(53, 53, 'ch31-053-ronald-n-giere-explaining-science-a-cognitive-appr', 'book', 'Explaining Science. A Cognitive Approach', NULL, NULL, 1988, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Ronald N. Giere: Explaining Science. A Cognitive Approach. Chicago: University of Chicago Press, 1988', 'Ronald N. Giere: Explaining Science. A Cognitive Approach', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(54, 54, 'ch31-054-patrick-suppes-a-comparison-of-the-meaning-and-use', 'journal_article', 'A Comparison of the Meaning and Uses of Models in Mathematics and the Empirical Sciences', NULL, NULL, 1960, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Patrick Suppes: A Comparison of the Meaning and Uses of Models in Mathematics and the Empirical Sciences. In: Synthese, Bd. 12, 1960, S. 287–301', 'Patrick Suppes: A Comparison of the Meaning and Uses of Models in Mathematics and the Empirical Sciences', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(55, 55, 'ch31-055-alfred-tarski-the-concept-of-truth-in-formalized-', 'journal_article', 'The Concept of Truth in Formalized Languages', NULL, NULL, 1933, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Alfred Tarski: The Concept of Truth in Formalized Languages. In: Logic, Semantics, Metamathematics. Oxford: Clarendon Press, 1956, S. 152–278; polnische Erstveröffentlichung 1933', 'Alfred Tarski: The Concept of Truth in Formalized Languages', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(56, 56, 'ch31-056-george-boole-an-investigation-of-the-laws-of-tho', 'historical_work', 'An Investigation of the Laws of Thought', NULL, NULL, 1854, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4.1', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'George Boole: An Investigation of the Laws of Thought. London: Walton and Maberly, 1854', 'George Boole: An Investigation of the Laws of Thought', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(57, 57, 'ch31-057-giuseppe-peano-arithmetices-principia-nova-methodo', 'historical_work', 'Arithmetices principia, nova methodo exposita', NULL, NULL, 1889, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4.1', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Giuseppe Peano: Arithmetices principia, nova methodo exposita. Turin: Bocca, 1889', 'Giuseppe Peano: Arithmetices principia, nova methodo exposita', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(58, 58, 'ch31-058-alfred-north-whitehead-principia-mathematica', 'book', 'Principia Mathematica', NULL, NULL, 1913, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4.1', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Alfred North Whitehead; Bertrand Russell: Principia Mathematica. Cambridge: Cambridge University Press, 1910–1913', 'Alfred North Whitehead; Bertrand Russell: Principia Mathematica', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(59, 59, 'ch31-059-david-hilbert-grundlagen-der-geometrie', 'historical_work', 'Grundlagen der Geometrie', NULL, NULL, 1899, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4.1', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'David Hilbert: Grundlagen der Geometrie. Leipzig: Teubner, 1899', 'David Hilbert: Grundlagen der Geometrie', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47');
+INSERT INTO `sources` (`source_id`, `citation_number`, `source_key`, `source_type`, `title`, `subtitle`, `year_original`, `year_edition`, `journal`, `publisher`, `place`, `volume`, `issue`, `pages`, `edition`, `doi`, `isbn`, `url`, `language_code`, `priority`, `evidence_type`, `frzk_relevance`, `verification_status`, `first_citation_section_code`, `first_citation_note`, `full_citation_text`, `short_citation_text`, `notes`, `created_revision_id`, `created_at`, `updated_at`) VALUES
+(60, 60, 'ch31-060-georg-cantor-beitrage-zur-begrundung-der-transfi', 'historical_work', 'Beiträge zur Begründung der transfiniten Mengenlehre', NULL, NULL, 1897, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.4.1', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Georg Cantor: Beiträge zur Begründung der transfiniten Mengenlehre. Leipzig: Teubner, 1895–1897', 'Georg Cantor: Beiträge zur Begründung der transfiniten Mengenlehre', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(61, 61, 'ch31-061-saunders-mac-lane-mathematics-form-and-function', 'book', 'Mathematics: Form and Function', NULL, NULL, 1986, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.5', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Saunders Mac Lane: Mathematics: Form and Function. New York: Springer, 1986', 'Saunders Mac Lane: Mathematics: Form and Function', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(62, 62, 'ch31-062-samuel-eilenberg-general-theory-of-natural-equivalen', 'journal_article', 'General Theory of Natural Equivalences', NULL, NULL, 1945, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.5', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Samuel Eilenberg; Saunders Mac Lane: „General Theory of Natural Equivalences“. In: Transactions of the American Mathematical Society, Band 58, 1945, S. 231–294', 'Samuel Eilenberg; Saunders Mac Lane: General Theory of Natural Equivalences', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(63, 63, 'ch31-063-gottlob-frege-die-grundlagen-der-arithmetik-eine-', 'historical_work', 'Die Grundlagen der Arithmetik. Eine logisch mathematische Untersuchung über den Begriff der Zahl', NULL, NULL, 1884, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.6', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Gottlob Frege: Die Grundlagen der Arithmetik. Eine logisch mathematische Untersuchung über den Begriff der Zahl. Breslau: Wilhelm Koebner, 1884', 'Gottlob Frege: Die Grundlagen der Arithmetik. Eine logisch mathematische Untersuchung über den Begriff der Zahl', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(64, 64, 'ch31-064-ludwig-von-bertalanffy-general-system-theory-foundations-d', 'book', 'General System Theory. Foundations, Development, Applications', NULL, NULL, 1968, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.6', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Ludwig von Bertalanffy: General System Theory. Foundations, Development, Applications. New York: George Braziller, 1968', 'Ludwig von Bertalanffy: General System Theory. Foundations, Development, Applications', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(65, 65, 'ch31-065-norbert-wiener-cybernetics-or-control-and-communic', 'book', 'Cybernetics or Control and Communication in the Animal and the Machine', NULL, NULL, 1948, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.6', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Norbert Wiener: Cybernetics or Control and Communication in the Animal and the Machine. Paris: Hermann & Cie; Cambridge, Massachusetts: MIT Press, 1948', 'Norbert Wiener: Cybernetics or Control and Communication in the Animal and the Machine', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(66, 66, 'ch31-066-w-ross-ashby-an-introduction-to-cybernetics', 'book', 'An Introduction to Cybernetics', NULL, NULL, 1956, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.6', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'W. Ross Ashby: An Introduction to Cybernetics. London: Chapman & Hall, 1956', 'W. Ross Ashby: An Introduction to Cybernetics', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(67, 67, 'ch31-067-michael-d-resnik-mathematics-as-a-science-of-pattern', 'book', 'Mathematics as a Science of Patterns', NULL, NULL, 1997, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.6', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Michael D. Resnik: Mathematics as a Science of Patterns. Oxford: Clarendon Press, 1997', 'Michael D. Resnik: Mathematics as a Science of Patterns', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(68, 68, 'ch31-068-stewart-shapiro-philosophy-of-mathematics-structure', 'book', 'Philosophy of Mathematics. Structure and Ontology', NULL, NULL, 1997, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.6', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Stewart Shapiro: Philosophy of Mathematics. Structure and Ontology. New York: Oxford University Press, 1997', 'Stewart Shapiro: Philosophy of Mathematics. Structure and Ontology', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(69, 69, 'ch31-069-heinz-von-foerster-observing-systems', 'book', 'Observing Systems', NULL, NULL, 1981, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.6', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Heinz von Foerster: Observing Systems. Seaside, Kalifornien: Intersystems Publications, 1981', 'Heinz von Foerster: Observing Systems', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(70, 70, 'ch31-070-niklas-luhmann-soziale-systeme-grundri-einer-allge', 'book', 'Soziale Systeme. Grundriß einer allgemeinen Theorie', NULL, NULL, 1984, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'de', 3, 'secondary', 5, 'needs_review', '3.1.6', 'Vollständige bibliografische Angabe bei Erstnennung im bereinigten Kapiteltext. Originalquellentext/Belegabsatz wurde nicht bereitgestellt; daher keine wörtliche Passage in die DB übernommen.', 'Niklas Luhmann: Soziale Systeme. Grundriß einer allgemeinen Theorie. Frankfurt am Main: Suhrkamp, 1984', 'Niklas Luhmann: Soziale Systeme. Grundriß einer allgemeinen Theorie', 'Keine verifizierte Fundstelle eingetragen. Konkrete Belegstellen dürfen ausschließlich aus der tatsächlich recherchierten Literaturquelle stammen.', 1, '2026-08-09 08:05:47', '2026-08-09 08:05:47'),
+(71, 71, 'lang_algebra_2002', 'book', 'Algebra', NULL, NULL, 2002, NULL, 'Springer', 'New York', NULL, NULL, NULL, 'Revised Third Edition', NULL, NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', 'en', 3, 'textbook', 5, 'verified', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Lang, Serge: Algebra. Revised Third Edition. New York: Springer, 2002.', 'Algebra', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(72, 72, 'rudin_principles_mathematical_analysis_1976', 'book', 'Principles of Mathematical Analysis', NULL, NULL, 1976, NULL, 'McGraw-Hill', 'New York', NULL, NULL, NULL, 'Third Edition', NULL, NULL, 'https://www.mheducation.me/principles-of-mathematical-analysis-int-l-ed-9780070856134-mea', 'en', 3, 'textbook', 5, 'verified', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Rudin, Walter: Principles of Mathematical Analysis. Third Edition. New York: McGraw-Hill, 1976.', 'Principles of Mathematical Analysis', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(73, 73, 'munkres_topology_2000', 'book', 'Topology', NULL, NULL, 2000, NULL, 'Prentice Hall', 'Upper Saddle River, New Jersey', NULL, NULL, NULL, 'Second Edition', NULL, NULL, 'https://www.pearson.com/en-us/subject-catalog/p/Munkres-Topology-Classic-Version-2nd-Edition/P200000006299', 'en', 3, 'textbook', 5, 'verified', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Munkres, James R.: Topology. Second Edition. Upper Saddle River, New Jersey: Prentice Hall, 2000.', 'Topology', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(74, 74, 'strang_linear_algebra_2016', 'book', 'Introduction to Linear Algebra', NULL, NULL, 2016, NULL, 'Wellesley-Cambridge Press', 'Wellesley, Massachusetts', NULL, NULL, NULL, 'Fifth Edition', NULL, NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'en', 3, 'textbook', 5, 'verified', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Strang, Gilbert: Introduction to Linear Algebra. Fifth Edition. Wellesley, Massachusetts: Wellesley-Cambridge Press, 2016.', 'Introduction to Linear Algebra', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(75, 75, 'kreyszig_functional_analysis_1978', 'book', 'Introductory Functional Analysis with Applications', NULL, NULL, 1978, NULL, 'John Wiley & Sons', 'New York', NULL, NULL, NULL, NULL, NULL, NULL, 'https://books.google.com/books?id=Va8rAAAAYAAJ', 'en', 3, 'textbook', 5, 'verified', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Kreyszig, Erwin: Introductory Functional Analysis with Applications. New York: John Wiley & Sons, 1978.', 'Introductory Functional Analysis with Applications', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(76, 76, 'reed_simon_methods_mathematical_physics_1_1980', 'book', 'Methods of Modern Mathematical Physics', 'Volume I: Functional Analysis', NULL, 1980, NULL, 'Academic Press', 'San Diego', NULL, NULL, NULL, 'Revised and Enlarged Edition', NULL, NULL, 'https://books.google.com/books?id=bvuRuwuFBWwC', 'en', 3, 'textbook', 5, 'verified', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Reed, Michael; Simon, Barry: Methods of Modern Mathematical Physics. Volume I: Functional Analysis. Revised and Enlarged Edition. San Diego: Academic Press, 1980.', 'Methods of Modern Mathematical Physics', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(77, 77, 'diestel_graph_theory_2017', 'book', 'Graph Theory', NULL, NULL, 2017, NULL, 'Springer', 'Berlin und Heidelberg', NULL, NULL, NULL, 'Fifth Edition', NULL, NULL, 'https://link.springer.com/book/10.1007/978-3-662-53622-3', 'en', 3, 'textbook', 5, 'verified', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Diestel, Reinhard: Graph Theory. Fifth Edition. Berlin und Heidelberg: Springer, 2017.', 'Graph Theory', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(78, 78, 'mac_lane_categories_working_mathematician_1998', 'book', 'Categories for the Working Mathematician', NULL, NULL, 1998, NULL, 'Springer', 'New York', NULL, NULL, NULL, 'Second Edition', NULL, NULL, 'https://link.springer.com/book/10.1007/978-1-4757-4721-8', 'en', 3, 'reference', 5, 'verified', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Mac Lane, Saunders: Categories for the Working Mathematician. Second Edition. New York: Springer, 1998.', 'Categories for the Working Mathematician', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(79, 79, 'kleene_metamathematics_1952', 'book', 'Introduction to Metamathematics', NULL, NULL, 1952, NULL, 'North-Holland Publishing Company', 'Amsterdam', NULL, NULL, NULL, NULL, NULL, NULL, 'https://books.google.com/books/about/Introduction_to_Metamathematics.html?id=gFgPAQAAMAAJ', 'en', 3, 'reference', 5, 'needs_review', '3.2.0', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Kleene, Stephen C.: Introduction to Metamathematics. Amsterdam: North-Holland Publishing Company, 1952.', 'Introduction to Metamathematics', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(80, 80, 'enderton_elements_set_theory_1977', 'book', 'Elements of Set Theory', NULL, NULL, 1977, NULL, 'Academic Press', 'New York, San Francisco und London', NULL, NULL, NULL, NULL, NULL, NULL, 'https://shop.elsevier.com/books/elements-of-set-theory/enderton/978-0-08-057042-6', 'en', 3, 'textbook', 5, 'verified', '3.2.1', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Enderton, Herbert B.: Elements of Set Theory. New York, San Francisco und London: Academic Press, 1977.', 'Elements of Set Theory', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(81, 81, 'jech_set_theory_2003', 'book', 'Set Theory', 'The Third Millennium Edition, Revised and Expanded', NULL, 2003, NULL, 'Springer', 'Berlin und Heidelberg', NULL, NULL, NULL, 'The Third Millennium Edition, Revised and Expanded', NULL, NULL, 'https://link.springer.com/book/10.1007/3-540-44761-X', 'en', 3, 'reference', 5, 'verified', '3.2.1', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Jech, Thomas: Set Theory. The Third Millennium Edition, Revised and Expanded. Berlin und Heidelberg: Springer, 2003.', 'Set Theory', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(82, 82, 'halmos_finite_dimensional_vector_spaces_1974', 'book', 'Finite-Dimensional Vector Spaces', NULL, NULL, 1974, NULL, 'Springer', 'New York', NULL, NULL, NULL, NULL, NULL, NULL, 'https://link.springer.com/book/10.1007/978-1-4612-6387-6', 'en', 3, 'textbook', 5, 'verified', '3.2.2', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Halmos, Paul R.: Finite-Dimensional Vector Spaces. New York: Springer, 1974.', 'Finite-Dimensional Vector Spaces', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(83, 83, 'bartle_sherbert_real_analysis_2011', 'book', 'Introduction to Real Analysis', NULL, NULL, 2011, NULL, 'John Wiley & Sons', 'Hoboken, New Jersey', NULL, NULL, NULL, 'Fourth Edition', NULL, NULL, 'https://www.wiley-vch.de/en/areas-interest/mathematics-statistics/introduction-to-real-analysis-978-0-471-43331-6', 'en', 3, 'textbook', 5, 'verified', '3.2.2', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Bartle, Robert G.; Sherbert, Donald R.: Introduction to Real Analysis. Fourth Edition. Hoboken, New Jersey: John Wiley & Sons, 2011.', 'Introduction to Real Analysis', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11'),
+(84, 84, 'friedberg_insel_spence_linear_algebra_2018', 'book', 'Linear Algebra', NULL, NULL, 2018, NULL, 'Pearson', NULL, NULL, NULL, NULL, 'Fifth Edition', NULL, NULL, 'https://www.pearson.com/en-us/subject-catalog/p/Friedberg-Linear-Algebra-Subscription-5th-Edition/P200000006185/9780137515424', 'en', 3, 'textbook', 5, 'verified', '3.2.12', 'Erstnennung in Kapitel 3.2; Fundstellen Deep-Research-verifiziert.', 'Friedberg, Stephen H.; Insel, Arnold J.; Spence, Lawrence E.: Linear Algebra. Fifth Edition. Pearson, 2018.', 'Linear Algebra', 'Deep-Research-Fundstellen in source_research_registry/source_research_evidence.', 2, '2026-08-30 09:09:11', '2026-08-30 09:09:11');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `source_authors`
+--
+
+CREATE TABLE `source_authors` (
+  `source_id` bigint(20) UNSIGNED NOT NULL,
+  `author_id` bigint(20) UNSIGNED NOT NULL,
+  `author_order` smallint(5) UNSIGNED NOT NULL,
+  `role` enum('author','editor','translator') NOT NULL DEFAULT 'author'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `source_authors`
+--
+
+INSERT INTO `source_authors` (`source_id`, `author_id`, `author_order`, `role`) VALUES
+(1, 1, 1, 'author'),
+(2, 2, 1, 'author'),
+(3, 3, 1, 'author'),
+(4, 4, 1, 'author'),
+(5, 5, 1, 'author'),
+(6, 6, 1, 'author'),
+(7, 7, 1, 'author'),
+(8, 8, 1, 'author'),
+(9, 9, 1, 'author'),
+(10, 10, 1, 'author'),
+(11, 11, 1, 'author'),
+(12, 12, 1, 'author'),
+(12, 13, 2, 'author'),
+(13, 14, 1, 'author'),
+(14, 15, 1, 'author'),
+(15, 16, 1, 'author'),
+(16, 17, 1, 'author'),
+(17, 18, 1, 'author'),
+(18, 19, 1, 'author'),
+(19, 20, 1, 'author'),
+(20, 21, 1, 'author'),
+(21, 21, 1, 'author'),
+(22, 22, 1, 'author'),
+(23, 23, 1, 'author'),
+(24, 24, 1, 'author'),
+(25, 25, 1, 'author'),
+(26, 26, 1, 'author'),
+(27, 2, 1, 'author'),
+(28, 27, 1, 'author'),
+(29, 28, 1, 'author'),
+(30, 29, 1, 'author'),
+(31, 30, 1, 'author'),
+(31, 31, 2, 'author'),
+(32, 32, 1, 'author'),
+(33, 33, 1, 'author'),
+(34, 34, 1, 'author'),
+(35, 35, 1, 'author'),
+(36, 36, 1, 'author'),
+(36, 37, 2, 'author'),
+(36, 38, 3, 'author'),
+(36, 39, 4, 'author'),
+(37, 40, 1, 'author'),
+(38, 41, 1, 'author'),
+(38, 42, 2, 'author'),
+(39, 43, 1, 'author'),
+(40, 44, 1, 'author'),
+(41, 45, 1, 'author'),
+(42, 46, 1, 'author'),
+(43, 47, 1, 'author'),
+(44, 48, 1, 'author'),
+(45, 49, 1, 'author'),
+(46, 50, 1, 'author'),
+(47, 51, 1, 'author'),
+(48, 52, 1, 'author'),
+(49, 53, 1, 'author'),
+(50, 54, 1, 'author'),
+(51, 55, 1, 'author'),
+(51, 54, 2, 'author'),
+(52, 56, 1, 'author'),
+(53, 57, 1, 'author'),
+(54, 58, 1, 'author'),
+(55, 59, 1, 'author'),
+(56, 60, 1, 'author'),
+(57, 61, 1, 'author'),
+(58, 17, 1, 'author'),
+(58, 16, 2, 'author'),
+(59, 62, 1, 'author'),
+(60, 63, 1, 'author'),
+(61, 64, 1, 'author'),
+(62, 65, 1, 'author'),
+(62, 64, 2, 'author'),
+(63, 66, 1, 'author'),
+(64, 67, 1, 'author'),
+(65, 68, 1, 'author'),
+(66, 69, 1, 'author'),
+(67, 70, 1, 'author'),
+(68, 71, 1, 'author'),
+(69, 72, 1, 'author'),
+(70, 73, 1, 'author'),
+(71, 74, 1, 'author'),
+(72, 75, 1, 'author'),
+(73, 76, 1, 'author'),
+(74, 77, 1, 'author'),
+(75, 78, 1, 'author'),
+(76, 79, 1, 'author'),
+(76, 80, 2, 'author'),
+(77, 81, 1, 'author'),
+(78, 64, 1, 'author'),
+(79, 82, 1, 'author'),
+(80, 83, 1, 'author'),
+(81, 84, 1, 'author'),
+(82, 6, 1, 'author'),
+(83, 85, 1, 'author'),
+(83, 86, 2, 'author'),
+(84, 87, 1, 'author'),
+(84, 88, 2, 'author'),
+(84, 89, 3, 'author');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `source_relations`
+--
+
+CREATE TABLE `source_relations` (
+  `relation_id` bigint(20) UNSIGNED NOT NULL,
+  `source_id_from` bigint(20) UNSIGNED NOT NULL,
+  `source_id_to` bigint(20) UNSIGNED NOT NULL,
+  `relation_type` enum('extends','criticizes','formalizes','applies','reviews','historical_predecessor','alternative_to','supports','contradicts','related') NOT NULL,
+  `relation_note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `source_research_evidence`
+--
+
+CREATE TABLE `source_research_evidence` (
+  `evidence_id` bigint(20) UNSIGNED NOT NULL,
+  `source_usage_id` bigint(20) UNSIGNED NOT NULL,
+  `canonical_source_id` bigint(20) UNSIGNED NOT NULL,
+  `canonical_citation_number` int(10) UNSIGNED NOT NULL,
+  `evidence_mode` enum('direct_quote','location_paraphrase','replacement_location') NOT NULL,
+  `support_fit` enum('direct','supporting','partial','replacement') NOT NULL,
+  `claim_supported` longtext NOT NULL,
+  `exact_location` varchar(1200) NOT NULL,
+  `text_anchor` varchar(1200) NOT NULL,
+  `paraphrased_evidence` longtext NOT NULL,
+  `verbatim_excerpt` varchar(1000) DEFAULT NULL,
+  `source_url` varchar(2048) NOT NULL,
+  `verification_url` varchar(2048) DEFAULT NULL,
+  `source_class` varchar(100) NOT NULL,
+  `verification_status` enum('verified','partial','needs_review') NOT NULL,
+  `copyright_status` enum('location_only','short_quote_verified','no_quote') NOT NULL,
+  `accessed_on` date NOT NULL,
+  `notes` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `source_research_evidence`
+--
+
+INSERT INTO `source_research_evidence` (`evidence_id`, `source_usage_id`, `canonical_source_id`, `canonical_citation_number`, `evidence_mode`, `support_fit`, `claim_supported`, `exact_location`, `text_anchor`, `paraphrased_evidence`, `verbatim_excerpt`, `source_url`, `verification_url`, `source_class`, `verification_status`, `copyright_status`, `accessed_on`, `notes`) VALUES
+(1, 83, 6, 6, 'location_paraphrase', 'direct', '[6] stützt die Einordnung der Mengenlehre als grundlegenden mathematischen Werkzeugbestand und die Abfolge von Mengenoperationen über Relationen zu Funktionen.', 'The Axiom of Extension, S. 1–3; Unions and Intersections, S. 12–16; Ordered Pairs, S. 22–25; Relations, S. 26–29; Functions, S. 30–33.', 'Relations; Functions; Inverses and Composites', 'Die Springer-Gliederung zeigt, dass Halmos genau die in 3.2.0 angekündigten mengentheoretischen Grundobjekte und Abbildungsbegriffe systematisch aufbaut.', NULL, 'https://link.springer.com/book/10.1007/978-1-4757-1645-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(2, 84, 71, 71, 'location_paraphrase', 'direct', '[71] stützt die Einordnung von Gruppen, Ringen, Moduln sowie Matrizen und linearen Abbildungen als algebraische Grundstrukturen.', 'Groups, S. 3–82; Rings, S. 83–116; Modules, S. 117–172; Matrices and Linear Maps, S. 503–552.', 'Groups; Rings; Modules; Matrices and Linear Maps', 'Langs Inhaltsstruktur deckt die im Absatz genannten algebraischen Strukturen und die spätere lineare Abbildungstheorie unmittelbar ab.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(3, 85, 72, 72, 'location_paraphrase', 'direct', '[72] stützt die Einordnung von Konvergenz, Stetigkeit, Differentiation und Integration in der Analysis.', 'Kap. 3 Numerical Sequences and Series; Kap. 4 Continuity; Kap. 5 Differentiation; Kap. 6 The Riemann-Stieltjes Integral; Kap. 7 Sequences and Series of Functions.', 'Continuity; Differentiation; The Riemann-Stieltjes Integral', 'Die offizielle McGraw-Hill-Gliederung weist die im Dissertationstext genannten Kernbereiche der Analysis als eigene Kapitel aus.', NULL, 'https://www.mheducation.me/principles-of-mathematical-analysis-int-l-ed-9780070856134-mea', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(4, 86, 73, 73, 'location_paraphrase', 'direct', '[73] stützt topologische Räume, Stetigkeit, Zusammenhang, Kompaktheit und Trennungsaxiome; die Topologie wird vor metrischen Spezialstrukturen entwickelt.', '2. Aufl.: §§12–17 Topologies/Closed Sets; §§18–19 Continuous Functions; §§20–21 Metric Topologies; §§23–29 Connectedness/Compactness; §§30–32 Countability/Separation Axioms.', 'Topological Spaces and Continuous Functions; Connectedness and Compactness', 'Pearson und die von Munkres selbst gelehrte MIT-Leseliste bestätigen die Reihenfolge und die genannten Themen.', NULL, 'https://ocw.mit.edu/courses/18-901-introduction-to-topology-fall-2004/pages/readings/', 'https://www.pearson.com/en-us/subject-catalog/p/Munkres-Topology-Classic-Version-2nd-Edition/P200000006299', 'university', '', 'location_only', '2026-08-29', NULL),
+(5, 87, 74, 74, 'location_paraphrase', 'direct', '[74] stützt Vektorräume, Matrizen, Basis/Dimension, Determinanten, Eigenwerte und lineare Transformationen.', 'Kap. 3, S. 123 ff.; Kap. 5, S. 247 ff.; Kap. 6, S. 288 ff.; Kap. 8, S. 401 ff.', 'Vector Spaces and Subspaces; Determinants; Eigenvalues and Eigenvectors; Linear Transformations', 'Das offizielle Inhaltsverzeichnis der 5. Auflage deckt genau die in 3.2.0 als lineare Algebra angekündigten Werkzeuge ab.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(6, 88, 75, 75, 'location_paraphrase', 'direct', '[75] stützt normierte Räume, Banach- und Hilberträume, lineare Operatoren/Funktionale und Spektraltheorie.', 'Normed Spaces/Banach Spaces ab S. 49; Linear Operators ab S. 82; Linear Functionals ab S. 103; Inner Product/Hilbert Spaces ab S. 127; Spectral Theory of Bounded Self-Adjoint Linear Operators ab S. 459.', 'Normed Spaces; Banach Spaces; Inner Product Spaces; Hilbert Spaces; Spectral Theory', 'Die Inhaltsübersichten der Ausgabe 1978 und der Wiley-Neuauflage stimmen in diesen Kernbereichen überein.', NULL, 'https://books.google.com/books?id=Va8rAAAAYAAJ', 'https://www.wiley-vch.de/de/fachgebiete/mathematik-und-statistik/introductory-functional-analysis-with-applications-978-0-471-50459-7', 'book_preview', '', 'location_only', '2026-08-29', NULL),
+(7, 89, 76, 76, 'location_paraphrase', 'direct', '[76] stützt Hilberträume, normierte lineare Räume, Operatoren, Spektrum und Spektralsatz.', 'Kap. II Hilbert Spaces, S. 36 ff.; Kap. III Banach Spaces, S. 67 ff.; Kap. VI Bounded Operators, S. 182 ff.; Kap. VII The Spectral Theorem, S. 221 ff.', 'Hilbert Spaces; Bounded Operators; The Spectral Theorem', 'Reed/Simon behandeln die im Absatz genannten funktionalanalytischen Strukturen ausdrücklich in eigenen Kapiteln.', NULL, 'https://books.google.com/books?id=bvuRuwuFBWwC', 'https://shop.elsevier.com/books/methods-of-modern-mathematical-physics/reed/978-0-12-585001-8', 'book_preview', '', 'location_only', '2026-08-29', NULL),
+(8, 90, 77, 77, 'direct_quote', 'direct', '[77] stützt die Grundidee diskreter Strukturen aus Knoten/Vertices und Kanten/Edges.', 'Kap. 1 The Basics, §1.1 Graphs, gedruckte S. 2 (PDF-Seite 21).', '§1.1 Graphs', 'Diestel definiert einen Graphen als Paar aus Knotenmenge und Kantenmenge und erläutert anschließend Vertices und Edges.', 'A graph is a pair G = (V,E) of sets.', 'https://link.springer.com/book/10.1007/978-3-662-53622-3', 'https://daiwz.net/course/disc_math/2023/Diestel_Graph_Theory.pdf', 'publisher_plus_fulltext', 'verified', '', '2026-08-29', NULL),
+(9, 91, 78, 78, 'location_paraphrase', 'direct', '[78] stützt die kategorientheoretische Beschreibung mathematischer Strukturen über Objekte, Morphismen/Funktoren und strukturerhaltende Beziehungen.', 'Kap. Categories, Functors, and Natural Transformations, S. 7–30; Constructions on Categories, S. 31–53.', 'Categories, Functors, and Natural Transformations', 'Die Kapitelstruktur belegt den Übergang von Einzelobjekten zu morphismen- und funktororientierter Strukturbetrachtung.', NULL, 'https://link.springer.com/book/10.1007/978-1-4757-4721-8', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(10, 92, 79, 79, 'location_paraphrase', 'direct', '[79] stützt die Unterscheidung formaler Symbole, Formationsregeln, Transformationsregeln, Postulate/Axiome und formale Theoreme.', 'Kap. IV A Formal System, S. 69–85; §§16–19, insbesondere §19 Transformation Rules, S. 81 ff.', 'A Formal System; Transformation Rules', 'Die recherchierte Gliederung und Textnachweise zeigen den Aufbau eines formalen Systems aus Syntax, Bildungsregeln, Postulaten und Schlussregeln.', NULL, 'https://books.google.com/books/about/Introduction_to_Metamathematics.html?id=gFgPAQAAMAAJ', NULL, 'book_preview', 'partial', 'location_only', '2026-08-29', 'Die genaue 1952-Ausgabe ist bibliographisch zu klären; Fundstelle ist editionsabhängig vor Endfassung erneut abzugleichen.'),
+(11, 93, 6, 6, 'location_paraphrase', 'direct', '[6] stützt Mengen, Teilmengen/Mengenoperationen, Potenzmengen, geordnete Paare, Relationen und Funktionen.', 'Extension S. 1–3; Specification S. 4–7; Unordered Pairs S. 8–11; Unions/Intersections S. 12–16; Complements/Powers S. 17–21; Ordered Pairs S. 22–25; Relations S. 26–29.', 'Unions and Intersections; Complements and Powers; Ordered Pairs; Relations', 'Die Fundstellen entsprechen unmittelbar dem Aufbau von 3.2.1.', NULL, 'https://link.springer.com/book/10.1007/978-1-4757-1645-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(12, 94, 67, 67, 'location_paraphrase', 'direct', '[67] stützt die strukturorientierte Sicht, nach der mathematische Objekte wesentlich als Positionen in Mustern/Strukturen betrachtet werden.', 'Kap. 10 Mathematical Objects as Positions in Patterns, S. 201–223; §2 Patterns and their Relationships, S. 202–208; §3 Patterns and Positions: Entity and Identity, S. 209–212.', 'Mathematical Objects as Positions in Patterns', 'Resnik entwickelt die Identität mathematischer Objekte über ihre Position in Mustern und die Relationen innerhalb dieser Muster.', NULL, 'https://books.google.com/books/about/Mathematics_as_a_Science_of_Patterns.html?id=SN_nCwAAQBAJ', 'https://academic.oup.com/book/32824/chapter-abstract/275104225', 'book_preview', '', 'location_only', '2026-08-29', NULL),
+(13, 95, 68, 68, 'location_paraphrase', 'direct', '[68] stützt strukturalistische Auffassungen mathematischer Objekte als Plätze innerhalb von Strukturen.', 'Kap. 3 Structure, S. 71–108.', 'Structure', 'Shapiros Kapitel behandelt den Status von Strukturen und ausdrücklich den Status mathematischer Objekte als Plätze innerhalb solcher Strukturen.', NULL, 'https://academic.oup.com/book/32743/chapter-abstract/272846529', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(14, 96, 78, 78, 'location_paraphrase', 'partial', '[78] stützt den strukturellen Fokus auf Objekte und Morphismen; die im Text zusätzlich verwendete allgemeine Relationssprache stammt nicht spezifisch aus der Kategorientheorie.', 'Categories, Functors, and Natural Transformations, S. 7–30.', 'Categories, Functors, and Natural Transformations', 'Mac Lane liefert belastbare Stützung für Objekte und strukturierte Abbildungen/Morphismen, aber nicht als Primärquelle für die allgemeine binäre Relationsdefinition.', NULL, 'https://link.springer.com/book/10.1007/978-1-4757-4721-8', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(15, 97, 80, 80, 'location_paraphrase', 'direct', '[80] stützt axiomatische Mengenoperationen, geordnete Paare, Relationen, Funktionen und kartesische Produkte.', 'Kap. 2 Axioms and Operations; Kap. 3 Relations and Functions: Ordered Pairs, Relations, n-Ary Relations, Functions, Infinite Cartesian Products.', 'Axioms and Operations; Relations and Functions', 'Endertons Kapitelstruktur entspricht unmittelbar den in 3.2.1 eingeführten mengentheoretischen Operationen und Relationsbegriffen.', NULL, 'https://shop.elsevier.com/books/elements-of-set-theory/enderton/978-0-08-057042-6', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(16, 98, 81, 81, 'location_paraphrase', 'direct', '[81] stützt die axiomatische Einordnung der Mengenlehre sowie Ordinal-/Kardinalzahlen und Auswahlprinzipien.', 'Basic Set Theory: Axioms of Set Theory S. 3–15; Ordinal Numbers S. 17–26; Cardinal Numbers S. 27–35; Axiom of Choice and Cardinal Arithmetic S. 47–61.', 'Axioms of Set Theory; Ordinal Numbers; Cardinal Numbers', 'Jechs offizielles Inhaltsverzeichnis belegt genau die im Text genannten weiterführenden Bereiche.', NULL, 'https://link.springer.com/book/10.1007/3-540-44761-X', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(17, 99, 71, 71, 'location_paraphrase', 'supporting', '[71] stützt Abbildungen/lineare Abbildungen im algebraischen Kontext; für die mengentheoretische Funktionsdefinition ist Enderton die direktere Quelle.', 'Matrices and Linear Maps, S. 503–552.', 'Matrices and Linear Maps', 'Lang zeigt die strukturelle Verwendung von Abbildungen und linearen Maps in der Algebra.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(18, 100, 72, 72, 'location_paraphrase', 'supporting', '[72] stützt Funktionen als zentralen Gegenstand der Analysis sowie Grenzwerte, Stetigkeit und Differentiation.', 'Kap. 4 Continuity; Kap. 5 Differentiation; Kap. 9 Functions of Several Variables.', 'Continuity; Differentiation; Functions of Several Variables', 'Rudin entwickelt analytische Eigenschaften von Funktionen; die reine mengentheoretische Funktionsdefinition wird besser durch Enderton gestützt.', NULL, 'https://www.mheducation.me/principles-of-mathematical-analysis-int-l-ed-9780070856134-mea', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(19, 101, 80, 80, 'location_paraphrase', 'direct', '[80] stützt die Definition von Funktionen aus dem Relationsbegriff sowie geordnete Paare und kartesische Produkte.', 'Kap. 3 Relations and Functions, insbesondere Ordered Pairs, Relations, Functions.', 'Relations and Functions', 'Enderton ist für die in 3.2.2 verwendete mengentheoretische Funktionsdefinition die direkt passende Quelle.', NULL, 'https://shop.elsevier.com/books/elements-of-set-theory/enderton/978-0-08-057042-6', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(20, 102, 82, 82, 'location_paraphrase', 'supporting', '[82] stützt lineare Abbildungen und Operatoren als weiterführende Form von Abbildungen auf Vektorräumen.', 'Transformations, S. 55–117.', 'Transformations', 'Halmos behandelt Abbildungen in der speziell linearen, endlichdimensionalen Struktur; für allgemeine Funktionen ist die Quelle ergänzend.', NULL, 'https://link.springer.com/book/10.1007/978-1-4612-6387-6', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(21, 103, 83, 83, 'location_paraphrase', 'direct', '[83] stützt Mengen/Funktionen als analytische Grundlage und die Weiterführung zu Grenzwerten, Stetigkeit und Differentiation.', 'Kap. 1 Preliminaries, Abschnitt Sets and Functions; Kap. 4 Limits; Kap. 5 Continuous Functions; Kap. 6 Differentiation.', 'Preliminaries; Sets and Functions', 'Die 4. Auflage führt Funktionen explizit im Grundlagenkapitel und anschließend als Gegenstand der reellen Analysis.', NULL, 'https://books.google.com/books/about/Introduction_to_Real_Analysis.html?id=YawbAAAAQBAJ', 'https://www.wiley-vch.de/en/areas-interest/mathematics-statistics/introduction-to-real-analysis-978-0-471-43331-6', 'book_preview', '', 'location_only', '2026-08-29', NULL),
+(22, 104, 74, 74, 'replacement_location', 'replacement', 'Der bisherige Verweis [10] in 3.2.3 wird sachlich durch Strang [74] ersetzt: lineare Transformationen, Matrixdarstellung und Eigenwerte.', '§8.1 The Idea of a Linear Transformation, S. 401; §8.2 The Matrix of a Linear Transformation, S. 411; §6.1 Introduction to Eigenvalues, S. 288.', 'Linear Transformations; Introduction to Eigenvalues', 'Die Fundstellen decken genau die mit [10] belegten Aussagen zur Matrixdarstellung linearer Operatoren und zur Eigenwertgleichung ab.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', 'Kanonische Ersatzquelle gemäß früherem FRZK-Repository; Originalziffer [10] bleibt nur als Importhistorie erhalten.'),
+(23, 105, 76, 76, 'replacement_location', 'replacement', 'Der bisherige Verweis [13] in 3.2.3 wird sachlich durch Reed/Simon [76] ersetzt: Operatoren, Adjunkte, Spektrum und inverse/operatorentheoretische Strukturen.', 'Kap. VI Bounded Operators, S. 182 ff.; §VI.2 Adjoints, S. 185; §VI.3 The Spectrum, S. 188; Kap. VII The Spectral Theorem, S. 221 ff.', 'Bounded Operators; The Spectrum; The Spectral Theorem', 'Reed/Simon liefern die operatorentheoretische Quelle für die Stellen, die im aktuellen DOCX vorläufig mit [13] belegt sind.', NULL, 'https://books.google.com/books?id=bvuRuwuFBWwC', 'https://shop.elsevier.com/books/methods-of-modern-mathematical-physics/reed/978-0-12-585001-8', 'book_preview', '', 'location_only', '2026-08-29', 'Kanonische Ersatzquelle gemäß früherem FRZK-Repository; Originalziffer [13] bleibt nur als Importhistorie erhalten.'),
+(24, 106, 71, 71, 'location_paraphrase', 'direct', '[71] stützt lineare Abbildungen, Matrixdarstellungen und die Darstellung eines Endomorphismus.', 'Matrices and Linear Maps, S. 503–552; Representation of One Endomorphism, S. 553–570.', 'Matrices and Linear Maps; Representation of One Endomorphism', 'Die beiden Kapitel decken die lineare Abbildung, Matrixdarstellung und Eigenstruktur des Abschnitts ab.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(25, 107, 80, 80, 'location_paraphrase', 'direct', '[80] stützt die allgemeine Abbildung/Funktion als eindeutige Zuordnung auf Mengenebene.', 'Kap. 3 Relations and Functions: Ordered Pairs, Relations, Functions.', 'Relations and Functions', 'Diese Quelle stützt den allgemeinen Abbildungsbegriff, bevor 3.2.3 zur Linearität übergeht.', NULL, 'https://shop.elsevier.com/books/elements-of-set-theory/enderton/978-0-08-057042-6', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(26, 108, 82, 82, 'location_paraphrase', 'direct', '[82] stützt lineare Transformationen, Operatoren, Basiswechsel, Range/Nullspace sowie Determinanten- und Spektralterminologie.', 'Transformations, S. 55–117; Change of basis, S. 63; Range and null space, S. 69; Determinants and the spectral terminology, S. 77.', 'Transformations; Change of basis; Range and null space', 'Halmos behandelt die für 3.2.3 benötigte Operator- und Darstellungsstruktur direkt.', NULL, 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', 'https://link.springer.com/book/10.1007/978-1-4612-6387-6', 'book_preview', '', 'location_only', '2026-08-29', NULL),
+(27, 109, 71, 71, 'location_paraphrase', 'direct', '[71] stützt Vektor-/Modulstrukturen und lineare Abbildungen; Vektorräume sind der Spezialfall von Moduln über einem Körper.', 'Modules, S. 117–172; Matrices and Linear Maps, S. 503–552.', 'Modules; Matrices and Linear Maps', 'Die Fundstellen tragen die algebraische Einordnung der Vektorraumaxiome und linearen Operationen.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(28, 110, 74, 74, 'location_paraphrase', 'direct', '[74] stützt Vektorräume, Unterräume, Nullräume, Basis und Dimension.', 'Kap. 3 Vector Spaces and Subspaces, S. 123–193; §3.1 S. 123; §3.2 S. 135; §3.4 S. 164.', 'Vector Spaces and Subspaces', 'Die 5. Auflage behandelt die in 3.2.4 benötigte Vektorraumstruktur direkt.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(29, 111, 76, 76, 'location_paraphrase', 'supporting', '[76] stützt die Einordnung endlichdimensionaler und normierter Vektorräume im funktionalanalytischen Rahmen.', 'Kap. I Preliminaries (metric and normed linear spaces); Kap. II Hilbert Spaces, S. 36 ff.; Kap. III Banach Spaces, S. 67 ff.', 'Hilbert Spaces; Banach Spaces', 'Reed/Simon sind hier eine ergänzende funktionalanalytische Quelle; die konkreten Vektorraumaxiome werden direkter durch Lang/Strang/Halmos gestützt.', NULL, 'https://books.google.com/books?id=bvuRuwuFBWwC', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(30, 112, 82, 82, 'location_paraphrase', 'direct', '[82] stützt die Definition des Vektorraums, Basiskonstruktion und lineare Räume.', 'Spaces, S. 1–54; Definition of vector space, S. 1; Definition and construction of bases, S. 8.', 'Spaces; Definition of vector space', 'Halmos beginnt ausdrücklich mit der Vektorraumdefinition und entwickelt daraus die endlichdimensionale lineare Struktur.', NULL, 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', 'https://link.springer.com/book/10.1007/978-1-4612-6387-6', 'book_preview', '', 'location_only', '2026-08-29', NULL),
+(31, 113, 71, 71, 'location_paraphrase', 'direct', '[71] stützt Linearkombinationen, Erzeugung und lineare Struktur im Modul-/Vektorraumkontext.', 'Modules, S. 117–172; Matrices and Linear Maps, S. 503–552.', 'Modules; Matrices and Linear Maps', 'Die Abschnitte liefern den algebraischen Rahmen für Skalarmultiplikation, Addition und Erzeugung linearer Unterräume.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(32, 114, 74, 74, 'location_paraphrase', 'direct', '[74] stützt Linearkombinationen und daraus aufgebaute Vektorräume/Unterräume.', '§1.1 Vectors and Linear Combinations, S. 2; §3.1 Spaces of Vectors, S. 123.', 'Vectors and Linear Combinations', 'Strang führt Linearkombinationen bereits als elementaren Aufbau von Vektoren und später von Räumen ein.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(33, 115, 82, 82, 'location_paraphrase', 'direct', '[82] stützt Erzeugung, Basiskonstruktion und lineare Mannigfaltigkeiten/Unterräume.', 'Spaces, S. 1–54; Definition and construction of bases, S. 8; Linear manifolds, S. 14.', 'Definition and construction of bases; Linear manifolds', 'Die Fundstellen liegen im Raum-Kapitel und stützen Spann-/Erzeugungsargumente.', NULL, 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(34, 116, 71, 71, 'location_paraphrase', 'direct', '[71] stützt lineare Unabhängigkeit, Basen und Dimension innerhalb linearer algebraischer Strukturen.', 'Modules, S. 117–172; Matrices and Linear Maps, S. 503–552.', 'Modules; Matrices and Linear Maps', 'Langs linear-algebraischer Aufbau trägt die Basis-/Dimensionsargumentation; für die didaktische Explikation sind Strang/Halmos direkter.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(35, 117, 74, 74, 'location_paraphrase', 'direct', '[74] stützt ausdrücklich lineare Unabhängigkeit, Basis und Dimension.', '§3.4 Independence, Basis and Dimension, S. 164; §3.5 Dimensions of the Four Subspaces, S. 181.', 'Independence, Basis and Dimension', 'Diese Fundstelle ist die direkte Referenz für den Kern von 3.2.6.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(36, 118, 82, 82, 'location_paraphrase', 'direct', '[82] stützt Definition/Konstruktion von Basen und die endlichdimensionale Raumstruktur.', 'Spaces, S. 1–54; Definition and construction of bases, S. 8.', 'Definition and construction of bases', 'Halmos liefert eine klassische Quelle für Basen als vollständige, nichtredundante lineare Beschreibung.', NULL, 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(37, 119, 71, 71, 'location_paraphrase', 'direct', '[71] stützt Matrixdarstellung linearer Abbildungen und damit die Basisabhängigkeit von Koordinatenrepräsentationen.', 'Matrices and Linear Maps, S. 503–552.', 'Matrices and Linear Maps', 'Die Darstellung linearer Maps durch Matrizen liefert den algebraischen Rahmen für Koordinaten- und Basiswechsel.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(38, 120, 74, 74, 'location_paraphrase', 'direct', '[74] stützt die Matrix eines linearen Operators und die Wahl bzw. Suche einer geeigneten Basis.', '§8.2 The Matrix of a Linear Transformation, S. 411; §8.3 The Search for a Good Basis, S. 421.', 'The Matrix of a Linear Transformation; The Search for a Good Basis', 'Strang trennt lineare Transformation und Matrixdarstellung und behandelt die Basiswahl explizit.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(39, 121, 76, 76, 'location_paraphrase', 'partial', '[76] stützt den abstrakten Spektralbegriff eines Operators, nicht jedoch als primäre Quelle die elementare Basiswechselmatrix.', 'Kap. VI Bounded Operators, §3 The Spectrum, S. 188 ff.; Kap. VII The Spectral Theorem, S. 221 ff.', 'The Spectrum; The Spectral Theorem', 'Reed/Simon stützen die operatorische/spektrale Invarianzebene; die konkrete Ähnlichkeitstransformation sollte primär mit Strang/Lang/Halmos belegt werden.', NULL, 'https://books.google.com/books?id=bvuRuwuFBWwC', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(40, 122, 82, 82, 'location_paraphrase', 'direct', '[82] stützt den Basiswechsel und dessen Einfluss auf Matrixdarstellungen.', 'Change of basis, S. 63; Transformations, S. 55–117.', 'Change of basis', 'Halmos besitzt einen ausdrücklich ausgewiesenen Abschnitt zum Basiswechsel.', NULL, 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(41, 123, 71, 71, 'location_paraphrase', 'direct', '[71] stützt Determinanten im Kontext von Matrizen und linearen Abbildungen.', 'Matrices and Linear Maps, S. 503–552; darin Abschnitt Determinants (ab etwa S. 511 gemäß Inhaltsgliederung).', 'Matrices and Linear Maps; Determinants', 'Lang behandelt Determinanten innerhalb des linearen Abbildungs- und Matrixkapitels.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(42, 124, 74, 74, 'location_paraphrase', 'direct', '[74] stützt Determinanteneigenschaften, Kofaktorentwicklung, Inversen und Volumenskalierung.', 'Kap. 5 Determinants, S. 247 ff.; §5.1 S. 247; §5.2 S. 258; §5.3 Cramer’s Rule, Inverses, and Volumes, S. 273.', 'Determinants; Inverses, and Volumes', 'Die Kapitelstruktur deckt die in 3.2.8 behandelten algebraischen und geometrischen Bedeutungen der Determinante direkt ab.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(43, 125, 82, 82, 'location_paraphrase', 'direct', '[82] stützt Determinanten und deren Verbindung zur Spektralterminologie.', 'Determinants and the spectral terminology, S. 77; Transformations, S. 55–117.', 'Determinants and the spectral terminology', 'Halmos verknüpft Determinanten mit der Struktur linearer Transformationen.', NULL, 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(44, 126, 71, 71, 'location_paraphrase', 'direct', '[71] stützt Rang, Matrixdarstellungen und lineare Abbildungen.', 'Matrices and Linear Maps, S. 503–552; Rangabschnitt im Anfang dieses Kapitels.', 'Matrices and Linear Maps', 'Lang behandelt Rang und lineare Abbildungen in demselben Kapitel und stützt damit Rang-/Bildargumente.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(45, 127, 74, 74, 'location_paraphrase', 'direct', '[74] stützt Nullraum, Lösbarkeit, Rang und Dimension der fundamentalen Unterräume.', '§3.2 The Nullspace of A, S. 135; §3.3 The Complete Solution to Ax=b, S. 150; §3.5 Dimensions of the Four Subspaces, S. 181.', 'The Nullspace of A; Dimensions of the Four Subspaces', 'Diese Fundstellen stützen Kern/Nullraum, Rang, Bild-/Spaltenraum und lineare Gleichungssysteme.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(46, 128, 82, 82, 'location_paraphrase', 'direct', '[82] stützt Range und Null Space einer linearen Transformation.', 'Range and null space of a linear transformation, S. 69.', 'Range and null space', 'Halmos besitzt eine direkte Fundstelle zu Bild/Range und Kern/Nullspace.', NULL, 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(47, 129, 71, 71, 'location_paraphrase', 'direct', '[71] stützt Eigenwerte/Eigenvektoren, charakteristisches Polynom und die Darstellung eines Endomorphismus.', 'Representation of One Endomorphism, S. 553–570; charakteristisches Polynom innerhalb dieses Kapitels.', 'Representation of One Endomorphism', 'Das Kapitel behandelt die spektralen Eigenschaften eines einzelnen linearen Endomorphismus.', NULL, 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(48, 130, 74, 74, 'location_paraphrase', 'direct', '[74] stützt Eigenwerte, Eigenvektoren und den Übergang zur Diagonalisierung.', '§6.1 Introduction to Eigenvalues, S. 288; §6.2 Diagonalizing a Matrix, S. 304.', 'Introduction to Eigenvalues', 'Die Fundstellen sind die direkte Referenz für Eigenwertgleichung, Eigenrichtungen und Diagonalisierbarkeitsfragen.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(49, 131, 82, 82, 'location_paraphrase', 'direct', '[82] stützt spektrale Terminologie und die Eigenstruktur linearer Transformationen.', 'Determinants and the spectral terminology, S. 77; Transformations, S. 55–117.', 'Determinants and the spectral terminology', 'Halmos verknüpft Determinanten und spektrale Terminologie innerhalb der Theorie linearer Transformationen.', NULL, 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL),
+(50, 132, 74, 74, 'location_paraphrase', 'direct', '[74] stützt Diagonalisierung, symmetrische Matrizen und die orthogonale Eigenvektorzerlegung.', '§6.2 Diagonalizing a Matrix, S. 304; §6.4 Symmetric Matrices, S. 338.', 'Diagonalizing a Matrix; Symmetric Matrices', 'Die beiden Abschnitte tragen die Diagonalisierbarkeit und den endlichdimensionalen Spektralsatz für reelle symmetrische Matrizen.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(51, 133, 74, 74, 'location_paraphrase', 'direct', '[74] stützt Skalarprodukt/Dot Product, Norm/Länge, Orthogonalität, Projektionen und Gram-Schmidt.', '§1.2 Lengths and Dot Products, S. 11; §4.1 Orthogonality, S. 194; §4.2 Projections, S. 206; §4.4 Orthonormal Bases and Gram-Schmidt, S. 233.', 'Lengths and Dot Products; Projections; Orthonormal Bases and Gram-Schmidt', 'Die Fundstellen entsprechen unmittelbar den Definitionen und Verfahren von 3.2.12.', NULL, 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', 'author_university', 'verified', 'location_only', '2026-08-29', NULL),
+(52, 134, 84, 84, 'location_paraphrase', 'direct', '[84] stützt Skalarprodukte/Normen, Gram-Schmidt, orthogonale Komplemente, orthogonale Operatoren, Projektionen und Spektralsatz.', 'Kap. 6 Inner Product Spaces: §6.1 Inner Products and Norms; §6.2 Gram-Schmidt Orthogonalization Process and Orthogonal Complements; §6.5 Unitary and Orthogonal Operators; §6.6 Orthogonal Projections and the Spectral Theorem.', 'Inner Product Spaces', 'Pearsons Inhaltsverzeichnis deckt die gesamte in 3.2.12 benötigte Struktur direkt ab.', NULL, 'https://www.pearson.com/en-us/subject-catalog/p/Friedberg-Linear-Algebra-Subscription-5th-Edition/P200000006185/9780137515424', NULL, 'publisher', 'verified', 'location_only', '2026-08-29', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `source_research_registry`
+--
+
+CREATE TABLE `source_research_registry` (
+  `source_id` bigint(20) UNSIGNED NOT NULL,
+  `citation_number` int(10) UNSIGNED NOT NULL,
+  `verified_citation_text` longtext NOT NULL,
+  `metadata_status` enum('verified','partial','conflict','needs_review') NOT NULL,
+  `primary_url` varchar(2048) NOT NULL,
+  `secondary_url` varchar(2048) DEFAULT NULL,
+  `accessed_on` date NOT NULL,
+  `research_notes` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `source_research_registry`
+--
+
+INSERT INTO `source_research_registry` (`source_id`, `citation_number`, `verified_citation_text`, `metadata_status`, `primary_url`, `secondary_url`, `accessed_on`, `research_notes`) VALUES
+(6, 6, 'Halmos, Paul R.: Naive Set Theory. Springer New York, 1974 (für die Deep-Research-Fundstellen verwendete Springer-Ausgabe).', 'verified', 'https://link.springer.com/book/10.1007/978-1-4757-1645-0', NULL, '2026-08-29', 'Die aktuelle Dissertation nennt [6] ohne Ausgabeangabe. Die Fundstellen werden gegen die Springer-Ausgabe ©1974 geführt; eine Bibliographie-Synchronisierung ist vor Endfassung erforderlich.'),
+(67, 67, 'Resnik, Michael D.: Mathematics as a Science of Patterns. Oxford: Clarendon Press, 1997.', 'verified', 'https://books.google.com/books/about/Mathematics_as_a_Science_of_Patterns.html?id=SN_nCwAAQBAJ', 'https://academic.oup.com/book/32824/chapter-abstract/275104225', '2026-08-29', 'Kapitel 10 und seine Unterabschnitte sind über Inhaltsverzeichnis/Preview verifiziert.'),
+(68, 68, 'Shapiro, Stewart: Philosophy of Mathematics: Structure and Ontology. New York: Oxford University Press, 1997.', 'verified', 'https://academic.oup.com/book/32743/chapter-abstract/272846529', NULL, '2026-08-29', 'Printjahr 1997 bleibt maßgeblich; Oxford Academic weist für die digitale Kapitelbereitstellung ein späteres Publikationsdatum aus.'),
+(71, 71, 'Lang, Serge: Algebra. Revised Third Edition. New York: Springer, 2002.', 'verified', 'https://link.springer.com/book/10.1007/978-1-4613-0041-0', NULL, '2026-08-29', 'Springer bestätigt Ausgabe, Jahr und Kapitelbereiche.'),
+(72, 72, 'Rudin, Walter: Principles of Mathematical Analysis. Third Edition. New York: McGraw-Hill, 1976.', 'verified', 'https://www.mheducation.me/principles-of-mathematical-analysis-int-l-ed-9780070856134-mea', NULL, '2026-08-29', 'McGraw-Hill bestätigt 3. Auflage, 1976 und Inhaltsgliederung.'),
+(73, 73, 'Munkres, James R.: Topology. Second Edition. Upper Saddle River, NJ: Prentice Hall, 2000.', 'verified', 'https://www.pearson.com/en-us/subject-catalog/p/Munkres-Topology-Classic-Version-2nd-Edition/P200000006299', 'https://ocw.mit.edu/courses/18-901-introduction-to-topology-fall-2004/pages/readings/', '2026-08-29', 'Pearson bestätigt die Kapitelstruktur; MIT OCW (Munkres-Kurs) ordnet die Abschnitte der 2. Auflage den Themen präzise zu.'),
+(74, 74, 'Strang, Gilbert: Introduction to Linear Algebra. Fifth Edition. Wellesley, MA: Wellesley-Cambridge Press, 2016.', 'verified', 'https://math.mit.edu/~gs/linearalgebra/ila5/index.html', 'https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_TOC.pdf', '2026-08-29', 'Autor-/MIT-Seite und offizielles Inhaltsverzeichnis der 5. Auflage verifiziert.'),
+(75, 75, 'Kreyszig, Erwin: Introductory Functional Analysis with Applications. New York: John Wiley & Sons, 1978.', 'verified', 'https://books.google.com/books?id=Va8rAAAAYAAJ', 'https://www.wiley-vch.de/de/fachgebiete/mathematik-und-statistik/introductory-functional-analysis-with-applications-978-0-471-50459-7', '2026-08-29', 'Google Books bestätigt die Ausgabe 1978; Wiley bestätigt die inhaltliche Gliederung einer späteren Classics-Ausgabe.'),
+(76, 76, 'Reed, Michael; Simon, Barry: Methods of Modern Mathematical Physics. Volume I: Functional Analysis. Revised Edition. Academic Press, 1980.', 'verified', 'https://books.google.com/books?id=bvuRuwuFBWwC', 'https://shop.elsevier.com/books/methods-of-modern-mathematical-physics/reed/978-0-12-585001-8', '2026-08-29', 'Revidierte Ausgabe 1980 in Google Books; Elsevier/ScienceDirect bestätigen Gegenstand und Kapitelstruktur.'),
+(77, 77, 'Diestel, Reinhard: Graph Theory. Fifth Edition. Berlin/Heidelberg: Springer, 2017.', 'verified', 'https://link.springer.com/book/10.1007/978-3-662-53622-3', 'https://daiwz.net/course/disc_math/2023/Diestel_Graph_Theory.pdf', '2026-08-29', 'Springer-Metadaten plus einsehbare 5.-Auflage zur Prüfung von §1.1, S. 2.'),
+(78, 78, 'Mac Lane, Saunders: Categories for the Working Mathematician. Second Edition. New York: Springer, 1998.', 'verified', 'https://link.springer.com/book/10.1007/978-1-4757-4721-8', NULL, '2026-08-29', 'Springer bestätigt 2. Auflage und Kapitelbereiche.'),
+(79, 79, 'Kleene, Stephen C.: Introduction to Metamathematics. 1952.', 'conflict', 'https://books.google.com/books/about/Introduction_to_Metamathematics.html?id=gFgPAQAAMAAJ', NULL, '2026-08-29', 'Bibliographischer Konflikt: Google Books weist Van Nostrand 1952 aus; die aktuelle Kapitelangabe nennt North-Holland 1952. Kapitel IV „A Formal System“, §§16–19, S. 69–85 ist in Sekundärnachweisen konsistent. Vor Endfassung muss die verwendete konkrete Ausgabe festgelegt werden.'),
+(80, 80, 'Enderton, Herbert B.: Elements of Set Theory. New York/San Francisco/London: Academic Press, 1977.', 'verified', 'https://shop.elsevier.com/books/elements-of-set-theory/enderton/978-0-08-057042-6', NULL, '2026-08-29', 'Elsevier bestätigt Gliederung mit Kapitel 2 Axioms and Operations und Kapitel 3 Relations and Functions.'),
+(81, 81, 'Jech, Thomas: Set Theory. The Third Millennium Edition, Revised and Expanded. Berlin/Heidelberg: Springer, 2003.', 'verified', 'https://link.springer.com/book/10.1007/3-540-44761-X', NULL, '2026-08-29', 'Springer bestätigt Ausgabe und Seitenbereiche des Kapitels Basic Set Theory.'),
+(82, 82, 'Halmos, Paul R.: Finite-Dimensional Vector Spaces. New York: Springer, 1974.', 'verified', 'https://link.springer.com/book/10.1007/978-1-4612-6387-6', 'https://books.google.com/books/about/Finite_Dimensional_Vector_Spaces.html?id=sWZMZi1LtMUC', '2026-08-29', 'Springer bestätigt Großkapitel; Google Books liefert die feingranularen Abschnittsseiten für Basiswechsel, Range/Nullspace und Spektralterminologie.'),
+(83, 83, 'Bartle, Robert G.; Sherbert, Donald R.: Introduction to Real Analysis. Fourth Edition. Hoboken, NJ: John Wiley & Sons, 2011.', 'verified', 'https://www.wiley-vch.de/en/areas-interest/mathematics-statistics/introduction-to-real-analysis-978-0-471-43331-6', 'https://books.google.com/books/about/Introduction_to_Real_Analysis.html?id=YawbAAAAQBAJ', '2026-08-29', 'Wiley und Google Books bestätigen 4. Auflage 2011 und den analytischen Aufbau.'),
+(84, 84, 'Friedberg, Stephen H.; Insel, Arnold J.; Spence, Lawrence E.: Linear Algebra. Fifth Edition. Pearson, 2018.', 'verified', 'https://www.pearson.com/en-us/subject-catalog/p/Friedberg-Linear-Algebra-Subscription-5th-Edition/P200000006185/9780137515424', NULL, '2026-08-29', 'Pearson bestätigt Ausgabe 2018 und insbesondere Kapitel 6.1–6.6.');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `source_topics`
+--
+
+CREATE TABLE `source_topics` (
+  `source_id` bigint(20) UNSIGNED NOT NULL,
+  `topic_id` bigint(20) UNSIGNED NOT NULL,
+  `relevance` tinyint(3) UNSIGNED NOT NULL DEFAULT 3
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `source_usage`
+--
+
+CREATE TABLE `source_usage` (
+  `usage_id` bigint(20) UNSIGNED NOT NULL,
+  `source_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `usage_type` enum('first_citation','background','definition','theorem','method','historical_context','state_of_research','critique','research_gap','comparison','equation_source','figure_source','table_source','other') NOT NULL,
+  `claim_summary` text NOT NULL,
+  `exact_location` varchar(255) DEFAULT NULL,
+  `source_excerpt` longtext DEFAULT NULL,
+  `source_excerpt_language` char(2) DEFAULT NULL,
+  `source_excerpt_translation` longtext DEFAULT NULL,
+  `is_first_mention` tinyint(1) NOT NULL DEFAULT 0,
+  `citation_checked` tinyint(1) NOT NULL DEFAULT 0,
+  `notes` text DEFAULT NULL,
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `source_usage`
+--
+
+INSERT INTO `source_usage` (`usage_id`, `source_id`, `section_id`, `usage_type`, `claim_summary`, `exact_location`, `source_excerpt`, `source_excerpt_language`, `source_excerpt_translation`, `is_first_mention`, `citation_checked`, `notes`, `created_revision_id`) VALUES
+(1, 1, 2, 'first_citation', 'Die Frage nach der Natur von Raum und Zeit gehört zu den ältesten und zugleich grundlegendsten Fragestellungen der Naturwissenschaften. Seit Jahrhunderten versuchen Philosophie, Mathematik und Physik zu erklären, ob Raum und Zeit eigenständige Entitäten darstellen, lediglich Beziehungen zwischen Objekten beschreiben oder als Folge tieferliegender physikalischer Prozesse entstehen. Trotz der außerordentlichen Erfolge moderner Theorien existiert bis heute keine allgemein akzeptierte Beschreibung, welche die unterschiedlichen Ansätze in einem gemeinsamen theoretischen Rahmen zusammenführt. Insbesondere bleibt offen, welche minimalen Voraussetzungen erfüllt sein müssen, damit Raum und Zeit überhaupt mathematisch beschrieben werden können', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(2, 2, 2, 'first_citation', 'Die Frage nach der Natur von Raum und Zeit gehört zu den ältesten und zugleich grundlegendsten Fragestellungen der Naturwissenschaften. Seit Jahrhunderten versuchen Philosophie, Mathematik und Physik zu erklären, ob Raum und Zeit eigenständige Entitäten darstellen, lediglich Beziehungen zwischen Objekten beschreiben oder als Folge tieferliegender physikalischer Prozesse entstehen. Trotz der außerordentlichen Erfolge moderner Theorien existiert bis heute keine allgemein akzeptierte Beschreibung, welche die unterschiedlichen Ansätze in einem gemeinsamen theoretischen Rahmen zusammenführt. Insbesondere bleibt offen, welche minimalen Voraussetzungen erfüllt sein müssen, damit Raum und Zeit überhaupt mathematisch beschrieben werden können', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(3, 3, 2, 'first_citation', 'Die Frage nach der Natur von Raum und Zeit gehört zu den ältesten und zugleich grundlegendsten Fragestellungen der Naturwissenschaften. Seit Jahrhunderten versuchen Philosophie, Mathematik und Physik zu erklären, ob Raum und Zeit eigenständige Entitäten darstellen, lediglich Beziehungen zwischen Objekten beschreiben oder als Folge tieferliegender physikalischer Prozesse entstehen. Trotz der außerordentlichen Erfolge moderner Theorien existiert bis heute keine allgemein akzeptierte Beschreibung, welche die unterschiedlichen Ansätze in einem gemeinsamen theoretischen Rahmen zusammenführt. Insbesondere bleibt offen, welche minimalen Voraussetzungen erfüllt sein müssen, damit Raum und Zeit überhaupt mathematisch beschrieben werden können', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(4, 4, 3, 'first_citation', 'Diese Schwierigkeit wurde früh in der europäischen Philosophie erkannt. Parmenides bestreitet, dass das Nichtseiende gedacht oder sprachlich bestimmt werden könne. Denken und Sein sind in seiner Argumentation so eng miteinander verbunden, dass nur das Seiende zum Gegenstand rationaler Erkenntnis werden kann. Das Nichtsein kann weder erkannt noch widerspruchsfrei ausgesprochen werden  Unabhängig davon, ob diese ontologische Position vollständig übernommen wird, enthält sie einen für die vorliegende Untersuchung entscheidenden Hinweis: Sobald über das Nichts gesprochen wird, ist es bereits in einen Zusammenhang des Denkens, Unterscheidens und Bezeichnens eingebunden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(5, 5, 3, 'first_citation', 'In der modernen Physik wird der Begriff des Nichts häufig mit dem Vakuum verbunden. Ein physikalisches Vakuum ist jedoch kein absolutes Fehlen aller Strukturen. In der Quantenfeldtheorie bezeichnet es einen bestimmten Zustand eines bereits vorausgesetzten theoretischen Systems. Dieser Zustand besitzt definierte Eigenschaften, wird durch mathematische Größen charakterisiert und steht in Beziehung zu Feldern, Operatoren und möglichen Anregungen. Selbst der energetisch niedrigste Zustand eines Quantenfeldes setzt damit eine Zustandsstruktur, ein mathematisches Modell und Regeln seiner Entwicklung voraus  Das physikalische Vakuum kann deshalb nicht als voraussetzungsloses Nichts verstanden werden. Es ist vielmehr ein hochgradig strukturierter Grenz- oder Grundzustand innerhalb einer bereits bestehenden physikalischen Theorie.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(6, 6, 3, 'first_citation', 'Auch die Mathematik kennt kein Objekt, das mit einem absoluten Nichts gleichgesetzt werden könnte. Die leere Menge (\\emptyset) enthält zwar keine Elemente, ist aber selbst ein eindeutig definiertes mathematisches Objekt. Sie kann Element anderer Mengen sein, besitzt eine bestimmte Stellung innerhalb der Mengenhierarchie und erfüllt Aussagen, die aus einem Axiomensystem folgen. In der axiomatischen Mengenlehre ist sie nicht die Abwesenheit jeglicher Mathematik, sondern ein durch Axiome bestimmtes Objekt innerhalb einer mathematischen Theorie  Die leere Menge setzt somit bereits die Möglichkeit von Mengen, Identität, Zugehörigkeit und logischer Folgerung voraus.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(7, 4, 4, 'historical_context', 'Die frühe griechische Philosophie formuliert das Grundproblem zunächst als Verhältnis von Sein und Nichtsein. Parmenides schließt das Nichtseiende aus dem Bereich des Denkbaren aus und bindet Erkenntnis an das Seiende . Diese Position schützt das Denken vor der Annahme, aus einem vollständig eigenschaftslosen Nichts könne ohne weitere Voraussetzung etwas Bestimmtes hervorgehen. Für die Entwicklung des FRZK ist daran wesentlich, dass jede Beschreibung an eine Bestimmbarkeit gebunden wird. Zugleich führt die strikte Identifizierung von Denkbarem und Seiendem zu einer Schwierigkeit: Veränderung, Differenz und Entstehung lassen sich nur schwer erklären, wenn allein unveränderliches Sein als rational bestimmbar gilt.', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(8, 7, 4, 'first_citation', 'Platon versucht, diese Schwierigkeit durch eine differenziertere Bestimmung des Nichtseins zu überwinden. Im Sophistes erscheint das Nichtseiende nicht einfach als absolutes Gegenteil des Seins, sondern als Andersheit. Etwas ist nicht, insofern es von etwas anderem verschieden ist. Damit wird das Nichtsein relational bestimmt und in die Möglichkeit von Aussage, Unterschied und Erkenntnis integriert  Für meine Fragestellung ist dieser Schritt entscheidend. Der Unterschied wird nicht länger als bloßer Mangel behandelt, sondern als positive Bedingung dafür, dass Bestimmungen voneinander abgegrenzt werden können.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(9, 8, 4, 'first_citation', 'Aristoteles verlagert die Betrachtung stärker auf konkrete Dinge, Veränderungen und Beziehungen. Raum wird von ihm als Ort eines Körpers verstanden, während Zeit als Zahl beziehungsweise Maß der Bewegung hinsichtlich des Früher und Später bestimmt wird  Raum und Zeit erscheinen dadurch nicht als vollständig unabhängige Substanzen. Sie erhalten ihre Bedeutung im Zusammenhang mit Körpern, Bewegung, Veränderung und Ordnung.', 'Physics IV.11, Bekker 219b1–2', 'For time is just this—number of motion in respect of \'before\' and \'after.\'', 'en', NULL, 1, 1, 'Fundstelle und Fundtext anhand einer digital verfügbaren Übersetzung des Primärtextes von Aristoteles, Physics IV.11, verifiziert.', 1),
+(10, 9, 4, 'first_citation', 'Plotin radikalisiert die Frage nach dem Ursprung der Vielheit. In seiner neuplatonischen Philosophie geht die Vielheit aus dem Einen hervor, das selbst jenseits aller bestimmten Vielheit und begrifflichen Unterscheidung liegt  Der Gedanke einer stufenweisen Hervorbringung von Einheit, Geist und geordneter Vielheit besitzt eine erkennbare Nähe zu späteren Emergenzvorstellungen. Struktur muss nicht von Anfang an vollständig vorhanden sein, sondern kann als Folge einer gestuften Entfaltung verstanden werden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(11, 10, 4, 'first_citation', 'Nikolaus von Kues entwickelt mit der coincidentia oppositorum den Gedanken, dass Gegensätze in einem nicht endlichen Ursprung zusammenfallen können  Seine Überlegungen machen deutlich, dass menschliche Bestimmungen durch Unterschiede, Grenzen und Verhältnisse entstehen, während ein absoluter Ursprung nicht ohne Weiteres innerhalb derselben begrifflichen Ordnung erfasst werden kann. Damit verbindet sich eine erkenntnistheoretische Einsicht: Die Strukturen unserer Beschreibung dürfen nicht vorschnell mit der Struktur eines angenommenen Ursprungs gleichgesetzt werden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(12, 11, 4, 'first_citation', 'Baruch de Spinoza fasst Wirklichkeit als eine einheitliche Substanz auf, deren Attribute und Modi keine voneinander unabhängigen Substanzen bilden, sondern Ausdrucksweisen derselben immanenten Ordnung sind  Für die funktionale Perspektive ist insbesondere die Abkehr von isolierten, ontologisch selbstständigen Dingen bedeutsam. Einzelne Entitäten sind nur innerhalb eines umfassenden Zusammenhangs bestimmbar. Ihre Eigenschaften ergeben sich nicht vollständig aus ihnen selbst, sondern aus der Ordnung, in der sie stehen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(13, 12, 4, 'first_citation', 'Gottfried Wilhelm Leibniz entwickelt eine ausdrücklich relationale Auffassung von Raum und Zeit. Raum bezeichnet für ihn die Ordnung des Zugleichseins, Zeit die Ordnung des Nacheinanders. Beide besitzen keine von den Dingen unabhängige substantielle Existenz, sondern entstehen aus ihren Relationen  Diese Position kommt der Fragestellung des FRZK näher als die Annahme eines absoluten räumlichen und zeitlichen Behälters. Raum und Zeit werden als Ordnungsformen verstanden, die nicht ohne die relationierten Zustände bestehen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(14, 13, 4, 'first_citation', 'Immanuel Kant verschiebt die Fragestellung von der Ontologie zur Bedingung möglicher Erfahrung. Raum und Zeit sind in seiner transzendentalen Ästhetik keine Eigenschaften der Dinge an sich, sondern reine Formen der sinnlichen Anschauung. Sie strukturieren jede mögliche äußere und innere Erfahrung, bevor einzelne Gegenstände empirisch erkannt werden können  Kant zeigt damit, dass wissenschaftliche Beschreibung nicht nur von einer angenommenen äußeren Realität abhängt, sondern ebenso von den Formen, unter denen ein erkennendes Subjekt überhaupt Gegenstände erfahren kann.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(15, 14, 4, 'first_citation', 'Georg Wilhelm Friedrich Hegel versteht Bestimmungen nicht als isolierte Einheiten, sondern als Momente eines Prozesses, in dem Identität durch Negation, Unterschied und Vermittlung entsteht. In der Wissenschaft der Logik wird das reine Sein wegen seiner vollständigen Bestimmungslosigkeit unmittelbar mit dem Nichts verbunden; ihre Wahrheit liegt im Werden  Diese Denkbewegung berührt den Ausgangspunkt von Abschnitt 3.1.1 unmittelbar. Ein vollständig bestimmungsloses Sein lässt sich nicht von einem vollständig bestimmungslosen Nichts unterscheiden. Erst der Übergang beziehungsweise die Vermittlung erzeugt eine bestimmtere Struktur.', 'Wissenschaft der Logik I, Erstes Buch, Erster Abschnitt, Erstes Kapitel, C. Werden, 1. Einheit des Seyns und Nichts', 'Das reine Seyn und das reine Nichts ist also dasselbe.', 'de', NULL, 1, 1, 'Fundstelle und Fundtext direkt anhand der deutschsprachigen Primärtextausgabe bei Project Gutenberg verifiziert.', 1),
+(16, 15, 4, 'first_citation', 'Bertrand Russell und die Entwicklung der modernen Logik verschieben die Aufmerksamkeit auf die formale Struktur von Aussagen und Relationen. Russell kritisiert die Auffassung, Relationen ließen sich vollständig auf intrinsische Eigenschaften einzelner Gegenstände reduzieren. In seiner relationalen Logik erhalten mehrstellige Beziehungen einen eigenständigen formalen Status  Damit wird eine entscheidende Voraussetzung funktionaler Beschreibung präzisiert: Nicht nur die Elemente eines Systems, sondern auch die Struktur ihrer Verknüpfung muss formal darstellbar sein.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(17, 16, 4, 'first_citation', 'Alfred North Whitehead entwickelt demgegenüber eine ausgeprägte Prozessontologie. Die grundlegenden Einheiten der Wirklichkeit sind für ihn keine dauerhaft bestehenden Substanzen, sondern Ereignisse beziehungsweise „actual occasions“, die in Prozessen des Werdens miteinander verbunden sind. Ein konkretes Geschehen entsteht durch die Aufnahme und Integration vorheriger Ereignisse in eine neue Einheit  Whitehead ersetzt damit das Primat des Objekts durch das Primat des Prozesses und der Relation.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(18, 17, 4, 'first_citation', 'Edmund Husserl untersucht Zeit nicht primär als physikalische Größe, sondern als Struktur des Bewusstseins. Die Wahrnehmung eines zeitlich ausgedehnten Vorgangs setzt ein Zusammenspiel von unmittelbarem Eindruck, Retention des gerade Vergangenen und Protention des Erwarteten voraus (Edmund Husserl: Zur Phänomenologie des inneren Zeitbewusstseins (1893–1917), Husserliana, Band X, herausgegeben von Rudolf Boehm, Den Haag: Martinus Nijhoff, 1966).  Zeitliche Ordnung erscheint damit nicht als Folge isolierter Jetztpunkte, sondern als relationale Struktur, in der Gegenwart nur durch ihre Verbindung zu Nicht-mehr und Noch-nicht bestimmt werden kann.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(19, 18, 4, 'first_citation', 'Ernst Cassirer erweitert die relationale Perspektive zu einer Philosophie symbolischer Formen. Wissenschaftliche Gegenstände werden nicht einfach passiv vorgefunden, sondern durch symbolische und begriffliche Ordnungen bestimmt. Besonders in der modernen Wissenschaft tritt nach Cassirer an die Stelle des Substanzbegriffs zunehmend der Funktionsbegriff  Ein Gegenstand wird danach nicht ausschließlich durch ihm innewohnende Eigenschaften bestimmt, sondern durch seine Stellung in einer systematischen Ordnung von Relationen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(20, 19, 4, 'first_citation', 'Martin Heidegger kritisiert die traditionelle Behandlung der Zeit als Abfolge vorhandener Jetztpunkte. In Sein und Zeit wird Zeitlichkeit aus der Struktur des Daseins und seiner auf Zukunft, Gewesenheit und Gegenwart bezogenen Existenz interpretiert  Damit wird sichtbar, dass verschiedene Zeitbegriffe unterschiedliche Ebenen betreffen können: messbare Zeit, erlebte Zeit, historische Zeit und existentielle Zeitlichkeit sind nicht ohne Weiteres identisch.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(21, 20, 4, 'first_citation', 'Ludwig Wittgenstein lenkt die Aufmerksamkeit auf die Bedingungen sinnvoller Aussagen. Im Tractatus logico-philosophicus wird die Welt als Gesamtheit von Tatsachen und nicht von Dingen bestimmt; Aussagen erhalten Bedeutung durch ihre logische Struktur und ihre mögliche Beziehung zu Sachverhalten  In den späteren Philosophischen Untersuchungen wird Bedeutung stärker an den regelgeleiteten Gebrauch innerhalb von Sprachspielen gebunden', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(22, 21, 4, 'first_citation', 'Ludwig Wittgenstein lenkt die Aufmerksamkeit auf die Bedingungen sinnvoller Aussagen. Im Tractatus logico-philosophicus wird die Welt als Gesamtheit von Tatsachen und nicht von Dingen bestimmt; Aussagen erhalten Bedeutung durch ihre logische Struktur und ihre mögliche Beziehung zu Sachverhalten  In den späteren Philosophischen Untersuchungen wird Bedeutung stärker an den regelgeleiteten Gebrauch innerhalb von Sprachspielen gebunden', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(23, 22, 4, 'first_citation', 'Rudolf Carnap versucht, wissenschaftliche Begriffe innerhalb expliziter formaler Systeme zu rekonstruieren. In Der logische Aufbau der Welt soll ein System wissenschaftlicher Gegenstände aus einer begrenzten Basis und definierten Konstruktionsregeln aufgebaut werden  Dieser konstruktive Anspruch ist für die Methodik des FRZK besonders wichtig. Begriffe sollen nicht nur erläutert, sondern hinsichtlich ihrer Abhängigkeit von einfacheren Voraussetzungen nachvollziehbar aufgebaut werden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(24, 23, 4, 'first_citation', 'George Spencer-Brown stellt mit dem Begriff der Unterscheidung eine besonders direkte Verbindung zur Ausgangsfrage her. In Laws of Form beginnt die formale Konstruktion mit der Aufforderung, eine Unterscheidung zu treffen. Durch das Ziehen einer Grenze entstehen eine markierte und eine unmarkierte Seite, auf deren Grundlage weitere Operationen aufgebaut werden können  Die Unterscheidung fungiert damit nicht bloß als Eigenschaft bereits bestehender Objekte, sondern als elementare Operation der Formbildung.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(25, 24, 4, 'first_citation', 'Luciano Floridi entwickelt eine Philosophie der Information, in der Wirklichkeit und Erkenntnis zunehmend unter dem Gesichtspunkt informationeller Strukturen und Relationen untersucht werden. Seine Philosophy of Information bestimmt Information nicht lediglich als technische Größe der Nachrichtenübertragung, sondern als grundlegenden Gegenstand philosophischer Analyse  Für das FRZK ist besonders bedeutsam, dass Information ohne Unterschiede und strukturierte Beziehungen nicht denkbar ist.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(26, 25, 4, 'first_citation', 'Michel Bitbol untersucht die erkenntnistheoretischen Voraussetzungen moderner Physik und betont, dass wissenschaftliche Theorien nicht unabhängig von den Bedingungen ihrer Formulierung, Anwendung und experimentellen Bestätigung verstanden werden können  Seine reflektierende Perspektive mahnt zur Zurückhaltung gegenüber direkten ontologischen Schlüssen aus mathematischen Formalismen. Ein erfolgreiches Modell muss nicht automatisch die Wirklichkeit so darstellen, wie sie unabhängig von jeder möglichen Erkenntnissituation beschaffen ist.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(27, 1, 5, 'historical_context', 'Die klassische Mechanik bietet hierfür den deutlichsten Ausgangspunkt. Isaac Newton unterscheidet in den Principia Mathematica zwischen relativen, messbaren Größen und einem absoluten Raum sowie einer absoluten Zeit, die unabhängig von Körpern, Beobachtern und konkreten Bewegungen bestehen  Die absolute Zeit vergeht nach dieser Auffassung gleichförmig, während der absolute Raum unverändert bleibt. Physikalische Körper bewegen sich innerhalb dieses vorgegebenen Bezugsrahmens, ohne dessen Struktur selbst hervorzubringen oder wesentlich zu verändern.', 'Principia, Definitions, Scholium, I–II; Project Gutenberg edition, p. 77', 'Absolute space, in its own nature, without regard to anything external, remains always similar and immovable.', 'en', NULL, 0, 1, 'Fundstelle und Fundtext direkt anhand der digital verfügbaren Primärquelle (Project Gutenberg, Newton, Principia) verifiziert.', 1),
+(28, 26, 5, 'first_citation', 'Ernst Mach richtet seine Kritik genau gegen diese Trennung physikalischer Vorgänge von einem unbeobachtbaren absoluten Hintergrund. Nach seiner Auffassung besitzen nur Beziehungen zwischen wahrnehmbaren Körpern physikalische Bedeutung. Trägheit und Bewegung sollen nicht gegenüber einem abstrakten absoluten Raum bestimmt werden, sondern relativ zur Gesamtheit materieller Körper  Diese relationale Verschiebung erscheint mir für die weitere Entwicklung besonders bedeutsam. Raum verliert seinen Status als vollständig unabhängiger Behälter und wird stärker an die Ordnung physikalischer Beziehungen gebunden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(29, 27, 5, 'first_citation', 'Einen grundlegenden Bruch mit der klassischen Auffassung vollzieht Albert Einstein in der Speziellen Relativitätstheorie. Ausgehend von der Konstanz der Lichtgeschwindigkeit und der Gleichwertigkeit inertialer Bezugssysteme zeigt er, dass räumliche und zeitliche Abstände nicht unabhängig vom Bewegungszustand des Beobachters bestimmt werden können  Gleichzeitigkeit verliert dadurch ihren absoluten Charakter. Zwei Ereignisse, die in einem Bezugssystem gleichzeitig erscheinen, müssen in einem relativ dazu bewegten System nicht gleichzeitig sein.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(30, 28, 5, 'first_citation', 'Hermann Minkowski führt diese Erkenntnisse zu einer vierdimensionalen Raumzeit zusammen. Raum und Zeit bilden nicht länger zwei voneinander getrennte Bereiche, sondern unterschiedliche Komponenten einer gemeinsamen geometrischen Struktur  Diese Vereinigung verändert den physikalischen Begriff beider Größen grundlegend. Zeit ist nicht mehr ein äußerer Parameter, der unabhängig von räumlichen Beziehungen verläuft, und Raum ist nicht mehr eine starre dreidimensionale Bühne. Ereignisse werden vielmehr durch ihre Position innerhalb einer vierdimensionalen Struktur charakterisiert.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(31, 2, 5, 'historical_context', 'Mit der Allgemeinen Relativitätstheorie geht Einstein einen weiteren Schritt. Die Raumzeit ist nun nicht mehr nur der unveränderliche geometrische Hintergrund physikalischer Prozesse. Ihre Krümmung hängt von der Verteilung von Materie und Energie ab, während diese Krümmung wiederum die Bewegung physikalischer Systeme beeinflusst  Raumzeit wird damit selbst dynamisch. Gravitation erscheint nicht mehr als Kraft im newtonschen Sinn, sondern als Ausdruck der Geometrie.', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(32, 29, 5, 'first_citation', 'Dieser Übergang gehört aus meiner Sicht zu den wichtigsten wissenschaftlichen Veränderungen des Raumbegriffs. Der beschreibende Rahmen und die in ihm enthaltenen physikalischen Vorgänge sind nicht mehr vollständig voneinander getrennt. Geometrie wirkt auf Materie, und Materie wirkt auf Geometrie. Hermann Weyl arbeitet diese Verbindung zwischen Geometrie, Materie und physikalischen Feldern weiter aus und zeigt, wie eng moderne Raum-Zeit-Begriffe mit Symmetrien und Feldstrukturen verbunden sind', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(33, 30, 5, 'first_citation', 'Dennoch bleibt auch die Allgemeine Relativitätstheorie eine Theorie auf einer bereits mathematisch definierten Struktur. Sie setzt eine differenzierbare Mannigfaltigkeit, eine Metrik und weitere mathematische Voraussetzungen voraus, bevor ihre Feldgleichungen formuliert werden können. Die Metrik ist dynamisch, aber die Möglichkeit metrischer und differentialgeometrischer Beschreibung wird nicht selbst hergeleitet. Robert M. Wald macht in seiner systematischen Darstellung deutlich, dass die Theorie auf einer Lorentz-Mannigfaltigkeit aufgebaut wird, deren geometrische Eigenschaften anschließend mit der physikalischen Dynamik verbunden werden  Die Raumzeit ist somit nicht mehr starr, aber sie bleibt Bestandteil des theoretischen Ausgangsrahmens.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(34, 31, 5, 'first_citation', 'Die kosmologischen Anwendungen der Allgemeinen Relativitätstheorie verschärfen diese Frage. Modelle der großräumigen Struktur des Universums beschreiben Expansion, Gravitationskollaps und mögliche Singularitäten innerhalb einer dynamischen Raumzeit  Singularitätssätze zeigen unter bestimmten Voraussetzungen, dass die klassische Beschreibung an Grenzen gelangen kann, an denen geodätische Fortsetzbarkeit verloren geht. Solche Ergebnisse bedeuten nicht unmittelbar, dass Raum und Zeit aufhören zu existieren. Sie zeigen vielmehr, dass die verwendete klassische geometrische Beschreibung in extremen Situationen unvollständig werden kann.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(35, 32, 5, 'first_citation', 'Eine weitere grundlegende Veränderung ergibt sich mit der Quantenmechanik. Anders als in der klassischen Mechanik wird ein physikalischer Zustand nicht durch einen eindeutig bestimmten Ort und Impuls charakterisiert. Er wird durch einen Zustandsvektor beziehungsweise eine Wellenfunktion in einem Hilbertraum beschrieben. Messbare Größen werden durch Operatoren repräsentiert, und die möglichen Messergebnisse ergeben sich probabilistisch aus dem mathematischen Zustand  Paul A. M. Dirac entwickelt hierfür eine abstrakte Formulierung, in der Zustände, Observablen und Transformationen über lineare Strukturen miteinander verbunden werden', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(36, 33, 5, 'first_citation', 'Eine weitere grundlegende Veränderung ergibt sich mit der Quantenmechanik. Anders als in der klassischen Mechanik wird ein physikalischer Zustand nicht durch einen eindeutig bestimmten Ort und Impuls charakterisiert. Er wird durch einen Zustandsvektor beziehungsweise eine Wellenfunktion in einem Hilbertraum beschrieben. Messbare Größen werden durch Operatoren repräsentiert, und die möglichen Messergebnisse ergeben sich probabilistisch aus dem mathematischen Zustand  Paul A. M. Dirac entwickelt hierfür eine abstrakte Formulierung, in der Zustände, Observablen und Transformationen über lineare Strukturen miteinander verbunden werden', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(37, 5, 5, 'historical_context', 'Mit der Quantenfeldtheorie werden Quantenmechanik und Spezielle Relativitätstheorie verbunden. Fundamentale physikalische Größen werden nun als Felder beschrieben, deren Anregungen sich als Teilchen interpretieren lassen. Steven Weinberg zeigt in seiner systematischen Darstellung, dass die Struktur relativistischer Quantenfelder wesentlich durch Symmetrien, Lokalität und quantenmechanische Prinzipien bestimmt wird  Der physikalische Grundbegriff verschiebt sich damit erneut. Teilchen sind nicht mehr zwangsläufig elementare, dauerhaft bestehende Objekte, sondern können als Zustände beziehungsweise Anregungen zugrunde liegender Felder verstanden werden.', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(38, 34, 5, 'first_citation', 'Die Verbindung von Quantenmechanik und Allgemeiner Relativitätstheorie führt schließlich zu einem bis heute nicht abschließend gelösten Grundlagenproblem. Die Allgemeine Relativitätstheorie beschreibt eine dynamische Raumzeitgeometrie, während die Quantenfeldtheorie üblicherweise auf einer bereits gegebenen Raumzeit formuliert wird. In Situationen, in denen auch die Geometrie quantenmechanischen Schwankungen unterliegen müsste, reichen beide Formalismen in ihrer etablierten Form nicht aus. Bryce S. DeWitt arbeitet früh heraus, dass eine Quantisierung der Gravitation nicht nur ein weiteres Feld betrifft, sondern den geometrischen Hintergrund selbst in die Quantentheorie einbeziehen muss', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(39, 3, 5, 'historical_context', 'Die unterschiedlichen Ansätze zur Quantengravitation reagieren auf diese Schwierigkeit auf verschiedene Weise. In der kanonischen und schleifenquantengravitativen Forschung werden geometrische Größen quantisiert und teilweise diskrete Spektren für Flächen- oder Volumenoperatoren untersucht. Carlo Rovelli beschreibt Raum dabei nicht als unveränderliches Kontinuum, sondern als möglicherweise aus quantisierten relationalen Strukturen hervorgehend', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(40, 35, 5, 'first_citation', 'Claus Kiefer stellt demgegenüber die unterschiedlichen quantengravitativen Programme vergleichend dar und betont sowohl ihre mathematische Vielfalt als auch die bislang fehlende empirische Entscheidung zwischen ihnen  Damit wird zugleich eine wesentliche Grenze sichtbar: Die theoretische Möglichkeit einer nichtfundamentalen Raumzeit ist wissenschaftlich ernst zu nehmen, aber bislang nicht durch eine allgemein bestätigte physikalische Theorie abschließend geklärt.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(41, 36, 5, 'first_citation', 'Ein besonders konsequenter Ansatz findet sich in der Causal-Set-Theorie. Dort wird angenommen, dass die fundamentale Struktur nicht zunächst geometrisch, sondern kausal und diskret ist. Eine teilweise geordnete Menge elementarer Ereignisse soll unter geeigneten Bedingungen eine kontinuierliche Raumzeit approximieren können  Raumzeit wäre danach nicht der Ausgangspunkt, sondern eine makroskopische Beschreibung einer tieferen Kausalstruktur.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(42, 37, 5, 'first_citation', 'Ted Jacobson entwickelt einen anderen Zugang, indem er die Einstein-Gleichungen als Zustandsgleichung aus thermodynamischen Beziehungen ableitet  Seine Arbeit legt nahe, dass die klassische Raumzeitdynamik möglicherweise ähnlich wie Temperatur oder Druck eine makroskopische Beschreibung mikroskopischer Freiheitsgrade darstellt. Die Gravitation wäre dann nicht zwangsläufig fundamental, sondern könnte als thermodynamisches Verhalten einer tieferen Struktur erscheinen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(43, 38, 5, 'first_citation', 'Eine weitere wichtige Forschungsrichtung verbindet Raumzeitgeometrie mit Quanteninformation und Verschränkung. Shinsei Ryu und Tadashi Takayanagi zeigen im Rahmen der holografischen Dualität einen Zusammenhang zwischen Verschränkungsentropie in einer Quantentheorie und geometrischen Flächen in einem höherdimensionalen Raum  Mark Van Raamsdonk entwickelt daraus die Vorstellung weiter, dass die Zusammenhängigkeit einer Raumzeit eng mit der Verschränkungsstruktur des zugrunde liegenden Quantensystems verbunden sein könnte', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(44, 39, 5, 'first_citation', 'Eine weitere wichtige Forschungsrichtung verbindet Raumzeitgeometrie mit Quanteninformation und Verschränkung. Shinsei Ryu und Tadashi Takayanagi zeigen im Rahmen der holografischen Dualität einen Zusammenhang zwischen Verschränkungsentropie in einer Quantentheorie und geometrischen Flächen in einem höherdimensionalen Raum  Mark Van Raamsdonk entwickelt daraus die Vorstellung weiter, dass die Zusammenhängigkeit einer Raumzeit eng mit der Verschränkungsstruktur des zugrunde liegenden Quantensystems verbunden sein könnte', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(45, 40, 5, 'first_citation', 'Daneben existieren Ansätze, in denen Gravitation als entropische oder informationelle Erscheinung interpretiert wird. Erik Verlinde schlägt vor, Gravitationswirkungen aus Änderungen von Information und Entropie abzuleiten  Solche Modelle zeigen, wie weit sich die moderne theoretische Physik vom Bild einer ausschließlich objekt- und kraftbasierten Wirklichkeit entfernt hat. Gleichzeitig sind sie wissenschaftlich umstritten und dürfen nicht als gesicherter Ersatz für die Allgemeine Relativitätstheorie dargestellt werden. Für meine Untersuchung besitzen sie deshalb vor allem heuristische Bedeutung: Sie verdeutlichen, dass physikalische Größen unter bestimmten Modellannahmen als Resultate tieferer Informations- oder Organisationsstrukturen interpretiert werden können.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(46, 13, 6, 'background', 'Diese Spannung zwischen Konstruktion und Wirklichkeitsbezug prägt bereits Immanuel Kants Erkenntnistheorie. Kant unterscheidet zwischen den Bedingungen, unter denen Gegenstände überhaupt erfahren werden können, und den Dingen, wie sie unabhängig von diesen Bedingungen beschaffen sein mögen. Raum und Zeit erscheinen bei ihm nicht als aus Erfahrung gewonnene Eigenschaften äußerer Gegenstände, sondern als Formen der Anschauung, durch die Erfahrung erst möglich und geordnet wird .', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(47, 41, 6, 'first_citation', 'Der wissenschaftliche Erkenntnisprozess ist deshalb als fortlaufende Vermittlung zwischen Beobachtung, Begriff, Modell und Prüfung zu verstehen. Hermann von Helmholtz beschreibt Wahrnehmung nicht als unmittelbare Abbildung äußerer Gegenstände, sondern als Ergebnis unbewusster Schlussprozesse, in denen sensorische Veränderungen auf mögliche Ursachen bezogen werden .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(48, 18, 6, 'background', 'Ernst Cassirer führt diesen Gedanken in seiner Philosophie der symbolischen Formen sowie in seiner Analyse der modernen Physik weiter. Wissenschaftliche Begriffe bilden nach seiner Auffassung keine einfachen Kopien isolierter Dinge, sondern organisieren Beziehungen innerhalb symbolischer Systeme . Ein physikalischer Gegenstand wird dadurch bestimmt, dass er in ein Netz messbarer und gesetzmäßig miteinander verknüpfter Relationen eingeordnet werden kann. Die Bedeutung eines Begriffs ergibt sich daher nicht allein aus einem angenommenen materiellen Träger, sondern aus seiner Funktion innerhalb eines theoretischen Zusammenhangs.', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(49, 22, 6, 'background', 'Eine weitere entscheidende Entwicklung erfolgt im logischen Empirismus. Rudolf Carnap versucht, wissenschaftliche Begriffe durch explizite formale Systeme, Zuordnungsregeln und logische Rekonstruktionen zu klären . Sein Ziel besteht nicht darin, metaphysische Aussagen über eine jenseits aller Erfahrung liegende Wirklichkeit zu formulieren, sondern die logische Struktur wissenschaftlicher Sprache und wissenschaftlicher Theoriebildung transparent zu machen. Für meine Arbeit ist daran besonders bedeutsam, dass die Bedeutung eines theoretischen Ausdrucks nicht isoliert betrachtet werden kann. Sie ergibt sich aus seiner Einbettung in Definitionen, Regeln, Messvorschriften und Ableitungszusammenhänge.', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(50, 42, 6, 'first_citation', 'Gleichzeitig hat die Wissenschaftstheorie gezeigt, dass Beobachtungen nicht vollständig theoriefrei sind. Norwood Russell Hanson argumentiert, dass wissenschaftliches Sehen immer bereits durch Begriffe, Erwartungen und theoretische Zusammenhänge geprägt wird . Zwei Beobachter können denselben visuellen Reiz wahrnehmen und dennoch unterschiedliche wissenschaftliche Sachverhalte darin erkennen, weil sie über verschiedene begriffliche und theoretische Voraussetzungen verfügen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(51, 43, 6, 'first_citation', 'Thomas S. Kuhn erweitert diesen Gedanken zu einer historischen Theorie wissenschaftlicher Paradigmen. Wissenschaftliche Gemeinschaften arbeiten innerhalb geteilter Beispiele, Methoden, Begriffe und Bewertungsmaßstäbe. Paradigmen beeinflussen, welche Probleme als relevant gelten, welche Beobachtungen als bedeutsam erscheinen und welche Lösungen als wissenschaftlich akzeptiert werden . Wissenschaftliche Entwicklung besteht daher nicht allein aus einer stetigen Anhäufung neuer Erkenntnisse, sondern umfasst auch Phasen tiefgreifender begrifflicher Neuorientierung.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(52, 44, 6, 'first_citation', 'Karl Popper setzt einen anderen Schwerpunkt. Für ihn liegt das entscheidende Kennzeichen wissenschaftlicher Theorien darin, dass sie prinzipiell an möglichen Erfahrungen scheitern können. Wissenschaftliche Aussagen müssen so formuliert sein, dass Bedingungen angegeben werden können, unter denen sie als widerlegt gelten würden . Wissenschaft entwickelt sich demnach nicht durch endgültige Bestätigung von Theorien, sondern durch den fortlaufenden Versuch, sie kritischen Prüfungen auszusetzen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(53, 45, 6, 'first_citation', 'Imre Lakatos zeigt, dass wissenschaftliche Theorien in der Forschungspraxis häufig nicht bereits durch eine einzelne widersprechende Beobachtung aufgegeben werden. Vielmehr besitzen Forschungsprogramme einen relativ stabilen theoretischen Kern, der durch einen sogenannten Schutzgürtel ergänzender Hilfshypothesen umgeben ist. Wissenschaftlicher Fortschritt entscheidet sich daher nicht allein daran, ob einzelne Aussagen korrigiert werden müssen, sondern daran, ob ein Forschungsprogramm neue Fragestellungen erschließen, überprüfbare Vorhersagen ermöglichen und bislang unerklärte Phänomene erfolgreich integrieren kann (Imre Lakatos: Falsification and the Methodology of Scientific Research Programmes. In: Imre Lakatos; Alan Musgrave (Hrsg.): Criticism and the Growth of Knowledge. Cambridge: Cambridge University Press, 1970, S. 91–196) .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(54, 46, 6, 'first_citation', 'Willard Van Orman Quine stellt darüber hinaus die Vorstellung infrage, wissenschaftliche Aussagen könnten isoliert voneinander empirisch überprüft werden. Nach seiner Auffassung trifft jede Beobachtung auf ein zusammenhängendes Netz theoretischer Annahmen, Definitionen und Hilfshypothesen . Kommt es zu einer Abweichung zwischen Vorhersage und Beobachtung, lässt sich deshalb nicht unmittelbar entscheiden, welcher Bestandteil des theoretischen Systems verändert werden muss. Häufig sind mehrere unterschiedliche Anpassungen denkbar, die mit denselben Beobachtungsdaten vereinbar bleiben.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(55, 47, 6, 'first_citation', 'Pierre Duhem hatte diesen Gedanken bereits für die Physik formuliert. Nach seiner Auffassung prüfen Experimente in der Regel niemals nur eine einzelne Hypothese, sondern stets ein Bündel theoretischer, mathematischer und instrumenteller Voraussetzungen . Die spätere Verbindung dieser Überlegungen mit Quines Wissenschaftstheorie führte zum sogenannten Duhem-Quine-Problem, das die Unterbestimmtheit empirischer Daten durch konkurrierende Theorien beschreibt.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(56, 48, 6, 'first_citation', 'Bas van Fraassen zieht aus diesen Überlegungen eine bewusst zurückhaltende Konsequenz. Der von ihm vertretene konstruktive Empirismus fordert nicht, sämtliche theoretischen Entitäten einer erfolgreichen Theorie zugleich als real existierend anzunehmen. Für den wissenschaftlichen Erfolg genügt zunächst, dass eine Theorie hinsichtlich beobachtbarer Phänomene empirisch angemessen ist . Diese Position erscheint auch für das FRZK methodisch außerordentlich hilfreich. Funktionale Zustände, Kohärenzräume oder Operatorstrukturen können zunächst als theoretische Konstruktionen verstanden werden, sofern sie beobachtbare Zusammenhänge konsistent beschreiben, präzise organisieren und überprüfbare Aussagen ermöglichen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(57, 49, 6, 'first_citation', 'Ich möchte mich dennoch nicht auf eine rein instrumentelle Auffassung wissenschaftlicher Modelle beschränken. Wissenschaftliche Begriffe können langfristig mehr leisten als bloße Rechenhilfen. Sie können stabile Strukturen der Wirklichkeit erfassen, auch wenn sich ihre konkrete begriffliche Ausgestaltung im Laufe der wissenschaftlichen Entwicklung verändert. Genau an diesem Punkt setzt der wissenschaftliche Strukturenrealismus an. John Worrall vertritt die Auffassung, dass bei tiefgreifenden Theorieumbrüchen häufig nicht sämtliche theoretischen Inhalte erhalten bleiben, wohl aber bestimmte mathematische und relationale Strukturen .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(58, 50, 6, 'first_citation', 'James Ladyman entwickelt diesen Gedanken weiter und formuliert den ontischen Strukturenrealismus. Nach seiner Auffassung könnten Strukturen nicht lediglich erkenntnistheoretisch bevorzugt sein, sondern selbst den ontologisch grundlegenden Bestandteil der Wirklichkeit bilden . Steven French und James Ladyman verbinden diese Position später mit Problemen der modernen Physik, insbesondere mit den Schwierigkeiten klassischer Individualitätsbegriffe innerhalb der Quantenmechanik .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(59, 51, 6, 'first_citation', 'James Ladyman entwickelt diesen Gedanken weiter und formuliert den ontischen Strukturenrealismus. Nach seiner Auffassung könnten Strukturen nicht lediglich erkenntnistheoretisch bevorzugt sein, sondern selbst den ontologisch grundlegenden Bestandteil der Wirklichkeit bilden . Steven French und James Ladyman verbinden diese Position später mit Problemen der modernen Physik, insbesondere mit den Schwierigkeiten klassischer Individualitätsbegriffe innerhalb der Quantenmechanik .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(60, 52, 6, 'first_citation', 'Ein weiteres erkenntnistheoretisches Problem betrifft die Rolle wissenschaftlicher Modelle. Mary Hesse zeigt, dass Modelle grundsätzlich über Analogien zwischen einem bekannten und einem zu untersuchenden Gegenstandsbereich arbeiten. Sie unterscheidet dabei positive, negative und neutrale Analogien und macht deutlich, dass kein Modell seinen Gegenstand vollständig abbildet . Modelle sind stets selektiv. Sie heben bestimmte Eigenschaften hervor, während andere bewusst ausgeblendet werden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(61, 53, 6, 'first_citation', 'Ronald Giere beschreibt wissenschaftliche Modelle deshalb als bewusst konstruierte Repräsentationen, die unter bestimmten Zielsetzungen ausgewählte Aspekte realer Systeme erfassen . Daraus folgt, dass Modelle niemals den Anspruch erheben müssen, ihren Gegenstand vollständig abzubilden. Ihre wissenschaftliche Qualität bemisst sich vielmehr daran, ob sie den vorgesehenen Anwendungsbereich angemessen beschreiben und zuverlässige Aussagen ermöglichen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(62, 54, 6, 'first_citation', 'Patrick Suppes vertritt eine modelltheoretische Auffassung wissenschaftlicher Theorien, nach der Theorien weniger als Mengen sprachlicher Aussagen denn als Klassen mathematischer Strukturen verstanden werden . Damit verschiebt sich der Schwerpunkt wissenschaftlicher Beschreibung von einzelnen Formulierungen hin zu den Strukturen, innerhalb derer mathematische Beziehungen erfüllt werden. Für die Mathematik bedeutet dies, dass dieselbe formale Theorie in unterschiedlichen Modellen realisiert werden kann, sofern diese dieselben strukturellen Bedingungen erfüllen.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1);
+INSERT INTO `source_usage` (`usage_id`, `source_id`, `section_id`, `usage_type`, `claim_summary`, `exact_location`, `source_excerpt`, `source_excerpt_language`, `source_excerpt_translation`, `is_first_mention`, `citation_checked`, `notes`, `created_revision_id`) VALUES
+(63, 55, 6, 'first_citation', 'Eine wesentliche Grundlage für diese Ebenentrennung liefert Alfred Tarski. Mit seiner semantischen Wahrheitstheorie entwickelt er einen formalen Wahrheitsbegriff, der Objekt- und Metasprache strikt voneinander trennt . Aussagen innerhalb eines formalen Systems dürfen danach nicht mit Aussagen über dieses System verwechselt werden. Wahrheit wird stets relativ zu einer festgelegten Interpretation und zu eindeutig definierten Erfüllungsbedingungen bestimmt.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(64, 56, 7, 'first_citation', 'George Boole zeigt bereits im 19. Jahrhundert, dass logische Operationen selbst mathematisch behandelt werden können. Aussagen werden nicht mehr ausschließlich sprachlich verstanden, sondern als Elemente eines formalen Kalküls mit eindeutig definierten Verknüpfungsregeln  Die mathematische Struktur entsteht hier nicht aus räumlichen Eigenschaften, sondern aus eindeutig festgelegten Operationen auf unterscheidbaren Zuständen.', 'Chapter I, §1 (Nature and Design of This Work), p. 1', 'The design of the following treatise is to investigate the fundamental laws of those operations of the mind by which reasoning is performed.', 'en', NULL, 1, 1, 'Fundstelle und Fundtext direkt anhand der digital verfügbaren Primärquelle von George Boole, Laws of Thought, verifiziert.', 1),
+(65, 57, 7, 'first_citation', 'Giuseppe Peano entwickelt mit seinen Axiomen eine explizite Konstruktion der natürlichen Zahlen. Bemerkenswert ist dabei weniger die konkrete Definition der Zahlen als vielmehr die Methode ihrer schrittweisen Ableitung aus wenigen Grundannahmen  Mathematik erscheint damit als rekonstruktiver Prozess, dessen Objekte nicht vorausgesetzt, sondern systematisch aufgebaut werden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(66, 58, 7, 'first_citation', 'Bertrand Russell und Alfred North Whitehead verfolgen dieses Ziel im Principia Mathematica noch konsequenter. Sie versuchen, die gesamte Mathematik auf logisch explizite Grundlagen zurückzuführen  Auch wenn dieses Programm später durch Gödels Unvollständigkeitssätze begrenzt wurde, bleibt die grundlegende methodische Idee bedeutsam: Mathematische Begriffe müssen möglichst aus klar angegebenen Voraussetzungen entwickelt werden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(67, 59, 7, 'first_citation', 'David Hilbert formuliert mit seinen Grundlagen der Geometrie einen weiteren entscheidenden Schritt. Er verzichtet bewusst auf anschauliche Bedeutungen geometrischer Begriffe und behandelt Punkte, Geraden und Ebenen zunächst ausschließlich als formale Elemente eines Axiomensystems  Entscheidend ist nicht mehr, was ein Punkt „ist“, sondern welche Beziehungen durch die Axiome zwischen den verwendeten Symbolen festgelegt werden.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(68, 60, 7, 'first_citation', 'Mit der Entwicklung der Mengenlehre erhält die Mathematik ein äußerst mächtiges Fundament. Georg Cantor beschreibt Mengen als Zusammenfassungen unterscheidbarer Objekte zu einer Einheit  Die Mengenlehre erlaubt die Konstruktion nahezu aller modernen mathematischen Strukturen. Zugleich setzt sie jedoch bereits die Identifizierbarkeit einzelner Elemente voraus.', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(69, 61, 8, 'first_citation', 'Diese Sichtweise weist eine Nähe zu strukturorientierten Auffassungen moderner Mathematik auf. Saunders Mac Lane betont, dass mathematische Theorien nicht ausschließlich durch die Eigenschaften isolierter Objekte bestimmt werden, sondern wesentlich durch die Beziehungen und Operationen, die zwischen diesen Objekten bestehen .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(70, 62, 8, 'first_citation', 'Eng damit verbunden ist die Forderung nach Strukturerhaltung. Samuel Eilenberg und Saunders Mac Lane entwickelten mit der Kategorientheorie einen mathematischen Rahmen, in dem nicht die isolierten Eigenschaften einzelner Elemente, sondern strukturerhaltende Abbildungen und die Beziehungen zwischen mathematischen Strukturen im Mittelpunkt stehen .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(71, 63, 9, 'first_citation', 'Die moderne Mathematik hat diese Verschiebung in mehreren Entwicklungsschritten vorbereitet. Bereits Gottlob Frege bestimmt Zahlen nicht primär als sinnlich oder räumlich vorstellbare Gegenstände, sondern untersucht ihre logische Bestimmbarkeit innerhalb von Begriffen, Urteilen und Zuordnungen .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(72, 18, 9, 'background', 'Ernst Cassirer entwickelt diese Verschiebung vom Substanz- zum Funktionsbegriff ausdrücklich weiter. Wissenschaftliche Begriffe erfassen Gegenstände nach seiner Analyse zunehmend nicht über isolierte Wesenseigenschaften, sondern über ihre Stellung innerhalb gesetzmäßiger Reihen und relationaler Ordnungen . Ein Element ist wissenschaftlich nicht deshalb bestimmt, weil ihm eine unveränderliche Substanz zugesprochen wird, sondern weil seine Beziehungen zu anderen Elementen innerhalb eines strukturierten Systems angegeben werden können.', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(73, 16, 9, 'background', 'Die Prozessphilosophie Alfred North Whiteheads bietet hierzu einen wichtigen Anschluss. Whitehead kritisiert die Vorstellung, die Wirklichkeit müsse primär aus dauerhaft bestehenden Substanzen zusammengesetzt sein. Stattdessen rückt er Ereignisse, Prozesse und wechselseitige Hervorbringungen in den Mittelpunkt seiner Ontologie .', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(74, 64, 9, 'first_citation', 'Diese Auffassung nähert sich systemtheoretischen Überlegungen an. Ludwig von Bertalanffy beschreibt Systeme nicht als bloße Ansammlungen isolierter Teile, sondern als geordnete Ganzheiten, deren Bestandteile durch Wechselwirkungen miteinander verbunden sind .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(75, 65, 9, 'first_citation', 'Norbert Wiener verbindet diese systemische Perspektive mit der Untersuchung von Steuerung, Kommunikation und Rückkopplung. In der Kybernetik wird das Verhalten eines Systems über Informationsflüsse, Regelkreise und die funktionale Beziehung zwischen Eingängen, internen Zuständen und Ausgängen beschrieben .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(76, 66, 9, 'first_citation', 'Ross W. Ashby untersucht solche rekursiven Zusammenhänge als Zustandsübergänge und Regelungsprozesse. Ein System wird dabei durch mögliche Zustände und die Regeln beschrieben, nach denen es unter bestimmten Bedingungen von einem Zustand in einen anderen übergeht .', 'Chapter 2, §2/3–2/4, pp. 10–11; ergänzend Zustandsfolge in Chapter 3', 'the passage from state to state ... will correspond to the operation of a transformation', 'en', NULL, 1, 1, 'Fundstelle und Fundtext direkt anhand der digital verfügbaren Originalausgabe von W. Ross Ashby, An Introduction to Cybernetics (1956), verifiziert.', 1),
+(77, 62, 9, 'background', 'Die moderne Kategorientheorie verstärkt den methodischen Vorrang von Beziehungen und Transformationen. Eilenberg und Mac Lane rückten mit ihrer Theorie natürlicher Äquivalenzen strukturerhaltende Abbildungen in das Zentrum mathematischer Betrachtung . In einer kategorialen Darstellung werden mathematische Objekte wesentlich durch die Morphismen charakterisiert, die zwischen ihnen bestehen. Dadurch verliert die innere stoffliche Beschaffenheit eines Objekts gegenüber seiner strukturellen Einbindung an Bedeutung.', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(78, 61, 9, 'background', 'Saunders Mac Lane beschreibt diese Entwicklung später als eine Mathematik der Formen, Funktionen und Transformationen . Für das FRZK liegt darin eine wichtige methodische Orientierung. Eine mathematische Struktur soll nicht über eine verborgene Substanz erklärt werden, sondern über die Operationen, durch die sie erzeugt, verändert und mit anderen Strukturen verbunden werden kann.', NULL, NULL, NULL, NULL, 0, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(79, 67, 9, 'first_citation', 'Eine ähnliche Grenze besteht innerhalb der mathematischen Strukturalismusdebatte. Michael Resnik vertritt die Auffassung, dass Mathematik primär Strukturen beziehungsweise Muster untersucht und dass mathematische Objekte durch ihre Positionen innerhalb dieser Strukturen bestimmt werden .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(80, 68, 9, 'first_citation', 'Stewart Shapiro formuliert entsprechend, mathematische Gegenstände seien als Stellen in Strukturen zu verstehen, deren Identität durch die jeweiligen Beziehungen festgelegt wird .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(81, 69, 9, 'first_citation', 'Heinz von Foerster hebt in seiner Kybernetik zweiter Ordnung hervor, dass Beobachter und beschreibende Systeme selbst Teil der untersuchten Rückkopplungszusammenhänge sein können .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(82, 70, 9, 'first_citation', 'Niklas Luhmann formuliert für soziale Systeme einen radikalen Funktions- und Operationsbegriff, nach dem Systeme nicht aus Menschen oder Dingen, sondern aus rekursiv anschließenden Operationen bestehen .', NULL, NULL, NULL, NULL, 1, 0, 'Fundstelle und Fundtext nicht aus dem Dissertationstext übernommen. Bis zur externen Verifikation bleiben exact_location und source_excerpt NULL.', 1),
+(83, 6, 22, 'other', '[6] stützt die Einordnung der Mengenlehre als grundlegenden mathematischen Werkzeugbestand und die Abfolge von Mengenoperationen über Relationen zu Funktionen.', 'Kapitel 3.2.0', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(84, 71, 22, 'other', '[71] stützt die Einordnung von Gruppen, Ringen, Moduln sowie Matrizen und linearen Abbildungen als algebraische Grundstrukturen.', 'Kapitel 3.2.0', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(85, 72, 22, 'other', '[72] stützt die Einordnung von Konvergenz, Stetigkeit, Differentiation und Integration in der Analysis.', 'Kapitel 3.2.0', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(86, 73, 22, 'other', '[73] stützt topologische Räume, Stetigkeit, Zusammenhang, Kompaktheit und Trennungsaxiome; die Topologie wird vor metrischen Spezialstrukturen entwickelt.', 'Kapitel 3.2.0', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(87, 74, 22, 'other', '[74] stützt Vektorräume, Matrizen, Basis/Dimension, Determinanten, Eigenwerte und lineare Transformationen.', 'Kapitel 3.2.0', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(88, 75, 22, 'other', '[75] stützt normierte Räume, Banach- und Hilberträume, lineare Operatoren/Funktionale und Spektraltheorie.', 'Kapitel 3.2.0', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(89, 76, 22, 'other', '[76] stützt Hilberträume, normierte lineare Räume, Operatoren, Spektrum und Spektralsatz.', 'Kapitel 3.2.0', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(90, 77, 22, 'other', '[77] stützt die Grundidee diskreter Strukturen aus Knoten/Vertices und Kanten/Edges.', 'Kapitel 3.2.0', 'A graph is a pair G = (V,E) of sets.', NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(91, 78, 22, 'other', '[78] stützt die kategorientheoretische Beschreibung mathematischer Strukturen über Objekte, Morphismen/Funktoren und strukturerhaltende Beziehungen.', 'Kapitel 3.2.0', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(92, 79, 22, 'other', '[79] stützt die Unterscheidung formaler Symbole, Formationsregeln, Transformationsregeln, Postulate/Axiome und formale Theoreme.', 'Kapitel 3.2.0', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(93, 6, 23, 'other', '[6] stützt Mengen, Teilmengen/Mengenoperationen, Potenzmengen, geordnete Paare, Relationen und Funktionen.', 'Kapitel 3.2.1', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(94, 67, 23, 'other', '[67] stützt die strukturorientierte Sicht, nach der mathematische Objekte wesentlich als Positionen in Mustern/Strukturen betrachtet werden.', 'Kapitel 3.2.1', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(95, 68, 23, 'other', '[68] stützt strukturalistische Auffassungen mathematischer Objekte als Plätze innerhalb von Strukturen.', 'Kapitel 3.2.1', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(96, 78, 23, 'other', '[78] stützt den strukturellen Fokus auf Objekte und Morphismen; die im Text zusätzlich verwendete allgemeine Relationssprache stammt nicht spezifisch aus der Kategorientheorie.', 'Kapitel 3.2.1', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(97, 80, 23, 'other', '[80] stützt axiomatische Mengenoperationen, geordnete Paare, Relationen, Funktionen und kartesische Produkte.', 'Kapitel 3.2.1', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(98, 81, 23, 'other', '[81] stützt die axiomatische Einordnung der Mengenlehre sowie Ordinal-/Kardinalzahlen und Auswahlprinzipien.', 'Kapitel 3.2.1', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(99, 71, 24, 'other', '[71] stützt Abbildungen/lineare Abbildungen im algebraischen Kontext; für die mengentheoretische Funktionsdefinition ist Enderton die direktere Quelle.', 'Kapitel 3.2.2', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(100, 72, 24, 'other', '[72] stützt Funktionen als zentralen Gegenstand der Analysis sowie Grenzwerte, Stetigkeit und Differentiation.', 'Kapitel 3.2.2', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(101, 80, 24, 'other', '[80] stützt die Definition von Funktionen aus dem Relationsbegriff sowie geordnete Paare und kartesische Produkte.', 'Kapitel 3.2.2', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(102, 82, 24, 'other', '[82] stützt lineare Abbildungen und Operatoren als weiterführende Form von Abbildungen auf Vektorräumen.', 'Kapitel 3.2.2', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(103, 83, 24, 'other', '[83] stützt Mengen/Funktionen als analytische Grundlage und die Weiterführung zu Grenzwerten, Stetigkeit und Differentiation.', 'Kapitel 3.2.2', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(104, 74, 25, 'other', 'Der bisherige Verweis [10] in 3.2.3 wird sachlich durch Strang [74] ersetzt: lineare Transformationen, Matrixdarstellung und Eigenwerte.', 'Kapitel 3.2.3', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt. | Originale Quellziffer [10] wird kanonisch auf [74] aufgelöst.', 3),
+(105, 76, 25, 'other', 'Der bisherige Verweis [13] in 3.2.3 wird sachlich durch Reed/Simon [76] ersetzt: Operatoren, Adjunkte, Spektrum und inverse/operatorentheoretische Strukturen.', 'Kapitel 3.2.3', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt. | Originale Quellziffer [13] wird kanonisch auf [76] aufgelöst.', 3),
+(106, 71, 25, 'other', '[71] stützt lineare Abbildungen, Matrixdarstellungen und die Darstellung eines Endomorphismus.', 'Kapitel 3.2.3', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(107, 80, 25, 'other', '[80] stützt die allgemeine Abbildung/Funktion als eindeutige Zuordnung auf Mengenebene.', 'Kapitel 3.2.3', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(108, 82, 25, 'other', '[82] stützt lineare Transformationen, Operatoren, Basiswechsel, Range/Nullspace sowie Determinanten- und Spektralterminologie.', 'Kapitel 3.2.3', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(109, 71, 26, 'other', '[71] stützt Vektor-/Modulstrukturen und lineare Abbildungen; Vektorräume sind der Spezialfall von Moduln über einem Körper.', 'Kapitel 3.2.4', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(110, 74, 26, 'other', '[74] stützt Vektorräume, Unterräume, Nullräume, Basis und Dimension.', 'Kapitel 3.2.4', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(111, 76, 26, 'other', '[76] stützt die Einordnung endlichdimensionaler und normierter Vektorräume im funktionalanalytischen Rahmen.', 'Kapitel 3.2.4', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(112, 82, 26, 'other', '[82] stützt die Definition des Vektorraums, Basiskonstruktion und lineare Räume.', 'Kapitel 3.2.4', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(113, 71, 27, 'other', '[71] stützt Linearkombinationen, Erzeugung und lineare Struktur im Modul-/Vektorraumkontext.', 'Kapitel 3.2.5', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(114, 74, 27, 'other', '[74] stützt Linearkombinationen und daraus aufgebaute Vektorräume/Unterräume.', 'Kapitel 3.2.5', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(115, 82, 27, 'other', '[82] stützt Erzeugung, Basiskonstruktion und lineare Mannigfaltigkeiten/Unterräume.', 'Kapitel 3.2.5', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(116, 71, 28, 'other', '[71] stützt lineare Unabhängigkeit, Basen und Dimension innerhalb linearer algebraischer Strukturen.', 'Kapitel 3.2.6', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(117, 74, 28, 'other', '[74] stützt ausdrücklich lineare Unabhängigkeit, Basis und Dimension.', 'Kapitel 3.2.6', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(118, 82, 28, 'other', '[82] stützt Definition/Konstruktion von Basen und die endlichdimensionale Raumstruktur.', 'Kapitel 3.2.6', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(119, 71, 29, 'other', '[71] stützt Matrixdarstellung linearer Abbildungen und damit die Basisabhängigkeit von Koordinatenrepräsentationen.', 'Kapitel 3.2.7', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(120, 74, 29, 'other', '[74] stützt die Matrix eines linearen Operators und die Wahl bzw. Suche einer geeigneten Basis.', 'Kapitel 3.2.7', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(121, 76, 29, 'other', '[76] stützt den abstrakten Spektralbegriff eines Operators, nicht jedoch als primäre Quelle die elementare Basiswechselmatrix.', 'Kapitel 3.2.7', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(122, 82, 29, 'other', '[82] stützt den Basiswechsel und dessen Einfluss auf Matrixdarstellungen.', 'Kapitel 3.2.7', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(123, 71, 30, 'other', '[71] stützt Determinanten im Kontext von Matrizen und linearen Abbildungen.', 'Kapitel 3.2.8', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(124, 74, 30, 'other', '[74] stützt Determinanteneigenschaften, Kofaktorentwicklung, Inversen und Volumenskalierung.', 'Kapitel 3.2.8', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(125, 82, 30, 'other', '[82] stützt Determinanten und deren Verbindung zur Spektralterminologie.', 'Kapitel 3.2.8', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(126, 71, 31, 'other', '[71] stützt Rang, Matrixdarstellungen und lineare Abbildungen.', 'Kapitel 3.2.9', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(127, 74, 31, 'other', '[74] stützt Nullraum, Lösbarkeit, Rang und Dimension der fundamentalen Unterräume.', 'Kapitel 3.2.9', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(128, 82, 31, 'other', '[82] stützt Range und Null Space einer linearen Transformation.', 'Kapitel 3.2.9', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(129, 71, 32, 'other', '[71] stützt Eigenwerte/Eigenvektoren, charakteristisches Polynom und die Darstellung eines Endomorphismus.', 'Kapitel 3.2.10', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(130, 74, 32, 'other', '[74] stützt Eigenwerte, Eigenvektoren und den Übergang zur Diagonalisierung.', 'Kapitel 3.2.10', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(131, 82, 32, 'other', '[82] stützt spektrale Terminologie und die Eigenstruktur linearer Transformationen.', 'Kapitel 3.2.10', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(132, 74, 33, 'other', '[74] stützt Diagonalisierung, symmetrische Matrizen und die orthogonale Eigenvektorzerlegung.', 'Kapitel 3.2.11', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(133, 74, 34, 'other', '[74] stützt Skalarprodukt/Dot Product, Norm/Länge, Orthogonalität, Projektionen und Gram-Schmidt.', 'Kapitel 3.2.12', NULL, NULL, NULL, 0, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3),
+(134, 84, 34, 'other', '[84] stützt Skalarprodukte/Normen, Gram-Schmidt, orthogonale Komplemente, orthogonale Operatoren, Projektionen und Spektralsatz.', 'Kapitel 3.2.12', NULL, NULL, NULL, 1, 1, 'Automatisch aus den Zitierstellen der Quellfassung aggregiert. Die genaue fachliche Claim-Zuordnung wird bei der abschnittsweisen Neufassung gesetzt.', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `source_usage_audit`
+--
+
+CREATE TABLE `source_usage_audit` (
+  `usage_id` bigint(20) UNSIGNED NOT NULL,
+  `original_citation_number` int(10) UNSIGNED NOT NULL,
+  `occurrence_count` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `original_usage_type` varchar(50) DEFAULT NULL,
+  `notes` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `source_usage_audit`
+--
+
+INSERT INTO `source_usage_audit` (`usage_id`, `original_citation_number`, `occurrence_count`, `original_usage_type`, `notes`) VALUES
+(83, 6, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(84, 71, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(85, 72, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(86, 73, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(87, 74, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(88, 75, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(89, 76, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(90, 77, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(91, 78, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(92, 79, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(93, 6, 2, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(94, 67, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(95, 68, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(96, 78, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(97, 80, 2, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(98, 81, 2, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(99, 71, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(100, 72, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(101, 80, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(102, 82, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(103, 83, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(104, 10, 7, 'unresolved', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(105, 13, 8, 'unresolved', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(106, 71, 9, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(107, 80, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(108, 82, 17, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(109, 71, 27, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(110, 74, 15, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(111, 76, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(112, 82, 25, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(113, 71, 11, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(114, 74, 8, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(115, 82, 10, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(116, 71, 12, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(117, 74, 12, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(118, 82, 10, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(119, 71, 11, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(120, 74, 9, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(121, 76, 1, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(122, 82, 11, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(123, 71, 12, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(124, 74, 14, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(125, 82, 12, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(126, 71, 11, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(127, 74, 13, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(128, 82, 11, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(129, 71, 6, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(130, 74, 6, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(131, 82, 6, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(132, 74, 12, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(133, 74, 10, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.'),
+(134, 84, 11, 'other', 'Erhält die ursprüngliche Literaturziffer der importierten 3.2-Quellfassung.');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `statement_candidates`
+--
+
+CREATE TABLE `statement_candidates` (
+  `statement_candidate_id` bigint(20) UNSIGNED NOT NULL,
+  `document_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `statement_kind` enum('theorem','lemma','corollary','proposition','criterion','inequality','theorem_reference','procedure_theorem','other') NOT NULL,
+  `source_heading` varchar(500) NOT NULL,
+  `proposed_statement_number` varchar(50) DEFAULT NULL,
+  `title` varchar(500) NOT NULL,
+  `source_text` longtext NOT NULL,
+  `proposed_text` longtext DEFAULT NULL,
+  `formal_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `provenance` enum('literature','adapted','original','mixed','needs_review') NOT NULL DEFAULT 'needs_review',
+  `classification_status` enum('candidate','accepted','rejected','superseded') NOT NULL DEFAULT 'candidate',
+  `notes` longtext DEFAULT NULL,
+  `created_revision_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Daten für Tabelle `statement_candidates`
+--
+
+INSERT INTO `statement_candidates` (`statement_candidate_id`, `document_id`, `section_id`, `statement_kind`, `source_heading`, `proposed_statement_number`, `title`, `source_text`, `proposed_text`, `formal_latex`, `word_latex`, `provenance`, `classification_status`, `notes`, `created_revision_id`) VALUES
+(1, 1, 31, 'theorem', 'Rang-Nullitätssatz', NULL, 'Rang-Nullitätssatz', 'Zwischen Bild und Kern besteht ein grundlegender Dimensionszusammenhang.\n\nSei $T:V \\rightarrow W$ eine lineare Abbildung mit endlichdimensionalem Definitionsraum $V$.\n\nDann gilt\n\n$$\\dim(V) = \\dim\\left( \\ker(T) \\right) + \\text{rang}(T)\\ (3.118)$$\n\nDiese Beziehung wird als **Dimensionssatz** oder **Rang-Nullitätssatz** bezeichnet \\[71, 74, 82\\].\n\nDie Größe $dim!\\left( \\ker(T) \\right)$ wird auch als Nullität der linearen Abbildung bezeichnet.\n\nGleichung (3.118) zeigt, dass sich die Dimension des Definitionsraums in zwei Teile zerlegen lässt:\n\n-   Richtungen, die im Kern liegen,\n\n-   Richtungen, die unabhängig zum Bild beitragen.\n\nDabei muss ich die Formulierung „Richtungen gehen verloren\" methodisch vorsichtig verwenden. Mathematisch bedeutet eine Kernrichtung zunächst nur, dass sie von $T$ auf (0_W) abgebildet wird. Ob dies in einer wissenschaftlichen Anwendung tatsächlich als Informationsverlust oder physikalischer Verlust zu deuten ist, hängt von der Interpretation des Modells ab.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2),
+(2, 1, 31, 'criterion', 'Zusammenhang mit Injektivität und Surjektivität', NULL, 'Zusammenhang mit Injektivität und Surjektivität', 'Kern und Bild ermöglichen mir außerdem eine präzise Charakterisierung von Injektivität und Surjektivität.\n\nEine lineare Abbildung $T:V \\rightarrow W$ ist genau dann injektiv, wenn ihr Kern trivial ist:\n\n$$T\\,\\text{injektiv}\\quad \\Longleftrightarrow \\quad\\ker(T) = \\text{\\{}0_{V}\\text{\\}}\\ (3.120)$$\n\nDenn liegen zwei Vektoren $v_{1},v_{2}$ auf demselben Bildvektor, so gilt\\\n$$T\\left( v_{1} \\right) = T\\left( v_{2} \\right)\\quad \\Longrightarrow \\backslash quadT\\left( v_{1} - v_{2} \\right) = 0_{W}.$$\n\nIst der Kern trivial, folgt daraus $v_{1} - v_{2} = 0_{V}$ und damit $v_{1} = v_{2}$.\n\nSurjektivität wird dagegen durch das Bild charakterisiert:\n\n$$T\\,\\text{surjektiv}\\quad \\Longleftrightarrow \\quad\\text{Bild}(T) = W\\ (3.121)$$\n\nDamit sind Injektivität und Surjektivität unmittelbar mit Kern und Bild verbunden.\n\nFür einen linearen Operator auf einem endlichdimensionalen Vektorraum gleicher Dimension fallen bei vollem Rang schließlich Injektivität, Surjektivität und Invertierbarkeit zusammen.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2),
+(3, 1, 32, 'theorem', 'Eigenvektoren zu verschiedenen Eigenwerten', NULL, 'Eigenvektoren zu verschiedenen Eigenwerten', 'Ein grundlegendes Ergebnis lautet: Eigenvektoren zu paarweise verschiedenen Eigenwerten sind linear unabhängig \\[71, 74, 82\\].\n\nSind $\\lambda_{1},\\ldots,\\lambda_{k}$ paarweise verschiedene Eigenwerte und $v_{1},\\ldots,v_{k}$ zugehörige Eigenvektoren, dann sind $v_{1},\\ldots,v_{k}$ linear unabhängig.\n\nDiese Aussage ist strukturell wichtig, weil sie eine direkte Verbindung zwischen der Anzahl verschiedener Eigenwerte und der Möglichkeit einer Eigenvektorbasis herstellt.\n\nInsbesondere besitzt eine $n \\times n$-Matrix mit $n$ paarweise verschiedenen Eigenwerten automatisch $n$ linear unabhängige Eigenvektoren.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2),
+(4, 1, 33, 'criterion', 'Voraussetzung der Diagonalisierbarkeit', NULL, 'Voraussetzung der Diagonalisierbarkeit', 'Eine $n \\times n$-Matrix ist genau dann diagonalisierbar, wenn sie $n$ linear unabhängige Eigenvektoren besitzt \\[74\\]. Das offizielle MIT-Material formuliert die Diagonalisierung entsprechend über eine Matrix aus unabhängigen Eigenvektoren.\n\nDamit gilt\n\n$$A\\,\\text{diagonalisierbar}\\quad \\Longleftrightarrow \\quad A\\,\\text{besitzt }n\\text{ linear unabhängige Eigenvektoren}\\ (3.152)$$\n\nDie Anzahl der Eigenwerte allein genügt dafür nicht. Entscheidend ist die Anzahl der **linear unabhängigen Eigenvektoren**.\n\nBesitzt eine $n \\times n$-Matrix $n$ paarweise verschiedene Eigenwerte, so besitzt sie automatisch $n$ linear unabhängige Eigenvektoren und ist damit diagonalisierbar \\[74\\].\n\nDaraus folgt die hinreichende Bedingung\n\n$$\\lambda_{1},\\ldots,\\lambda_{n}\\,\\text{paarweise verschieden}\\quad \\Longrightarrow \\quad A\\,\\text{diagonalisierbar}\\ (3.153)$$\n\nDie Umkehrung gilt jedoch nicht. Eine Matrix kann auch bei mehrfachen Eigenwerten diagonalisierbar sein, sofern die zugehörigen Eigenräume zusammen genügend unabhängige Eigenvektoren liefern.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2),
+(5, 1, 33, 'theorem_reference', 'Spektralzerlegung', NULL, 'Spektralzerlegung', 'Eine besonders starke Form der Diagonalisierung tritt bei reellen symmetrischen Matrizen auf. Strang behandelt symmetrische Matrizen unmittelbar in §6.4 und verweist dort ausdrücklich auf den Spektralsatz. Die offiziellen Lösungen bestätigen, dass die Eigenvektoren symmetrischer Matrizen orthogonal gewählt werden können. \\[74\\]\n\nFür eine reelle symmetrische Matrix\\\n$$A = A^{T}$$\n\nexistiert eine orthogonale Matrix $Q$, deren Spalten aus orthonormalen Eigenvektoren bestehen, sodass\n\n$$A = Q\\Lambda Q^{T}\\ (3.165)$$\n\nDabei gilt:\n\n-   $Q$ enthält orthonormale Eigenvektoren,\n\n-   $Q^{T} = Q^{- 1}$,\n\n-   $\\Lambda$ ist die Diagonalmatrix der reellen Eigenwerte.\n\nDiese Aussage ist die endlichdimensionale Form des **Spektralsatzes für reelle symmetrische Matrizen** \\[74\\].\n\nDie Orthogonalität bedeutet\n\n$$Q^{T}Q = QQ^{T} = I\\ (3.166)$$\n\nDamit ist die inverse Eigenvektormatrix besonders einfach:\\\n$$Q^{- 1} = Q^{T}.$$\n\nDiese Beziehung ist bereits Bestandteil von Gleichung (3.166) und wird deshalb nicht erneut nummeriert.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2),
+(6, 1, 34, 'inequality', 'Cauchy-Schwarz-Ungleichung', NULL, 'Cauchy-Schwarz-Ungleichung', 'Zwischen Skalarprodukt und Norm besteht ein grundlegender Zusammenhang. Für alle (x,y\\\\in V) gilt\n\n$$\\left| \\left\\langle x,y \\right\\rangle \\right| \\leq \\text{|}x\\text{|}\\,\\text{|}y\\text{|}\\ (3.192)$$\n\nDiese Cauchy-Schwarz-Ungleichung begrenzt den Betrag des Skalarprodukts durch das Produkt der beiden Vektorlängen. Sie ist insbesondere notwendig, um aus einem Skalarprodukt einen Winkelbegriff konsistent abzuleiten.\n\nFür (x\\\\neq0) und (y\\\\neq0) folgt nämlich\n\n$$- 1 \\leq \\frac{\\left\\langle x,y \\right\\rangle}{\\text{|}x\\text{|}\\,\\text{|}y\\text{|}} \\leq 1\\ (3.193)$$\n\nDamit liegt der Quotient im Definitionsbereich der inversen Kosinusfunktion.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2),
+(7, 1, 34, 'theorem', 'Satz des Pythagoras im Skalarproduktraum', NULL, 'Satz des Pythagoras im Skalarproduktraum', 'Sind (x) und (y) orthogonal, gilt\n\n$$\\text{|}x + y\\text{|}^{2} = \\text{|}x\\text{|}^{2} + \\text{|}y\\text{|}^{2}\\ (3.197)$$\n\nDas kann ich unmittelbar aus dem Skalarprodukt herleiten:\n\n$$\\begin{matrix}\n\\text{|}x + y\\text{|}^{2} = \\langle x + y,x + y\\rangle \\\\\n = \\langle x,x\\rangle + 2\\langle x,y\\rangle + \\langle y,y\\rangle \\\\\n = \\text{|}x\\text{|}^{2} + \\text{|}y\\text{|}^{2}.\n\\end{matrix}\\ (3.198)$$\n\nIm letzten Schritt verwende ich (\\\\langle x,y\\\\rangle=0).\n\nDamit ist der Satz des Pythagoras keine isolierte geometrische Besonderheit des zweidimensionalen Raums, sondern eine unmittelbare Folge der Orthogonalität in einem Skalarproduktraum.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2),
+(8, 1, 34, 'criterion', 'Orthogonale Matrizen', NULL, 'Orthogonale Matrizen', 'Fasse ich eine orthonormale Basis spaltenweise in einer Matrix (Q) zusammen, dann gilt\n\n$$Q^{T}Q = I\\ (3.203)$$\n\nDamit folgt\n\n$$Q^{- 1} = Q^{T}\\ (3.204)$$\n\nEine solche Matrix heißt orthogonal.\n\nOrthogonale Transformationen erhalten das euklidische Skalarprodukt:\n\n$$\\langle Qx,Qy\\rangle = \\langle x,y\\rangle\\ (3.205)$$\n\nDaraus folgt unmittelbar die Erhaltung der Norm:\n\n$$\\text{|}Qx\\text{|} = \\text{|}x\\text{|}\\ (3.206)$$\n\nDamit erhalten orthogonale Transformationen Längen und Winkel. Sie verändern also die Koordinatendarstellung, nicht jedoch die durch das euklidische Skalarprodukt bestimmte Geometrie.\n\nDiese Eigenschaft ist der Grund dafür, warum die orthogonale Diagonalisierung aus Abschnitt 3.2.11 mathematisch stärker ist als ein beliebiger Basiswechsel.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2),
+(9, 1, 34, 'procedure_theorem', 'Gram-Schmidt-Orthogonalisierung', NULL, 'Gram-Schmidt-Orthogonalisierung', 'Eine beliebige linear unabhängige Basis ist im Allgemeinen nicht orthogonal. Ich kann sie jedoch systematisch in eine orthonormale Basis desselben Unterraums überführen. Dieses Verfahren ist die Gram-Schmidt-Orthogonalisierung \\[74, 84\\]. Strang behandelt sie ausdrücklich in §4.4, Friedberg, Insel und Spence in §6.2.\n\nSeien $v_{1},\\ldots,v_{m}$ linear unabhängige Vektoren.\n\nIch beginne mit\n\n$$u_{1} = v_{1}\\ (3.219)$$\n\nFür den zweiten Vektor entferne ich aus (v_2) den Anteil in Richtung von (u_1):\n\n$$u_{2} = v_{2} - \\frac{\\left\\langle v_{2},u_{1} \\right\\rangle}{\\left\\langle u_{1},u_{1} \\right\\rangle}u_{1}\\ (3.220)$$\n\nAllgemein erhalte ich\n\n$$u_{k} = v_{k} - \\sum_{j = 1}^{k - 1}{\\frac{\\left\\langle v_{k},u_{j} \\right\\rangle}{\\left\\langle u_{j},u_{j} \\right\\rangle}u_{j}}\\ (3.221)$$\n\nDie so erzeugten Vektoren (u_1,\\\\ldots,u_m) sind paarweise orthogonal.\n\nDurch anschließende Normierung\n\n$$q_{k} = \\frac{u_{k}}{\\text{|}u_{k}\\text{|}}\\ (3.222)$$\n\nerhalte ich eine orthonormale Basis (q_1,\\\\ldots,q_m).\n\nDabei bleibt der aufgespannte Unterraum erhalten:\n\n$$\\text{span}\\text{\\{}v_{1},\\ldots,v_{m}\\text{\\}} = \\text{span}\\text{\\{}q_{1},\\ldots,q_{m}\\text{\\}}\\ (3.223)$$\n\nDas Verfahren verändert damit nicht den betrachteten Unterraum. Es ersetzt lediglich eine beliebige linear unabhängige Basis durch eine geometrisch günstigere orthonormale Basis.', NULL, NULL, NULL, 'needs_review', 'candidate', 'Als Satz-/Ergebniskandidat aus der Quellfassung registriert; sichtbare Satznummer erst nach wissenschaftlicher Klassifikation.', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `symbols`
+--
+
+CREATE TABLE `symbols` (
+  `symbol_id` bigint(20) UNSIGNED NOT NULL,
+  `symbol_latex` varchar(255) NOT NULL,
+  `symbol_word_latex` varchar(255) NOT NULL,
+  `symbol_name` varchar(255) NOT NULL,
+  `definition_text` longtext NOT NULL,
+  `scope_type` enum('global','chapter','section','equation') NOT NULL DEFAULT 'global',
+  `first_section_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `first_equation_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `unit_text` varchar(255) DEFAULT NULL,
+  `domain_text` varchar(1000) DEFAULT NULL,
+  `codomain_text` varchar(1000) DEFAULT NULL,
+  `is_vector` tinyint(1) NOT NULL DEFAULT 0,
+  `is_matrix` tinyint(1) NOT NULL DEFAULT 0,
+  `is_operator` tinyint(1) NOT NULL DEFAULT 0,
+  `notes` text DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `theorems`
+--
+
+CREATE TABLE `theorems` (
+  `theorem_id` bigint(20) UNSIGNED NOT NULL,
+  `theorem_number` varchar(50) NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `statement_text` longtext NOT NULL,
+  `statement_latex` longtext DEFAULT NULL,
+  `word_latex` longtext DEFAULT NULL,
+  `provenance` enum('original','adapted','literature') NOT NULL DEFAULT 'literature',
+  `source_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `assumptions` text DEFAULT NULL,
+  `validation_status` enum('draft','checked','verified') NOT NULL DEFAULT 'draft',
+  `created_revision_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `topics`
+--
+
+CREATE TABLE `topics` (
+  `topic_id` bigint(20) UNSIGNED NOT NULL,
+  `parent_topic_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `topic_code` varchar(100) NOT NULL,
+  `label` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_acronym_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_acronym_register` (
+`acronym` varchar(100)
+,`full_form` varchar(1000)
+,`explanation` longtext
+,`first_section_code` varchar(50)
+,`category` varchar(255)
+,`is_project_specific` tinyint(1)
+,`validation_status` enum('draft','checked','verified')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_assumption_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_assumption_register` (
+`assumption_number` varchar(50)
+,`section_code` varchar(50)
+,`title` varchar(500)
+,`assumption_text` longtext
+,`word_latex` longtext
+,`status` enum('proposed','accepted','rejected','superseded')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_axiom_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_axiom_register` (
+`axiom_number` varchar(50)
+,`section_code` varchar(50)
+,`title` varchar(500)
+,`axiom_text` longtext
+,`word_latex` longtext
+,`status` enum('draft','review','accepted','revised','rejected')
+,`based_on_assumption` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_chapter_bibliography`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_chapter_bibliography` (
+`chapter_no` int(11)
+,`citation_number` int(10) unsigned
+,`full_citation_text` text
+,`short_citation_text` varchar(500)
+,`priority` tinyint(3) unsigned
+,`frzk_relevance` tinyint(3) unsigned
+,`verification_status` enum('imported','partially_verified','verified','needs_review')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_citation_audit`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_citation_audit` (
+`citation_number` int(10) unsigned
+,`source_key` varchar(150)
+,`full_citation_text` text
+,`verification_status` enum('imported','partially_verified','verified','needs_review')
+,`usage_count` bigint(21)
+,`first_mention_count` decimal(22,0)
+,`first_used_section` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_definition_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_definition_register` (
+`definition_number` varchar(50)
+,`section_code` varchar(50)
+,`section_title` varchar(500)
+,`title` varchar(500)
+,`definition_text` longtext
+,`word_latex` longtext
+,`provenance` enum('original','adapted','literature')
+,`source_citation_number` int(10) unsigned
+,`validation_status` enum('draft','checked','verified')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_equation_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_equation_register` (
+`equation_number` varchar(50)
+,`section_code` varchar(50)
+,`section_title` varchar(500)
+,`title` varchar(500)
+,`word_latex` text
+,`plain_description` text
+,`provenance` enum('original','adapted','literature')
+,`source_citation_number` int(10) unsigned
+,`validation_status` enum('draft','checked','verified')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_figure_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_figure_register` (
+`figure_number` varchar(50)
+,`section_code` varchar(50)
+,`title` varchar(500)
+,`caption` longtext
+,`file_name` varchar(500)
+,`file_path` varchar(1500)
+,`provenance` enum('original','adapted','literature')
+,`source_citation_number` int(10) unsigned
+,`validation_status` enum('draft','checked','verified')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_math_appendix_inventory`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_math_appendix_inventory` (
+`appendix_code` varchar(20)
+,`appendix_title` varchar(500)
+,`appendix_anchor` varchar(100)
+,`source_section_code` varchar(50)
+,`object_type` enum('definition','statement','equation','theorem','lemma','corollary','proposition','proof','axiom','assumption','figure','table','symbol','other')
+,`object_label` varchar(255)
+,`object_title` varchar(500)
+,`importance_level` enum('core','supporting','derivation','example')
+,`equation_role` enum('canonical','derived','proof_step','example')
+,`classification_status` enum('proposed','reviewed','approved')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_math_compression_gate`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_math_compression_gate` (
+`gate_code` varchar(31)
+,`gate_status` varchar(4)
+,`expected_value` varchar(21)
+,`actual_value` varchar(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_math_main_text_inventory`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_math_main_text_inventory` (
+`repo_object_id` bigint(20) unsigned
+,`source_section_code` varchar(50)
+,`object_type` enum('definition','statement','equation','theorem','lemma','corollary','proposition','proof','axiom','assumption','figure','table','symbol','other')
+,`object_label` varchar(255)
+,`object_title` varchar(500)
+,`importance_level` enum('core','supporting','derivation','example')
+,`equation_role` enum('canonical','derived','proof_step','example')
+,`classification_status` enum('proposed','reviewed','approved')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_math_required_for_sections`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_math_required_for_sections` (
+`required_for_section_code` varchar(50)
+,`requirement_type` enum('required','supporting','methodological','notation')
+,`repo_object_id` bigint(20) unsigned
+,`source_section_code` varchar(50)
+,`object_type` enum('definition','statement','equation','theorem','lemma','corollary','proposition','proof','axiom','assumption','figure','table','symbol','other')
+,`object_label` varchar(255)
+,`object_title` varchar(500)
+,`document_location` enum('main_text','appendix')
+,`importance_level` enum('core','supporting','derivation','example')
+,`equation_role` enum('canonical','derived','proof_step','example')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_pending_source_audit`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_pending_source_audit` (
+`pending_source_id` bigint(20) unsigned
+,`proposed_source_key` varchar(150)
+,`title` varchar(1000)
+,`authors_text` varchar(1000)
+,`proposed_section_code` varchar(50)
+,`priority` tinyint(3) unsigned
+,`review_status` enum('open','in_review','accepted','rejected','merged')
+,`discovered_at` timestamp
+,`reviewed_at` datetime
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_proof_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_proof_register` (
+`proof_number` varchar(50)
+,`section_code` varchar(50)
+,`title` varchar(500)
+,`proof_method` enum('direct','contradiction','induction','construction','equivalence','existence','uniqueness','computational','other')
+,`provenance` enum('original','adapted','literature')
+,`source_citation_number` int(10) unsigned
+,`validation_status` enum('draft','checked','verified')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_proposition_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_proposition_register` (
+`proposition_number` varchar(50)
+,`section_code` varchar(50)
+,`title` varchar(500)
+,`statement_text` longtext
+,`word_latex` longtext
+,`based_on_axioms` varchar(255)
+,`status` enum('draft','review','accepted','revised','rejected')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_section_inventory`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_section_inventory` (
+`section_code` varchar(50)
+,`title` varchar(500)
+,`status` enum('planned','draft','review','final')
+,`source_count` bigint(21)
+,`equation_count` bigint(21)
+,`definition_count` bigint(21)
+,`theorem_count` bigint(21)
+,`lemma_count` bigint(21)
+,`corollary_count` bigint(21)
+,`figure_count` bigint(21)
+,`table_count` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_statement_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_statement_register` (
+`statement_type` varchar(9)
+,`statement_number` varchar(50)
+,`section_code` varchar(50)
+,`title` varchar(500)
+,`statement_text` longtext
+,`word_latex` longtext
+,`provenance` varchar(10)
+,`source_citation_number` int(10) unsigned
+,`validation_status` varchar(8)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_symbol_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_symbol_register` (
+`symbol_latex` varchar(255)
+,`symbol_word_latex` varchar(255)
+,`symbol_name` varchar(255)
+,`definition_text` longtext
+,`scope_type` enum('global','chapter','section','equation')
+,`first_section_code` varchar(50)
+,`first_equation_number` varchar(50)
+,`unit_text` varchar(255)
+,`domain_text` varchar(1000)
+,`codomain_text` varchar(1000)
+,`validation_status` enum('draft','checked','verified')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stellvertreter-Struktur des Views `v_table_register`
+-- (Siehe unten für die tatsächliche Ansicht)
+--
+CREATE TABLE `v_table_register` (
+`table_number` varchar(50)
+,`section_code` varchar(50)
+,`title` varchar(500)
+,`caption` longtext
+,`file_name` varchar(500)
+,`file_path` varchar(1500)
+,`provenance` enum('original','adapted','literature')
+,`source_citation_number` int(10) unsigned
+,`validation_status` enum('draft','checked','verified')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_acronym_register`
+--
+DROP TABLE IF EXISTS `v_acronym_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_acronym_register`  AS SELECT `a`.`acronym` AS `acronym`, `a`.`full_form` AS `full_form`, `a`.`explanation` AS `explanation`, `ds`.`section_code` AS `first_section_code`, `a`.`category` AS `category`, `a`.`is_project_specific` AS `is_project_specific`, `a`.`validation_status` AS `validation_status` FROM (`acronyms` `a` left join `dissertation_sections` `ds` on(`ds`.`section_id` = `a`.`first_section_id`)) ORDER BY `a`.`acronym` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_assumption_register`
+--
+DROP TABLE IF EXISTS `v_assumption_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_assumption_register`  AS SELECT `a`.`assumption_number` AS `assumption_number`, `ds`.`section_code` AS `section_code`, `a`.`title` AS `title`, `a`.`assumption_text` AS `assumption_text`, `a`.`word_latex` AS `word_latex`, `a`.`status` AS `status` FROM (`assumptions` `a` join `dissertation_sections` `ds` on(`ds`.`section_id` = `a`.`section_id`)) ORDER BY `ds`.`section_order` ASC, `a`.`assumption_number` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_axiom_register`
+--
+DROP TABLE IF EXISTS `v_axiom_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_axiom_register`  AS SELECT `a`.`axiom_number` AS `axiom_number`, `ds`.`section_code` AS `section_code`, `a`.`title` AS `title`, `a`.`axiom_text` AS `axiom_text`, `a`.`word_latex` AS `word_latex`, `a`.`status` AS `status`, `asm`.`assumption_number` AS `based_on_assumption` FROM ((`axioms` `a` join `dissertation_sections` `ds` on(`ds`.`section_id` = `a`.`section_id`)) left join `assumptions` `asm` on(`asm`.`assumption_id` = `a`.`source_assumption_id`)) ORDER BY `ds`.`section_order` ASC, `a`.`axiom_number` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_chapter_bibliography`
+--
+DROP TABLE IF EXISTS `v_chapter_bibliography`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_chapter_bibliography`  AS SELECT DISTINCT `ds`.`chapter_no` AS `chapter_no`, `s`.`citation_number` AS `citation_number`, `s`.`full_citation_text` AS `full_citation_text`, `s`.`short_citation_text` AS `short_citation_text`, `s`.`priority` AS `priority`, `s`.`frzk_relevance` AS `frzk_relevance`, `s`.`verification_status` AS `verification_status` FROM ((`source_usage` `su` join `sources` `s` on(`s`.`source_id` = `su`.`source_id`)) join `dissertation_sections` `ds` on(`ds`.`section_id` = `su`.`section_id`)) WHERE `s`.`citation_number` is not null ORDER BY `ds`.`chapter_no` ASC, `s`.`citation_number` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_citation_audit`
+--
+DROP TABLE IF EXISTS `v_citation_audit`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_citation_audit`  AS SELECT `s`.`citation_number` AS `citation_number`, `s`.`source_key` AS `source_key`, `s`.`full_citation_text` AS `full_citation_text`, `s`.`verification_status` AS `verification_status`, count(`su`.`usage_id`) AS `usage_count`, sum(case when `su`.`is_first_mention` = 1 then 1 else 0 end) AS `first_mention_count`, min(`ds`.`section_code`) AS `first_used_section` FROM ((`sources` `s` left join `source_usage` `su` on(`su`.`source_id` = `s`.`source_id`)) left join `dissertation_sections` `ds` on(`ds`.`section_id` = `su`.`section_id`)) GROUP BY `s`.`source_id`, `s`.`citation_number`, `s`.`source_key`, `s`.`full_citation_text`, `s`.`verification_status` ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_definition_register`
+--
+DROP TABLE IF EXISTS `v_definition_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_definition_register`  AS SELECT `d`.`definition_number` AS `definition_number`, `ds`.`section_code` AS `section_code`, `ds`.`title` AS `section_title`, `d`.`title` AS `title`, `d`.`definition_text` AS `definition_text`, `d`.`word_latex` AS `word_latex`, `d`.`provenance` AS `provenance`, `s`.`citation_number` AS `source_citation_number`, `d`.`validation_status` AS `validation_status` FROM ((`definitions` `d` join `dissertation_sections` `ds` on(`ds`.`section_id` = `d`.`section_id`)) left join `sources` `s` on(`s`.`source_id` = `d`.`source_id`)) ORDER BY `d`.`definition_number` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_equation_register`
+--
+DROP TABLE IF EXISTS `v_equation_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_equation_register`  AS SELECT `e`.`equation_number` AS `equation_number`, `ds`.`section_code` AS `section_code`, `ds`.`title` AS `section_title`, `e`.`title` AS `title`, `e`.`word_latex` AS `word_latex`, `e`.`plain_description` AS `plain_description`, `e`.`provenance` AS `provenance`, `s`.`citation_number` AS `source_citation_number`, `e`.`validation_status` AS `validation_status` FROM ((`equations` `e` join `dissertation_sections` `ds` on(`ds`.`section_id` = `e`.`section_id`)) left join `sources` `s` on(`s`.`source_id` = `e`.`source_id`)) ORDER BY cast(substring_index(`e`.`equation_number`,'.',1) as unsigned) ASC, cast(substring_index(`e`.`equation_number`,'.',-1) as unsigned) ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_figure_register`
+--
+DROP TABLE IF EXISTS `v_figure_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_figure_register`  AS SELECT `f`.`figure_number` AS `figure_number`, `ds`.`section_code` AS `section_code`, `f`.`title` AS `title`, `f`.`caption` AS `caption`, `f`.`file_name` AS `file_name`, `f`.`file_path` AS `file_path`, `f`.`provenance` AS `provenance`, `s`.`citation_number` AS `source_citation_number`, `f`.`validation_status` AS `validation_status` FROM ((`figures` `f` join `dissertation_sections` `ds` on(`ds`.`section_id` = `f`.`section_id`)) left join `sources` `s` on(`s`.`source_id` = `f`.`source_id`)) ORDER BY `f`.`figure_number` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_math_appendix_inventory`
+--
+DROP TABLE IF EXISTS `v_math_appendix_inventory`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_math_appendix_inventory`  AS SELECT `am`.`appendix_code` AS `appendix_code`, `am`.`title` AS `appendix_title`, `mp`.`appendix_anchor` AS `appendix_anchor`, `ds`.`section_code` AS `source_section_code`, `ro`.`object_type` AS `object_type`, `ro`.`object_label` AS `object_label`, `ro`.`object_title` AS `object_title`, `mp`.`importance_level` AS `importance_level`, `mp`.`equation_role` AS `equation_role`, `mp`.`classification_status` AS `classification_status` FROM (((`repository_objects` `ro` join `dissertation_sections` `ds` on(`ds`.`section_id` = `ro`.`section_id`)) join `mathematical_object_profiles` `mp` on(`mp`.`repo_object_id` = `ro`.`repo_object_id`)) join `appendix_modules` `am` on(`am`.`appendix_module_id` = `mp`.`appendix_module_id`)) WHERE `mp`.`document_location` = 'appendix' ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_math_compression_gate`
+--
+DROP TABLE IF EXISTS `v_math_compression_gate`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_math_compression_gate`  AS SELECT 'PROFILE_COVERAGE' AS `gate_code`, CASE WHEN (select count(0) from `repository_objects`) = (select count(0) from `mathematical_object_profiles`) THEN 'PASS' ELSE 'FAIL' END AS `gate_status`, cast((select count(0) from `repository_objects`) as char charset utf8mb4) AS `expected_value`, cast((select count(0) from `mathematical_object_profiles`) as char charset utf8mb4) AS `actual_value`union all select 'MAIN_NO_DERIVATION_EXAMPLE' AS `MAIN_NO_DERIVATION_EXAMPLE`,case when count(0) = 0 then 'PASS' else 'FAIL' end AS `CASE WHEN COUNT(*)=0 THEN 'PASS' ELSE 'FAIL' END`,'0' AS `0`,cast(count(0) as char charset utf8mb4) AS `CAST(COUNT(*) AS CHAR)` from `mathematical_object_profiles` where `mathematical_object_profiles`.`document_location` = 'main_text' and (`mathematical_object_profiles`.`importance_level` in ('derivation','example') or `mathematical_object_profiles`.`equation_role` in ('proof_step','example')) union all select 'APPENDIX_FULLY_REFERENCED' AS `APPENDIX_FULLY_REFERENCED`,case when count(0) = 0 then 'PASS' else 'FAIL' end AS `CASE WHEN COUNT(*)=0 THEN 'PASS' ELSE 'FAIL' END`,'0' AS `0`,cast(count(0) as char charset utf8mb4) AS `CAST(COUNT(*) AS CHAR)` from `mathematical_object_profiles` where `mathematical_object_profiles`.`document_location` = 'appendix' and (`mathematical_object_profiles`.`appendix_module_id` is null or `mathematical_object_profiles`.`appendix_anchor` is null) union all select 'MAIN_HAS_DOWNSTREAM_REQUIREMENT' AS `MAIN_HAS_DOWNSTREAM_REQUIREMENT`,case when count(0) = 0 then 'PASS' else 'FAIL' end AS `CASE WHEN COUNT(*)=0 THEN 'PASS' ELSE 'FAIL' END`,'0' AS `0`,cast(count(0) as char charset utf8mb4) AS `CAST(COUNT(*) AS CHAR)` from (`mathematical_object_profiles` `mp` left join `object_section_requirements` `r` on(`r`.`repo_object_id` = `mp`.`repo_object_id`)) where `mp`.`document_location` = 'main_text' and `r`.`requirement_id` is null union all select 'EQUATION_ROLE_COMPLETE' AS `EQUATION_ROLE_COMPLETE`,case when count(0) = 0 then 'PASS' else 'FAIL' end AS `CASE WHEN COUNT(*)=0 THEN 'PASS' ELSE 'FAIL' END`,'0' AS `0`,cast(count(0) as char charset utf8mb4) AS `CAST(COUNT(*) AS CHAR)` from (`repository_objects` `ro` join `mathematical_object_profiles` `mp` on(`mp`.`repo_object_id` = `ro`.`repo_object_id`)) where `ro`.`object_type` = 'equation' and `mp`.`equation_role` is null union all select 'NON_EQUATION_ROLE_NULL' AS `NON_EQUATION_ROLE_NULL`,case when count(0) = 0 then 'PASS' else 'FAIL' end AS `CASE WHEN COUNT(*)=0 THEN 'PASS' ELSE 'FAIL' END`,'0' AS `0`,cast(count(0) as char charset utf8mb4) AS `CAST(COUNT(*) AS CHAR)` from (`repository_objects` `ro` join `mathematical_object_profiles` `mp` on(`mp`.`repo_object_id` = `ro`.`repo_object_id`)) where `ro`.`object_type` <> 'equation' and `mp`.`equation_role` is not null  ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_math_main_text_inventory`
+--
+DROP TABLE IF EXISTS `v_math_main_text_inventory`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_math_main_text_inventory`  AS SELECT `ro`.`repo_object_id` AS `repo_object_id`, `ds`.`section_code` AS `source_section_code`, `ro`.`object_type` AS `object_type`, `ro`.`object_label` AS `object_label`, `ro`.`object_title` AS `object_title`, `mp`.`importance_level` AS `importance_level`, `mp`.`equation_role` AS `equation_role`, `mp`.`classification_status` AS `classification_status` FROM ((`repository_objects` `ro` join `dissertation_sections` `ds` on(`ds`.`section_id` = `ro`.`section_id`)) join `mathematical_object_profiles` `mp` on(`mp`.`repo_object_id` = `ro`.`repo_object_id`)) WHERE `mp`.`document_location` = 'main_text' ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_math_required_for_sections`
+--
+DROP TABLE IF EXISTS `v_math_required_for_sections`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_math_required_for_sections`  AS SELECT `r`.`required_for_section_code` AS `required_for_section_code`, `r`.`requirement_type` AS `requirement_type`, `ro`.`repo_object_id` AS `repo_object_id`, `ds`.`section_code` AS `source_section_code`, `ro`.`object_type` AS `object_type`, `ro`.`object_label` AS `object_label`, `ro`.`object_title` AS `object_title`, `mp`.`document_location` AS `document_location`, `mp`.`importance_level` AS `importance_level`, `mp`.`equation_role` AS `equation_role` FROM (((`object_section_requirements` `r` join `repository_objects` `ro` on(`ro`.`repo_object_id` = `r`.`repo_object_id`)) join `dissertation_sections` `ds` on(`ds`.`section_id` = `ro`.`section_id`)) join `mathematical_object_profiles` `mp` on(`mp`.`repo_object_id` = `ro`.`repo_object_id`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_pending_source_audit`
+--
+DROP TABLE IF EXISTS `v_pending_source_audit`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pending_source_audit`  AS SELECT `pending_sources`.`pending_source_id` AS `pending_source_id`, `pending_sources`.`proposed_source_key` AS `proposed_source_key`, `pending_sources`.`title` AS `title`, `pending_sources`.`authors_text` AS `authors_text`, `pending_sources`.`proposed_section_code` AS `proposed_section_code`, `pending_sources`.`priority` AS `priority`, `pending_sources`.`review_status` AS `review_status`, `pending_sources`.`discovered_at` AS `discovered_at`, `pending_sources`.`reviewed_at` AS `reviewed_at` FROM `pending_sources` ORDER BY field(`pending_sources`.`review_status`,'open','in_review','accepted','merged','rejected') ASC, `pending_sources`.`priority` DESC, `pending_sources`.`discovered_at` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_proof_register`
+--
+DROP TABLE IF EXISTS `v_proof_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_proof_register`  AS SELECT `p`.`proof_number` AS `proof_number`, `ds`.`section_code` AS `section_code`, `p`.`title` AS `title`, `p`.`proof_method` AS `proof_method`, `p`.`provenance` AS `provenance`, `s`.`citation_number` AS `source_citation_number`, `p`.`validation_status` AS `validation_status` FROM ((`proofs` `p` join `dissertation_sections` `ds` on(`ds`.`section_id` = `p`.`section_id`)) left join `sources` `s` on(`s`.`source_id` = `p`.`source_id`)) ORDER BY `ds`.`section_order` ASC, `p`.`proof_number` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_proposition_register`
+--
+DROP TABLE IF EXISTS `v_proposition_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_proposition_register`  AS SELECT `p`.`proposition_number` AS `proposition_number`, `ds`.`section_code` AS `section_code`, `p`.`title` AS `title`, `p`.`statement_text` AS `statement_text`, `p`.`word_latex` AS `word_latex`, `p`.`based_on_axioms` AS `based_on_axioms`, `p`.`status` AS `status` FROM (`propositions` `p` join `dissertation_sections` `ds` on(`ds`.`section_id` = `p`.`section_id`)) ORDER BY `p`.`proposition_number` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_section_inventory`
+--
+DROP TABLE IF EXISTS `v_section_inventory`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_section_inventory`  AS SELECT `ds`.`section_code` AS `section_code`, `ds`.`title` AS `title`, `ds`.`status` AS `status`, count(distinct `su`.`source_id`) AS `source_count`, count(distinct `e`.`equation_id`) AS `equation_count`, count(distinct `d`.`definition_id`) AS `definition_count`, count(distinct `th`.`theorem_id`) AS `theorem_count`, count(distinct `l`.`lemma_id`) AS `lemma_count`, count(distinct `c`.`corollary_id`) AS `corollary_count`, count(distinct `f`.`figure_id`) AS `figure_count`, count(distinct `dt`.`table_id`) AS `table_count` FROM ((((((((`dissertation_sections` `ds` left join `source_usage` `su` on(`su`.`section_id` = `ds`.`section_id`)) left join `equations` `e` on(`e`.`section_id` = `ds`.`section_id`)) left join `definitions` `d` on(`d`.`section_id` = `ds`.`section_id`)) left join `theorems` `th` on(`th`.`section_id` = `ds`.`section_id`)) left join `lemmas` `l` on(`l`.`section_id` = `ds`.`section_id`)) left join `corollaries` `c` on(`c`.`section_id` = `ds`.`section_id`)) left join `figures` `f` on(`f`.`section_id` = `ds`.`section_id`)) left join `dissertation_tables` `dt` on(`dt`.`section_id` = `ds`.`section_id`)) GROUP BY `ds`.`section_id`, `ds`.`section_code`, `ds`.`title`, `ds`.`status` ORDER BY `ds`.`section_order` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_statement_register`
+--
+DROP TABLE IF EXISTS `v_statement_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_statement_register`  AS SELECT 'theorem' AS `statement_type`, `t`.`theorem_number` AS `statement_number`, `ds`.`section_code` AS `section_code`, `t`.`title` AS `title`, `t`.`statement_text` AS `statement_text`, `t`.`word_latex` AS `word_latex`, `t`.`provenance` AS `provenance`, `s`.`citation_number` AS `source_citation_number`, `t`.`validation_status` AS `validation_status` FROM ((`theorems` `t` join `dissertation_sections` `ds` on(`ds`.`section_id` = `t`.`section_id`)) left join `sources` `s` on(`s`.`source_id` = `t`.`source_id`))union all select 'lemma' AS `lemma`,`l`.`lemma_number` AS `lemma_number`,`ds`.`section_code` AS `section_code`,`l`.`title` AS `title`,`l`.`statement_text` AS `statement_text`,`l`.`word_latex` AS `word_latex`,`l`.`provenance` AS `provenance`,`s`.`citation_number` AS `citation_number`,`l`.`validation_status` AS `validation_status` from ((`lemmas` `l` join `dissertation_sections` `ds` on(`ds`.`section_id` = `l`.`section_id`)) left join `sources` `s` on(`s`.`source_id` = `l`.`source_id`)) union all select 'corollary' AS `corollary`,`c`.`corollary_number` AS `corollary_number`,`ds`.`section_code` AS `section_code`,`c`.`title` AS `title`,`c`.`statement_text` AS `statement_text`,`c`.`word_latex` AS `word_latex`,`c`.`provenance` AS `provenance`,`s`.`citation_number` AS `citation_number`,`c`.`validation_status` AS `validation_status` from ((`corollaries` `c` join `dissertation_sections` `ds` on(`ds`.`section_id` = `c`.`section_id`)) left join `sources` `s` on(`s`.`source_id` = `c`.`source_id`))  ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_symbol_register`
+--
+DROP TABLE IF EXISTS `v_symbol_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_symbol_register`  AS SELECT `s`.`symbol_latex` AS `symbol_latex`, `s`.`symbol_word_latex` AS `symbol_word_latex`, `s`.`symbol_name` AS `symbol_name`, `s`.`definition_text` AS `definition_text`, `s`.`scope_type` AS `scope_type`, `ds`.`section_code` AS `first_section_code`, `e`.`equation_number` AS `first_equation_number`, `s`.`unit_text` AS `unit_text`, `s`.`domain_text` AS `domain_text`, `s`.`codomain_text` AS `codomain_text`, `s`.`validation_status` AS `validation_status` FROM ((`symbols` `s` left join `dissertation_sections` `ds` on(`ds`.`section_id` = `s`.`first_section_id`)) left join `equations` `e` on(`e`.`equation_id` = `s`.`first_equation_id`)) ORDER BY `s`.`symbol_name` ASC, `s`.`symbol_latex` ASC ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur des Views `v_table_register`
+--
+DROP TABLE IF EXISTS `v_table_register`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_table_register`  AS SELECT `t`.`table_number` AS `table_number`, `ds`.`section_code` AS `section_code`, `t`.`title` AS `title`, `t`.`caption` AS `caption`, `t`.`file_name` AS `file_name`, `t`.`file_path` AS `file_path`, `t`.`provenance` AS `provenance`, `s`.`citation_number` AS `source_citation_number`, `t`.`validation_status` AS `validation_status` FROM ((`dissertation_tables` `t` join `dissertation_sections` `ds` on(`ds`.`section_id` = `t`.`section_id`)) left join `sources` `s` on(`s`.`source_id` = `t`.`source_id`)) ORDER BY `t`.`table_number` ASC ;
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `acronyms`
+--
+ALTER TABLE `acronyms`
+  ADD PRIMARY KEY (`acronym_id`),
+  ADD UNIQUE KEY `uq_acronym` (`acronym`),
+  ADD KEY `fk_acronyms_section` (`first_section_id`),
+  ADD KEY `fk_acronyms_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `annotations`
+--
+ALTER TABLE `annotations`
+  ADD PRIMARY KEY (`annotation_id`),
+  ADD UNIQUE KEY `uq_annotation_source` (`source_id`);
+
+--
+-- Indizes für die Tabelle `appendix_modules`
+--
+ALTER TABLE `appendix_modules`
+  ADD PRIMARY KEY (`appendix_module_id`),
+  ADD UNIQUE KEY `uq_appendix_code` (`appendix_code`),
+  ADD KEY `fk_appendix_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `assumptions`
+--
+ALTER TABLE `assumptions`
+  ADD PRIMARY KEY (`assumption_id`),
+  ADD UNIQUE KEY `uq_assumption_number` (`assumption_number`),
+  ADD KEY `fk_assumptions_section` (`section_id`),
+  ADD KEY `fk_assumptions_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `authors`
+--
+ALTER TABLE `authors`
+  ADD PRIMARY KEY (`author_id`),
+  ADD UNIQUE KEY `uq_authors_normalized_name` (`normalized_name`);
+
+--
+-- Indizes für die Tabelle `axioms`
+--
+ALTER TABLE `axioms`
+  ADD PRIMARY KEY (`axiom_id`),
+  ADD UNIQUE KEY `uq_axiom_number` (`axiom_number`),
+  ADD KEY `fk_axioms_section` (`section_id`),
+  ADD KEY `fk_axioms_assumption` (`source_assumption_id`),
+  ADD KEY `fk_axioms_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `axiom_dependencies`
+--
+ALTER TABLE `axiom_dependencies`
+  ADD PRIMARY KEY (`axiom_dependency_id`),
+  ADD UNIQUE KEY `uq_axiom_dependency` (`axiom_id`,`depends_on_axiom_id`,`dependency_type`),
+  ADD KEY `fk_axiom_dependencies_parent` (`depends_on_axiom_id`);
+
+--
+-- Indizes für die Tabelle `citation_aliases`
+--
+ALTER TABLE `citation_aliases`
+  ADD PRIMARY KEY (`citation_alias_id`),
+  ADD UNIQUE KEY `uq_citation_alias_number` (`source_citation_number`),
+  ADD KEY `idx_citation_alias_source` (`source_id`);
+
+--
+-- Indizes für die Tabelle `citation_corrections`
+--
+ALTER TABLE `citation_corrections`
+  ADD PRIMARY KEY (`correction_id`),
+  ADD UNIQUE KEY `uq_citation_correction` (`old_citation_label`,`section_code`),
+  ADD KEY `fk_citation_correction_revision` (`revision_id`);
+
+--
+-- Indizes für die Tabelle `citation_evidence_links`
+--
+ALTER TABLE `citation_evidence_links`
+  ADD PRIMARY KEY (`citation_occurrence_id`,`evidence_id`),
+  ADD KEY `fk_citation_evidence_evidence` (`evidence_id`);
+
+--
+-- Indizes für die Tabelle `citation_occurrences`
+--
+ALTER TABLE `citation_occurrences`
+  ADD PRIMARY KEY (`citation_occurrence_id`),
+  ADD KEY `idx_citation_occ_section` (`section_id`),
+  ADD KEY `idx_citation_occ_source` (`source_id`),
+  ADD KEY `fk_citation_occ_document` (`document_id`);
+
+--
+-- Indizes für die Tabelle `citation_resolutions`
+--
+ALTER TABLE `citation_resolutions`
+  ADD PRIMARY KEY (`citation_occurrence_id`),
+  ADD KEY `idx_citation_resolution_source` (`canonical_source_id`);
+
+--
+-- Indizes für die Tabelle `corollaries`
+--
+ALTER TABLE `corollaries`
+  ADD PRIMARY KEY (`corollary_id`),
+  ADD UNIQUE KEY `uq_corollary_number` (`corollary_number`),
+  ADD KEY `fk_corollaries_section` (`section_id`),
+  ADD KEY `fk_corollaries_theorem` (`parent_theorem_id`),
+  ADD KEY `fk_corollaries_lemma` (`parent_lemma_id`),
+  ADD KEY `fk_corollaries_source` (`source_id`),
+  ADD KEY `fk_corollaries_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `definitions`
+--
+ALTER TABLE `definitions`
+  ADD PRIMARY KEY (`definition_id`),
+  ADD UNIQUE KEY `uq_definition_number` (`definition_number`),
+  ADD KEY `fk_definitions_section` (`section_id`),
+  ADD KEY `fk_definitions_source` (`source_id`),
+  ADD KEY `fk_definitions_revision` (`created_revision_id`),
+  ADD KEY `idx_definitions_section` (`section_id`);
+
+--
+-- Indizes für die Tabelle `definition_candidates`
+--
+ALTER TABLE `definition_candidates`
+  ADD PRIMARY KEY (`definition_candidate_id`),
+  ADD UNIQUE KEY `uq_def_candidate_source_no` (`source_definition_number`),
+  ADD KEY `fk_def_candidate_document` (`document_id`),
+  ADD KEY `fk_def_candidate_section` (`section_id`),
+  ADD KEY `fk_def_candidate_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `dissertation_sections`
+--
+ALTER TABLE `dissertation_sections`
+  ADD PRIMARY KEY (`section_id`),
+  ADD UNIQUE KEY `uq_section_code` (`section_code`),
+  ADD KEY `fk_sections_parent` (`parent_section_id`);
+
+--
+-- Indizes für die Tabelle `dissertation_tables`
+--
+ALTER TABLE `dissertation_tables`
+  ADD PRIMARY KEY (`table_id`),
+  ADD UNIQUE KEY `uq_table_number` (`table_number`),
+  ADD KEY `fk_tables_section` (`section_id`),
+  ADD KEY `fk_tables_source` (`source_id`),
+  ADD KEY `fk_tables_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `documents`
+--
+ALTER TABLE `documents`
+  ADD PRIMARY KEY (`document_id`),
+  ADD UNIQUE KEY `uq_documents_file_version` (`file_name`,`version_label`);
+
+--
+-- Indizes für die Tabelle `equations`
+--
+ALTER TABLE `equations`
+  ADD PRIMARY KEY (`equation_id`),
+  ADD UNIQUE KEY `uq_equation_number` (`equation_number`),
+  ADD KEY `fk_equations_section` (`section_id`),
+  ADD KEY `fk_equations_source` (`source_id`),
+  ADD KEY `idx_equations_revision` (`created_revision_id`),
+  ADD KEY `idx_equations_section_number` (`section_id`,`equation_number`);
+
+--
+-- Indizes für die Tabelle `equation_candidates`
+--
+ALTER TABLE `equation_candidates`
+  ADD PRIMARY KEY (`equation_candidate_id`),
+  ADD UNIQUE KEY `uq_eq_candidate_source_no` (`source_equation_number`),
+  ADD KEY `fk_eq_candidate_document` (`document_id`),
+  ADD KEY `fk_eq_candidate_section` (`section_id`),
+  ADD KEY `fk_eq_candidate_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `equation_dependencies`
+--
+ALTER TABLE `equation_dependencies`
+  ADD PRIMARY KEY (`dependency_id`),
+  ADD UNIQUE KEY `uq_equation_dependency` (`equation_id`,`depends_on_equation_id`,`dependency_type`),
+  ADD KEY `fk_equation_dependencies_parent` (`depends_on_equation_id`);
+
+--
+-- Indizes für die Tabelle `equation_symbols`
+--
+ALTER TABLE `equation_symbols`
+  ADD PRIMARY KEY (`equation_symbol_id`),
+  ADD UNIQUE KEY `uq_equation_symbol` (`equation_id`,`symbol_latex`);
+
+--
+-- Indizes für die Tabelle `figures`
+--
+ALTER TABLE `figures`
+  ADD PRIMARY KEY (`figure_id`),
+  ADD UNIQUE KEY `uq_figure_number` (`figure_number`),
+  ADD KEY `fk_figures_section` (`section_id`),
+  ADD KEY `fk_figures_source` (`source_id`),
+  ADD KEY `fk_figures_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `lemmas`
+--
+ALTER TABLE `lemmas`
+  ADD PRIMARY KEY (`lemma_id`),
+  ADD UNIQUE KEY `uq_lemma_number` (`lemma_number`),
+  ADD KEY `fk_lemmas_section` (`section_id`),
+  ADD KEY `fk_lemmas_source` (`source_id`),
+  ADD KEY `fk_lemmas_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `mathematical_object_profiles`
+--
+ALTER TABLE `mathematical_object_profiles`
+  ADD PRIMARY KEY (`repo_object_id`),
+  ADD UNIQUE KEY `uq_appendix_anchor` (`appendix_anchor`),
+  ADD KEY `idx_math_profile_location` (`document_location`,`importance_level`),
+  ADD KEY `idx_math_profile_module` (`appendix_module_id`),
+  ADD KEY `fk_math_profile_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `object_dependencies`
+--
+ALTER TABLE `object_dependencies`
+  ADD PRIMARY KEY (`object_dependency_id`),
+  ADD UNIQUE KEY `uq_object_dependency` (`object_type_from`,`object_id_from`,`object_type_to`,`object_id_to`,`dependency_type`);
+
+--
+-- Indizes für die Tabelle `object_section_requirements`
+--
+ALTER TABLE `object_section_requirements`
+  ADD PRIMARY KEY (`requirement_id`),
+  ADD UNIQUE KEY `uq_object_requirement` (`repo_object_id`,`required_for_section_code`,`requirement_type`),
+  ADD KEY `idx_requirement_target` (`required_for_section_code`,`requirement_type`),
+  ADD KEY `fk_requirement_section` (`required_for_section_id`),
+  ADD KEY `fk_requirement_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `object_source_links`
+--
+ALTER TABLE `object_source_links`
+  ADD PRIMARY KEY (`object_source_link_id`),
+  ADD UNIQUE KEY `uq_object_source` (`object_type`,`object_id`,`source_id`,`usage_type`),
+  ADD KEY `fk_object_source_source` (`source_id`);
+
+--
+-- Indizes für die Tabelle `pending_sources`
+--
+ALTER TABLE `pending_sources`
+  ADD PRIMARY KEY (`pending_source_id`),
+  ADD KEY `fk_pending_merged_source` (`merged_source_id`);
+
+--
+-- Indizes für die Tabelle `proofs`
+--
+ALTER TABLE `proofs`
+  ADD PRIMARY KEY (`proof_id`),
+  ADD KEY `fk_proofs_section` (`section_id`),
+  ADD KEY `fk_proofs_theorem` (`theorem_id`),
+  ADD KEY `fk_proofs_lemma` (`lemma_id`),
+  ADD KEY `fk_proofs_corollary` (`corollary_id`),
+  ADD KEY `fk_proofs_source` (`source_id`),
+  ADD KEY `fk_proofs_revision` (`created_revision_id`),
+  ADD KEY `idx_proofs_section_status` (`section_id`,`validation_status`);
+
+--
+-- Indizes für die Tabelle `propositions`
+--
+ALTER TABLE `propositions`
+  ADD PRIMARY KEY (`proposition_id`),
+  ADD UNIQUE KEY `uq_proposition_number` (`proposition_number`),
+  ADD KEY `fk_propositions_section` (`section_id`),
+  ADD KEY `fk_propositions_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `proposition_dependencies`
+--
+ALTER TABLE `proposition_dependencies`
+  ADD PRIMARY KEY (`proposition_dependency_id`),
+  ADD UNIQUE KEY `uq_prop_dependency` (`proposition_id`,`axiom_id`,`assumption_id`,`dependency_type`),
+  ADD KEY `fk_prop_dep_axiom` (`axiom_id`),
+  ADD KEY `fk_prop_dep_assumption` (`assumption_id`);
+
+--
+-- Indizes für die Tabelle `quotations`
+--
+ALTER TABLE `quotations`
+  ADD PRIMARY KEY (`quotation_id`),
+  ADD KEY `fk_quotation_source` (`source_id`),
+  ADD KEY `fk_quotation_section` (`section_id`);
+
+--
+-- Indizes für die Tabelle `repository_counters`
+--
+ALTER TABLE `repository_counters`
+  ADD PRIMARY KEY (`counter_key`);
+
+--
+-- Indizes für die Tabelle `repository_objects`
+--
+ALTER TABLE `repository_objects`
+  ADD PRIMARY KEY (`repo_object_id`),
+  ADD UNIQUE KEY `uq_repository_object_source` (`source_table`,`source_pk`),
+  ADD KEY `idx_repository_object_section` (`section_id`,`object_type`),
+  ADD KEY `fk_repo_object_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `repository_revisions`
+--
+ALTER TABLE `repository_revisions`
+  ADD PRIMARY KEY (`revision_id`),
+  ADD UNIQUE KEY `uq_revision_code` (`revision_code`),
+  ADD KEY `fk_revision_parent` (`parent_revision_id`);
+
+--
+-- Indizes für die Tabelle `repository_validation_results`
+--
+ALTER TABLE `repository_validation_results`
+  ADD PRIMARY KEY (`validation_result_id`),
+  ADD UNIQUE KEY `uq_validation_revision_code` (`revision_id`,`validation_code`),
+  ADD KEY `idx_validation_revision` (`revision_id`);
+
+--
+-- Indizes für die Tabelle `revision_issues`
+--
+ALTER TABLE `revision_issues`
+  ADD PRIMARY KEY (`issue_id`),
+  ADD KEY `idx_issue_status` (`issue_status`,`severity`),
+  ADD KEY `fk_revision_issue_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `section_change_log`
+--
+ALTER TABLE `section_change_log`
+  ADD PRIMARY KEY (`change_id`),
+  ADD KEY `idx_change_revision` (`revision_id`),
+  ADD KEY `idx_change_section` (`section_id`);
+
+--
+-- Indizes für die Tabelle `section_versions`
+--
+ALTER TABLE `section_versions`
+  ADD PRIMARY KEY (`section_version_id`),
+  ADD UNIQUE KEY `uq_section_version` (`section_id`,`revision_id`,`version_kind`),
+  ADD KEY `fk_section_versions_revision` (`revision_id`);
+
+--
+-- Indizes für die Tabelle `sources`
+--
+ALTER TABLE `sources`
+  ADD PRIMARY KEY (`source_id`),
+  ADD UNIQUE KEY `uq_sources_source_key` (`source_key`),
+  ADD UNIQUE KEY `uq_sources_citation_number` (`citation_number`),
+  ADD KEY `idx_sources_title` (`title`(191)),
+  ADD KEY `idx_sources_year` (`year_original`),
+  ADD KEY `idx_sources_priority` (`priority`),
+  ADD KEY `idx_sources_frzk_relevance` (`frzk_relevance`),
+  ADD KEY `idx_sources_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `source_authors`
+--
+ALTER TABLE `source_authors`
+  ADD PRIMARY KEY (`source_id`,`author_id`,`role`),
+  ADD UNIQUE KEY `uq_source_author_order` (`source_id`,`role`,`author_order`),
+  ADD KEY `fk_source_authors_author` (`author_id`);
+
+--
+-- Indizes für die Tabelle `source_relations`
+--
+ALTER TABLE `source_relations`
+  ADD PRIMARY KEY (`relation_id`),
+  ADD UNIQUE KEY `uq_source_relation` (`source_id_from`,`source_id_to`,`relation_type`),
+  ADD KEY `fk_source_relations_to` (`source_id_to`);
+
+--
+-- Indizes für die Tabelle `source_research_evidence`
+--
+ALTER TABLE `source_research_evidence`
+  ADD PRIMARY KEY (`evidence_id`),
+  ADD KEY `idx_research_evidence_usage` (`source_usage_id`),
+  ADD KEY `idx_research_evidence_source` (`canonical_source_id`);
+
+--
+-- Indizes für die Tabelle `source_research_registry`
+--
+ALTER TABLE `source_research_registry`
+  ADD PRIMARY KEY (`source_id`),
+  ADD UNIQUE KEY `uq_research_registry_citation` (`citation_number`);
+
+--
+-- Indizes für die Tabelle `source_topics`
+--
+ALTER TABLE `source_topics`
+  ADD PRIMARY KEY (`source_id`,`topic_id`),
+  ADD KEY `fk_source_topics_topic` (`topic_id`);
+
+--
+-- Indizes für die Tabelle `source_usage`
+--
+ALTER TABLE `source_usage`
+  ADD PRIMARY KEY (`usage_id`),
+  ADD KEY `idx_usage_section` (`section_id`),
+  ADD KEY `idx_usage_source` (`source_id`),
+  ADD KEY `idx_source_usage_revision` (`created_revision_id`),
+  ADD KEY `idx_source_usage_section_source` (`section_id`,`source_id`);
+
+--
+-- Indizes für die Tabelle `source_usage_audit`
+--
+ALTER TABLE `source_usage_audit`
+  ADD PRIMARY KEY (`usage_id`),
+  ADD KEY `idx_usage_audit_citation` (`original_citation_number`);
+
+--
+-- Indizes für die Tabelle `statement_candidates`
+--
+ALTER TABLE `statement_candidates`
+  ADD PRIMARY KEY (`statement_candidate_id`),
+  ADD KEY `fk_stmt_candidate_document` (`document_id`),
+  ADD KEY `fk_stmt_candidate_section` (`section_id`),
+  ADD KEY `fk_stmt_candidate_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `symbols`
+--
+ALTER TABLE `symbols`
+  ADD PRIMARY KEY (`symbol_id`),
+  ADD UNIQUE KEY `uq_symbol_scope` (`symbol_latex`,`scope_type`,`first_section_id`),
+  ADD KEY `fk_symbols_section` (`first_section_id`),
+  ADD KEY `fk_symbols_equation` (`first_equation_id`),
+  ADD KEY `fk_symbols_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `theorems`
+--
+ALTER TABLE `theorems`
+  ADD PRIMARY KEY (`theorem_id`),
+  ADD UNIQUE KEY `uq_theorem_number` (`theorem_number`),
+  ADD KEY `fk_theorems_section` (`section_id`),
+  ADD KEY `fk_theorems_source` (`source_id`),
+  ADD KEY `fk_theorems_revision` (`created_revision_id`);
+
+--
+-- Indizes für die Tabelle `topics`
+--
+ALTER TABLE `topics`
+  ADD PRIMARY KEY (`topic_id`),
+  ADD UNIQUE KEY `uq_topic_code` (`topic_code`),
+  ADD KEY `fk_topics_parent` (`parent_topic_id`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `acronyms`
+--
+ALTER TABLE `acronyms`
+  MODIFY `acronym_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `annotations`
+--
+ALTER TABLE `annotations`
+  MODIFY `annotation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `appendix_modules`
+--
+ALTER TABLE `appendix_modules`
+  MODIFY `appendix_module_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT für Tabelle `assumptions`
+--
+ALTER TABLE `assumptions`
+  MODIFY `assumption_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `authors`
+--
+ALTER TABLE `authors`
+  MODIFY `author_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+
+--
+-- AUTO_INCREMENT für Tabelle `axioms`
+--
+ALTER TABLE `axioms`
+  MODIFY `axiom_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `axiom_dependencies`
+--
+ALTER TABLE `axiom_dependencies`
+  MODIFY `axiom_dependency_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `citation_aliases`
+--
+ALTER TABLE `citation_aliases`
+  MODIFY `citation_alias_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT für Tabelle `citation_corrections`
+--
+ALTER TABLE `citation_corrections`
+  MODIFY `correction_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `corollaries`
+--
+ALTER TABLE `corollaries`
+  MODIFY `corollary_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `definitions`
+--
+ALTER TABLE `definitions`
+  MODIFY `definition_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `dissertation_sections`
+--
+ALTER TABLE `dissertation_sections`
+  MODIFY `section_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT für Tabelle `dissertation_tables`
+--
+ALTER TABLE `dissertation_tables`
+  MODIFY `table_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `documents`
+--
+ALTER TABLE `documents`
+  MODIFY `document_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT für Tabelle `equations`
+--
+ALTER TABLE `equations`
+  MODIFY `equation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `equation_dependencies`
+--
+ALTER TABLE `equation_dependencies`
+  MODIFY `dependency_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `equation_symbols`
+--
+ALTER TABLE `equation_symbols`
+  MODIFY `equation_symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `figures`
+--
+ALTER TABLE `figures`
+  MODIFY `figure_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `lemmas`
+--
+ALTER TABLE `lemmas`
+  MODIFY `lemma_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `object_dependencies`
+--
+ALTER TABLE `object_dependencies`
+  MODIFY `object_dependency_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `object_section_requirements`
+--
+ALTER TABLE `object_section_requirements`
+  MODIFY `requirement_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+
+--
+-- AUTO_INCREMENT für Tabelle `object_source_links`
+--
+ALTER TABLE `object_source_links`
+  MODIFY `object_source_link_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `pending_sources`
+--
+ALTER TABLE `pending_sources`
+  MODIFY `pending_source_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `proofs`
+--
+ALTER TABLE `proofs`
+  MODIFY `proof_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `propositions`
+--
+ALTER TABLE `propositions`
+  MODIFY `proposition_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `proposition_dependencies`
+--
+ALTER TABLE `proposition_dependencies`
+  MODIFY `proposition_dependency_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `quotations`
+--
+ALTER TABLE `quotations`
+  MODIFY `quotation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT für Tabelle `repository_objects`
+--
+ALTER TABLE `repository_objects`
+  MODIFY `repo_object_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
+
+--
+-- AUTO_INCREMENT für Tabelle `repository_revisions`
+--
+ALTER TABLE `repository_revisions`
+  MODIFY `revision_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT für Tabelle `repository_validation_results`
+--
+ALTER TABLE `repository_validation_results`
+  MODIFY `validation_result_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT für Tabelle `section_change_log`
+--
+ALTER TABLE `section_change_log`
+  MODIFY `change_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT für Tabelle `section_versions`
+--
+ALTER TABLE `section_versions`
+  MODIFY `section_version_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT für Tabelle `sources`
+--
+ALTER TABLE `sources`
+  MODIFY `source_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+
+--
+-- AUTO_INCREMENT für Tabelle `source_relations`
+--
+ALTER TABLE `source_relations`
+  MODIFY `relation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `source_usage`
+--
+ALTER TABLE `source_usage`
+  MODIFY `usage_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+
+--
+-- AUTO_INCREMENT für Tabelle `symbols`
+--
+ALTER TABLE `symbols`
+  MODIFY `symbol_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `theorems`
+--
+ALTER TABLE `theorems`
+  MODIFY `theorem_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `topics`
+--
+ALTER TABLE `topics`
+  MODIFY `topic_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints der exportierten Tabellen
+--
+
+--
+-- Constraints der Tabelle `acronyms`
+--
+ALTER TABLE `acronyms`
+  ADD CONSTRAINT `fk_acronyms_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_acronyms_section` FOREIGN KEY (`first_section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE SET NULL;
+
+--
+-- Constraints der Tabelle `annotations`
+--
+ALTER TABLE `annotations`
+  ADD CONSTRAINT `fk_annotations_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `appendix_modules`
+--
+ALTER TABLE `appendix_modules`
+  ADD CONSTRAINT `fk_appendix_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `assumptions`
+--
+ALTER TABLE `assumptions`
+  ADD CONSTRAINT `fk_assumptions_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_assumptions_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`);
+
+--
+-- Constraints der Tabelle `axioms`
+--
+ALTER TABLE `axioms`
+  ADD CONSTRAINT `fk_axioms_assumption` FOREIGN KEY (`source_assumption_id`) REFERENCES `assumptions` (`assumption_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_axioms_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_axioms_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`);
+
+--
+-- Constraints der Tabelle `axiom_dependencies`
+--
+ALTER TABLE `axiom_dependencies`
+  ADD CONSTRAINT `fk_axiom_dependencies_axiom` FOREIGN KEY (`axiom_id`) REFERENCES `axioms` (`axiom_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_axiom_dependencies_parent` FOREIGN KEY (`depends_on_axiom_id`) REFERENCES `axioms` (`axiom_id`) ON DELETE CASCADE;
+
+--
+-- Constraints der Tabelle `citation_aliases`
+--
+ALTER TABLE `citation_aliases`
+  ADD CONSTRAINT `fk_citation_alias_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `citation_corrections`
+--
+ALTER TABLE `citation_corrections`
+  ADD CONSTRAINT `fk_citation_correction_revision` FOREIGN KEY (`revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `citation_evidence_links`
+--
+ALTER TABLE `citation_evidence_links`
+  ADD CONSTRAINT `fk_citation_evidence_evidence` FOREIGN KEY (`evidence_id`) REFERENCES `source_research_evidence` (`evidence_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_citation_evidence_occ` FOREIGN KEY (`citation_occurrence_id`) REFERENCES `citation_occurrences` (`citation_occurrence_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `citation_occurrences`
+--
+ALTER TABLE `citation_occurrences`
+  ADD CONSTRAINT `fk_citation_occ_document` FOREIGN KEY (`document_id`) REFERENCES `documents` (`document_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_citation_occ_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_citation_occ_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `citation_resolutions`
+--
+ALTER TABLE `citation_resolutions`
+  ADD CONSTRAINT `fk_citation_resolution_occ` FOREIGN KEY (`citation_occurrence_id`) REFERENCES `citation_occurrences` (`citation_occurrence_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_citation_resolution_source` FOREIGN KEY (`canonical_source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `corollaries`
+--
+ALTER TABLE `corollaries`
+  ADD CONSTRAINT `fk_corollaries_lemma` FOREIGN KEY (`parent_lemma_id`) REFERENCES `lemmas` (`lemma_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_corollaries_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_corollaries_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`),
+  ADD CONSTRAINT `fk_corollaries_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_corollaries_theorem` FOREIGN KEY (`parent_theorem_id`) REFERENCES `theorems` (`theorem_id`) ON DELETE SET NULL;
+
+--
+-- Constraints der Tabelle `definitions`
+--
+ALTER TABLE `definitions`
+  ADD CONSTRAINT `fk_definitions_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_definitions_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`),
+  ADD CONSTRAINT `fk_definitions_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL;
+
+--
+-- Constraints der Tabelle `definition_candidates`
+--
+ALTER TABLE `definition_candidates`
+  ADD CONSTRAINT `fk_def_candidate_document` FOREIGN KEY (`document_id`) REFERENCES `documents` (`document_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_def_candidate_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_def_candidate_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `dissertation_sections`
+--
+ALTER TABLE `dissertation_sections`
+  ADD CONSTRAINT `fk_sections_parent` FOREIGN KEY (`parent_section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `dissertation_tables`
+--
+ALTER TABLE `dissertation_tables`
+  ADD CONSTRAINT `fk_tables_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_tables_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`),
+  ADD CONSTRAINT `fk_tables_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL;
+
+--
+-- Constraints der Tabelle `equations`
+--
+ALTER TABLE `equations`
+  ADD CONSTRAINT `fk_equations_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_equations_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_equations_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `equation_candidates`
+--
+ALTER TABLE `equation_candidates`
+  ADD CONSTRAINT `fk_eq_candidate_document` FOREIGN KEY (`document_id`) REFERENCES `documents` (`document_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_eq_candidate_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_eq_candidate_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `equation_dependencies`
+--
+ALTER TABLE `equation_dependencies`
+  ADD CONSTRAINT `fk_equation_dependencies_equation` FOREIGN KEY (`equation_id`) REFERENCES `equations` (`equation_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_equation_dependencies_parent` FOREIGN KEY (`depends_on_equation_id`) REFERENCES `equations` (`equation_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `equation_symbols`
+--
+ALTER TABLE `equation_symbols`
+  ADD CONSTRAINT `fk_equation_symbols_equation` FOREIGN KEY (`equation_id`) REFERENCES `equations` (`equation_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `figures`
+--
+ALTER TABLE `figures`
+  ADD CONSTRAINT `fk_figures_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_figures_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`),
+  ADD CONSTRAINT `fk_figures_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL;
+
+--
+-- Constraints der Tabelle `lemmas`
+--
+ALTER TABLE `lemmas`
+  ADD CONSTRAINT `fk_lemmas_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_lemmas_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`),
+  ADD CONSTRAINT `fk_lemmas_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL;
+
+--
+-- Constraints der Tabelle `mathematical_object_profiles`
+--
+ALTER TABLE `mathematical_object_profiles`
+  ADD CONSTRAINT `fk_math_profile_appendix` FOREIGN KEY (`appendix_module_id`) REFERENCES `appendix_modules` (`appendix_module_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_math_profile_object` FOREIGN KEY (`repo_object_id`) REFERENCES `repository_objects` (`repo_object_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_math_profile_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `object_section_requirements`
+--
+ALTER TABLE `object_section_requirements`
+  ADD CONSTRAINT `fk_requirement_object` FOREIGN KEY (`repo_object_id`) REFERENCES `repository_objects` (`repo_object_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_requirement_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_requirement_section` FOREIGN KEY (`required_for_section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `object_source_links`
+--
+ALTER TABLE `object_source_links`
+  ADD CONSTRAINT `fk_object_source_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE;
+
+--
+-- Constraints der Tabelle `pending_sources`
+--
+ALTER TABLE `pending_sources`
+  ADD CONSTRAINT `fk_pending_merged_source` FOREIGN KEY (`merged_source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `proofs`
+--
+ALTER TABLE `proofs`
+  ADD CONSTRAINT `fk_proofs_corollary` FOREIGN KEY (`corollary_id`) REFERENCES `corollaries` (`corollary_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_proofs_lemma` FOREIGN KEY (`lemma_id`) REFERENCES `lemmas` (`lemma_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_proofs_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_proofs_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`),
+  ADD CONSTRAINT `fk_proofs_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_proofs_theorem` FOREIGN KEY (`theorem_id`) REFERENCES `theorems` (`theorem_id`) ON DELETE CASCADE;
+
+--
+-- Constraints der Tabelle `propositions`
+--
+ALTER TABLE `propositions`
+  ADD CONSTRAINT `fk_propositions_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_propositions_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`);
+
+--
+-- Constraints der Tabelle `proposition_dependencies`
+--
+ALTER TABLE `proposition_dependencies`
+  ADD CONSTRAINT `fk_prop_dep_assumption` FOREIGN KEY (`assumption_id`) REFERENCES `assumptions` (`assumption_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_prop_dep_axiom` FOREIGN KEY (`axiom_id`) REFERENCES `axioms` (`axiom_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_prop_dep_proposition` FOREIGN KEY (`proposition_id`) REFERENCES `propositions` (`proposition_id`) ON DELETE CASCADE;
+
+--
+-- Constraints der Tabelle `quotations`
+--
+ALTER TABLE `quotations`
+  ADD CONSTRAINT `fk_quotation_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_quotation_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `repository_objects`
+--
+ALTER TABLE `repository_objects`
+  ADD CONSTRAINT `fk_repo_object_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_repo_object_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `repository_revisions`
+--
+ALTER TABLE `repository_revisions`
+  ADD CONSTRAINT `fk_revision_parent` FOREIGN KEY (`parent_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `repository_validation_results`
+--
+ALTER TABLE `repository_validation_results`
+  ADD CONSTRAINT `fk_validation_revision` FOREIGN KEY (`revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `revision_issues`
+--
+ALTER TABLE `revision_issues`
+  ADD CONSTRAINT `fk_revision_issue_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `section_change_log`
+--
+ALTER TABLE `section_change_log`
+  ADD CONSTRAINT `fk_change_revision` FOREIGN KEY (`revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_change_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `section_versions`
+--
+ALTER TABLE `section_versions`
+  ADD CONSTRAINT `fk_section_versions_revision` FOREIGN KEY (`revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_section_versions_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `sources`
+--
+ALTER TABLE `sources`
+  ADD CONSTRAINT `fk_sources_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `source_authors`
+--
+ALTER TABLE `source_authors`
+  ADD CONSTRAINT `fk_source_authors_author` FOREIGN KEY (`author_id`) REFERENCES `authors` (`author_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_source_authors_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `source_relations`
+--
+ALTER TABLE `source_relations`
+  ADD CONSTRAINT `fk_source_relations_from` FOREIGN KEY (`source_id_from`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_source_relations_to` FOREIGN KEY (`source_id_to`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `source_research_evidence`
+--
+ALTER TABLE `source_research_evidence`
+  ADD CONSTRAINT `fk_research_evidence_source` FOREIGN KEY (`canonical_source_id`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_research_evidence_usage` FOREIGN KEY (`source_usage_id`) REFERENCES `source_usage` (`usage_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `source_research_registry`
+--
+ALTER TABLE `source_research_registry`
+  ADD CONSTRAINT `fk_research_registry_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `source_topics`
+--
+ALTER TABLE `source_topics`
+  ADD CONSTRAINT `fk_source_topics_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_source_topics_topic` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `source_usage`
+--
+ALTER TABLE `source_usage`
+  ADD CONSTRAINT `fk_source_usage_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_source_usage_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_source_usage_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `source_usage_audit`
+--
+ALTER TABLE `source_usage_audit`
+  ADD CONSTRAINT `fk_usage_audit_usage` FOREIGN KEY (`usage_id`) REFERENCES `source_usage` (`usage_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `statement_candidates`
+--
+ALTER TABLE `statement_candidates`
+  ADD CONSTRAINT `fk_stmt_candidate_document` FOREIGN KEY (`document_id`) REFERENCES `documents` (`document_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stmt_candidate_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stmt_candidate_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `symbols`
+--
+ALTER TABLE `symbols`
+  ADD CONSTRAINT `fk_symbols_equation` FOREIGN KEY (`first_equation_id`) REFERENCES `equations` (`equation_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_symbols_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_symbols_section` FOREIGN KEY (`first_section_id`) REFERENCES `dissertation_sections` (`section_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints der Tabelle `theorems`
+--
+ALTER TABLE `theorems`
+  ADD CONSTRAINT `fk_theorems_revision` FOREIGN KEY (`created_revision_id`) REFERENCES `repository_revisions` (`revision_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_theorems_section` FOREIGN KEY (`section_id`) REFERENCES `dissertation_sections` (`section_id`),
+  ADD CONSTRAINT `fk_theorems_source` FOREIGN KEY (`source_id`) REFERENCES `sources` (`source_id`) ON DELETE SET NULL;
+
+--
+-- Constraints der Tabelle `topics`
+--
+ALTER TABLE `topics`
+  ADD CONSTRAINT `fk_topics_parent` FOREIGN KEY (`parent_topic_id`) REFERENCES `topics` (`topic_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
